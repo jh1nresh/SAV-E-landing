@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-const navItems = ["TestFlight", "Place memory", "Review first", "Ask SAV-E", "Feedback"];
 const testFlightUrl = process.env.NEXT_PUBLIC_TESTFLIGHT_URL ?? "https://testflight.apple.com/";
 
 function WordsPullUp({ text, showAsterisk = false }: { text: string; showAsterisk?: boolean }) {
@@ -45,24 +44,6 @@ export default function Home() {
 
         <div className="noise-overlay pointer-events-none absolute inset-0 z-10 opacity-[0.7] mix-blend-overlay" />
         <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
-
-        <nav
-          className="absolute left-1/2 top-0 z-40 w-[calc(100%-1rem)] max-w-[calc(100%-1.5rem)] -translate-x-1/2 sm:w-auto"
-          aria-label="Primary"
-        >
-          <ul className="flex items-center justify-between gap-3 overflow-x-auto whitespace-nowrap rounded-b-2xl bg-black px-3 py-2 [scrollbar-width:none] sm:justify-center sm:gap-6 md:gap-12 md:rounded-b-3xl md:px-8 [&::-webkit-scrollbar]:hidden">
-            {navItems.map((item) => (
-              <li key={item}>
-                <a
-                  className="text-[10px] leading-none text-[rgba(225,224,204,0.8)] transition-colors hover:text-[#E1E0CC] focus-visible:text-[#E1E0CC] focus-visible:outline-none md:text-sm"
-                  href="#"
-                >
-                  {item}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
 
         <div className="absolute inset-x-0 bottom-0 z-30 grid grid-cols-1 items-end gap-3 p-4 md:grid-cols-[minmax(0,8fr)_minmax(240px,4fr)] md:gap-6 md:p-8">
           <h1
