@@ -1,6 +1,14 @@
 # SAV-E landing
 
-Hero-only Next landing page prototype.
+Hero-only Next landing page for the SAV-E public TestFlight beta.
+
+## Config
+
+Set the public TestFlight invite URL when deploying:
+
+```bash
+NEXT_PUBLIC_TESTFLIGHT_URL="https://testflight.apple.com/join/..."
+```
 
 ## Run
 

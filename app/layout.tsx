@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SAV-E landing",
-  description: "Hero-only landing page prototype.",
+  title: "SAV-E TestFlight",
+  description:
+    "Join the SAV-E iOS beta and turn messy saved places into a private map memory you can review, confirm and ask later.",
 };
 
 export default function RootLayout({
