@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-const testFlightUrl = process.env.NEXT_PUBLIC_TESTFLIGHT_URL ?? "https://testflight.apple.com/";
+const testFlightUrl = process.env.NEXT_PUBLIC_TESTFLIGHT_URL ?? "https://testflight.apple.com/join/aSVm9hRJ";
 
 function WordsPullUp({ text, showAsterisk = false }: { text: string; showAsterisk?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -47,7 +47,7 @@ export default function Home() {
 
         <div className="absolute inset-x-0 bottom-0 z-30 grid grid-cols-1 items-end gap-3 p-4 md:grid-cols-[minmax(0,8fr)_minmax(240px,4fr)] md:gap-6 md:p-8">
           <h1
-            className="m-0 flex items-end text-[clamp(5.45rem,25vw,13rem)] font-normal leading-[0.85] tracking-[-0.07em] text-[#E1E0CC] md:text-[clamp(8.2rem,18.8vw,25rem)]"
+            className="m-0 flex items-end text-[clamp(5.45rem,25vw,13rem)] font-normal leading-[0.85] tracking-normal text-[#E1E0CC] md:text-[clamp(8.2rem,18.8vw,25rem)]"
             aria-label="SAV-E"
           >
             <WordsPullUp text="SAV-E" showAsterisk />
