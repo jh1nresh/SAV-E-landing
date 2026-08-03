@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
-import { AnimatePresence, motion, MotionConfig, useReducedMotion } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { motion, MotionConfig, useReducedMotion } from "framer-motion";
 import { Gantari } from "next/font/google";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import appIcon from "./icon.png";
 
 const gantari = Gantari({
@@ -19,12 +19,6 @@ const testFlightUrl =
 
 const heroVideoUrl =
   "https://cdn.jiro.build/Jahid/Random/Triverra/All%20Images/Header%20BG%20travel.mp4";
-
-const menuItems = [
-  { label: "Home", href: "#home" },
-  { label: "How it works", href: "#how-it-works" },
-  { label: "Privacy", href: "#privacy" },
-];
 
 function AnimatedLabel({ children }: { children: string }) {
   return (
@@ -88,8 +82,6 @@ function HeroButton({
 export default function SAVECinematicHero() {
   const reduceMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [activeItem, setActiveItem] = useState("Home");
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -103,11 +95,6 @@ export default function SAVECinematicHero() {
 
     void video.play().catch(() => undefined);
   }, [reduceMotion]);
-
-  const chooseMenuItem = (label: string) => {
-    setActiveItem(label);
-    setMenuOpen(false);
-  };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -136,78 +123,25 @@ export default function SAVECinematicHero() {
       <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_45%,transparent_0%,rgba(2,8,5,0.12)_52%,rgba(2,8,5,0.46)_100%)]" />
 
       <div className="relative z-20 flex size-full flex-col pb-6">
-        <motion.header
-          className="w-full px-6 pt-4 md:px-12 min-[1440px]:px-16"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <nav className="flex w-full items-center justify-between gap-6 lg:gap-12" aria-label="Primary navigation">
-            <a
-              className="inline-flex items-center gap-2.5 text-white no-underline transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30"
-              href="#home"
-              aria-label="SAV-E home"
-            >
-              <Image
-                className="size-9 rounded-[10px] border border-white/25 shadow-[0_8px_24px_rgba(0,0,0,0.2)] lg:size-11"
-                src={appIcon}
-                alt=""
-                priority
-                sizes="44px"
-              />
-              <span className="text-lg font-bold tracking-normal lg:text-xl">SAV-E</span>
-            </a>
-
-            <div className="hidden items-center gap-6 rounded-full border border-white/10 bg-white/10 px-5 py-2.5 backdrop-blur-md lg:flex">
-              {menuItems.map((item) => (
-                <a
-                  key={item.label}
-                  className={
-                    "relative py-1 text-base tracking-normal no-underline transition-colors " +
-                    (activeItem === item.label ? "font-semibold text-white" : "font-normal text-white/70 hover:text-white")
-                  }
-                  href={item.href}
-                  onClick={() => chooseMenuItem(item.label)}
-                >
-                  {item.label}
-                  {activeItem === item.label ? (
-                    <motion.span
-                      className="absolute -bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-white"
-                      layoutId="activeDot"
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    />
-                  ) : null}
-                </a>
-              ))}
-            </div>
-
-            <a
-              className="hidden rounded-full border border-white/60 px-[18px] py-2.5 text-base font-semibold tracking-normal text-white no-underline transition-colors hover:border-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30 lg:block"
-              href={testFlightUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Download SAV-E
-            </a>
-
-            <button
-              className="grid size-11 place-items-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30 lg:hidden"
-              type="button"
-              aria-label="Open menu"
-              aria-expanded={menuOpen}
-              aria-hidden={menuOpen}
-              disabled={menuOpen}
-              tabIndex={menuOpen ? -1 : 0}
-              onClick={() => setMenuOpen(true)}
-            >
-              <Menu size={20} />
-            </button>
-          </nav>
-        </motion.header>
-
         <div className="min-h-6 flex-[1]" />
 
         <section className="mx-auto flex w-full max-w-[620px] flex-col items-center px-5 text-center">
+          <motion.div
+            className="mb-5 inline-flex items-center gap-2.5"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <Image
+              className="size-9 rounded-[10px] border border-white/25 shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
+              src={appIcon}
+              alt=""
+              priority
+              sizes="36px"
+            />
+            <span className="text-xl font-bold tracking-normal">SAV-E</span>
+          </motion.div>
+
           <motion.p
             className="mb-2 text-sm font-normal tracking-normal text-white/90 md:text-lg"
             initial={{ opacity: 0, y: 15 }}
@@ -237,7 +171,6 @@ export default function SAVECinematicHero() {
             <HeroButton href={testFlightUrl} primary>
               Download TestFlight
             </HeroButton>
-            <HeroButton href="#how-it-works">How SAV-E Works</HeroButton>
           </motion.div>
 
           <motion.p
@@ -258,7 +191,6 @@ export default function SAVECinematicHero() {
         <div className="min-h-[72px] flex-[3]" />
 
         <motion.footer
-          id="how-it-works"
           className="w-full px-6 pb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -270,53 +202,6 @@ export default function SAVECinematicHero() {
           </p>
         </motion.footer>
       </div>
-
-      <AnimatePresence>
-        {menuOpen ? (
-          <motion.div
-            key="mobile-menu"
-            className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-[#07100e]/75 px-6 pb-12 pt-[76px] backdrop-blur-xl lg:hidden"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-          >
-            <button
-              className="absolute right-6 top-4 grid size-11 place-items-center rounded-full border border-white/15 bg-white/10 text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30"
-              type="button"
-              aria-label="Close menu"
-              onClick={() => setMenuOpen(false)}
-            >
-              <X size={20} />
-            </button>
-
-            <div className="mt-10 flex flex-col items-center gap-8">
-              {menuItems.map((item) => (
-                <a
-                  key={item.label}
-                  className={
-                    "text-[22px] tracking-normal no-underline transition-colors " +
-                    (activeItem === item.label ? "font-semibold text-white" : "font-normal text-white/60")
-                  }
-                  href={item.href}
-                  onClick={() => chooseMenuItem(item.label)}
-                >
-                  {item.label}
-                </a>
-              ))}
-            </div>
-
-            <a
-              className="mx-auto mt-16 w-full max-w-[280px] rounded-full border border-white/60 px-[18px] py-3 text-center text-base font-semibold tracking-normal text-white no-underline"
-              href={testFlightUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Download on TestFlight
-            </a>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
       </main>
     </MotionConfig>
   );
