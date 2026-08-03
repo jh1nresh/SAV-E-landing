@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { Gantari } from "next/font/google";
 import "./globals.css";
 
-const gantari = Gantari({
-  subsets: ["latin"],
-  variable: "--font-gantari",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "SAV-E | Save the place. Keep the story.",
+  title: "SAV-E TestFlight",
   description:
-    "Turn links from friends, maps, and social posts into private place memories you can confirm, remember, and revisit.",
+    "Join the SAV-E iOS beta and turn messy saved places into a private map memory you can review, confirm and ask later.",
 };
 
 export default function RootLayout({
@@ -20,7 +13,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={gantari.variable}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

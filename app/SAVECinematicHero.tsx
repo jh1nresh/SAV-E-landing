@@ -1,51 +1,80 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Gantari } from "next/font/google";
+import { useEffect, useRef, useState } from "react";
 import appIcon from "./icon.png";
+
+const gantari = Gantari({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-gantari",
+  display: "swap",
+});
 
 const testFlightUrl =
   process.env.NEXT_PUBLIC_TESTFLIGHT_URL ?? "https://testflight.apple.com/join/aSVm9hRJ";
 
-function TestFlightLink({ compact = false }: { compact?: boolean }) {
+const menuItems = [
+  { label: "Home", href: "#home" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Privacy", href: "#privacy" },
+];
+
+function AnimatedLabel({ children }: { children: string }) {
+  return (
+    <span className="relative inline-block h-6 overflow-hidden leading-none sm:h-7">
+      <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
+        <span className="flex h-6 items-center justify-center leading-none sm:h-7">{children}</span>
+        <span aria-hidden="true" className="flex h-6 items-center justify-center leading-none sm:h-7">
+          {children}
+        </span>
+      </span>
+    </span>
+  );
+}
+
+function AnimatedArrows() {
+  return (
+    <span className="relative size-[18px] shrink-0 overflow-hidden" aria-hidden="true">
+      <ArrowRight
+        className="absolute inset-0 size-[18px] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 group-hover:-translate-y-1.5 group-hover:scale-75 group-hover:opacity-0"
+        strokeWidth={2}
+      />
+      <ArrowUpRight
+        className="absolute inset-0 size-[18px] -translate-x-1.5 translate-y-1.5 scale-75 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100"
+        strokeWidth={2}
+      />
+    </span>
+  );
+}
+
+function HeroButton({
+  children,
+  href,
+  primary = false,
+}: {
+  children: string;
+  href: string;
+  primary?: boolean;
+}) {
   return (
     <a
       className={
-        "group inline-flex items-center justify-center rounded-full border border-white/35 " +
-        "font-semibold no-underline backdrop-blur-md transition-[background-color,border-color,transform] " +
-        "duration-300 hover:border-white/70 hover:bg-white/15 active:scale-[0.98] focus-visible:outline-none " +
-        "focus-visible:ring-4 focus-visible:ring-white/30 " +
-        (compact
-          ? "min-h-10 gap-2 px-4 text-sm text-white"
-          : "min-h-14 gap-3 bg-white px-6 text-base text-[#0b1612] hover:bg-white/90 sm:text-lg")
+        "group inline-flex min-h-14 w-60 items-center justify-center gap-3 rounded-xl border px-4 text-lg font-medium no-underline shadow-lg " +
+        "transition-[background-color,border-color,transform] duration-300 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30 sm:w-auto sm:text-xl " +
+        (primary
+          ? "border-white bg-white text-[#0d130d] hover:bg-white/90"
+          : "border-white/40 bg-[#0d130d]/10 text-white backdrop-blur-sm hover:border-white/70 hover:bg-white/10")
       }
-      href={testFlightUrl}
-      target="_blank"
-      rel="noreferrer"
+      href={href}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel={href.startsWith("http") ? "noreferrer" : undefined}
     >
-      <span className={"relative overflow-hidden leading-none " + (compact ? "h-5" : "h-6")}>
-        <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
-          <span className={"flex items-center " + (compact ? "h-5" : "h-6")}>
-            Join TestFlight
-          </span>
-          <span aria-hidden="true" className={"flex items-center " + (compact ? "h-5" : "h-6")}>
-            Join TestFlight
-          </span>
-        </span>
-      </span>
-
-      <span className="relative size-[18px] shrink-0 overflow-hidden" aria-hidden="true">
-        <ArrowRight
-          className="absolute inset-0 size-[18px] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 group-hover:-translate-y-1.5 group-hover:scale-75 group-hover:opacity-0"
-          strokeWidth={2}
-        />
-        <ArrowUpRight
-          className="absolute inset-0 size-[18px] -translate-x-1.5 translate-y-1.5 scale-75 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100"
-          strokeWidth={2}
-        />
-      </span>
+      <AnimatedLabel>{children}</AnimatedLabel>
+      <AnimatedArrows />
     </a>
   );
 }
@@ -53,6 +82,8 @@ function TestFlightLink({ compact = false }: { compact?: boolean }) {
 export default function SAVECinematicHero() {
   const reduceMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [activeItem, setActiveItem] = useState("Home");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -67,15 +98,24 @@ export default function SAVECinematicHero() {
     void video.play().catch(() => undefined);
   }, [reduceMotion]);
 
+  const chooseMenuItem = (label: string) => {
+    setActiveItem(label);
+    setMenuOpen(false);
+  };
+
   return (
-    <main className="min-h-dvh overflow-hidden bg-[#07100e] p-2 sm:p-3 lg:p-5">
-      <section
-        className="relative isolate min-h-[calc(100dvh-1rem)] overflow-hidden rounded-2xl bg-[#07100e] sm:min-h-[calc(100dvh-1.5rem)] sm:rounded-3xl lg:min-h-[calc(100dvh-2.5rem)]"
-        aria-labelledby="hero-title"
-      >
+    <main
+      id="home"
+      className={
+        gantari.variable +
+        " relative flex h-dvh min-h-[650px] w-full flex-col overflow-hidden bg-[#07100e] font-[family-name:var(--font-gantari)] text-white [&_*]:font-[family-name:var(--font-gantari)]"
+      }
+      aria-labelledby="hero-title"
+    >
+      <div className="absolute inset-0 z-0 size-full overflow-hidden">
         <video
           ref={videoRef}
-          className="absolute inset-0 -z-20 size-full scale-[1.02] object-cover brightness-[0.72] contrast-[1.08] saturate-[0.82]"
+          className="size-full scale-[1.02] object-cover brightness-[0.68] contrast-[1.08] saturate-[0.86]"
           src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4"
           autoPlay
           loop
@@ -84,88 +124,191 @@ export default function SAVECinematicHero() {
           preload="metadata"
           aria-hidden="true"
         />
+      </div>
+      <div className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(2,8,6,0.62)_0%,rgba(2,8,6,0.08)_42%,rgba(2,8,6,0.72)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_45%,transparent_0%,rgba(2,8,5,0.12)_52%,rgba(2,8,5,0.46)_100%)]" />
 
-        <div className="hero-noise pointer-events-none absolute inset-0 -z-10 opacity-50 mix-blend-soft-light" />
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(3,8,6,0.68)_0%,rgba(3,8,6,0.08)_42%,rgba(3,8,6,0.66)_100%)]" />
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_42%,transparent_0%,rgba(2,8,5,0.16)_54%,rgba(2,8,5,0.48)_100%)]" />
-
-        <motion.div
-          className="relative z-20 flex min-h-[calc(100dvh-1rem)] flex-col px-3 py-3 sm:min-h-[calc(100dvh-1.5rem)] sm:px-5 sm:py-4 lg:min-h-[calc(100dvh-2.5rem)] lg:px-8"
-          animate={reduceMotion ? undefined : { y: [0, -6, 0] }}
-          transition={reduceMotion ? undefined : { duration: 8, ease: "easeInOut", repeat: Infinity }}
+      <motion.div
+        className="relative z-20 flex size-full flex-col pb-6"
+        animate={reduceMotion ? undefined : { y: [0, -8, 0], rotate: [0, 0.5, 0] }}
+        transition={reduceMotion ? undefined : { duration: 8, ease: "easeInOut", repeat: Infinity }}
+      >
+        <motion.header
+          className="w-full px-6 pt-4 md:px-12 min-[1440px]:px-16"
+          initial={reduceMotion ? false : { opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <motion.header
-            initial={reduceMotion ? false : { opacity: 0, y: -18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <nav
-              className="hero-glass mx-auto flex h-16 w-full max-w-7xl items-center justify-between rounded-full border border-white/15 px-3 shadow-[0_20px_60px_rgba(0,12,8,0.18)] sm:px-4"
-              aria-label="Primary navigation"
+          <nav className="flex w-full items-center justify-between gap-6 lg:gap-12" aria-label="Primary navigation">
+            <a
+              className="inline-flex items-center gap-2.5 text-white no-underline transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30"
+              href="#home"
+              aria-label="SAV-E home"
             >
-              <a
-                className="inline-flex items-center gap-2.5 rounded-full text-white no-underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30"
-                href="/"
-                aria-label="SAV-E home"
-              >
-                <Image
-                  className="size-10 rounded-[11px] border border-white/25 shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
-                  src={appIcon}
-                  alt=""
-                  priority
-                  sizes="40px"
-                />
-                <span className="text-base font-bold tracking-normal sm:text-lg">SAV-E</span>
-              </a>
+              <Image
+                className="size-9 rounded-[10px] border border-white/25 shadow-[0_8px_24px_rgba(0,0,0,0.2)] lg:size-11"
+                src={appIcon}
+                alt=""
+                priority
+                sizes="44px"
+              />
+              <span className="text-lg font-bold tracking-normal lg:text-xl">SAV-E</span>
+            </a>
 
-              <TestFlightLink compact />
-            </nav>
-          </motion.header>
-
-          <div className="mx-auto flex w-full max-w-5xl flex-1 items-center justify-center py-8 sm:py-10 lg:py-12">
-            <div className="flex w-full flex-col items-center text-center">
-              <motion.p
-                className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/75 sm:text-xs"
-                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              >
-                Your private place memory
-              </motion.p>
-
-              <motion.h1
-                id="hero-title"
-                className="m-0 text-balance text-[2.35rem] font-medium leading-[0.96] tracking-normal text-white min-[390px]:text-[2.75rem] sm:text-[4.5rem] md:text-[5.75rem] lg:text-[7rem] xl:text-[8rem]"
-                initial={reduceMotion ? false : { opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <span className="block whitespace-nowrap">Save the place.</span>
-                <span className="block whitespace-nowrap text-white/[0.82]">Keep the story.</span>
-              </motion.h1>
-
-              <motion.p
-                className="mb-0 mt-6 max-w-[38rem] text-pretty text-sm leading-relaxed text-white/[0.76] sm:mt-7 sm:text-base md:text-lg"
-                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.85, delay: 0.56, ease: [0.16, 1, 0.3, 1] }}
-              >
-                Turn links from friends, maps, and social posts into places you can confirm,
-                remember, and revisit.
-              </motion.p>
-
-              <motion.div
-                className="mt-8"
-                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.85, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <TestFlightLink />
-              </motion.div>
+            <div className="hidden items-center gap-6 rounded-full border border-white/10 bg-white/10 px-5 py-2.5 backdrop-blur-md lg:flex">
+              {menuItems.map((item) => (
+                <a
+                  key={item.label}
+                  className={
+                    "relative py-1 text-base tracking-normal no-underline transition-colors " +
+                    (activeItem === item.label ? "font-semibold text-white" : "font-normal text-white/70 hover:text-white")
+                  }
+                  href={item.href}
+                  onClick={() => chooseMenuItem(item.label)}
+                >
+                  {item.label}
+                  {activeItem === item.label ? (
+                    <motion.span
+                      className="absolute -bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-white"
+                      layoutId="activeDot"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  ) : null}
+                </a>
+              ))}
             </div>
-          </div>
-        </motion.div>
-      </section>
+
+            <a
+              className="hidden rounded-full border border-white/60 px-[18px] py-2.5 text-base font-semibold tracking-normal text-white no-underline transition-colors hover:border-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30 lg:block"
+              href={testFlightUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Join TestFlight
+            </a>
+
+            <button
+              className="grid size-11 place-items-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30 lg:hidden"
+              type="button"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </nav>
+        </motion.header>
+
+        <div className="min-h-6 flex-[1]" />
+
+        <section className="mx-auto flex w-full max-w-[620px] flex-col items-center px-5 text-center">
+          <motion.p
+            className="mb-2 text-sm font-normal tracking-normal text-white/90 md:text-lg"
+            initial={reduceMotion ? false : { opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          >
+            Your private place memory
+          </motion.p>
+
+          <motion.h1
+            id="hero-title"
+            className="mb-8 flex flex-col items-center text-[42px] font-normal leading-none tracking-normal sm:text-6xl lg:mb-10 lg:text-[80px]"
+            initial={reduceMotion ? false : { opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span>Save the spark.</span>
+            <span className="text-white/80">Find the place.</span>
+          </motion.h1>
+
+          <motion.div
+            className="mb-5 flex flex-col items-center gap-3 sm:flex-row lg:mb-[18px]"
+            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <HeroButton href={testFlightUrl} primary>
+              Join TestFlight
+            </HeroButton>
+            <HeroButton href="#how-it-works">See how it works</HeroButton>
+          </motion.div>
+
+          <motion.p
+            id="privacy"
+            className="m-0 text-sm tracking-normal text-white/75 md:text-base"
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+          >
+            <strong className="font-semibold text-white">Private by default</strong>
+            <span aria-hidden="true">. </span>
+            You confirm every place
+          </motion.p>
+        </section>
+
+        <div className="min-h-[72px] flex-[3]" />
+
+        <motion.footer
+          id="how-it-works"
+          className="w-full px-6 pb-8"
+          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className="mx-auto max-w-[620px] text-center text-sm leading-[1.4] tracking-normal text-white/85 md:text-lg">
+            SAV-E turns links from friends, Maps, and social posts into places you can confirm,
+            remember, and revisit without losing the story behind them.
+          </p>
+        </motion.footer>
+      </motion.div>
+
+      <AnimatePresence>
+        {menuOpen ? (
+          <motion.div
+            key="mobile-menu"
+            className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-[#07100e]/75 px-6 pb-12 pt-[76px] backdrop-blur-xl lg:hidden"
+            initial={reduceMotion ? false : { opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
+            <button
+              className="absolute right-6 top-4 grid size-11 place-items-center rounded-full border border-white/15 bg-white/10 text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30"
+              type="button"
+              aria-label="Close menu"
+              onClick={() => setMenuOpen(false)}
+            >
+              <X size={20} />
+            </button>
+
+            <div className="mt-10 flex flex-col items-center gap-8">
+              {menuItems.map((item) => (
+                <a
+                  key={item.label}
+                  className={
+                    "text-[22px] tracking-normal no-underline transition-colors " +
+                    (activeItem === item.label ? "font-semibold text-white" : "font-normal text-white/60")
+                  }
+                  href={item.href}
+                  onClick={() => chooseMenuItem(item.label)}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+
+            <a
+              className="mx-auto mt-16 w-full max-w-[280px] rounded-full border border-white/60 px-[18px] py-3 text-center text-base font-semibold tracking-normal text-white no-underline"
+              href={testFlightUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Join TestFlight
+            </a>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </main>
   );
 }
