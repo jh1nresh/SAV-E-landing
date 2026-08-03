@@ -184,7 +184,7 @@ export default function SAVECinematicHero() {
               target="_blank"
               rel="noreferrer"
             >
-              Join TestFlight
+              Join Beta
             </a>
 
             <button
@@ -208,18 +208,18 @@ export default function SAVECinematicHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            Your private place memory
+            Your Private Place Memory App - Save Smarter. Remember Deeper.
           </motion.p>
 
           <motion.h1
             id="hero-title"
-            className="mb-8 flex flex-col items-center text-[42px] font-normal leading-none tracking-normal sm:text-6xl lg:mb-10 lg:text-[80px]"
+            className="mb-8 flex flex-col items-center text-[38px] font-normal leading-none tracking-normal min-[390px]:text-[42px] sm:text-6xl lg:mb-10 lg:text-[80px]"
             initial={reduceMotion ? false : { opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span>Save the spark.</span>
-            <span className="text-white/80">Find the place.</span>
+            <span className="whitespace-nowrap">Save deeper.</span>
+            <span className="whitespace-nowrap text-white/80">Remember longer.</span>
           </motion.h1>
 
           <motion.div
@@ -229,9 +229,9 @@ export default function SAVECinematicHero() {
             transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <HeroButton href={testFlightUrl} primary>
-              Join TestFlight
+              Download TestFlight
             </HeroButton>
-            <HeroButton href="#how-it-works">See how it works</HeroButton>
+            <HeroButton href="#how-it-works">See How It Works</HeroButton>
           </motion.div>
 
           <motion.p
@@ -243,7 +243,7 @@ export default function SAVECinematicHero() {
           >
             <strong className="font-semibold text-white">Private by default</strong>
             <span aria-hidden="true">. </span>
-            You confirm every place
+            Confirmed by you
           </motion.p>
         </section>
 
@@ -257,8 +257,8 @@ export default function SAVECinematicHero() {
           transition={{ duration: 1, delay: 1, ease: [0.16, 1, 0.3, 1] }}
         >
           <p className="mx-auto max-w-[620px] text-center text-sm leading-[1.4] tracking-normal text-white/85 md:text-lg">
-            SAV-E turns links from friends, Maps, and social posts into places you can confirm,
-            remember, and revisit without losing the story behind them.
+            SAV-E turns links, social posts, and map pins into a private memory vault, so every
+            recommendation is ready when you want to go.
           </p>
         </motion.footer>
       </motion.div>
@@ -304,7 +304,7 @@ export default function SAVECinematicHero() {
               target="_blank"
               rel="noreferrer"
             >
-              Join TestFlight
+              Join Beta
             </a>
           </motion.div>
         ) : null}

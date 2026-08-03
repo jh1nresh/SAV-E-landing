@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SAV-E TestFlight",
+  title: "SAV-E | Your Private Place Memory App",
   description:
     "Join the SAV-E iOS beta and turn messy saved places into a private map memory you can review, confirm and ask later.",
 };
