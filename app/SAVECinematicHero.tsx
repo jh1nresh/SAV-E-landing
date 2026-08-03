@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, MotionConfig, useReducedMotion } from "framer-motion";
 import { Gantari } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
 import appIcon from "./icon.png";
@@ -17,6 +17,9 @@ const gantari = Gantari({
 const testFlightUrl =
   process.env.NEXT_PUBLIC_TESTFLIGHT_URL ?? "https://testflight.apple.com/join/aSVm9hRJ";
 
+const heroVideoUrl =
+  "https://cdn.jiro.build/Jahid/Random/Triverra/All%20Images/Header%20BG%20travel.mp4";
+
 const menuItems = [
   { label: "Home", href: "#home" },
   { label: "How it works", href: "#how-it-works" },
@@ -27,8 +30,11 @@ function AnimatedLabel({ children }: { children: string }) {
   return (
     <span className="relative inline-block h-6 overflow-hidden leading-none sm:h-7">
       <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1/2">
-        <span className="flex h-6 items-center justify-center leading-none sm:h-7">{children}</span>
-        <span aria-hidden="true" className="flex h-6 items-center justify-center leading-none sm:h-7">
+        <span className="flex h-6 items-center justify-center whitespace-nowrap leading-none sm:h-7">{children}</span>
+        <span
+          aria-hidden="true"
+          className="flex h-6 items-center justify-center whitespace-nowrap leading-none sm:h-7"
+        >
           {children}
         </span>
       </span>
@@ -63,7 +69,7 @@ function HeroButton({
   return (
     <a
       className={
-        "group inline-flex min-h-14 w-60 items-center justify-center gap-3 rounded-xl border px-4 text-lg font-medium no-underline shadow-lg " +
+        "group inline-flex min-h-14 w-64 items-center justify-center gap-3 rounded-xl border px-4 text-base font-medium no-underline shadow-lg " +
         "transition-[background-color,border-color,transform] duration-300 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30 sm:w-auto sm:text-xl " +
         (primary
           ? "border-white bg-white text-[#0d130d] hover:bg-white/90"
@@ -104,19 +110,20 @@ export default function SAVECinematicHero() {
   };
 
   return (
-    <main
-      id="home"
-      className={
-        gantari.variable +
-        " relative flex h-dvh min-h-[650px] w-full flex-col overflow-hidden bg-[#07100e] font-[family-name:var(--font-gantari)] text-white [&_*]:font-[family-name:var(--font-gantari)]"
-      }
-      aria-labelledby="hero-title"
-    >
+    <MotionConfig reducedMotion="user">
+      <main
+        id="home"
+        className={
+          gantari.variable +
+          " relative flex h-dvh min-h-[650px] w-full flex-col overflow-hidden bg-[#07100e] font-[family-name:var(--font-gantari)] text-white [&_*]:font-[family-name:var(--font-gantari)]"
+        }
+        aria-labelledby="hero-title"
+      >
       <div className="absolute inset-0 z-0 size-full overflow-hidden">
         <video
           ref={videoRef}
-          className="size-full scale-[1.02] object-cover brightness-[0.68] contrast-[1.08] saturate-[0.86]"
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4"
+          className="size-full scale-[1.02] object-cover brightness-[0.78] contrast-[1.04] saturate-[0.9]"
+          src={heroVideoUrl}
           autoPlay
           loop
           muted
@@ -128,14 +135,10 @@ export default function SAVECinematicHero() {
       <div className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(2,8,6,0.62)_0%,rgba(2,8,6,0.08)_42%,rgba(2,8,6,0.72)_100%)]" />
       <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_45%,transparent_0%,rgba(2,8,5,0.12)_52%,rgba(2,8,5,0.46)_100%)]" />
 
-      <motion.div
-        className="relative z-20 flex size-full flex-col pb-6"
-        animate={reduceMotion ? undefined : { y: [0, -8, 0], rotate: [0, 0.5, 0] }}
-        transition={reduceMotion ? undefined : { duration: 8, ease: "easeInOut", repeat: Infinity }}
-      >
+      <div className="relative z-20 flex size-full flex-col pb-6">
         <motion.header
           className="w-full px-6 pt-4 md:px-12 min-[1440px]:px-16"
-          initial={reduceMotion ? false : { opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
@@ -184,17 +187,20 @@ export default function SAVECinematicHero() {
               target="_blank"
               rel="noreferrer"
             >
-              Join Beta
+              Download SAV-E
             </a>
 
             <button
               className="grid size-11 place-items-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30 lg:hidden"
               type="button"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-label="Open menu"
               aria-expanded={menuOpen}
-              onClick={() => setMenuOpen((open) => !open)}
+              aria-hidden={menuOpen}
+              disabled={menuOpen}
+              tabIndex={menuOpen ? -1 : 0}
+              onClick={() => setMenuOpen(true)}
             >
-              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+              <Menu size={20} />
             </button>
           </nav>
         </motion.header>
@@ -204,46 +210,48 @@ export default function SAVECinematicHero() {
         <section className="mx-auto flex w-full max-w-[620px] flex-col items-center px-5 text-center">
           <motion.p
             className="mb-2 text-sm font-normal tracking-normal text-white/90 md:text-lg"
-            initial={reduceMotion ? false : { opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            Your Private Place Memory App - Save Smarter. Remember Deeper.
+            Your private place memory for every link worth keeping.
           </motion.p>
 
           <motion.h1
             id="hero-title"
             className="mb-8 flex flex-col items-center text-[38px] font-normal leading-none tracking-normal min-[390px]:text-[42px] sm:text-6xl lg:mb-10 lg:text-[80px]"
-            initial={reduceMotion ? false : { opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="whitespace-nowrap">Save deeper.</span>
-            <span className="whitespace-nowrap text-white/80">Remember longer.</span>
+            <span className="whitespace-nowrap">Save the place.</span>
+            <span className="whitespace-nowrap text-white/80">Remember why.</span>
           </motion.h1>
 
           <motion.div
             className="mb-5 flex flex-col items-center gap-3 sm:flex-row lg:mb-[18px]"
-            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <HeroButton href={testFlightUrl} primary>
               Download TestFlight
             </HeroButton>
-            <HeroButton href="#how-it-works">See How It Works</HeroButton>
+            <HeroButton href="#how-it-works">How SAV-E Works</HeroButton>
           </motion.div>
 
           <motion.p
             id="privacy"
             className="m-0 text-sm tracking-normal text-white/75 md:text-base"
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
           >
-            <strong className="font-semibold text-white">Private by default</strong>
-            <span aria-hidden="true">. </span>
-            Confirmed by you
+            <strong className="font-semibold text-white">Source kept</strong>
+            <span aria-hidden="true"> · </span>
+            You confirm
+            <span aria-hidden="true"> · </span>
+            Private by default
           </motion.p>
         </section>
 
@@ -252,23 +260,23 @@ export default function SAVECinematicHero() {
         <motion.footer
           id="how-it-works"
           className="w-full px-6 pb-8"
-          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1, ease: [0.16, 1, 0.3, 1] }}
         >
           <p className="mx-auto max-w-[620px] text-center text-sm leading-[1.4] tracking-normal text-white/85 md:text-lg">
-            SAV-E turns links, social posts, and map pins into a private memory vault, so every
-            recommendation is ready when you want to go.
+            Paste a Reel, Maps link, screenshot, or friend tip. SAV-E recovers the likely place,
+            keeps the source, and asks you to confirm before it joins your private map.
           </p>
         </motion.footer>
-      </motion.div>
+      </div>
 
       <AnimatePresence>
         {menuOpen ? (
           <motion.div
             key="mobile-menu"
             className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-[#07100e]/75 px-6 pb-12 pt-[76px] backdrop-blur-xl lg:hidden"
-            initial={reduceMotion ? false : { opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
@@ -304,11 +312,12 @@ export default function SAVECinematicHero() {
               target="_blank"
               rel="noreferrer"
             >
-              Join Beta
+              Download on TestFlight
             </a>
           </motion.div>
         ) : null}
       </AnimatePresence>
-    </main>
+      </main>
+    </MotionConfig>
   );
 }
