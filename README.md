@@ -1,14 +1,20 @@
-# SAV-E landing
+# Savvy landing
 
-Hero-only Next landing page for the SAV-E public TestFlight beta.
+Single-page Atlas Postcard landing for Savvy: Instagram/link → Map Stamp → map.
 
 ## Config
 
-Set the public TestFlight invite URL when deploying:
+Copy `.env.example` and set names only in the host (Vercel preview/prod). Do not commit secrets.
 
 ```bash
-NEXT_PUBLIC_TESTFLIGHT_URL="https://testflight.apple.com/join/..."
+NEXT_PUBLIC_TESTFLIGHT_URL=
+WAITLIST_FORM_URL=
+WAITLIST_LOCAL_PATH=
 ```
+
+- `NEXT_PUBLIC_TESTFLIGHT_URL` — public TestFlight join URL. Unset = disabled placeholder.
+- `WAITLIST_FORM_URL` — HTTPS Formspree-style endpoint for durable waitlist storage.
+- `WAITLIST_LOCAL_PATH` — optional local JSONL for `npm run dev` only.
 
 ## Run
 
