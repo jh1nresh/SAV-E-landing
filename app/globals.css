@@ -340,3 +340,9 @@ footer.site a {
     height: 50px;
   }
 }
+
+@media (max-width: 360px) {
+  .s3 .h.zh {
+    font-size: 32px;
+  }
+}
