@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SiteChrome } from "./SiteChrome";
+import { LANG_BOOT_SCRIPT } from "./site";
 
 export const metadata: Metadata = {
-  title: "SAV-E | Your Private Place Memory App",
+  title: "Savvy: Turn links into pins",
   description:
-    "Download SAV-E on TestFlight and turn Reels, Maps links, screenshots, and friend tips into private, source-backed place memory.",
+    "Savvy turns links into pins. Free keeps 50 saved places. Pro is unlimited saved places.",
 };
 
 export default function RootLayout({
@@ -13,16 +15,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh-Hant" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap"
-          rel="stylesheet"
+          rel="preload"
+          href="/assets/fonts/Iansui-SavvySubset.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
         />
+        <link
+          rel="preload"
+          href="/assets/fonts/Caveat-SemiBold.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
+        <script dangerouslySetInnerHTML={{ __html: LANG_BOOT_SCRIPT }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <SiteChrome>{children}</SiteChrome>
+      </body>
     </html>
   );
 }
