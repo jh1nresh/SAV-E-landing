@@ -1,6 +1,6 @@
 # SAV-E landing
 
-Next.js landing for **Savvy** (`sav-e-landing` on Vercel). Paper-colour single page, cut-out iPhones, zh/en toggle.
+Next.js landing for **Savvy** (`sav-e-landing` on Vercel). Four full-width color bands (coral, yellow, deep green, cream), live-text headings, uncropped iPhones, zh/en toggle.
 
 This GitHub repo (`jh1nresh/SAV-E-landing`) is what Vercel project `jhinreshs-projects/sav-e-landing` deploys. Next.js is auto-detected; `.vercel` project metadata stays gitignored.
 
