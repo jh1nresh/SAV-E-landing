@@ -21,7 +21,8 @@
   --ink: #2f2e23;
   --muted: #62594f;
   --forest: #0e4a33;
-  --coral: #f26b4a;
+  --coral: #e95c3a;
+  --brand-coral: #f26b4a;
   --kraft: #eaddc6;
   --line: #dccfb9;
   --honey: #ffcc4f;
@@ -110,6 +111,7 @@ nav.top {
   height: 44px;
   border-radius: var(--radius);
   border: 1px solid var(--line);
+  background: var(--brand-coral);
 }
 
 .chips {
@@ -132,7 +134,7 @@ nav.top {
 .chip[aria-pressed="true"] {
   background: var(--coral);
   border-color: var(--coral);
-  color: #fff;
+  color: var(--paper);
 }
 
 section {
@@ -204,7 +206,7 @@ section {
 
 .s1 {
   background: var(--coral);
-  color: #fff;
+  color: var(--paper);
 }
 
 .s1 .u {
