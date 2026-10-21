@@ -106,7 +106,13 @@ function SiteFooter() {
 
 export function AppStoreBadge() {
   return (
-    <a className="badge" href={TESTFLIGHT_URL} data-swap="appstore-url">
+    <a
+      className="badge"
+      href={TESTFLIGHT_URL}
+      data-swap="appstore-url"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <img
         className="zh"
         src="/assets/appstore-badge-zh.svg"

@@ -20,13 +20,23 @@ export default function SupportPage() {
       </p>
       <p className="zh">
         公開 TestFlight：{" "}
-        <a href={TESTFLIGHT_URL} data-swap="appstore-url">
+        <a
+          href={TESTFLIGHT_URL}
+          data-swap="appstore-url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {TESTFLIGHT_URL}
         </a>
       </p>
       <p className="en">
         Public TestFlight:{" "}
-        <a href={TESTFLIGHT_URL} data-swap="appstore-url">
+        <a
+          href={TESTFLIGHT_URL}
+          data-swap="appstore-url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {TESTFLIGHT_URL}
         </a>
       </p>

@@ -220,6 +220,7 @@ footer.site {
   text-align: center;
   color: var(--muted);
   font-size: 13px;
+  overflow-wrap: anywhere;
 }
 
 footer.site a {
@@ -236,6 +237,7 @@ footer.site a {
   max-width: 720px;
   margin: 0 auto;
   padding: 24px 24px 80px;
+  overflow-wrap: anywhere;
 }
 
 .legal h1 {
@@ -251,6 +253,7 @@ footer.site a {
 .legal a {
   color: var(--forest);
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 800px) {
