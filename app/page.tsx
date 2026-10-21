@@ -1,5 +1,5 @@
-import SAVECinematicHero from "./SAVECinematicHero";
+import SavvyLanding from "./SavvyLanding";
 
 export default function Home() {
-  return <SAVECinematicHero />;
+  return <SavvyLanding />;
 }
