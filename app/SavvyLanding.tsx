@@ -78,15 +78,13 @@ export default function SavvyLanding() {
               <br />
               Unlimited
             </h2>
-            <p className="sub lock zh">免費 50 個收藏地點 · Pro 無限收藏</p>
-            <p className="sub lock en">
-              Free: 50 saved places · Pro: unlimited saved places
-            </p>
           </div>
           <div className="dev">
             <img src="/assets/phones-4.png" alt="Savvy iPhone screens" />
           </div>
         </div>
+        <p className="sub plan zh">免費：50 個收藏地點 · Pro：無限</p>
+        <p className="sub plan en">Free: 50 saved places · Pro: unlimited</p>
       </section>
 
       <section className="stk">

@@ -154,8 +154,11 @@ h2 {
   margin: 0 0 20px;
 }
 
-.lock {
-  margin: 16px 0 0;
+.plan {
+  display: block;
+  text-align: center;
+  margin: 28px auto 0;
+  max-width: 1180px;
 }
 
 .badge img {
