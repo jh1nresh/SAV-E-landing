@@ -450,9 +450,26 @@ section.s-cta {
   border: 2px solid var(--ink);
   border-radius: 14px 11px 15px 10px / 11px 15px 10px 14px;
   background: transparent;
+  /* Home: let the page scroll on vertical touch. Zoomed: see .vp.zoomed. */
   touch-action: pan-y;
+  cursor: grab;
   -webkit-tap-highlight-color: transparent;
   isolation: isolate;
+}
+
+.vp.zoomed {
+  /* Free two-axis pan after a station is framed. Page scroll over this
+     380px (440px on small screens) region is deferred until 全圖 / close. */
+  touch-action: none;
+}
+
+.vp.is-panning {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.vp.is-panning .pin .hit {
+  cursor: grabbing;
 }
 
 .metro-skeleton {

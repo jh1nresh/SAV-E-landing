@@ -74,6 +74,69 @@ export async function dispatchSwipe(page: Page, dy: number) {
   await page.mouse.up();
 }
 
+export async function emptyMapPoint(page: Page) {
+  return page.evaluate(() => {
+    const vp = document.getElementById("vp")!.getBoundingClientRect();
+    const pins = [...document.querySelectorAll(".pin .hit, .reset, .card, .x")].map((el) =>
+      el.getBoundingClientRect(),
+    );
+    const hits = (x: number, y: number) =>
+      pins.some((p) => x >= p.left && x <= p.right && y >= p.top && y <= p.bottom);
+    const candidates = [
+      { x: vp.left + vp.width * 0.82, y: vp.top + 32 },
+      { x: vp.left + 30, y: vp.top + 32 },
+      { x: vp.left + vp.width * 0.5, y: vp.top + vp.height * 0.9 },
+      { x: vp.left + vp.width * 0.15, y: vp.top + vp.height * 0.55 },
+    ];
+    return candidates.find((c) => !hits(c.x, c.y)) ?? candidates[0];
+  });
+}
+
+export async function dragMap(page: Page, dx: number, dy: number) {
+  const start = await emptyMapPoint(page);
+  await page.mouse.move(start.x, start.y);
+  await page.mouse.down();
+  await page.mouse.move(start.x + dx, start.y + dy, { steps: 12 });
+  await page.mouse.up();
+}
+
+export async function dispatchMapPointerDrag(
+  page: Page,
+  dx: number,
+  dy: number,
+  pointerType: "mouse" | "touch" = "touch",
+) {
+  const start = await emptyMapPoint(page);
+  await page.evaluate(
+    ({ start, dx, dy, pointerType }) => {
+      const vp = document.getElementById("vp")!;
+      const fire = (type: string, x: number, y: number) => {
+        vp.dispatchEvent(
+          new PointerEvent(type, {
+            bubbles: true,
+            cancelable: true,
+            composed: true,
+            pointerId: 1,
+            pointerType,
+            isPrimary: true,
+            button: 0,
+            buttons: type === "pointerup" ? 0 : 1,
+            clientX: x,
+            clientY: y,
+          }),
+        );
+      };
+      fire("pointerdown", start.x, start.y);
+      const steps = 8;
+      for (let i = 1; i <= steps; i++) {
+        fire("pointermove", start.x + (dx * i) / steps, start.y + (dy * i) / steps);
+      }
+      fire("pointerup", start.x + dx, start.y + dy);
+    },
+    { start, dx, dy, pointerType },
+  );
+}
+
 export async function dispatchTouchSwipe(page: Page, dy: number) {
   const box = await page.locator("#card").boundingBox();
   if (!box) throw new Error("card not visible");
