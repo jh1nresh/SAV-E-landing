@@ -11,15 +11,14 @@ async function firstScreenAttrs(page: Page, testId: string) {
   };
 }
 
-async function assertEagerFirstScreen(page: Page, active: "zh" | "en") {
-  const shown = await firstScreenAttrs(page, `first-screen-phone-${active}`);
-  const hidden = await firstScreenAttrs(page, `first-screen-phone-${active === "zh" ? "en" : "zh"}`);
+async function assertStaticFirstScreenHints(page: Page) {
+  const zh = await firstScreenAttrs(page, "first-screen-phone-zh");
+  const en = await firstScreenAttrs(page, "first-screen-phone-en");
 
-  expect(shown.loading, `${active} first-screen loading`).toBe("eager");
-  expect(shown.fetchPriority, `${active} first-screen fetchpriority`).toBe("high");
-
-  expect(hidden.loading, `hidden first-screen must stay lazy`).toBe("lazy");
-  expect(hidden.fetchPriority, `hidden first-screen must not be high`).not.toBe("high");
+  expect(zh.loading, "default-language first-screen loading").toBe("eager");
+  expect(zh.fetchPriority, "default-language first-screen fetchpriority").toBe("high");
+  expect(en.loading, "en first-screen twin must stay lazy").toBe("lazy");
+  expect(en.fetchPriority, "en first-screen twin must not be high").not.toBe("high");
 }
 
 async function assertBelowFoldLazy(page: Page) {
@@ -38,7 +37,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
     { name: "desktop", viewport: { width: 1350, height: 940 } },
     { name: "mobile", viewport: { width: 390, height: 844 } },
   ]) {
-    test(`${name} zh first-screen is eager+high; below-fold stays lazy`, async ({ page }) => {
+    test(`${name} zh first-screen is eager+high; en twin and below-fold stay lazy`, async ({ page }) => {
       await page.setViewportSize(viewport);
       const requested: string[] = [];
       page.on("request", (req) => {
@@ -46,7 +45,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
       });
       await page.goto("/");
       await page.waitForLoadState("domcontentloaded");
-      await assertEagerFirstScreen(page, "zh");
+      await assertStaticFirstScreenHints(page);
       await assertBelowFoldLazy(page);
 
       const phoneReqs = requested.filter((url) => /phones-(zh|en)-\d\.png/.test(url));
@@ -54,7 +53,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
       expect(phoneReqs.some((url) => url.includes("phones-en-2.png")), "hidden en first-screen must not be fetched").toBeFalsy();
     });
 
-    test(`${name} en first-screen is eager+high; zh twin stays lazy`, async ({ page }) => {
+    test(`${name} ?lang=en keeps static hints; en-2 loads when shown`, async ({ page }) => {
       await page.setViewportSize(viewport);
       const requested: string[] = [];
       page.on("request", (req) => {
@@ -63,12 +62,14 @@ test.describe("first-screen LCP hints and OSM credit", () => {
       await page.goto("/?lang=en");
       await page.waitForLoadState("domcontentloaded");
       await expect(page.locator("html")).toHaveAttribute("lang", "en");
-      await assertEagerFirstScreen(page, "en");
+      await assertStaticFirstScreenHints(page);
       await assertBelowFoldLazy(page);
+      await page.getByTestId("first-screen-phone-en").scrollIntoViewIfNeeded();
+      await expect(page.getByTestId("first-screen-phone-en")).toBeVisible();
+      await page.waitForTimeout(500);
 
       const phoneReqs = requested.filter((url) => /phones-(zh|en)-\d\.png/.test(url));
       expect(phoneReqs.some((url) => url.includes("phones-en-2.png"))).toBeTruthy();
-      expect(phoneReqs.some((url) => url.includes("phones-zh-2.png")), "hidden zh first-screen must not be fetched").toBeFalsy();
     });
   }
 
