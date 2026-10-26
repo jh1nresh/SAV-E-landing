@@ -549,6 +549,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   function goHome() {
     cancelPan();
+    suppressClick = false;
     cancelPendingSelection();
     hideHint();
     if (showing) closeCard({ focus: false });
@@ -685,6 +686,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   };
   const onReset = (e: MouseEvent) => {
     e.stopPropagation();
+    suppressClick = false;
     goHome();
   };
   root.querySelector("#cardX")?.addEventListener("click", (e) => {
@@ -779,9 +781,10 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     pan = null;
   };
   const onPanDown = (e: PointerEvent) => {
-    if (e.button !== 0 || e.isPrimary === false || panFromUi(e.target)) return;
+    if (e.button !== 0 || e.isPrimary === false) return;
     if (pan) cancelPan();
     suppressClick = false;
+    if (panFromUi(e.target)) return;
     window.clearTimeout(flightTimer);
     pan = {
       id: e.pointerId,
@@ -798,6 +801,11 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   };
   const onClickCapture = (e: Event) => {
     if (!suppressClick) return;
+    const t = e.target as Element | null;
+    if (t?.closest?.(".reset, .card, .x, a, .tab")) {
+      suppressClick = false;
+      return;
+    }
     e.preventDefault();
     e.stopPropagation();
     suppressClick = false;
