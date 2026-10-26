@@ -4,10 +4,10 @@ import { HeroMapLazy } from "./metro/HeroMapLazy";
 import "./metro/hero-map.css";
 
 const STICKERS = [
-  { src: "/assets/st-duck.png", alt: "烤鴨" },
+  { src: "/assets/st-duck.png", alt: "珍珠奶茶" },
   { src: "/assets/st-noodle.png", alt: "麵碗" },
   { src: "/assets/st-coffee.png", alt: "咖啡杯" },
-  { src: "/assets/st-temple.png", alt: "寺廟" },
+  { src: "/assets/st-temple.png", alt: "台北101" },
   { src: "/assets/st-lantern.png", alt: "燈籠" },
 ] as const;
 
@@ -60,13 +60,16 @@ export default function SavvyLanding() {
               className="zh"
               src="/assets/phones-zh-2.png"
               alt="Savvy 蓋章與護照畫面"
-              loading="lazy"
+              data-testid="first-screen-phone-zh"
+              loading="eager"
+              fetchPriority="high"
               decoding="async"
             />
             <img
               className="en"
               src="/assets/phones-en-2.png"
               alt="Savvy stamp and Passport screens"
+              data-testid="first-screen-phone-en"
               loading="lazy"
               decoding="async"
             />
@@ -153,9 +156,9 @@ export default function SavvyLanding() {
           <p className="sub">Savvy: Turn links into pins</p>
           <AppStoreBadge />
           <div className="stkrow">
-            <img src="/assets/st-noodle.png" alt="" width={66} height={66} />
-            <img src="/assets/st-coffee.png" alt="" width={66} height={66} />
-            <img src="/assets/st-lantern.png" alt="" width={66} height={66} />
+            <img src="/assets/st-noodle.png" alt="" width={66} height={66} loading="lazy" decoding="async" />
+            <img src="/assets/st-coffee.png" alt="" width={66} height={66} loading="lazy" decoding="async" />
+            <img src="/assets/st-lantern.png" alt="" width={66} height={66} loading="lazy" decoding="async" />
           </div>
         </div>
       </section>

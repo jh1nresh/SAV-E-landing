@@ -100,6 +100,15 @@ function SiteFooter() {
       <a href={hrefWithLang("/privacy", lang)}>Savvy Privacy Policy</a>
       <a href={hrefWithLang("/support", lang)}>Savvy Support</a>
       <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+      <p>
+        <a
+          href="https://www.openstreetmap.org/copyright"
+          rel="noopener noreferrer"
+          data-testid="osm-attribution"
+        >
+          Map data © OpenStreetMap contributors
+        </a>
+      </p>
     </footer>
   );
 }

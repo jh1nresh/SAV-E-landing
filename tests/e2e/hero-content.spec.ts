@@ -77,7 +77,9 @@ test.describe("hero content and motion", () => {
     expect(firstParty).toEqual([]);
   });
 
-  test("E-1 LCP is the hero headline or badge, not the map", async ({ page }) => {
+  test("E-1 LCP is the hero headline, badge, or first-screen app screenshot — not the map or a food photo", async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
     await page.waitForLoadState("domcontentloaded");
@@ -85,9 +87,12 @@ test.describe("hero content and motion", () => {
     const lcp = await page.evaluate(() => {
       return new Promise<{
         tag: string;
+        src: string;
         inMap: boolean;
         isHeadline: boolean;
         isBadge: boolean;
+        isFirstScreen: boolean;
+        isFood: boolean;
       }>((resolve) => {
         let last: PerformanceEntry & { element?: Element } | undefined;
         const po = new PerformanceObserver((list) => {
@@ -97,17 +102,27 @@ test.describe("hero content and motion", () => {
         setTimeout(() => {
           po.disconnect();
           const el = last?.element as HTMLElement | undefined;
+          const src = el instanceof HTMLImageElement ? el.getAttribute("src") ?? "" : "";
           resolve({
             tag: el?.tagName ?? "NONE",
-            inMap: Boolean(el?.closest?.(".mapwrap, #mapcard, .map-slot")),
+            src,
+            inMap: Boolean(el?.closest?.(".mapwrap, #mapcard, .map-slot, .map-stage")),
             isHeadline: Boolean(el?.closest?.("h1, .hero .txt .h")),
             isBadge: Boolean(el?.closest?.("[data-testid=hero-appstore]")),
+            isFirstScreen: Boolean(
+              el?.closest?.("[data-testid=first-screen-phone-zh], [data-testid=first-screen-phone-en]"),
+            ),
+            isFood: src.includes("/assets/food/") || Boolean(el?.closest?.(".ph, .fc .ph")),
           });
         }, 400);
       });
     });
     expect(lcp.inMap, `LCP was ${lcp.tag} inside the map`).toBeFalsy();
-    expect(lcp.isHeadline || lcp.isBadge, `LCP was ${lcp.tag}, expected headline or badge`).toBeTruthy();
+    expect(lcp.isFood, `LCP was food photo ${lcp.src}`).toBeFalsy();
+    expect(
+      lcp.isHeadline || lcp.isBadge || lcp.isFirstScreen,
+      `LCP was ${lcp.tag} ${lcp.src}, expected headline, badge, or first-screen screenshot`,
+    ).toBeTruthy();
   });
 
   test("D-5 reduced-motion via media query fades without flying", async ({ page }) => {
