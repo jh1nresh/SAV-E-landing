@@ -1,0 +1,14 @@
+{
+  "htmlUncompressedBytes": 31013,
+  "htmlGzipBytes": 6834,
+  "htmlLimitBytes": 512000,
+  "badge375x667": {
+    "x": 111.3,
+    "y": 249.0,
+    "width": 152.4,
+    "height": 56,
+    "inFirstScreen": true
+  },
+  "newRule": "NEW means strictly fewer than 7 Asia/Taipei days after addedAt (day 6 NEW; day 7 and 8 not NEW)",
+  "notes": "Prices stay sample/\u793a\u610f (verified:false). Source-post chips use founder/GTM IG + Threads URLs; no #example, no \u5c0f\u7d05\u66f8."
+}

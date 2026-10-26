@@ -5,3 +5,9 @@ dist/
 .DS_Store
 *.log
 .vercel
+tsconfig.tsbuildinfo
+test-results/
+reports/playwright/
+reports/lighthouse-mobile.json
+playwright-report/
+blob-report/

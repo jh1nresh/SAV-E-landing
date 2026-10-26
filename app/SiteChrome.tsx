@@ -117,11 +117,13 @@ export function AppStoreBadge() {
         className="zh"
         src="/assets/appstore-badge-zh.svg"
         alt="在 App Store 下載"
+        data-testid="appstore-badge-zh"
       />
       <img
         className="en"
         src="/assets/appstore-badge-en.svg"
         alt="Download on the App Store"
+        data-testid="appstore-badge-en"
       />
     </a>
   );

@@ -1,0 +1,14 @@
+{
+  "lighthouseVersion": "12.8.2",
+  "formFactor": "mobile",
+  "perfScore": 0.54,
+  "lcpMs": 22057,
+  "lcpScore": 0,
+  "lcpDisplay": "22.1 s",
+  "lcpElement": "div#mapcard (doodle map frame, not a food photo)",
+  "lcpSelector": "section#hero > div.wrap > div.mapwrap > div#mapcard",
+  "fcpMs": 907,
+  "whySlow": "Lab render delay ~18.8s on #mapcard from SVG feTurbulence filters; Iansui subset transfer ~2.0 MB. Food photos are not the LCP element. E-3 says this lab number does not block the draft PR.",
+  "htmlUncompressedBytes": 31013,
+  "htmlGzipBytes": 6834
+}

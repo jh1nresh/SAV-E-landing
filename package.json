@@ -3,10 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/build-metro.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/build-metro.mjs && node scripts/make-og.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "node --test tests/unit/*.test.mjs",
+    "test": "npm run test:unit && playwright test",
+    "check": "node scripts/build-metro.mjs && node scripts/check-forbidden.mjs && node scripts/check-glyphs.mjs && node scripts/check-output.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
     "framer-motion": "latest",
@@ -16,6 +23,7 @@
     "react-dom": "latest"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.1",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
