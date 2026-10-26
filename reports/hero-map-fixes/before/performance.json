@@ -1,0 +1,41 @@
+{
+  "conditions": "Cold contexts, 390x844 DPR1, CDP 4x CPU, 150ms RTT, 1.6Mbps down / 750Kbps up",
+  "results": [
+    {
+      "lcp": [
+        {
+          "time": 1304,
+          "tag": "SPAN",
+          "cls": "",
+          "text": "看到喜歡的存下",
+          "map": false
+        }
+      ],
+      "cls": 0.004716551221290558
+    },
+    {
+      "lcp": [
+        {
+          "time": 600,
+          "tag": "SPAN",
+          "cls": "",
+          "text": "看到喜歡的存下",
+          "map": false
+        }
+      ],
+      "cls": 0.004716551221290558
+    },
+    {
+      "lcp": [
+        {
+          "time": 608,
+          "tag": "SPAN",
+          "cls": "",
+          "text": "看到喜歡的存下",
+          "map": false
+        }
+      ],
+      "cls": 0.004716551221290558
+    }
+  ]
+}

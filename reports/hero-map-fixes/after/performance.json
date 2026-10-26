@@ -1,0 +1,50 @@
+{
+  "conditions": "Cold contexts, 390x844 DPR1, CDP 4x CPU, 150ms RTT, 1.6Mbps down / 750Kbps up",
+  "results": [
+    {
+      "lcp": [
+        {
+          "html": "<span>看到喜歡的存下</span>",
+          "url": "",
+          "size": 16820,
+          "time": 620,
+          "tag": "SPAN",
+          "cls": "",
+          "text": "看到喜歡的存下",
+          "map": false
+        }
+      ],
+      "cls": 0.021280116782762128
+    },
+    {
+      "lcp": [
+        {
+          "html": "<span>看到喜歡的存下</span>",
+          "url": "",
+          "size": 16820,
+          "time": 592,
+          "tag": "SPAN",
+          "cls": "",
+          "text": "看到喜歡的存下",
+          "map": false
+        }
+      ],
+      "cls": 0.021280116782762128
+    },
+    {
+      "lcp": [
+        {
+          "html": "<span>看到喜歡的存下</span>",
+          "url": "",
+          "size": 16820,
+          "time": 592,
+          "tag": "SPAN",
+          "cls": "",
+          "text": "看到喜歡的存下",
+          "map": false
+        }
+      ],
+      "cls": 0.021280116782762128
+    }
+  ]
+}

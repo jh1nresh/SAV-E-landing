@@ -1,42 +1,48 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { MetroData } from "../../lib/metro";
+import { HeroMapPoster } from "./HeroMapPoster";
 
 const HeroMap = dynamic(() => import("./HeroMap"), { ssr: false });
-
-export function HeroMapFallback({ data }: { data: MetroData }) {
-  void data;
-  return (
-    <div className="mapwrap mapwrap-slot" data-testid="metro-map-slot" aria-hidden="true">
-      <div className="map-slot" data-testid="metro-map-skeleton">
-        <span className="map-slot-mark" />
-      </div>
-    </div>
-  );
-}
+export const HeroMapFallback = HeroMapPoster;
 
 export function HeroMapLazy({ data }: { data: MetroData }) {
+  const rootRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const onReady = useCallback(() => setMounted(true), []);
 
   useEffect(() => {
     let cancelled = false;
-    const mount = () => {
-      if (!cancelled) setReady(true);
+    let idle: number | undefined;
+    let timer: number | undefined;
+    const mount = () => { if (!cancelled) setReady(true); };
+    const afterLoad = () => {
+      if (typeof window.requestIdleCallback === "function") idle = window.requestIdleCallback(mount, { timeout: 2000 });
+      else timer = window.setTimeout(mount, 200);
     };
-    const onInteract = () => mount();
-    window.addEventListener("pointerdown", onInteract, { once: true, passive: true });
-    window.addEventListener("keydown", onInteract, { once: true });
-    window.addEventListener("touchstart", onInteract, { once: true, passive: true });
+    if (document.readyState === "complete") afterLoad();
+    else window.addEventListener("load", afterLoad, { once: true });
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) mount();
+    });
+    if (rootRef.current) observer.observe(rootRef.current);
+    const events = ["pointerdown", "keydown", "touchstart", "pointerover", "scroll", "wheel"];
+    events.forEach(event => window.addEventListener(event, mount, { once: true, passive: true }));
     return () => {
       cancelled = true;
-      window.removeEventListener("pointerdown", onInteract);
-      window.removeEventListener("keydown", onInteract);
-      window.removeEventListener("touchstart", onInteract);
+      observer.disconnect();
+      window.removeEventListener("load", afterLoad);
+      events.forEach(event => window.removeEventListener(event, mount));
+      if (idle !== undefined) window.cancelIdleCallback(idle);
+      if (timer !== undefined) window.clearTimeout(timer);
     };
   }, []);
 
-  if (!ready) return <HeroMapFallback data={data} />;
-  return <HeroMap data={data} />;
+  return <div className="map-stage" ref={rootRef}>
+    {!mounted && <HeroMapPoster data={data} />}
+    {ready && <div className={`map-live ${mounted ? "is-ready" : ""}`}><HeroMap data={data} onReady={onReady} /></div>}
+  </div>;
 }

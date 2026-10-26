@@ -3,9 +3,10 @@
 import { useEffect, useRef } from "react";
 import { formatMd, latestUpdatedAt, type MetroData } from "../../lib/metro";
 import { MAP_SVG, SVG_DEFS } from "./map-svg";
+import { MapPaper } from "./MapPaper";
 import { bootMetroMap } from "./map-runtime";
 
-export default function HeroMap({ data }: { data: MetroData }) {
+export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: () => void }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const latest = latestUpdatedAt(data);
 
@@ -13,8 +14,9 @@ export default function HeroMap({ data }: { data: MetroData }) {
     const root = rootRef.current;
     if (!root) return;
     const api = bootMetroMap(root, data);
+    onReady?.();
     return () => api.destroy();
-  }, [data]);
+  }, [data, onReady]);
 
   return (
     <div className="mapwrap" ref={rootRef} data-testid="metro-map">
@@ -24,6 +26,7 @@ export default function HeroMap({ data }: { data: MetroData }) {
         <div className="strip" id="strip" role="tablist" aria-label="捷運站" />
       </div>
       <div className="mapcard" id="mapcard">
+        <MapPaper id="live-map-paper" />
         <span className="tape a" />
         <div className="stamp" id="stamp">
           <b id="stampA" data-week-count="" />

@@ -346,7 +346,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         ? `<img src="${img}" alt="${escapeHtml(s.dish)}（AI 示意圖）" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
     }${isNewDate(s.addedAt, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
-<div class="bd"><h4>${escapeHtml(s.name)}</h4><p class="dish">${escapeHtml(s.dish)}</p><div class="meta">${price(s)}<span>${escapeHtml(s.area)}</span></div><div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div>${chips(s.sourcePosts)}</div></article>`;
+<div class="bd"><h4>${escapeHtml(s.name)}</h4><p class="dish">${escapeHtml(s.dish)}</p><div class="meta">${price(s)}<span>${escapeHtml(s.area)}</span></div><div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div></div>${chips(s.sourcePosts)}</article>`;
   };
 
   function fillCard(id: string) {
@@ -385,6 +385,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
           () => {
             slot.innerHTML = fcard(list[i]);
             bindImgFallback(slot);
+            sizeCard();
+            render();
             const n = slot.firstElementChild;
             n?.classList.add("sw");
             requestAnimationFrame(() => n?.classList.remove("sw"));
@@ -393,6 +395,13 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         );
       }),
     );
+  }
+
+  function sizeCard() {
+    card.style.width = `${mobile ? W - 22 : Math.min(380, W - 22)}px`;
+    card.style.maxHeight = `${H - 22}px`;
+    ch = card.offsetHeight;
+    cw = card.offsetWidth;
   }
 
   function openCard(id: string) {
@@ -405,9 +414,9 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     pn.el.classList.add("sel");
     pn.el.classList.toggle("desk", !mobile);
     card.hidden = false;
-    card.style.width = `${mobile ? W - 16 : Math.min(340, W - 16)}px`;
-    ch = card.offsetHeight;
-    cw = card.offsetWidth;
+    root.classList.add("card-open");
+    cbody.scrollTop = 0;
+    sizeCard();
     dragY.snapTo(0);
     if (reduce || still) {
       cardP.snapTo(1);
@@ -434,6 +443,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     closing = false;
     showing = null;
     card.hidden = true;
+    root.classList.remove("card-open");
     card.classList.remove("rm", "show");
     const pn = pinById[id];
     pn.el.classList.remove("sel", "desk");
@@ -569,8 +579,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       if (tail) tail.style.opacity = reduce ? "1" : String(clamp01((p - 0.6) * 3));
       const dy = dragY.x * (reduce ? 1 : Math.min(1, p * 1.6));
       if (mobile) {
-        const left = 8;
-        const top = H - 8 - ch;
+        const left = 11;
+        const top = Math.max(11, H - 11 - ch);
         const ox = pn.sx - left;
         const oy = pn.sy - 32 - top;
         card.style.left = `${left}px`;
@@ -578,8 +588,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         card.style.transformOrigin = `${ox}px ${oy}px`;
         card.style.transform = `translate3d(0,${dy}px,0) scale(${scale.toFixed(4)},${scaleY.toFixed(4)})`;
       } else {
-        const left = Math.min(W - cw - 8, Math.max(8, pn.sx - cw / 2));
-        const top = pn.sy - ch - 10;
+        const left = Math.min(W - cw - 11, Math.max(11, pn.sx - cw / 2));
+        const top = Math.max(11, Math.min(H - ch - 11, pn.sy - ch - 10));
         const tx = pn.sx - left;
         card.style.setProperty("--tx", `${tx}px`);
         card.style.left = `${left}px`;
@@ -638,9 +648,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     cam.y.t = f.y;
     cam.s.t = f.s;
     if (showing && !card.hidden) {
-      card.style.width = `${mobile ? W - 16 : Math.min(340, W - 16)}px`;
-      ch = card.offsetHeight;
-      cw = card.offsetWidth;
+      sizeCard();
     }
     updateBadges();
     render();
@@ -670,6 +678,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   let drag: { y0: number; dy: number; moved: boolean; vy: number; ly: number; lt: number } | null = null;
   const onTouchStart = (e: TouchEvent) => {
     if (e.touches.length !== 1 || closing) return;
+    // A tall card owns native scrolling; its separate grab handle still dismisses.
+    if (cbody.contains(e.target as Node) && cbody.scrollHeight > cbody.clientHeight) return;
     drag = {
       y0: e.touches[0].clientY,
       dy: 0,
@@ -713,6 +723,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   const onMouseDown = (e: MouseEvent) => {
     if ((e.target as Element).closest("button,a")) return;
+    if (cbody.contains(e.target as Node) && cbody.scrollHeight > cbody.clientHeight) return;
     const y0 = e.clientY;
     let moved = false;
     const mv = (ev: MouseEvent) => {
@@ -747,8 +758,13 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   const ro = new ResizeObserver(() => {
     if (vp.clientWidth !== W || vp.clientHeight !== H) applySize();
+    else if (!card.hidden && (card.offsetHeight !== ch || card.offsetWidth !== cw)) {
+      sizeCard();
+      render();
+    }
   });
   ro.observe(vp);
+  ro.observe(card);
   const onWinResize = () => applySize();
   const onOrient = () => applySize();
   window.addEventListener("resize", onWinResize);
