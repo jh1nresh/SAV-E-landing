@@ -320,7 +320,11 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   const chip = (p: MetroStore["sourcePosts"][number]) => {
     const [ab, lab] = PLAT[p.platform] ?? ["·", "貼文"];
-    return `<a class="src" href="${escapeHtml(p.url)}"><b>${ab}</b>${lab} · ${formatMd(p.date)}<u>↗</u></a>`;
+    return `<a class="src" data-platform="${escapeHtml(p.platform)}" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer"><b>${ab}</b>${lab} · ${formatMd(p.date)}<u>↗</u></a>`;
+  };
+  const chips = (posts: MetroStore["sourcePosts"]) => {
+    if (!posts.length) return `<span class="src pending">貼文即將發布</span>`;
+    return `<div class="srcrow">${posts.map(chip).join("")}</div>`;
   };
   const walk = (s: MetroStore) => `${s.exit ? `${s.exit} · ` : ""}步行約 ${s.exitWalkMin} 分`;
   const price = (s: MetroStore) =>
@@ -334,7 +338,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         ? `<img src="${img}" alt="${escapeHtml(s.dish)}（AI 示意圖）" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
     }${isNewDate(s.addedAt, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
-<div class="bd"><h4>${escapeHtml(s.name)}</h4><p class="dish">${escapeHtml(s.dish)}</p><div class="meta">${price(s)}<span>${escapeHtml(s.area)}</span></div><div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div>${chip(s.sourcePosts[0])}</div></article>`;
+<div class="bd"><h4>${escapeHtml(s.name)}</h4><p class="dish">${escapeHtml(s.dish)}</p><div class="meta">${price(s)}<span>${escapeHtml(s.area)}</span></div><div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div>${chips(s.sourcePosts)}</div></article>`;
   };
 
   function fillCard(id: string) {

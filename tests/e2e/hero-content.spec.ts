@@ -3,18 +3,18 @@ import { clickPin, waitForCardOpen, waitForMap } from "./helpers";
 
 test.describe("hero content and motion", () => {
   test("B-6 NEW on day 6, not on day 7 or 8 (Asia/Taipei, < 7 days)", async ({ page }) => {
-    await page.goto("/?clock=2026-11-01");
+    await page.goto("/?clock=2026-10-31");
     await waitForMap(page);
     await expect(page.locator("#stampA")).toContainText("本週新增");
     await expect(page.locator("[data-testid=metro-pin-houshanpi]")).toHaveClass(/new/);
 
-    await page.goto("/?clock=2026-11-02");
+    await page.goto("/?clock=2026-11-01");
     await waitForMap(page);
     await expect(page.locator("[data-testid=metro-pin-houshanpi]")).not.toHaveClass(/new/);
     const week7 = await page.evaluate(() => window.__savvyMap!.state().weekCount);
     expect(week7).toBe(0);
 
-    await page.goto("/?clock=2026-11-03");
+    await page.goto("/?clock=2026-11-02");
     await waitForMap(page);
     await expect(page.locator("[data-testid=metro-pin-houshanpi]")).not.toHaveClass(/new/);
   });

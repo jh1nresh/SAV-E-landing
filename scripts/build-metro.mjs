@@ -16,6 +16,19 @@ const outPath = resolve(root, "app/metro/metro.public.json");
 const LINE_IDS = new Set(["L_red", "L_blue", "L_green"]);
 const PLATFORMS = new Set(["ig", "threads", "xhs"]);
 const YMD = /^\d{4}-\d{2}-\d{2}$/;
+const SOURCE_HOSTS = new Set(["instagram.com", "www.instagram.com", "threads.com", "www.threads.com"]);
+
+export function isAllowedSourceUrl(url) {
+  if (typeof url !== "string" || !url || url.includes("#example")) return false;
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== "https:") return false;
+  return SOURCE_HOSTS.has(parsed.hostname.toLowerCase());
+}
 
 export function fail(msg) {
   throw new Error(`metro schema: ${msg}`);
@@ -123,6 +136,8 @@ function validate(data) {
     for (const post of s.sourcePosts) {
       if (!PLATFORMS.has(post.platform)) fail(`${p} bad source platform`);
       if (typeof post.url !== "string" || !post.url) fail(`${p} source url`);
+      if (post.url.includes("#example")) fail(`${p} source url must not be a placeholder`);
+      if (!isAllowedSourceUrl(post.url)) fail(`${p} source url must be https on instagram.com or threads.com`);
       if (!isYmd(post.date)) fail(`${p} source date`);
     }
     if (!isYmd(s.addedAt)) fail(`${p}.addedAt`);
@@ -143,6 +158,7 @@ export function buildPublicMetro(raw) {
   }
   const text = JSON.stringify(publicData);
   if (text.includes(`"${PRIVATE_KEY}"`)) fail("serialized output still contains a private field");
+  if (text.includes("#example")) fail("serialized output still contains #example");
   return publicData;
 }
 

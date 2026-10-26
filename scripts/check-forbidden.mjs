@@ -3,7 +3,7 @@ import { execSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-const FORBIDDEN = ["本機互動原型", "10/25 預定", "INTERNAL_NOTE_MUST_NOT_SHIP"];
+const FORBIDDEN = ["本機互動原型", "10/25 預定", "INTERNAL_NOTE_MUST_NOT_SHIP", "#example"];
 const GOOGLE = ["googleapis", "gstatic", "maps.google", "maps.googleapis"];
 const root = process.cwd();
 

@@ -10,5 +10,5 @@
     "inFirstScreen": true
   },
   "newRule": "NEW means strictly fewer than 7 Asia/Taipei days after addedAt (day 6 NEW; day 7 and 8 not NEW)",
-  "notes": "Sample data and #example links remain in this draft PR, labelled \u793a\u610f."
+  "notes": "Prices stay sample/\u793a\u610f (verified:false). Source-post chips use founder/GTM IG + Threads URLs; no #example, no \u5c0f\u7d05\u66f8."
 }

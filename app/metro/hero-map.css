@@ -340,12 +340,19 @@ section.hero {
   flex: none;
 }
 
+.srcrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
 .src {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin-top: 6px;
+  margin-top: 0;
   font: 600 11.5px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
   color: var(--forest);
   background: var(--kraft);

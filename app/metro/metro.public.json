@@ -2,7 +2,7 @@
   "_meta": {
     "example": true,
     "asOf": "2026-10-26",
-    "note": "EXAMPLE DATA. Names/dishes from the design sample. Dates, post links and verified flags are placeholders. Sample only — UI must label unverified prices 示意."
+    "note": "EXAMPLE prices/verified flags. Source-post URLs are the founder/GTM station carousels (IG + Threads only). UI must still label unverified prices 示意."
   },
   "stations": [
     {
@@ -11,7 +11,7 @@
       "name": "小巨蛋",
       "line": "松山新店線",
       "status": "live",
-      "updatedAt": "2026-10-18",
+      "updatedAt": "2026-10-21",
       "mapPos": {
         "line": "L_green",
         "at": [
@@ -49,7 +49,7 @@
       "name": "雙連",
       "line": "淡水信義線",
       "status": "live",
-      "updatedAt": "2026-10-19",
+      "updatedAt": "2026-10-23",
       "mapPos": {
         "line": "L_red",
         "at": [
@@ -87,7 +87,7 @@
       "name": "後山埤",
       "line": "板南線",
       "status": "live",
-      "updatedAt": "2026-10-26",
+      "updatedAt": "2026-10-25",
       "mapPos": {
         "line": "L_blue",
         "at": [
@@ -119,11 +119,16 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "#example",
-          "date": "2026-10-18"
+          "url": "https://www.instagram.com/p/DewQqqNm7ay/",
+          "date": "2026-10-21"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/DewQ7Zrm-DR",
+          "date": "2026-10-21"
         }
       ],
-      "addedAt": "2026-10-18",
+      "addedAt": "2026-10-21",
       "verified": false
     },
     {
@@ -143,11 +148,16 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "#example",
-          "date": "2026-10-18"
+          "url": "https://www.instagram.com/p/DewQqqNm7ay/",
+          "date": "2026-10-21"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/DewQ7Zrm-DR",
+          "date": "2026-10-21"
         }
       ],
-      "addedAt": "2026-10-18",
+      "addedAt": "2026-10-21",
       "verified": false
     },
     {
@@ -167,11 +177,16 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "#example",
-          "date": "2026-10-18"
+          "url": "https://www.instagram.com/p/DewQqqNm7ay/",
+          "date": "2026-10-21"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/DewQ7Zrm-DR",
+          "date": "2026-10-21"
         }
       ],
-      "addedAt": "2026-10-18",
+      "addedAt": "2026-10-21",
       "verified": false
     },
     {
@@ -191,11 +206,11 @@
       "sourcePosts": [
         {
           "platform": "threads",
-          "url": "#example",
-          "date": "2026-10-19"
+          "url": "https://www.threads.com/@savvysave_/post/De1zvmkG_ae",
+          "date": "2026-10-23"
         }
       ],
-      "addedAt": "2026-10-19",
+      "addedAt": "2026-10-23",
       "verified": false
     },
     {
@@ -215,11 +230,11 @@
       "sourcePosts": [
         {
           "platform": "threads",
-          "url": "#example",
-          "date": "2026-10-19"
+          "url": "https://www.threads.com/@savvysave_/post/De1zvmkG_ae",
+          "date": "2026-10-23"
         }
       ],
-      "addedAt": "2026-10-19",
+      "addedAt": "2026-10-23",
       "verified": false
     },
     {
@@ -239,11 +254,11 @@
       "sourcePosts": [
         {
           "platform": "threads",
-          "url": "#example",
-          "date": "2026-10-19"
+          "url": "https://www.threads.com/@savvysave_/post/De1zvmkG_ae",
+          "date": "2026-10-23"
         }
       ],
-      "addedAt": "2026-10-19",
+      "addedAt": "2026-10-23",
       "verified": false
     },
     {
@@ -263,11 +278,11 @@
       "sourcePosts": [
         {
           "platform": "threads",
-          "url": "#example",
-          "date": "2026-10-19"
+          "url": "https://www.threads.com/@savvysave_/post/De1zvmkG_ae",
+          "date": "2026-10-23"
         }
       ],
-      "addedAt": "2026-10-19",
+      "addedAt": "2026-10-23",
       "verified": false
     },
     {
@@ -287,11 +302,11 @@
       "sourcePosts": [
         {
           "platform": "threads",
-          "url": "#example",
-          "date": "2026-10-19"
+          "url": "https://www.threads.com/@savvysave_/post/De1zvmkG_ae",
+          "date": "2026-10-23"
         }
       ],
-      "addedAt": "2026-10-19",
+      "addedAt": "2026-10-23",
       "verified": false
     },
     {
@@ -311,7 +326,12 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "#example",
+          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "date": "2026-10-24"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De3_XpdFWGb",
           "date": "2026-10-24"
         }
       ],
@@ -335,7 +355,12 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "#example",
+          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "date": "2026-10-24"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De3_XpdFWGb",
           "date": "2026-10-24"
         }
       ],
@@ -359,7 +384,12 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "#example",
+          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "date": "2026-10-24"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De3_XpdFWGb",
           "date": "2026-10-24"
         }
       ],
@@ -383,7 +413,12 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "#example",
+          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "date": "2026-10-24"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De3_XpdFWGb",
           "date": "2026-10-24"
         }
       ],
@@ -407,7 +442,12 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "#example",
+          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "date": "2026-10-24"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De3_XpdFWGb",
           "date": "2026-10-24"
         }
       ],
@@ -430,12 +470,17 @@
       "image": "/assets/food/houshanpi-1.jpg",
       "sourcePosts": [
         {
-          "platform": "xhs",
-          "url": "#example",
-          "date": "2026-10-26"
+          "platform": "ig",
+          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "date": "2026-10-25"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De6ktwCFNV7",
+          "date": "2026-10-25"
         }
       ],
-      "addedAt": "2026-10-26",
+      "addedAt": "2026-10-25",
       "verified": false
     },
     {
@@ -454,12 +499,17 @@
       "image": "/assets/food/houshanpi-2.jpg",
       "sourcePosts": [
         {
-          "platform": "xhs",
-          "url": "#example",
-          "date": "2026-10-26"
+          "platform": "ig",
+          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "date": "2026-10-25"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De6ktwCFNV7",
+          "date": "2026-10-25"
         }
       ],
-      "addedAt": "2026-10-26",
+      "addedAt": "2026-10-25",
       "verified": false
     },
     {
@@ -478,12 +528,17 @@
       "image": "/assets/food/houshanpi-3.jpg",
       "sourcePosts": [
         {
-          "platform": "xhs",
-          "url": "#example",
-          "date": "2026-10-26"
+          "platform": "ig",
+          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "date": "2026-10-25"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De6ktwCFNV7",
+          "date": "2026-10-25"
         }
       ],
-      "addedAt": "2026-10-26",
+      "addedAt": "2026-10-25",
       "verified": false
     },
     {
@@ -502,12 +557,17 @@
       "image": "/assets/food/houshanpi-4.jpg",
       "sourcePosts": [
         {
-          "platform": "xhs",
-          "url": "#example",
-          "date": "2026-10-26"
+          "platform": "ig",
+          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "date": "2026-10-25"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De6ktwCFNV7",
+          "date": "2026-10-25"
         }
       ],
-      "addedAt": "2026-10-26",
+      "addedAt": "2026-10-25",
       "verified": false
     },
     {
@@ -526,12 +586,17 @@
       "image": "/assets/food/houshanpi-5.jpg",
       "sourcePosts": [
         {
-          "platform": "xhs",
-          "url": "#example",
-          "date": "2026-10-26"
+          "platform": "ig",
+          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "date": "2026-10-25"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De6ktwCFNV7",
+          "date": "2026-10-25"
         }
       ],
-      "addedAt": "2026-10-26",
+      "addedAt": "2026-10-25",
       "verified": false
     }
   ]
