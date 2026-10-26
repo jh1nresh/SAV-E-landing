@@ -19,7 +19,7 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
   }, [data, onReady]);
 
   return (
-    <div className="mapwrap" ref={rootRef} data-testid="metro-map">
+    <div className="mapwrap" lang="zh-Hant" ref={rootRef} data-testid="metro-map">
       <div dangerouslySetInnerHTML={{ __html: SVG_DEFS }} />
       <div className="strip-wrap">
         <div className="strip-label">依最新更新排序</div>

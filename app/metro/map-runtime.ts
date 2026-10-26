@@ -486,8 +486,16 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   }
 
   let pendingId: string | null = null;
+  let selectionTimer: number | undefined;
+  let flightTimer: number | undefined;
+
+  function cancelPendingSelection() {
+    pendingId = null;
+    window.clearTimeout(selectionTimer);
+  }
 
   function flyTo(f: { x: number; y: number; s: number }, now: boolean) {
+    window.clearTimeout(flightTimer);
     const go = () => {
       to(cam.x, f.x, MOTION.camera);
       to(cam.y, f.y, MOTION.camera);
@@ -496,7 +504,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       kick();
     };
     if (now || reduce || still) go();
-    else window.setTimeout(go, 50);
+    else flightTimer = window.setTimeout(go, 50);
   }
 
   function hideHint() {
@@ -504,6 +512,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   }
 
   function select(id: string) {
+    cancelPendingSelection();
     if (openId === id) {
       closeCard();
       return;
@@ -515,7 +524,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const old = showing;
       if (!closing) closeCard({ focus: false });
       flyTo(f, true);
-      window.setTimeout(() => {
+      selectionTimer = window.setTimeout(() => {
         if (pendingId !== id) return;
         if (showing) {
           closing = false;
@@ -532,6 +541,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   }
 
   function goHome() {
+    cancelPendingSelection();
     hideHint();
     if (showing) closeCard({ focus: false });
     flyTo(home, true);
@@ -857,6 +867,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       weekCount: weekCountNow(),
     }),
     destroy: () => {
+      cancelPendingSelection();
+      window.clearTimeout(flightTimer);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", onWinResize);
       window.removeEventListener("orientationchange", onOrient);
