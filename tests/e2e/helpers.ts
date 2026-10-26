@@ -2,16 +2,24 @@ import { expect, type Page } from "@playwright/test";
 import type {} from "../../app/metro/map-runtime";
 
 export async function waitForMap(page: Page) {
-  const ready = await page.evaluate(() => Boolean(window.__savvyMap));
-  if (!ready) {
-    const slot = page.locator("[data-testid=metro-map-slot], [data-testid=metro-map]");
-    if (await slot.count()) {
-      await slot.first().click({ force: true });
-    } else {
-      await page.evaluate(() => window.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true })));
-    }
+  const slot = page.locator("[data-testid=metro-map-slot], [data-testid=metro-map]");
+  await slot.first().waitFor({ state: "attached", timeout: 20_000 });
+  await page.waitForLoadState("networkidle").catch(() => undefined);
+
+  const nudge = async () => {
+    await page.evaluate(() => window.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true })));
+    await slot.first().click({ force: true }).catch(() => undefined);
+  };
+
+  if (await page.evaluate(() => Boolean(window.__savvyMap))) return;
+  await nudge();
+  try {
+    await page.waitForFunction(() => Boolean(window.__savvyMap), null, { timeout: 8_000 });
+    return;
+  } catch {
+    await nudge();
   }
-  await page.waitForFunction(() => Boolean(window.__savvyMap), null, { timeout: 20_000 });
+  await page.waitForFunction(() => Boolean(window.__savvyMap), null, { timeout: 30_000 });
 }
 
 export async function waitForCardOpen(page: Page) {
