@@ -1,18 +1,26 @@
 import { AppStoreBadge } from "./SiteChrome";
 import { getPublicMetroData } from "../lib/metro";
+import type { SiteLang } from "./site";
 import { HeroMapLazy } from "./metro/HeroMapLazy";
 import "./metro/hero-map.css";
 
 const STICKERS = [
-  { src: "/assets/st-duck.png", alt: "烤鴨" },
+  { src: "/assets/st-duck.png", alt: "珍珠奶茶" },
   { src: "/assets/st-noodle.png", alt: "麵碗" },
   { src: "/assets/st-coffee.png", alt: "咖啡杯" },
-  { src: "/assets/st-temple.png", alt: "寺廟" },
+  { src: "/assets/st-temple.png", alt: "台北101" },
   { src: "/assets/st-lantern.png", alt: "燈籠" },
 ] as const;
 
-export default function SavvyLanding() {
+function firstScreenImgProps(active: boolean) {
+  return active
+    ? { loading: "eager" as const, fetchPriority: "high" as const, decoding: "async" as const }
+    : { loading: "lazy" as const, decoding: "async" as const };
+}
+
+export default function SavvyLanding({ initialLang = "zh-Hant" }: { initialLang?: SiteLang }) {
   const metro = getPublicMetroData();
+  const zhFirst = initialLang !== "en";
 
   return (
     <main>
@@ -60,15 +68,15 @@ export default function SavvyLanding() {
               className="zh"
               src="/assets/phones-zh-2.png"
               alt="Savvy 蓋章與護照畫面"
-              loading="lazy"
-              decoding="async"
+              data-testid="first-screen-phone-zh"
+              {...firstScreenImgProps(zhFirst)}
             />
             <img
               className="en"
               src="/assets/phones-en-2.png"
               alt="Savvy stamp and Passport screens"
-              loading="lazy"
-              decoding="async"
+              data-testid="first-screen-phone-en"
+              {...firstScreenImgProps(!zhFirst)}
             />
           </div>
         </div>
@@ -153,9 +161,9 @@ export default function SavvyLanding() {
           <p className="sub">Savvy: Turn links into pins</p>
           <AppStoreBadge />
           <div className="stkrow">
-            <img src="/assets/st-noodle.png" alt="" width={66} height={66} />
-            <img src="/assets/st-coffee.png" alt="" width={66} height={66} />
-            <img src="/assets/st-lantern.png" alt="" width={66} height={66} />
+            <img src="/assets/st-noodle.png" alt="" width={66} height={66} loading="lazy" decoding="async" />
+            <img src="/assets/st-coffee.png" alt="" width={66} height={66} loading="lazy" decoding="async" />
+            <img src="/assets/st-lantern.png" alt="" width={66} height={66} loading="lazy" decoding="async" />
           </div>
         </div>
       </section>

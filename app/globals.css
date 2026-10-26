@@ -279,6 +279,19 @@ footer.site a {
   line-height: 44px;
 }
 
+footer.site p {
+  margin: 8px 0 0;
+}
+
+footer.site p a {
+  display: inline;
+  margin: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+
 .legal {
   max-width: 720px;
   margin: 0 auto;
