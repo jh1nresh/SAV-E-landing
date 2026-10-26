@@ -461,7 +461,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     render();
   }
 
-  function closeCard({ focus = true }: { focus?: boolean } = {}) {
+  function closeCard({ focus = true, preservePending = false }: { focus?: boolean; preservePending?: boolean } = {}) {
+    if (!preservePending) cancelPendingSelection();
     if (!showing || closing) return;
     closing = true;
     const id = showing;
@@ -522,7 +523,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const f = focusFor(id);
     if (showing) {
       const old = showing;
-      if (!closing) closeCard({ focus: false });
+      if (!closing) closeCard({ focus: false, preservePending: true });
       flyTo(f, true);
       selectionTimer = window.setTimeout(() => {
         if (pendingId !== id) return;
@@ -665,7 +666,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   }
 
   const onKey = (e: KeyboardEvent) => {
-    if (e.key === "Escape" && showing) closeCard();
+    if (e.key === "Escape") closeCard();
   };
   const onVpClick = (e: MouseEvent) => {
     const t = e.target as Element;
