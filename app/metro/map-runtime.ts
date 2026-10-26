@@ -540,7 +540,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
           finishClose(old, false);
         }
         openCard(id);
-      }, reduce ? 260 : 170);
+      }, reduce ? 320 : 170);
       return;
     }
     openCard(id);
