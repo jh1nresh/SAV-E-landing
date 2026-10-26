@@ -53,35 +53,43 @@ section.hero {
   transform: rotate(4deg);
 }
 
+.map-stage {
+  position: relative;
+  height: 566px;
+  min-width: 0;
+}
+
 .mapwrap {
   position: relative;
   width: 100%;
-  min-height: 520px;
+  height: 566px;
   color: var(--ink);
 }
 
-.mapwrap-slot {
-  min-height: 520px;
+.map-live {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
 }
 
-.map-slot {
-  width: 100%;
-  min-height: 380px;
-  height: 380px;
-  background: transparent;
-}
+.map-live.is-ready { visibility: visible; }
 
-.map-slot-mark {
-  display: block;
-  width: 28px;
-  height: 28px;
-  margin: 16px 0 0 auto;
-  border: 2px dashed rgba(47, 46, 35, 0.28);
-  border-radius: 8px;
-  background: transparent;
+.poster-vp { container-type: size; }
+.poster-world {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(calc(100cqw * 1000 / 630), calc(100cqh * 1000 / 440));
+  aspect-ratio: 1000 / 940;
+  transform: translate(-47.2%, -36.70213%);
 }
+.poster-world svg { display: block; width: 100%; height: 100%; }
+.poster-world > div, .poster-pins { position: absolute; inset: 0; }
+.mapwrap-slot .tab { cursor: default; }
+.mapwrap.card-open .stamp { visibility: hidden; }
 
 .strip-wrap {
+  height: 124px;
   margin: 0 0 36px;
 }
 
@@ -179,11 +187,20 @@ section.hero {
 
 .mapcard {
   position: relative;
-  background: var(--paper-tex);
+  isolation: isolate;
+  background: var(--paper);
   border: 2px solid var(--ink);
   border-radius: 18px 12px 20px 11px / 12px 20px 11px 18px;
   box-shadow: 4px 5px 0 rgba(47, 46, 35, 0.9);
   padding: 10px 10px 12px;
+}
+
+.map-paper {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .mapcard .tape {
@@ -432,7 +449,7 @@ section.s-cta {
   overflow: hidden;
   border: 2px solid var(--ink);
   border-radius: 14px 11px 15px 10px / 11px 15px 10px 14px;
-  background: var(--paper-tex);
+  background: transparent;
   touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
   isolation: isolate;
@@ -771,7 +788,9 @@ body.still .pin.new .gr {
   top: 0;
   z-index: 5;
   width: 340px;
-  max-width: calc(100% - 16px);
+  max-width: calc(100% - 22px);
+  display: flex;
+  flex-direction: column;
   background: var(--paper-tex);
   border: 2px solid var(--ink);
   border-radius: var(--r, 22px);
@@ -797,6 +816,9 @@ body.still .pin.new .gr {
 }
 
 .card .cbody {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   position: relative;
   padding: 11px 13px 9px;
   z-index: 1;
@@ -841,6 +863,10 @@ body.still .pin.new .gr {
 }
 
 .ph-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--paper-tex);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -878,6 +904,11 @@ body.still .pin.new .gr {
   transition: opacity 0.18s;
 }
 
+.card .fc > .srcrow,
+.card .fc > .src.pending {
+  grid-column: 1 / -1;
+}
+
 .card .fc.sw {
   opacity: 0;
 }
@@ -897,6 +928,7 @@ body.still .pin.new .gr {
 
 .thumbs {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 7px;
   margin: 9px 0 0;
@@ -1017,12 +1049,18 @@ body.rm .pin.new .gr {
     height: 52px;
   }
 
-  .mapwrap {
+  .map-stage {
+    height: 559px;
     margin-top: 32px;
+  }
+
+  .mapwrap {
+    height: 559px;
     text-align: left;
   }
 
   .strip-wrap {
+    height: 73px;
     margin-bottom: 26px;
   }
 
@@ -1038,13 +1076,9 @@ body.rm .pin.new .gr {
     padding: 8px;
   }
 
-  .mapwrap-slot {
-    min-height: 500px;
-  }
-
-  .map-slot {
-    height: 440px;
-    min-height: 440px;
+  .poster-world {
+    width: calc(100cqw * 1000 / 580);
+    transform: translate(-47.5%, -42.34043%);
   }
 
   .vp,
