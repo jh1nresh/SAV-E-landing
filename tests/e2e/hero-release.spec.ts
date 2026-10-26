@@ -26,8 +26,10 @@ for (const mode of ["", "reduce=1"]) {
         else document.getElementById("cardX")!.click();
       }, action);
       await page.waitForTimeout(1500);
-      expect(await page.locator("#card").isVisible()).toBe(false);
       expect(await page.evaluate(() => window.__savvyMap!.state().openId)).toBeNull();
+      // Slow WebKit frames can extend the spring; the pending selection must
+      // already be cancelled, then the original card must finish closing.
+      await expect(page.locator("#card")).toBeHidden();
     });
   }
 
