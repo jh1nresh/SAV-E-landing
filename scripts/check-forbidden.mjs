@@ -4,7 +4,8 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const FORBIDDEN = ["本機互動原型", "10/25 預定", "INTERNAL_NOTE_MUST_NOT_SHIP"];
-const GOOGLE = ["googleapis", "gstatic", "maps.google", "maps.googleapis"];
+const GOOGLE_HOSTS = ["googleapis", "gstatic", "maps.google", "maps.googleapis"];
+const GOOGLE_WORD = /google/i;
 const root = process.cwd();
 
 function walk(dir, acc = []) {
@@ -48,9 +49,32 @@ if (sourceHits.length) {
   process.exit(1);
 }
 
-const googleHits = grepFiles(sourceFiles, GOOGLE);
-if (googleHits.length) {
-  console.error("Google hosts in source:\n" + googleHits.join("\n"));
+const hostHits = grepFiles(sourceFiles, GOOGLE_HOSTS);
+if (hostHits.length) {
+  console.error("maps/font hosts in source:\n" + hostHits.join("\n"));
+  process.exit(1);
+}
+
+function grepWord(files, re) {
+  const hits = [];
+  for (const file of files) {
+    let text;
+    try {
+      text = readFileSync(file, "utf8");
+    } catch {
+      continue;
+    }
+    if (re.test(text)) hits.push(file);
+  }
+  return hits;
+}
+
+const vendorSourceHits = grepWord(
+  sourceFiles.filter((f) => !/\.(png|jpg|jpeg|webp|gif|ttf|woff2?|otf)$/i.test(f)),
+  GOOGLE_WORD,
+);
+if (vendorSourceHits.length) {
+  console.error("vendor name in source:\n" + vendorSourceHits.join("\n"));
   process.exit(1);
 }
 
@@ -77,6 +101,17 @@ if (existsSync(nextDir)) {
   }
   if (noteHits.length) {
     console.error("private field leaked into build output:\n" + noteHits.join("\n"));
+    process.exit(1);
+  }
+  const pageBuilt = built.filter(
+    (f) =>
+      /\.(html|rsc)$/.test(f) ||
+      /\/app[_/]/.test(f) ||
+      /\/app\/metro\//.test(f),
+  );
+  const vendorBuilt = grepWord(pageBuilt, GOOGLE_WORD);
+  if (vendorBuilt.length) {
+    console.error("vendor name leaked into page build output:\n" + vendorBuilt.join("\n"));
     process.exit(1);
   }
 }

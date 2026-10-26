@@ -1,7 +1,9 @@
 import {
+  PRICE_PENDING_LABEL,
   formatMd,
   isNewDate,
   priceIsEstimate,
+  priceIsPending,
   resolveClock,
   type MetroData,
   type MetroStation,
@@ -129,6 +131,8 @@ function bindImgFallback(root: ParentNode) {
         img.style.visibility = "hidden";
         const wrap = img.parentElement;
         if (wrap) wrap.classList.add("img-miss");
+        const pin = img.closest(".pin");
+        if (pin) pin.classList.add("nophoto");
       },
       { once: true },
     );
@@ -323,10 +327,14 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     return `<a class="src" href="${escapeHtml(p.url)}"><b>${ab}</b>${lab} · ${formatMd(p.date)}<u>↗</u></a>`;
   };
   const walk = (s: MetroStore) => `${s.exit ? `${s.exit} · ` : ""}步行約 ${s.exitWalkMin} 分`;
-  const price = (s: MetroStore) =>
-    `<span class="price"><small>NT$</small>${s.priceNT}${s.priceFrom ? "<em>起</em>" : ""}</span>${
+  const price = (s: MetroStore) => {
+    if (priceIsPending(s)) {
+      return `<span class="est" data-testid="price-pending">${PRICE_PENDING_LABEL}</span>`;
+    }
+    return `<span class="price"><small>NT$</small>${s.priceNT}${s.priceFrom ? "<em>起</em>" : ""}</span>${
       priceIsEstimate(s) ? '<span class="est" title="價格未經查證">示意</span>' : '<span class="ok">已查證</span>'
     }`;
+  };
   const fcard = (s: MetroStore) => {
     const img = publicImage(s.image);
     return `<article class="fc"><div class="ph">${

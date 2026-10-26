@@ -1,35 +1,42 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { formatMd, latestUpdatedAt, type MetroData } from "../../lib/metro";
+import { useEffect, useState } from "react";
+import type { MetroData } from "../../lib/metro";
 
-function MapSkeleton({ data }: { data: MetroData }) {
-  const latest = latestUpdatedAt(data);
+const HeroMap = dynamic(() => import("./HeroMap"), { ssr: false });
+
+export function HeroMapFallback({ data }: { data: MetroData }) {
+  void data;
   return (
-    <div className="mapwrap" data-testid="metro-map-skeleton" aria-hidden="true">
-      <div className="strip-wrap">
-        <div className="strip-label">依最新更新排序</div>
-        <div className="strip" />
-      </div>
-      <div className="mapcard">
-        <span className="tape a" />
-        <div className="stamp">
-          <b data-week-count="" />
-          <span>{latest ? `更新於 ${formatMd(latest)}` : ""}</span>
-          <i>範例資料 · 示意</i>
-        </div>
-        <div className="vp metro-skeleton" />
+    <div className="mapwrap mapwrap-slot" data-testid="metro-map-slot" aria-hidden="true">
+      <div className="map-slot" data-testid="metro-map-skeleton">
+        <span className="map-slot-mark" />
       </div>
     </div>
   );
 }
 
-const HeroMap = dynamic(() => import("./HeroMap"), { ssr: false });
-
 export function HeroMapLazy({ data }: { data: MetroData }) {
-  return <HeroMap data={data} />;
-}
+  const [ready, setReady] = useState(false);
 
-export function HeroMapFallback({ data }: { data: MetroData }) {
-  return <MapSkeleton data={data} />;
+  useEffect(() => {
+    let cancelled = false;
+    const mount = () => {
+      if (!cancelled) setReady(true);
+    };
+    const onInteract = () => mount();
+    window.addEventListener("pointerdown", onInteract, { once: true, passive: true });
+    window.addEventListener("keydown", onInteract, { once: true });
+    window.addEventListener("touchstart", onInteract, { once: true, passive: true });
+    return () => {
+      cancelled = true;
+      window.removeEventListener("pointerdown", onInteract);
+      window.removeEventListener("keydown", onInteract);
+      window.removeEventListener("touchstart", onInteract);
+    };
+  }, []);
+
+  if (!ready) return <HeroMapFallback data={data} />;
+  return <HeroMap data={data} />;
 }

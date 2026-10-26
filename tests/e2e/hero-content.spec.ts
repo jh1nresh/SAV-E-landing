@@ -77,25 +77,37 @@ test.describe("hero content and motion", () => {
     expect(firstParty).toEqual([]);
   });
 
-  test("E-1 LCP candidate is not a map food photo", async ({ page }) => {
+  test("E-1 LCP is the hero headline or badge, not the map", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
-    const lcp = await page.evaluate(async () => {
-      return new Promise<{ tag: string; src: string | null }>((resolve) => {
+    await page.waitForLoadState("domcontentloaded");
+    await page.waitForTimeout(1500);
+    const lcp = await page.evaluate(() => {
+      return new Promise<{
+        tag: string;
+        inMap: boolean;
+        isHeadline: boolean;
+        isBadge: boolean;
+      }>((resolve) => {
+        let last: PerformanceEntry & { element?: Element } | undefined;
         const po = new PerformanceObserver((list) => {
-          const last = list.getEntries().at(-1) as PerformanceEntry & { element?: Element };
-          const el = last.element as HTMLElement | undefined;
-          po.disconnect();
-          resolve({
-            tag: el?.tagName ?? "",
-            src: el instanceof HTMLImageElement ? el.getAttribute("src") : el?.getAttribute("href") ?? null,
-          });
+          last = list.getEntries().at(-1) as PerformanceEntry & { element?: Element };
         });
         po.observe({ type: "largest-contentful-paint", buffered: true });
-        setTimeout(() => resolve({ tag: "TIMEOUT", src: null }), 4000);
+        setTimeout(() => {
+          po.disconnect();
+          const el = last?.element as HTMLElement | undefined;
+          resolve({
+            tag: el?.tagName ?? "NONE",
+            inMap: Boolean(el?.closest?.(".mapwrap, #mapcard, .map-slot")),
+            isHeadline: Boolean(el?.closest?.("h1, .hero .txt .h")),
+            isBadge: Boolean(el?.closest?.("[data-testid=hero-appstore]")),
+          });
+        }, 400);
       });
     });
-    expect(lcp.src ?? "").not.toMatch(/\/assets\/food\//);
+    expect(lcp.inMap, `LCP was ${lcp.tag} inside the map`).toBeFalsy();
+    expect(lcp.isHeadline || lcp.isBadge, `LCP was ${lcp.tag}, expected headline or badge`).toBeTruthy();
   });
 
   test("D-5 reduced-motion via media query fades without flying", async ({ page }) => {

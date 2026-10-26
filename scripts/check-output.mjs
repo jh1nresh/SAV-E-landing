@@ -11,8 +11,21 @@ if (pubText.includes(`"${PRIVATE_KEY}"`)) {
   console.error("metro.public.json contains a private field");
   process.exit(1);
 }
+if (/google/i.test(pubText) || pubText.includes("priceSource")) {
+  console.error("metro.public.json leaked a private price source");
+  process.exit(1);
+}
 
 for (const store of pub.stores) {
+  if (store.pricePending) {
+    if (store.priceNT != null) {
+      console.error("pending-price store still has a number", store.id);
+      process.exit(1);
+    }
+  } else if (typeof store.priceNT !== "number") {
+    console.error("live-price store missing priceNT", store.id);
+    process.exit(1);
+  }
   if (!store.image.startsWith("/assets/food/") || store.image.startsWith("data:")) {
     console.error("store image must be a public file path:", store.id, store.image);
     process.exit(1);
