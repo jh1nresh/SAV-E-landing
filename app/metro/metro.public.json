@@ -1,0 +1,538 @@
+{
+  "_meta": {
+    "example": true,
+    "asOf": "2026-10-26",
+    "note": "EXAMPLE DATA. Names/dishes from the design sample. Dates, post links and verified flags are placeholders. Sample only — UI must label unverified prices 示意."
+  },
+  "stations": [
+    {
+      "id": "arena",
+      "order": 1,
+      "name": "小巨蛋",
+      "line": "松山新店線",
+      "status": "live",
+      "updatedAt": "2026-10-18",
+      "mapPos": {
+        "line": "L_green",
+        "at": [
+          440,
+          142
+        ],
+        "snapped": [
+          440,
+          142
+        ]
+      }
+    },
+    {
+      "id": "songshan",
+      "order": 2,
+      "name": "松山",
+      "line": "松山新店線",
+      "status": "coming_soon",
+      "updatedAt": null,
+      "mapPos": {
+        "line": "L_green",
+        "at": [
+          598,
+          86
+        ],
+        "snapped": [
+          598,
+          86
+        ]
+      }
+    },
+    {
+      "id": "shuanglian",
+      "order": 3,
+      "name": "雙連",
+      "line": "淡水信義線",
+      "status": "live",
+      "updatedAt": "2026-10-19",
+      "mapPos": {
+        "line": "L_red",
+        "at": [
+          128,
+          116
+        ],
+        "snapped": [
+          128,
+          116
+        ]
+      }
+    },
+    {
+      "id": "dongmen",
+      "order": 4,
+      "name": "東門",
+      "line": "淡水信義線",
+      "status": "live",
+      "updatedAt": "2026-10-24",
+      "mapPos": {
+        "line": "L_red",
+        "at": [
+          300,
+          302
+        ],
+        "snapped": [
+          300,
+          302
+        ]
+      }
+    },
+    {
+      "id": "houshanpi",
+      "order": 5,
+      "name": "後山埤",
+      "line": "板南線",
+      "status": "live",
+      "updatedAt": "2026-10-26",
+      "mapPos": {
+        "line": "L_blue",
+        "at": [
+          500,
+          268
+        ],
+        "snapped": [
+          500.22,
+          266.99
+        ]
+      }
+    }
+  ],
+  "stores": [
+    {
+      "id": "arena-2",
+      "stationId": "arena",
+      "name": "邊城孜然羊肉",
+      "dish": "孜然羊肉鍋",
+      "priceNT": 850,
+      "priceFrom": false,
+      "priceSource": "ryokousharoody 2024-04-10",
+      "priceCheckedAt": "2024-04-10",
+      "exit": "4 號出口",
+      "exitWalkMin": 5,
+      "area": "松山區",
+      "hours": "12:00–14:00、17:00–21:00",
+      "image": "/assets/food/arena-2.jpg",
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "#example",
+          "date": "2026-10-18"
+        }
+      ],
+      "addedAt": "2026-10-18",
+      "verified": false
+    },
+    {
+      "id": "arena-3",
+      "stationId": "arena",
+      "name": "麵麵聚到",
+      "dish": "麻辣臭豆腐鴨血",
+      "priceNT": 90,
+      "priceFrom": false,
+      "priceSource": "Uber Eats 店家頁",
+      "priceCheckedAt": "2026-10-21",
+      "exit": null,
+      "exitWalkMin": 5,
+      "area": "松山區",
+      "hours": "週一至五 11:30–21:30、週日 12:15–20:30",
+      "image": "/assets/food/arena-3.jpg",
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "#example",
+          "date": "2026-10-18"
+        }
+      ],
+      "addedAt": "2026-10-18",
+      "verified": false
+    },
+    {
+      "id": "arena-4",
+      "stationId": "arena",
+      "name": "中崙張記藥膳排骨",
+      "dish": "藥燉排骨",
+      "priceNT": 100,
+      "priceFrom": false,
+      "priceSource": "Google 評論",
+      "priceCheckedAt": "2026-02-26",
+      "exit": "4 號出口",
+      "exitWalkMin": 6,
+      "area": "松山區",
+      "hours": "17:30–23:30",
+      "image": "/assets/food/arena-4.jpg",
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "#example",
+          "date": "2026-10-18"
+        }
+      ],
+      "addedAt": "2026-10-18",
+      "verified": false
+    },
+    {
+      "id": "shuanglian-1",
+      "stationId": "shuanglian",
+      "name": "阿田麵",
+      "dish": "陽春麵全套",
+      "priceNT": 70,
+      "priceFrom": false,
+      "priceSource": "鏡週刊 2025-08-08",
+      "priceCheckedAt": "2025-08-08",
+      "exit": "1 號出口",
+      "exitWalkMin": 3,
+      "area": "大同區",
+      "hours": "週一至五 10:00–15:00",
+      "image": "/assets/food/shuanglian-1.jpg",
+      "sourcePosts": [
+        {
+          "platform": "threads",
+          "url": "#example",
+          "date": "2026-10-19"
+        }
+      ],
+      "addedAt": "2026-10-19",
+      "verified": false
+    },
+    {
+      "id": "shuanglian-2",
+      "stationId": "shuanglian",
+      "name": "雙連蚵仔麵線",
+      "dish": "蚵仔大腸麵線",
+      "priceNT": 50,
+      "priceFrom": true,
+      "priceSource": "Google 評論轉載",
+      "priceCheckedAt": null,
+      "exit": "1 號出口",
+      "exitWalkMin": 2,
+      "area": "中山區",
+      "hours": "週一至五 7:30–15:00、週六 7:30–14:00",
+      "image": "/assets/food/shuanglian-2.jpg",
+      "sourcePosts": [
+        {
+          "platform": "threads",
+          "url": "#example",
+          "date": "2026-10-19"
+        }
+      ],
+      "addedAt": "2026-10-19",
+      "verified": false
+    },
+    {
+      "id": "shuanglian-3",
+      "stationId": "shuanglian",
+      "name": "滋奶谷菓子燒",
+      "dish": "紅豆餅",
+      "priceNT": 20,
+      "priceFrom": false,
+      "priceSource": "Google 評論 2025-12-07、2025-11-28",
+      "priceCheckedAt": "2025-12-07",
+      "exit": "2 號出口",
+      "exitWalkMin": 1,
+      "area": "大同區",
+      "hours": "週一 13:00 起、週二至五 10:00 起、週六 9:00 起，皆至 19:30",
+      "image": "/assets/food/shuanglian-3.jpg",
+      "sourcePosts": [
+        {
+          "platform": "threads",
+          "url": "#example",
+          "date": "2026-10-19"
+        }
+      ],
+      "addedAt": "2026-10-19",
+      "verified": false
+    },
+    {
+      "id": "shuanglian-4",
+      "stationId": "shuanglian",
+      "name": "雙連圓仔湯",
+      "dish": "燒麻糬",
+      "priceNT": 95,
+      "priceFrom": false,
+      "priceSource": "米寶麻 2026-01-07",
+      "priceCheckedAt": "2026-01-07",
+      "exit": "1 號出口",
+      "exitWalkMin": 3,
+      "area": "大同區",
+      "hours": "週二至日 11:00–21:00",
+      "image": "/assets/food/shuanglian-4.jpg",
+      "sourcePosts": [
+        {
+          "platform": "threads",
+          "url": "#example",
+          "date": "2026-10-19"
+        }
+      ],
+      "addedAt": "2026-10-19",
+      "verified": false
+    },
+    {
+      "id": "shuanglian-5",
+      "stationId": "shuanglian",
+      "name": "貨室甜品",
+      "dish": "麵茶牛乳雙拼刨冰",
+      "priceNT": 180,
+      "priceFrom": false,
+      "priceSource": "Wun-Wei Stories",
+      "priceCheckedAt": "2025-07-25",
+      "exit": null,
+      "exitWalkMin": 4,
+      "area": "大同區",
+      "hours": "平日 13:00–21:00、週末 12:30–21:00",
+      "image": "/assets/food/shuanglian-5.jpg",
+      "sourcePosts": [
+        {
+          "platform": "threads",
+          "url": "#example",
+          "date": "2026-10-19"
+        }
+      ],
+      "addedAt": "2026-10-19",
+      "verified": false
+    },
+    {
+      "id": "dongmen-1",
+      "stationId": "dongmen",
+      "name": "鼎泰豐信義店",
+      "dish": "小籠包 10 顆",
+      "priceNT": 290,
+      "priceFrom": false,
+      "priceSource": "icecreamcat.tw/1122",
+      "priceCheckedAt": "2026-10-06",
+      "exit": "5 號出口",
+      "exitWalkMin": 1,
+      "area": "大安區",
+      "hours": "週一至五 11:00–20:30；週六日及例假日 10:30–20:30",
+      "image": "/assets/food/dongmen-1.jpg",
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "#example",
+          "date": "2026-10-24"
+        }
+      ],
+      "addedAt": "2026-10-24",
+      "verified": false
+    },
+    {
+      "id": "dongmen-2",
+      "stationId": "dongmen",
+      "name": "豆豆里 永康旗艦店",
+      "dish": "迷你泡菜起司煎餅",
+      "priceNT": 200,
+      "priceFrom": false,
+      "priceSource": "iCHEF 線上菜單",
+      "priceCheckedAt": "2026-10-24",
+      "exit": "5 號出口",
+      "exitWalkMin": 1,
+      "area": "大安區",
+      "hours": "每日 11:30–21:00",
+      "image": "/assets/food/dongmen-2.jpg",
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "#example",
+          "date": "2026-10-24"
+        }
+      ],
+      "addedAt": "2026-10-24",
+      "verified": false
+    },
+    {
+      "id": "dongmen-3",
+      "stationId": "dongmen",
+      "name": "天津蔥抓餅",
+      "dish": "九層塔蛋蔥抓餅",
+      "priceNT": 50,
+      "priceFrom": false,
+      "priceSource": "blake",
+      "priceCheckedAt": "2026-03-11",
+      "exit": "5 號出口",
+      "exitWalkMin": 3,
+      "area": "大安區",
+      "hours": "營業到約 22:00",
+      "image": "/assets/food/dongmen-3.jpg",
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "#example",
+          "date": "2026-10-24"
+        }
+      ],
+      "addedAt": "2026-10-24",
+      "verified": false
+    },
+    {
+      "id": "dongmen-4",
+      "stationId": "dongmen",
+      "name": "思慕昔本館",
+      "dish": "超級雪酪芒果雪花冰",
+      "priceNT": 290,
+      "priceFrom": false,
+      "priceSource": "Uber Eats 台北菜單",
+      "priceCheckedAt": "2026-10-24",
+      "exit": "5 號出口",
+      "exitWalkMin": 2,
+      "area": "大安區",
+      "hours": "官網 11:00–21:00（食記寫週五六到 22:00）",
+      "image": "/assets/food/dongmen-4.jpg",
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "#example",
+          "date": "2026-10-24"
+        }
+      ],
+      "addedAt": "2026-10-24",
+      "verified": false
+    },
+    {
+      "id": "dongmen-5",
+      "stationId": "dongmen",
+      "name": "永康牛肉麵",
+      "dish": "紅燒牛肉麵",
+      "priceNT": 300,
+      "priceFrom": false,
+      "priceSource": "wanteatfood.com/55259",
+      "priceCheckedAt": "2026-06-21",
+      "exit": "3 號出口",
+      "exitWalkMin": 4,
+      "area": "大安區",
+      "hours": "週一至日 11:00–20:30",
+      "image": "/assets/food/dongmen-5.jpg",
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "#example",
+          "date": "2026-10-24"
+        }
+      ],
+      "addedAt": "2026-10-24",
+      "verified": false
+    },
+    {
+      "id": "houshanpi-1",
+      "stationId": "houshanpi",
+      "name": "珍好鍋貼",
+      "dish": "鍋貼",
+      "priceNT": 7,
+      "priceFrom": false,
+      "priceSource": "nash",
+      "priceCheckedAt": "2026-10-10",
+      "exit": "3 號出口",
+      "exitWalkMin": 1,
+      "area": "南港區",
+      "hours": "11:00–13:00、16:30–20:00",
+      "image": "/assets/food/houshanpi-1.jpg",
+      "sourcePosts": [
+        {
+          "platform": "xhs",
+          "url": "#example",
+          "date": "2026-10-26"
+        }
+      ],
+      "addedAt": "2026-10-26",
+      "verified": false
+    },
+    {
+      "id": "houshanpi-2",
+      "stationId": "houshanpi",
+      "name": "永吉涼麵",
+      "dish": "麻醬涼麵",
+      "priceNT": 40,
+      "priceFrom": true,
+      "priceSource": "blake",
+      "priceCheckedAt": "2026-06-01",
+      "exit": "3 號出口",
+      "exitWalkMin": 2,
+      "area": "南港區",
+      "hours": "06:30–14:30",
+      "image": "/assets/food/houshanpi-2.jpg",
+      "sourcePosts": [
+        {
+          "platform": "xhs",
+          "url": "#example",
+          "date": "2026-10-26"
+        }
+      ],
+      "addedAt": "2026-10-26",
+      "verified": false
+    },
+    {
+      "id": "houshanpi-3",
+      "stationId": "houshanpi",
+      "name": "阿來甜不辣",
+      "dish": "甜不辣",
+      "priceNT": 70,
+      "priceFrom": true,
+      "priceSource": "litwenblog",
+      "priceCheckedAt": "2026-10-05",
+      "exit": "3 號出口",
+      "exitWalkMin": 3,
+      "area": "南港區",
+      "hours": "10:00–19:30",
+      "image": "/assets/food/houshanpi-3.jpg",
+      "sourcePosts": [
+        {
+          "platform": "xhs",
+          "url": "#example",
+          "date": "2026-10-26"
+        }
+      ],
+      "addedAt": "2026-10-26",
+      "verified": false
+    },
+    {
+      "id": "houshanpi-4",
+      "stationId": "houshanpi",
+      "name": "春來蚵仔麵線",
+      "dish": "綜合麵線",
+      "priceNT": 80,
+      "priceFrom": false,
+      "priceSource": "mibaoma",
+      "priceCheckedAt": "2026-05-09",
+      "exit": "1 號出口",
+      "exitWalkMin": 1,
+      "area": "信義區",
+      "hours": "07:30–20:30",
+      "image": "/assets/food/houshanpi-4.jpg",
+      "sourcePosts": [
+        {
+          "platform": "xhs",
+          "url": "#example",
+          "date": "2026-10-26"
+        }
+      ],
+      "addedAt": "2026-10-26",
+      "verified": false
+    },
+    {
+      "id": "houshanpi-5",
+      "stationId": "houshanpi",
+      "name": "鄭姑媽雞排便當店",
+      "dish": "雞排飯",
+      "priceNT": 130,
+      "priceFrom": false,
+      "priceSource": "mibaoma",
+      "priceCheckedAt": "2026-09-29",
+      "exit": "2 號出口",
+      "exitWalkMin": 5,
+      "area": "信義區",
+      "hours": "週二至五 10:00–18:00",
+      "image": "/assets/food/houshanpi-5.jpg",
+      "sourcePosts": [
+        {
+          "platform": "xhs",
+          "url": "#example",
+          "date": "2026-10-26"
+        }
+      ],
+      "addedAt": "2026-10-26",
+      "verified": false
+    }
+  ]
+}

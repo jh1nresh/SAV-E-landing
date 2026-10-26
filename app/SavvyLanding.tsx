@@ -1,9 +1,22 @@
 import { AppStoreBadge } from "./SiteChrome";
+import { getPublicMetroData } from "../lib/metro";
+import { HeroMapLazy } from "./metro/HeroMapLazy";
+import "./metro/hero-map.css";
+
+const STICKERS = [
+  { src: "/assets/st-duck.png", alt: "烤鴨" },
+  { src: "/assets/st-noodle.png", alt: "麵碗" },
+  { src: "/assets/st-coffee.png", alt: "咖啡杯" },
+  { src: "/assets/st-temple.png", alt: "寺廟" },
+  { src: "/assets/st-lantern.png", alt: "燈籠" },
+] as const;
 
 export default function SavvyLanding() {
+  const metro = getPublicMetroData();
+
   return (
     <main>
-      <section className="s1">
+      <section className="s1 hero" id="hero">
         <div className="wrap">
           <div className="txt">
             <h1 className="h zh">
@@ -17,20 +30,16 @@ export default function SavvyLanding() {
               </span>
             </h1>
             <p className="sub">Savvy: Turn links into pins</p>
-            <AppStoreBadge />
+            <div data-testid="hero-appstore">
+              <AppStoreBadge />
+            </div>
+            <div className="hero-stk" aria-label="Savvy stickers">
+              {STICKERS.map((s) => (
+                <img key={s.src} src={s.src} alt={s.alt} width={58} height={58} />
+              ))}
+            </div>
           </div>
-          <div className="dev">
-            <img
-              className="zh"
-              src="/assets/phones-zh-1.png"
-              alt="Savvy 首頁與存地點畫面（英文介面）"
-            />
-            <img
-              className="en"
-              src="/assets/phones-en-1.png"
-              alt="Savvy home and Save a place screens"
-            />
-          </div>
+          <HeroMapLazy data={metro} />
         </div>
       </section>
 
@@ -51,11 +60,15 @@ export default function SavvyLanding() {
               className="zh"
               src="/assets/phones-zh-2.png"
               alt="Savvy 蓋章與護照畫面"
+              loading="lazy"
+              decoding="async"
             />
             <img
               className="en"
               src="/assets/phones-en-2.png"
               alt="Savvy stamp and Passport screens"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -78,11 +91,15 @@ export default function SavvyLanding() {
               className="zh"
               src="/assets/phones-zh-3.png"
               alt="Savvy 地圖與朋友畫面"
+              loading="lazy"
+              decoding="async"
             />
             <img
               className="en"
               src="/assets/phones-en-3.png"
               alt="Savvy map and Friends screens"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -109,28 +126,39 @@ export default function SavvyLanding() {
               className="zh"
               src="/assets/phones-zh-4.png"
               alt="Savvy 深色模式與無限收藏畫面"
+              loading="lazy"
+              decoding="async"
             />
             <img
               className="en"
               src="/assets/phones-en-4.png"
               alt="Savvy dark mode and unlimited saves screens"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
       </section>
 
-      <div className="stk">
-        <img src="/assets/st-duck.png" alt="烤鴨 duck" />
-        <img src="/assets/st-noodle.png" alt="麵碗 noodle" />
-        <img src="/assets/st-coffee.png" alt="咖啡杯 coffee" />
-        <img src="/assets/st-temple.png" alt="寺廟 temple" />
-        <img src="/assets/st-lantern.png" alt="燈籠 lantern" />
-        <img src="/assets/st-elephant.png" alt="小象 elephant" />
-      </div>
-
-      <div className="fbadge">
-        <AppStoreBadge />
-      </div>
+      <section className="s-cta" id="cta">
+        <div className="ctaw">
+          <h2 className="h zh">
+            <span>把想吃的好店</span>
+            <span className="u">存進你的地圖</span>
+          </h2>
+          <h2 className="h en">
+            <span>Save the places you love</span>
+            <span className="u">onto your map</span>
+          </h2>
+          <p className="sub">Savvy: Turn links into pins</p>
+          <AppStoreBadge />
+          <div className="stkrow">
+            <img src="/assets/st-noodle.png" alt="" width={66} height={66} />
+            <img src="/assets/st-coffee.png" alt="" width={66} height={66} />
+            <img src="/assets/st-lantern.png" alt="" width={66} height={66} />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
