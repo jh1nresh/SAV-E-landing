@@ -9,7 +9,7 @@ import {
   resolveClock,
   taipeiDate,
 } from "../../lib/metro-logic.mjs";
-import { buildPublicMetro } from "../../scripts/build-metro.mjs";
+import { buildPublicMetro, isAllowedSourceUrl } from "../../scripts/build-metro.mjs";
 import { readFileSync } from "node:fs";
 
 test("taipeiDate uses Asia/Taipei calendar date", () => {
@@ -62,6 +62,17 @@ test("schema fails on malformed status", () => {
   const raw = JSON.parse(readFileSync("data/metro.json", "utf8"));
   raw.stations[0].status = "draft";
   assert.throws(() => buildPublicMetro(raw), /status/);
+});
+
+test("source URLs must be https instagram.com or threads.com, never #example", () => {
+  assert.equal(isAllowedSourceUrl("https://www.instagram.com/p/DewQqqNm7ay/"), true);
+  assert.equal(isAllowedSourceUrl("https://www.threads.com/@savvysave_/post/DewQ7Zrm-DR"), true);
+  assert.equal(isAllowedSourceUrl("#example"), false);
+  assert.equal(isAllowedSourceUrl("https://www.xiaohongshu.com/explore/6adb37d0000000003301e297"), false);
+  assert.equal(isAllowedSourceUrl("http://www.instagram.com/p/DewQqqNm7ay/"), false);
+  const raw = JSON.parse(readFileSync("data/metro.json", "utf8"));
+  raw.stores[0].sourcePosts[0].url = "#example";
+  assert.throws(() => buildPublicMetro(raw), /placeholder|instagram.com or threads.com/);
 });
 
 test("review-vendor shops become pricePending and drop source + number", () => {

@@ -187,6 +187,32 @@ test.describe("hero map interactions", () => {
     await expect(page.locator("#card .est")).toContainText("示意");
   });
 
+  test("B-7 real IG and Threads chips; no #example or 小紅書", async ({ page }) => {
+    await openStation(page, "arena");
+    const arena = page.locator("#card .src");
+    await expect(arena).toHaveCount(2);
+    await expect(arena.nth(0)).toHaveAttribute("href", "https://www.instagram.com/p/DewQqqNm7ay/");
+    await expect(arena.nth(0)).toHaveAttribute("data-platform", "ig");
+    await expect(arena.nth(1)).toHaveAttribute("href", "https://www.threads.com/@savvysave_/post/DewQ7Zrm-DR");
+    await expect(arena.nth(1)).toHaveAttribute("data-platform", "threads");
+
+    await page.locator("[data-testid=metro-close]").click();
+    await openStation(page, "shuanglian");
+    const shuang = page.locator("#card .src");
+    await expect(shuang).toHaveCount(1);
+    await expect(shuang).toHaveAttribute("href", "https://www.threads.com/@savvysave_/post/De1zvmkG_ae");
+    await expect(page.locator("#card a[href*='instagram.com']")).toHaveCount(0);
+    await expect(page.locator("#card a[href*='xiaohongshu']")).toHaveCount(0);
+
+    await page.locator("[data-testid=metro-close]").click();
+    await openStation(page, "houshanpi");
+    await expect(page.locator("#card .src[data-platform=ig]")).toHaveAttribute(
+      "href",
+      "https://www.instagram.com/p/De6kh33mwwb/",
+    );
+    await expect(page.locator("body")).not.toContainText("#example");
+  });
+
   test("B-11 withheld-source shops show 價格待查 and no price number", async ({ page }) => {
     await openStation(page, "arena");
     await page.locator('.thumbs button[aria-label="中崙張記藥膳排骨"]').click();
