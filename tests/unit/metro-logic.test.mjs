@@ -19,6 +19,8 @@ test("taipeiDate uses Asia/Taipei calendar date", () => {
 
 test("NEW is strictly less than 7 days: day 6 yes, day 7 and 8 no", () => {
   const added = "2026-10-26";
+  assert.equal(isNewDate(added, "2026-10-25"), false);
+  assert.equal(isNewDate(added, "2026-10-26"), true);
   assert.equal(daysBetween(added, "2026-11-01"), 6);
   assert.equal(isNewDate(added, "2026-11-01"), true);
   assert.equal(daysBetween(added, "2026-11-02"), 7);
