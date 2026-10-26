@@ -2,6 +2,15 @@ import { expect, type Page } from "@playwright/test";
 import type {} from "../../app/metro/map-runtime";
 
 export async function waitForMap(page: Page) {
+  const ready = await page.evaluate(() => Boolean(window.__savvyMap));
+  if (!ready) {
+    const slot = page.locator("[data-testid=metro-map-slot], [data-testid=metro-map]");
+    if (await slot.count()) {
+      await slot.first().click({ force: true });
+    } else {
+      await page.evaluate(() => window.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true })));
+    }
+  }
   await page.waitForFunction(() => Boolean(window.__savvyMap), null, { timeout: 20_000 });
 }
 
@@ -28,11 +37,18 @@ export async function clickPin(page: Page, id: string) {
 }
 
 export async function noHorizontalOverflow(page: Page) {
-  const { scrollWidth, innerWidth } = await page.evaluate(() => ({
+  const metrics = await page.evaluate(() => ({
     scrollWidth: document.documentElement.scrollWidth,
     innerWidth: window.innerWidth,
+    htmlOx: getComputedStyle(document.documentElement).overflowX,
+    bodyOx: getComputedStyle(document.body).overflowX,
   }));
-  expect(scrollWidth, `scrollWidth ${scrollWidth} > innerWidth ${innerWidth}`).toBeLessThanOrEqual(innerWidth + 1);
+  expect(metrics.htmlOx, "html overflow-x must not mask overflow").not.toBe("hidden");
+  expect(metrics.bodyOx, "body overflow-x must not mask overflow").not.toBe("hidden");
+  expect(
+    metrics.scrollWidth,
+    `scrollWidth ${metrics.scrollWidth} > innerWidth ${metrics.innerWidth}`,
+  ).toBeLessThanOrEqual(metrics.innerWidth + 1);
 }
 
 export async function heroBadgeBox(page: Page) {

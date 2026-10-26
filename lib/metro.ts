@@ -1,9 +1,11 @@
 import publicMetro from "../app/metro/metro.public.json";
 import {
+  PRICE_PENDING_LABEL,
   daysBetween,
   formatMd,
   isNewDate,
   priceIsEstimate,
+  priceIsPending,
   resolveClock,
   taipeiDate,
 } from "./metro-logic.mjs";
@@ -21,9 +23,10 @@ export type MetroStore = {
   stationId: string;
   name: string;
   dish: string;
-  priceNT: number;
+  priceNT?: number;
   priceFrom: boolean;
-  priceSource: string;
+  priceSource?: string;
+  pricePending?: boolean;
   priceCheckedAt: string | null;
   exit: string | null;
   exitWalkMin: number;
@@ -60,10 +63,12 @@ export type MetroData = {
 };
 
 export {
+  PRICE_PENDING_LABEL,
   daysBetween,
   formatMd,
   isNewDate,
   priceIsEstimate,
+  priceIsPending,
   resolveClock,
   taipeiDate,
 };

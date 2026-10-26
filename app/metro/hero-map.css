@@ -8,11 +8,6 @@
   --paper-tex: var(--paper) url("/assets/paper-grain.png") 0 0 / 256px;
 }
 
-html,
-body {
-  overflow-x: hidden;
-}
-
 section.hero {
   padding: 28px 40px 60px;
   position: relative;
@@ -63,6 +58,27 @@ section.hero {
   width: 100%;
   min-height: 520px;
   color: var(--ink);
+}
+
+.mapwrap-slot {
+  min-height: 520px;
+}
+
+.map-slot {
+  width: 100%;
+  min-height: 380px;
+  height: 380px;
+  background: transparent;
+}
+
+.map-slot-mark {
+  display: block;
+  width: 28px;
+  height: 28px;
+  margin: 16px 0 0 auto;
+  border: 2px dashed rgba(47, 46, 35, 0.28);
+  border-radius: 8px;
+  background: transparent;
 }
 
 .strip-wrap {
@@ -1020,6 +1036,15 @@ body.rm .pin.new .gr {
 
   .mapcard {
     padding: 8px;
+  }
+
+  .mapwrap-slot {
+    min-height: 500px;
+  }
+
+  .map-slot {
+    height: 440px;
+    min-height: 440px;
   }
 
   .vp,

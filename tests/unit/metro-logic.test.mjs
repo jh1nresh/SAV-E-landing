@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { daysBetween, isNewDate, priceIsEstimate, resolveClock, taipeiDate } from "../../lib/metro-logic.mjs";
+import {
+  PRICE_PENDING_LABEL,
+  daysBetween,
+  isNewDate,
+  priceIsEstimate,
+  priceIsPending,
+  resolveClock,
+  taipeiDate,
+} from "../../lib/metro-logic.mjs";
 import { buildPublicMetro, isAllowedSourceUrl } from "../../scripts/build-metro.mjs";
 import { readFileSync } from "node:fs";
 
@@ -65,6 +73,23 @@ test("source URLs must be https instagram.com or threads.com, never #example", (
   const raw = JSON.parse(readFileSync("data/metro.json", "utf8"));
   raw.stores[0].sourcePosts[0].url = "#example";
   assert.throws(() => buildPublicMetro(raw), /placeholder|instagram.com or threads.com/);
+});
+
+test("review-vendor shops become pricePending and drop source + number", () => {
+  const raw = JSON.parse(readFileSync("data/metro.json", "utf8"));
+  const pub = buildPublicMetro(raw);
+  const pending = pub.stores.filter((s) => s.pricePending);
+  assert.equal(pending.length, 3);
+  assert.ok(pending.every((s) => s.priceNT === undefined));
+  assert.ok(pending.every((s) => !("priceSource" in s)));
+  assert.ok(priceIsPending(pending[0]));
+  assert.equal(PRICE_PENDING_LABEL, "價格待查");
+  const kept = pub.stores.find((s) => s.id === "houshanpi-1");
+  assert.equal(kept.priceNT, 7);
+  assert.equal(kept.pricePending, undefined);
+  const text = JSON.stringify(pub);
+  assert.equal(/google/i.test(text), false);
+  assert.equal(text.includes("priceSource"), false);
 });
 
 test("schema fails if a private field remains in output", () => {

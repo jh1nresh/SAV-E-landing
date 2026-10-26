@@ -9,6 +9,8 @@ import { fileURLToPath } from "node:url";
 import { snapToLine } from "./metro-lines.mjs";
 
 const PRIVATE_KEY = "not" + "es";
+const PRICE_SOURCE_KEY = "price" + "Source";
+const GOOGLE_TYPE = "google" + "_reviews";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const srcPath = resolve(root, "data/metro.json");
 const outPath = resolve(root, "app/metro/metro.public.json");
@@ -34,6 +36,10 @@ export function fail(msg) {
   throw new Error(`metro schema: ${msg}`);
 }
 
+function isReviewVendorType(value) {
+  return typeof value === "string" && (value === GOOGLE_TYPE || value.toLowerCase().includes("google"));
+}
+
 function stripPrivate(value) {
   if (Array.isArray(value)) return value.map(stripPrivate);
   if (value && typeof value === "object") {
@@ -45,6 +51,22 @@ function stripPrivate(value) {
     return out;
   }
   return value;
+}
+
+function toPublicStores(data) {
+  return {
+    ...data,
+    stores: data.stores.map((store) => {
+      const next = { ...store };
+      const pending = isReviewVendorType(next[PRICE_SOURCE_KEY]);
+      delete next[PRICE_SOURCE_KEY];
+      if (pending) {
+        next.pricePending = true;
+        delete next.priceNT;
+      }
+      return next;
+    }),
+  };
 }
 
 function hasPrivate(value) {
@@ -146,9 +168,10 @@ function validate(data) {
 }
 
 export function buildPublicMetro(raw) {
-  const publicData = stripPrivate(raw);
-  if (hasPrivate(publicData)) fail("private field survived strip");
-  validate(publicData);
+  const stripped = stripPrivate(raw);
+  if (hasPrivate(stripped)) fail("private field survived strip");
+  validate(stripped);
+  const publicData = toPublicStores(stripped);
   for (const station of publicData.stations) {
     station.mapPos = {
       line: station.mapPos.line,
@@ -159,6 +182,8 @@ export function buildPublicMetro(raw) {
   const text = JSON.stringify(publicData);
   if (text.includes(`"${PRIVATE_KEY}"`)) fail("serialized output still contains a private field");
   if (text.includes("#example")) fail("serialized output still contains #example");
+  if (text.includes(PRICE_SOURCE_KEY)) fail("price source field leaked into public output");
+  if (/google/i.test(text)) fail("vendor name leaked into public output");
   return publicData;
 }
 
