@@ -36,6 +36,10 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
         <div className="vp" id="vp" data-testid="metro-vp">
           <div className="world" id="world" dangerouslySetInnerHTML={{ __html: MAP_SVG }} />
           <div className="pinlayer" id="pinlayer" />
+          <div className="hud mapzoom" role="group" aria-label="地圖縮放">
+            <button type="button" id="zoomIn" aria-label="放大地圖">＋</button>
+            <button type="button" id="zoomOut" aria-label="縮小地圖">−</button>
+          </div>
           <div className="hud hint" id="hint">
             點一站，看吃什麼
           </div>

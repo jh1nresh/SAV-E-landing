@@ -184,6 +184,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const cmorph = root.querySelector<HTMLElement>("#cmorph")!;
   const hint = root.querySelector<HTMLElement>("#hint")!;
   const resetBtn = root.querySelector<HTMLButtonElement>("#reset")!;
+  const zoomIn = root.querySelector<HTMLButtonElement>("#zoomIn")!;
+  const zoomOut = root.querySelector<HTMLButtonElement>("#zoomOut")!;
   const stampA = root.querySelector<HTMLElement>("#stampA")!;
   const stampB = root.querySelector<HTMLElement>("#stampB")!;
   const strip = root.querySelector<HTMLElement>("#strip")!;
@@ -584,6 +586,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const panned = Math.hypot(cam.x.t - home.x, cam.y.t - home.y) > PAN_SLOP;
     resetBtn.classList.toggle("on", zoomed || panned);
     vp.classList.toggle("zoomed", zoomed);
+    zoomIn.disabled = cam.s.t >= s0 * 3 - 0.0001;
+    zoomOut.disabled = cam.s.t <= s0 + 0.0001;
     if (showing && !card.hidden) {
       const pn = pinById[showing];
       const p = cardP.x;
@@ -682,7 +686,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const onVpClick = (e: MouseEvent) => {
     if (suppressClick && isPointerOriginatedClick(e)) return;
     const t = e.target as Element;
-    if (t.closest(".pin, .card, .reset")) return;
+    if (t.closest(".pin, .card, .reset, .mapzoom")) return;
     if (showing && !closing) closeCard({ focus: false });
     else if (cam.s.t > s0 * 1.05) goHome();
   };
@@ -711,7 +715,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   let pan: Pan | null = null;
   const panFromUi = (t: EventTarget | null) => {
     const el = t as Element | null;
-    return !el?.closest || Boolean(el.closest(".card, .reset, a, #cardX"));
+    return !el?.closest || Boolean(el.closest(".card, .reset, .mapzoom, a, #cardX"));
   };
   const panMoveOpts: AddEventListenerOptions = { passive: false };
   const unbindPanWin = () => {
@@ -801,6 +805,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     pan = null;
   };
   const onPanDown = (e: PointerEvent) => {
+    if (pinch) return;
     if (e.button !== 0 || e.isPrimary === false) return;
     if (pan) cancelPan();
     suppressClick = false;
@@ -823,7 +828,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     if (!suppressClick) return;
     if (!isPointerOriginatedClick(e)) return;
     const t = e.target as Element | null;
-    if (t?.closest?.(".reset, .card, .x, a, .tab")) {
+    if (t?.closest?.(".reset, .mapzoom, .card, .x, a, .tab")) {
       suppressClick = false;
       return;
     }
@@ -834,6 +839,76 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   vp.addEventListener("pointerdown", onPanDown);
   vp.addEventListener("lostpointercapture", onPanLost);
   vp.addEventListener("click", onClickCapture, true);
+
+  // Keep the world point under the cursor / pinch midpoint stationary.
+  function zoomAt(scale: number, x: number, y: number, anchor?: { x: number; y: number }) {
+    cancelPendingSelection();
+    takeCamera();
+    const world = anchor ?? {
+      x: cam.x.x + (x - W / 2) / cam.s.x,
+      y: cam.y.x + (y - H / 2) / cam.s.x,
+    };
+    const s = Math.max(s0, Math.min(s0 * 3, scale));
+    const f = clampCam(world.x - (x - W / 2) / s, world.y - (y - H / 2) / s, s);
+    cam.x.snapTo(f.x);
+    cam.y.snapTo(f.y);
+    cam.s.snapTo(s);
+    hideHint();
+    updateBadges();
+    render();
+  }
+  const onZoomIn = () => { cancelPan(); zoomAt(cam.s.x * 1.25, W / 2, H / 2); };
+  const onZoomOut = () => { cancelPan(); zoomAt(cam.s.x / 1.25, W / 2, H / 2); };
+  const onWheel = (e: WheelEvent) => {
+    if (panFromUi(e.target) || pinch || !e.deltaY) return;
+    e.preventDefault();
+    cancelPan();
+    const box = vp.getBoundingClientRect();
+    const delta = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? H : 1);
+    zoomAt(cam.s.x * Math.exp(-Math.max(-500, Math.min(500, delta)) * 0.002), e.clientX - box.left - vp.clientLeft, e.clientY - box.top - vp.clientTop);
+  };
+  type Pinch = { ids: number[]; distance: number; scale: number; anchor: { x: number; y: number } };
+  let pinch: Pinch | null = null;
+  const onPinchStart = (e: TouchEvent) => {
+    if (e.touches.length !== 2 || Array.from(e.touches).some(t => !vp.contains(t.target as Node) || panFromUi(t.target))) return;
+    if (e.cancelable) e.preventDefault();
+    cancelPan();
+    cancelPendingSelection();
+    takeCamera();
+    suppressClick = true;
+    const [a, b] = Array.from(e.touches);
+    const box = vp.getBoundingClientRect();
+    pinch = {
+      ids: [a.identifier, b.identifier],
+      distance: Math.max(1, Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY)),
+      scale: cam.s.x,
+      anchor: {
+        x: cam.x.x + ((a.clientX + b.clientX) / 2 - box.left - vp.clientLeft - W / 2) / cam.s.x,
+        y: cam.y.x + ((a.clientY + b.clientY) / 2 - box.top - vp.clientTop - H / 2) / cam.s.x,
+      },
+    };
+  };
+  const onPinchMove = (e: TouchEvent) => {
+    if (!pinch) return;
+    if (e.cancelable) e.preventDefault();
+    const [a, b] = pinch.ids.map(id => Array.from(e.touches).find(t => t.identifier === id));
+    if (!a || !b) return;
+    const box = vp.getBoundingClientRect();
+    zoomAt(pinch.scale * Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) / pinch.distance,
+      (a.clientX + b.clientX) / 2 - box.left - vp.clientLeft, (a.clientY + b.clientY) / 2 - box.top - vp.clientTop, pinch.anchor);
+  };
+  const onPinchEnd = (e: TouchEvent) => {
+    if (!pinch || Array.from(e.touches).some(t => pinch!.ids.includes(t.identifier))) return;
+    pinch = null;
+    window.setTimeout(() => { suppressClick = false; }, 0);
+  };
+  zoomIn.addEventListener("click", onZoomIn);
+  zoomOut.addEventListener("click", onZoomOut);
+  vp.addEventListener("wheel", onWheel, { passive: false });
+  vp.addEventListener("touchstart", onPinchStart, { passive: false });
+  vp.addEventListener("touchmove", onPinchMove, { passive: false });
+  vp.addEventListener("touchend", onPinchEnd);
+  vp.addEventListener("touchcancel", onPinchEnd);
 
   let drag: { y0: number; dy: number; moved: boolean; vy: number; ly: number; lt: number } | null = null;
   const onTouchStart = (e: TouchEvent) => {
@@ -1019,6 +1094,14 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       weekCount: weekCountNow(),
     }),
     destroy: () => {
+      pinch = null;
+      zoomIn.removeEventListener("click", onZoomIn);
+      zoomOut.removeEventListener("click", onZoomOut);
+      vp.removeEventListener("wheel", onWheel);
+      vp.removeEventListener("touchstart", onPinchStart);
+      vp.removeEventListener("touchmove", onPinchMove);
+      vp.removeEventListener("touchend", onPinchEnd);
+      vp.removeEventListener("touchcancel", onPinchEnd);
       cancelPan();
       cancelPendingSelection();
       window.clearTimeout(flightTimer);
