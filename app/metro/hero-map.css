@@ -943,7 +943,7 @@ body.still .pin.new .gr {
   flex-basis: 100%;
   font: 600 12px/1.2 ui-rounded, -apple-system, "PingFang TC", sans-serif;
   color: var(--muted);
-  white-space: nowrap;
+  white-space: normal;
   margin-top: -3px;
 }
 
@@ -1006,7 +1006,7 @@ body.still .pin.new .gr {
   margin-left: auto;
   color: var(--forest);
   font: 700 12.5px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .cfoot {

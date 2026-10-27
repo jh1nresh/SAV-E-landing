@@ -21,6 +21,7 @@ export function stampLevel(stores: ReadonlyArray<{ kind?: string }> | null | und
 export function stampNote(stores: ReadonlyArray<{ kind?: string }>, lang?: "zh" | "en"): string;
 export function countShort(n: number, lang?: "zh" | "en"): string;
 export function countLabel(stores: ReadonlyArray<{ kind?: string }>, lang?: "zh" | "en"): string;
+export function countBadge(stores: ReadonlyArray<{ kind?: string }>): string;
 export function weekNewCount(stores: ReadonlyArray<{ addedAt?: string | null }>, todayYmd: string): number;
 export function footNote(store: { kind?: string; image?: string; imageAi?: boolean }): string;
 export function imageAlt(store: { dish?: string; name: string; kind?: string; imageAi?: boolean }): string;

@@ -1,12 +1,16 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { readFileSync } from "node:fs";
+import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, symlinkSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
+import { spawnSync } from "node:child_process";
 import {
   EXAMPLE_STAMP_NOTE,
   EXAMPLE_STAMP_NOTE_EN,
   PARTIAL_STAMP_NOTE,
   PARTIAL_STAMP_NOTE_EN,
   PRICE_PENDING_LABEL,
+  countBadge,
   countLabel,
   countShort,
   footNote,
@@ -129,6 +133,9 @@ test("P0-10 'n 間' count: never one summed number when mixed", () => {
   assert.equal(countLabel([...ex(1), ...po(3)]), "4 間（3 間來自貼文、1 間為範例）");
   assert.equal(countShort(5), "5 間");
   assert.equal(countShort(5, "en"), "5 places");
+  assert.equal(countBadge([...po(1), ...ex(2)]), "1 貼文 · 2 範例");
+  assert.equal(countBadge(ex(3)), "3 間");
+  assert.equal(countBadge(po(2)), "2 間");
 });
 
 test("P0-10 headline 本週新增 N = every entry added within 7 days, whatever its kind (P-1 narrows to posts)", () => {
@@ -211,4 +218,39 @@ test("P0-11 AI sentence is per entry: AI post gets it, founder/licensed photo do
 test("a post entry is NEW on the same 7-day rule as any entry (rule unchanged by P-0)", () => {
   assert.equal(isNewDate("2026-10-26", "2026-11-01"), true);
   assert.equal(isNewDate("2026-10-26", "2026-11-02"), false);
+});
+
+test("the output gate accepts an imageless post without relaxing example image requirements", () => {
+  const raw = load();
+  raw.stores.push(postFixture());
+  const pub = buildPublicMetro(raw);
+  const dir = mkdtempSync(join(tmpdir(), "savvy-output-gate-"));
+  try {
+    mkdirSync(join(dir, "app/metro"), { recursive: true });
+    symlinkSync(resolve("public"), join(dir, "public"), "dir");
+    const run = () => {
+      writeFileSync(join(dir, "app/metro/metro.public.json"), JSON.stringify(pub));
+      return spawnSync(process.execPath, [resolve("scripts/check-output.mjs")], { cwd: dir, encoding: "utf8" });
+    };
+    const valid = run();
+    assert.equal(valid.status, 0, valid.stderr);
+    delete pub.stores[0].image;
+    const invalid = run();
+    assert.notEqual(invalid.status, 0);
+    assert.match(invalid.stderr, /image must be a public file path/);
+  } finally {
+    rmSync(dir, { recursive: true });
+  }
+});
+
+test("imported imageAi cannot suppress the derived AI disclosure", () => {
+  for (const source of [undefined, "ai"]) {
+    const raw = load();
+    raw.stores.push(postFixture({ image: raw.stores[0].image, imageAi: false,
+      ...(source ? { imageSource: source } : {}) }));
+    const post = buildPublicMetro(raw).stores.at(-1);
+    assert.equal("imageAi" in post, false);
+    assert.equal(footNote(post), "菜圖為 AI 示意，非店家實拍。");
+    assert.match(imageAlt(post), /AI 示意圖/);
+  }
 });

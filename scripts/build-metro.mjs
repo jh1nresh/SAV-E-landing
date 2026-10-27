@@ -63,6 +63,8 @@ function toPublicStores(data) {
       const next = { ...store };
       const imageSource = next[IMAGE_SOURCE_KEY];
       delete next[IMAGE_SOURCE_KEY];
+      // Public disclosure is derived here; imported flags cannot override provenance.
+      delete next.imageAi;
       if (next.kind === "post" && (imageSource === "founder" || imageSource === "licensed")) next.imageAi = false;
       const pending = isReviewVendorType(next[PRICE_SOURCE_KEY]) || (next.kind === "post" && next.priceNT == null);
       delete next[PRICE_SOURCE_KEY];

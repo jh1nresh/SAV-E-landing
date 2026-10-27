@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
 import { ttfCmapCodepoints } from "./ttf-cmap.mjs";
-import { EXAMPLE_STAMP_NOTE, PARTIAL_STAMP_NOTE, PRICE_PENDING_LABEL, countLabel, footNote, imageAlt } from "../lib/metro-logic.mjs";
+import { EXAMPLE_STAMP_NOTE, PARTIAL_STAMP_NOTE, PRICE_PENDING_LABEL, countBadge, countLabel, footNote, imageAlt } from "../lib/metro-logic.mjs";
 
 const present = ttfCmapCodepoints("public/assets/fonts/Iansui-SavvySubset.ttf");
 
@@ -58,6 +58,7 @@ const labelCopy = [
   EXAMPLE_STAMP_NOTE,
   PARTIAL_STAMP_NOTE,
   countLabel([{ kind: "post" }, { kind: "example" }]),
+  countBadge([{ kind: "post" }, { kind: "example" }]),
   PRICE_PENDING_LABEL,
   footNote({ kind: "example" }),
   footNote({ kind: "post", image: "x" }),

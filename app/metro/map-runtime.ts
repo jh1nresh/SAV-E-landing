@@ -1,5 +1,6 @@
 import {
   PRICE_PENDING_LABEL,
+  countBadge,
   countLabel,
   footNote,
   formatMd,
@@ -293,7 +294,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
           ? `${s.name}，即將更新`
           : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}，共 ${countLabel(list)}${nw ? "，新增" : ""}`,
       );
-      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${img}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${list.length} 間`}</span></span>`;
+      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${img}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${countBadge(list)}`}</span></span>`;
       layer.appendChild(el);
       bindImgFallback(el);
       el.addEventListener("click", (e) => {
@@ -383,7 +384,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
      (x, i) =>
        `<button type="button" data-i="${i}" aria-label="${escapeHtml(x.name)}" aria-current="${i === 0}" style="${x.image ? `background-image:url(${publicImage(x.image)})` : ""}"></button>`,
    )
-   .join("")}<span class="more">看全部 ${list.length} 間</span></div>
+    .join("")}<span class="more">看全部 ${countLabel(list)}</span></div>
  <div class="cfoot">${escapeHtml(footNote(list[0]))}</div>`;
     bindImgFallback(cbody);
     cbody.querySelectorAll<HTMLButtonElement>(".thumbs button").forEach((b) =>
