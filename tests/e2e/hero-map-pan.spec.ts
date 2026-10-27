@@ -56,7 +56,6 @@ test.describe("hero map pan", () => {
   });
 
   test("touch drag starting on a pin pans and a tap still selects", async ({ page }) => {
-    const pin = page.locator("[data-testid=metro-pin-houshanpi] .hit");
     const before = await page.evaluate(() => {
       const world = document.getElementById("world")!.getBoundingClientRect();
       const s = window.__savvyMap!.state();
@@ -78,7 +77,7 @@ test.describe("hero map pan", () => {
       const s = await page.evaluate(() => window.__savvyMap!.state());
       return Math.hypot(s.camX - before.camX, s.camY - before.camY);
     }).toBeLessThan(2);
-    await pin.tap();
+    await clickPin(page, "houshanpi");
     await waitForCardOpen(page);
     await expect(page.locator("#cardTitle")).toContainText("後山埤");
   });
