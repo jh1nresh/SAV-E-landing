@@ -103,16 +103,37 @@ test.describe("first-screen LCP hints and OSM credit", () => {
             po.disconnect();
             const el = last?.element as HTMLElement | undefined;
             const src = el instanceof HTMLImageElement ? el.getAttribute("src") ?? "" : "";
+            // WebKit reports LCP as the inner <span> of a heading (hero h1
+            // or a first-viewport .h title such as s2's underline span).
+            // Walk ancestors with simple tag/class/id checks; closest()
+            // with a descendant combinator in a selector list misses that span.
+            const chain: Element[] = [];
+            for (let n: Element | null | undefined = el; n; n = n.parentElement) chain.push(n);
             resolve({
               tag: el?.tagName ?? "NONE",
               src,
-              inMap: Boolean(el?.closest?.(".mapwrap, #mapcard, .map-slot, .map-stage")),
-              isHeadline: Boolean(el?.closest?.("h1, .hero .txt .h")),
-              isBadge: Boolean(el?.closest?.("[data-testid=hero-appstore]")),
-              isFirstScreen: Boolean(
-                el?.closest?.("[data-testid=first-screen-phone-zh], [data-testid=first-screen-phone-en]"),
+              inMap: chain.some(
+                (n) =>
+                  n.id === "vp" ||
+                  n.id === "mapcard" ||
+                  n.classList.contains("mapwrap") ||
+                  n.classList.contains("map-slot") ||
+                  n.classList.contains("map-stage") ||
+                  n.getAttribute("data-testid") === "metro-vp" ||
+                  n.getAttribute("data-testid") === "metro-map" ||
+                  n.getAttribute("data-testid") === "metro-map-slot",
               ),
-              isFood: src.includes("/assets/food/") || Boolean(el?.closest?.(".ph, .fc .ph")),
+              isHeadline: chain.some(
+                (n) => n.tagName === "H1" || n.tagName === "H2" || n.classList.contains("h"),
+              ),
+              isBadge: chain.some((n) => n.getAttribute("data-testid") === "hero-appstore"),
+              isFirstScreen: chain.some((n) => {
+                const id = n.getAttribute("data-testid");
+                return id === "first-screen-phone-zh" || id === "first-screen-phone-en";
+              }),
+              isFood:
+                src.includes("/assets/food/") ||
+                chain.some((n) => n.classList.contains("ph")),
             });
           }, 400);
         });

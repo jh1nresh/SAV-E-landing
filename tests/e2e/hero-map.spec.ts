@@ -17,7 +17,7 @@ test.describe("hero map interactions", () => {
   test("B-1 page lists stations from metro.json", async ({ page }) => {
     expect(metroSource.stations.length).toBeGreaterThan(0);
     for (const station of metroSource.stations) {
-      await expect(page.locator(".strip")).toContainText(station.name);
+      await expect(page.locator("#strip")).toContainText(station.name);
     }
   });
 
