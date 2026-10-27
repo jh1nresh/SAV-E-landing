@@ -114,13 +114,13 @@ export default function SavvyLanding() {
             <h2 className="h zh">
               <span>白天黑夜都好看</span>
               <span>
-                想去的<span className="k">無限</span>收藏
+                想去的地方<span className="k">都收藏</span>
               </span>
             </h2>
             <h2 className="h en">
               <span>Day or night</span>
               <span>
-                <span className="k">Unlimited</span> saves
+                <span className="k">Save</span> every place
               </span>
             </h2>
           </div>
@@ -128,14 +128,14 @@ export default function SavvyLanding() {
             <img
               className="zh"
               src="/assets/phones-zh-4.png"
-              alt="Savvy 深色模式與無限收藏畫面"
+              alt="Savvy 深色與淺色模式首頁畫面"
               loading="lazy"
               decoding="async"
             />
             <img
               className="en"
               src="/assets/phones-en-4.png"
-              alt="Savvy dark mode and unlimited saves screens"
+              alt="Savvy home screen in dark and light mode"
               loading="lazy"
               decoding="async"
             />
