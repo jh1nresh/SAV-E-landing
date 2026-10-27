@@ -860,7 +860,11 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const onZoomIn = () => { cancelPan(); zoomAt(cam.s.x * 1.25, W / 2, H / 2); };
   const onZoomOut = () => { cancelPan(); zoomAt(cam.s.x / 1.25, W / 2, H / 2); };
   const onWheel = (e: WheelEvent) => {
-    if (panFromUi(e.target) || pinch || !e.deltaY) return;
+    // A plain wheel belongs to the page (founder 2026-10-27 16:05): leave it untouched,
+    // no preventDefault, so it scrolls even at 1x. Only Ctrl/Cmd+wheel zooms the map;
+    // trackpad pinch reaches us as ctrlKey wheel, so preventDefault also keeps the
+    // browser from zooming the page (visualViewport.scale stays 1).
+    if (!(e.ctrlKey || e.metaKey) || panFromUi(e.target) || pinch || !e.deltaY) return;
     e.preventDefault();
     cancelPan();
     const box = vp.getBoundingClientRect();
