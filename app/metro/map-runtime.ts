@@ -1,10 +1,15 @@
 import {
   PRICE_PENDING_LABEL,
+  countBadge,
+  countLabel,
+  footNote,
   formatMd,
+  imageAlt,
   isNewDate,
   priceIsEstimate,
   priceIsPending,
   resolveClock,
+  weekNewCount,
   type MetroData,
   type MetroStation,
   type MetroStore,
@@ -233,7 +238,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const pinById: Record<string, Pin> = {};
   let pins: Pin[] = [];
 
-  const weekCountNow = () => data.stores.filter((s) => isNewDate(s.addedAt, clock)).length;
+  const weekCountNow = () => weekNewCount(data.stores, clock);
 
   const paintStamp = () => {
     const n = weekCountNow();
@@ -287,9 +292,9 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         "aria-label",
         soon
           ? `${s.name}，即將更新`
-          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}，共 ${list.length} 間${nw ? "，新增" : ""}`,
+          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}，共 ${countLabel(list)}${nw ? "，新增" : ""}`,
       );
-      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${img}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${list.length} 間`}</span></span>`;
+      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${img}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${countBadge(list)}`}</span></span>`;
       layer.appendChild(el);
       bindImgFallback(el);
       el.addEventListener("click", (e) => {
@@ -348,13 +353,17 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }`;
   };
   const fcard = (s: MetroStore) => {
-    const img = publicImage(s.image);
+    const img = publicImage(s.image ?? "");
     return `<article class="fc"><div class="ph">${
       img
-        ? `<img src="${img}" alt="${escapeHtml(s.dish)}（AI 示意圖）" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
+        ? `<img src="${img}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
     }${isNewDate(s.addedAt, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
-<div class="bd"><h4>${escapeHtml(s.name)}</h4><p class="dish">${escapeHtml(s.dish)}</p><div class="meta">${price(s)}<span>${escapeHtml(s.area)}</span></div><div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div></div>${chips(s.sourcePosts)}</article>`;
+<div class="bd"><h4>${escapeHtml(s.name)}</h4>${s.dish ? `<p class="dish">${escapeHtml(s.dish)}</p>` : ""}<div class="meta">${price(s)}${s.area ? `<span>${escapeHtml(s.area)}</span>` : ""}</div>${
+      s.exitWalkMin == null
+        ? ""
+        : `<div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div>`
+    }</div>${chips(s.sourcePosts)}</article>`;
   };
 
   function fillCard(id: string) {
@@ -368,15 +377,15 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }
     const firstImg = list[0]?.image ? publicImage(list[0].image) : "";
     cmorph.style.backgroundImage = firstImg ? `url(${firstImg})` : "none";
-    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${list.length} 間</span></div>
+    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${countLabel(list)}</span></div>
  <div id="fcslot">${fcard(list[0])}</div>
  <div class="thumbs" role="group" aria-label="這一站的店家">${list
    .map(
      (x, i) =>
        `<button type="button" data-i="${i}" aria-label="${escapeHtml(x.name)}" aria-current="${i === 0}" style="${x.image ? `background-image:url(${publicImage(x.image)})` : ""}"></button>`,
    )
-   .join("")}<span class="more">看全部 ${list.length} 間</span></div>
- <div class="cfoot">菜圖為 AI 示意，非店家實拍。價格為示意。</div>`;
+    .join("")}<span class="more">看全部 ${countLabel(list)}</span></div>
+ <div class="cfoot">${escapeHtml(footNote(list[0]))}</div>`;
     bindImgFallback(cbody);
     cbody.querySelectorAll<HTMLButtonElement>(".thumbs button").forEach((b) =>
       b.addEventListener("click", () => {
@@ -392,6 +401,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         window.setTimeout(
           () => {
             slot.innerHTML = fcard(list[i]);
+            const foot = cbody.querySelector(".cfoot");
+            if (foot) foot.textContent = footNote(list[i]);
             bindImgFallback(slot);
             sizeCard();
             render();
@@ -860,7 +871,11 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const onZoomIn = () => { cancelPan(); zoomAt(cam.s.x * 1.25, W / 2, H / 2); };
   const onZoomOut = () => { cancelPan(); zoomAt(cam.s.x / 1.25, W / 2, H / 2); };
   const onWheel = (e: WheelEvent) => {
-    if (panFromUi(e.target) || pinch || !e.deltaY) return;
+    // A plain wheel belongs to the page (founder 2026-10-27 16:05): leave it untouched,
+    // no preventDefault, so it scrolls even at 1x. Only Ctrl/Cmd+wheel zooms the map;
+    // trackpad pinch reaches us as ctrlKey wheel, so preventDefault also keeps the
+    // browser from zooming the page (visualViewport.scale stays 1).
+    if (!(e.ctrlKey || e.metaKey) || panFromUi(e.target) || pinch || !e.deltaY) return;
     e.preventDefault();
     cancelPan();
     const box = vp.getBoundingClientRect();
