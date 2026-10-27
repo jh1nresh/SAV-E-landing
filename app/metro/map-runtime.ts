@@ -292,7 +292,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       bindImgFallback(el);
       el.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (suppressClick) return;
+        if (suppressClick && isPointerOriginatedClick(e)) return;
+        suppressClick = false;
         select(s.id);
       });
       const p: Pin = {
@@ -677,8 +678,9 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const onKey = (e: KeyboardEvent) => {
     if (e.key === "Escape") closeCard();
   };
+  const isPointerOriginatedClick = (e: Event) => e instanceof MouseEvent && e.detail > 0;
   const onVpClick = (e: MouseEvent) => {
-    if (suppressClick) return;
+    if (suppressClick && isPointerOriginatedClick(e)) return;
     const t = e.target as Element;
     if (t.closest(".pin, .card, .reset")) return;
     if (showing && !closing) closeCard({ focus: false });
@@ -725,15 +727,20 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     cam.y.snapTo(cam.y.x);
     cam.s.snapTo(cam.s.x);
   };
+  function capturePanPointer(id: number) {
+    try {
+      vp.setPointerCapture(id);
+    } catch {
+      /* ignore */
+    }
+  }
   function cancelPan() {
     if (!pan) return;
-    if (pan.claimed) {
-      vp.classList.remove("is-panning");
-      try {
-        if (vp.hasPointerCapture(pan.id)) vp.releasePointerCapture(pan.id);
-      } catch {
-        /* ignore */
-      }
+    if (pan.claimed) vp.classList.remove("is-panning");
+    try {
+      if (vp.hasPointerCapture(pan.id)) vp.releasePointerCapture(pan.id);
+    } catch {
+      /* ignore */
     }
     unbindPanWin();
     pan = null;
@@ -759,11 +766,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       pan.cy = cam.y.x;
       hideHint();
       vp.classList.add("is-panning");
-      try {
-        vp.setPointerCapture(pan.id);
-      } catch {
-        /* ignore */
-      }
+      capturePanPointer(pan.id);
     }
     if (e.cancelable) e.preventDefault();
     const s = Math.max(cam.s.x, 0.0001);
@@ -774,17 +777,25 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   };
   const onPanUp = (e: PointerEvent) => {
     if (!pan || e.pointerId !== pan.id) return;
+    const claimed = pan.claimed;
     cancelPan();
+    if (claimed) window.setTimeout(() => { suppressClick = false; }, 0);
   };
   const onPanCancel = (e: PointerEvent) => {
     if (!pan || e.pointerId !== pan.id) return;
     // After .vp has capture, a pin's implicit-capture cancel must not end the pan.
-    if (pan.claimed && isDescendantCaptureLoss(e)) return;
+    if (pan.claimed && isDescendantCaptureLoss(e)) {
+      capturePanPointer(pan.id);
+      return;
+    }
     cancelPan();
   };
   const onPanLost = (e: PointerEvent) => {
-    if (isDescendantCaptureLoss(e)) return;
     if (!pan || e.pointerId !== pan.id) return;
+    if (isDescendantCaptureLoss(e)) {
+      if (pan.claimed) capturePanPointer(pan.id);
+      return;
+    }
     vp.classList.remove("is-panning");
     unbindPanWin();
     pan = null;
@@ -810,6 +821,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   };
   const onClickCapture = (e: Event) => {
     if (!suppressClick) return;
+    if (!isPointerOriginatedClick(e)) return;
     const t = e.target as Element | null;
     if (t?.closest?.(".reset, .card, .x, a, .tab")) {
       suppressClick = false;

@@ -100,43 +100,108 @@ export async function dragMap(page: Page, dx: number, dy: number) {
   await page.mouse.up();
 }
 
-/** Touch drag that starts on a pin and fires the pin's lostpointercapture (implicit capture). */
-export async function dispatchPinTouchDrag(page: Page, id: string, dx: number, dy: number) {
+export async function pinHitPoint(page: Page, id: string) {
+  const box = await page.locator(`[data-testid=metro-pin-${id}] .hit`).boundingBox();
+  if (!box) throw new Error(`pin hit missing: ${id}`);
+  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+}
+
+export async function worldScreenPos(page: Page) {
+  return page.evaluate(() => {
+    const r = document.getElementById("world")!.getBoundingClientRect();
+    return { left: r.left, top: r.top };
+  });
+}
+
+async function cdpTouchDrag(page: Page, start: { x: number; y: number }, dx: number, dy: number) {
+  const steps = 14;
+  const client = await page.context().newCDPSession(page);
+  await client.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [{ x: start.x, y: start.y }],
+  });
+  for (let i = 1; i <= steps; i++) {
+    await client.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [{ x: start.x + (dx * i) / steps, y: start.y + (dy * i) / steps }],
+    });
+  }
+  await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await client.detach().catch(() => undefined);
+}
+
+/**
+ * Real touch drag starting at `start`.
+ * Chromium: CDP Input.dispatchTouchEvent (QA's reproduction).
+ * WebKit: hasTouch context + Playwright touchscreen tap is start-only, so we
+ * drive the contact with mouse after a real touch-enabled context and inject
+ * the pin's bubbling lostpointercapture (implicit-capture release).
+ */
+export async function realTouchDrag(
+  page: Page,
+  start: { x: number; y: number },
+  dx: number,
+  dy: number,
+) {
+  try {
+    await cdpTouchDrag(page, start, dx, dy);
+    return;
+  } catch {
+    /* WebKit has no CDP */
+  }
+
+  const steps = 14;
+  await page.mouse.move(start.x, start.y);
+  await page.mouse.down();
+  await page.mouse.move(start.x + dx / steps, start.y + dy / steps);
   await page.evaluate(
-    ({ id, dx, dy }) => {
-      const pin = document.querySelector(`[data-testid=metro-pin-${id}] .hit`);
-      if (!pin) throw new Error(`pin hit missing: ${id}`);
-      const r = pin.getBoundingClientRect();
-      const x0 = r.left + r.width / 2;
-      const y0 = r.top + r.height / 2;
-      const fire = (type: string, x: number, y: number) => {
-        pin.dispatchEvent(
-          new PointerEvent(type, {
-            bubbles: true,
-            cancelable: true,
-            composed: true,
-            pointerId: 21,
-            pointerType: "touch",
-            isPrimary: true,
-            button: 0,
-            buttons: type === "pointerup" || type === "lostpointercapture" ? 0 : 1,
-            clientX: x,
-            clientY: y,
-          }),
-        );
-      };
-      fire("pointerdown", x0, y0);
-      const slopX = Math.sign(dx || 1) * 10;
-      fire("pointermove", x0 + slopX, y0 + Math.sign(dy) * 1);
-      fire("lostpointercapture", x0 + slopX, y0);
-      const steps = 10;
-      for (let i = 1; i <= steps; i++) {
-        fire("pointermove", x0 + (dx * i) / steps, y0 + (dy * i) / steps);
-      }
-      fire("pointerup", x0 + dx, y0 + dy);
+    ({ x, y }) => {
+      const el = document.elementFromPoint(x, y) ?? document.getElementById("vp");
+      el?.dispatchEvent(
+        new PointerEvent("lostpointercapture", {
+          bubbles: true,
+          cancelable: true,
+          composed: true,
+          pointerId: 1,
+          pointerType: "touch",
+          isPrimary: true,
+          clientX: x,
+          clientY: y,
+        }),
+      );
     },
-    { id, dx, dy },
+    { x: start.x + dx / steps, y: start.y + dy / steps },
   );
+  await page.mouse.move(start.x + dx, start.y + dy, { steps });
+  await page.mouse.up();
+}
+
+export async function realTouchDragFromPin(page: Page, id: string, distance = 70) {
+  const start = await pinHitPoint(page, id);
+  const vp = await page.locator("#vp").boundingBox();
+  if (!vp) throw new Error("vp missing");
+  const dx = start.x > vp.x + vp.width / 2 ? -distance : distance;
+  const dy = 6 * Math.sign(dx);
+  await realTouchDrag(page, start, dx, dy);
+}
+
+export async function realTouchTap(page: Page, start: { x: number; y: number }) {
+  try {
+    const client = await page.context().newCDPSession(page);
+    await client.send("Input.dispatchTouchEvent", {
+      type: "touchStart",
+      touchPoints: [{ x: start.x, y: start.y }],
+    });
+    await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await client.detach().catch(() => undefined);
+    return;
+  } catch {
+    await page.touchscreen.tap(start.x, start.y);
+  }
+}
+
+export async function realTouchTapPin(page: Page, id: string) {
+  await realTouchTap(page, await pinHitPoint(page, id));
 }
 
 export async function dispatchMapPointerDrag(

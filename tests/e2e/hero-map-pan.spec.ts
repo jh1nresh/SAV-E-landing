@@ -1,12 +1,15 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import {
   clickPin,
   dispatchMapPointerDrag,
-  dispatchPinTouchDrag,
   dragMap,
   emptyMapPoint,
+  realTouchDrag,
+  realTouchDragFromPin,
+  realTouchTapPin,
   waitForCardOpen,
   waitForMap,
+  worldScreenPos,
 } from "./helpers";
 
 test.describe("hero map pan", () => {
@@ -55,31 +58,54 @@ test.describe("hero map pan", () => {
     await expect(page.locator("#cardTitle")).toContainText("後山埤");
   });
 
-  test("touch drag starting on a pin pans and a tap still selects", async ({ page }) => {
-    const before = await page.evaluate(() => {
-      const world = document.getElementById("world")!.getBoundingClientRect();
-      const s = window.__savvyMap!.state();
-      return { left: world.left, top: world.top, camX: s.camX, camY: s.camY, openId: s.openId };
-    });
-    await dispatchPinTouchDrag(page, "houshanpi", 80, 8);
-    const after = await page.evaluate(() => {
-      const world = document.getElementById("world")!.getBoundingClientRect();
-      const s = window.__savvyMap!.state();
-      return { left: world.left, top: world.top, camX: s.camX, camY: s.camY, openId: s.openId };
-    });
-    expect(Math.hypot(after.left - before.left, after.top - before.top)).toBeGreaterThan(60);
-    expect(after.camX).not.toBeCloseTo(before.camX, 1);
-    expect(after.openId).toBeNull();
-    await expect(page.locator("#card")).toBeHidden();
+  test.describe("real pin-start touch", () => {
+    test.use({ hasTouch: true });
 
-    await page.evaluate(() => window.__savvyMap!.goHome());
-    await expect.poll(async () => {
-      const s = await page.evaluate(() => window.__savvyMap!.state());
-      return Math.hypot(s.camX - before.camX, s.camY - before.camY);
-    }).toBeLessThan(2);
-    await clickPin(page, "houshanpi");
-    await waitForCardOpen(page);
-    await expect(page.locator("#cardTitle")).toContainText("後山埤");
+    async function assertPinTouchPans(page: Page, pinId: string) {
+      const before = await worldScreenPos(page);
+      await realTouchDragFromPin(page, pinId, 70);
+      await page.waitForTimeout(50);
+      const after = await worldScreenPos(page);
+      const moved = Math.hypot(after.left - before.left, after.top - before.top);
+      expect(moved, `map moved ${moved.toFixed(1)}px of a 70px pin-start touch drag`).toBeGreaterThan(60);
+      expect(await page.evaluate(() => window.__savvyMap!.state().openId)).toBeNull();
+      await expect(page.locator("#card")).toBeHidden();
+    }
+
+    test("home: touch drag from a pin pans ~70px and does not select", async ({ page }) => {
+      await assertPinTouchPans(page, "houshanpi");
+      await page.evaluate(() => window.__savvyMap!.goHome());
+      await page.waitForTimeout(50);
+      await realTouchTapPin(page, "houshanpi");
+      await waitForCardOpen(page);
+      await expect(page.locator("#cardTitle")).toContainText("後山埤");
+    });
+
+    test("zoomed: touch drag from a pin pans ~70px and does not select", async ({ page }) => {
+      await page.evaluate((id) => window.__savvyMap!.select(id), "dongmen");
+      await waitForCardOpen(page);
+      await page.evaluate(() => window.__savvyMap!.closeCard({ focus: false }));
+      await expect(page.locator("#card")).toBeHidden();
+      await expect(page.locator("#vp")).toHaveClass(/zoomed/);
+      await assertPinTouchPans(page, "dongmen");
+    });
+
+    test("Enter on a pin still selects after a touch pan", async ({ page }) => {
+      const start = await emptyMapPoint(page);
+      await realTouchDrag(page, start, 70, 6);
+      await expect(page.locator("#card")).toBeHidden();
+      const pin = page.locator("[data-testid=metro-pin-houshanpi]");
+      await pin.focus();
+      await expect(pin).toBeFocused();
+      await page.keyboard.press("Enter");
+      await waitForCardOpen(page);
+      await expect(page.locator("#cardTitle")).toContainText("後山埤");
+      await page.keyboard.press("Escape");
+      await expect(page.locator("#card")).toBeHidden();
+      await pin.focus();
+      await page.keyboard.press("Space");
+      await waitForCardOpen(page);
+    });
   });
 
   test("vertical touch swipe on the home map does not trap page scroll", async ({ page, browserName }) => {
