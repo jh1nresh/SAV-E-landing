@@ -1,12 +1,18 @@
 import publicMetro from "../app/metro/metro.public.json";
 import {
+  EXAMPLE_STAMP_NOTE,
   PRICE_PENDING_LABEL,
+  STORE_KINDS,
   daysBetween,
+  footNote,
   formatMd,
+  imageAlt,
+  isExampleStore,
   isNewDate,
   priceIsEstimate,
   priceIsPending,
   resolveClock,
+  stampNote,
   taipeiDate,
 } from "./metro-logic.mjs";
 
@@ -18,21 +24,28 @@ export type SourcePost = {
   date: string;
 };
 
+/** "example" = illustrative entry; "post" = entry grown from a real founder post. */
+export type StoreKind = (typeof STORE_KINDS)[number];
+
 export type MetroStore = {
   id: string;
+  kind: StoreKind;
   stationId: string;
   name: string;
-  dish: string;
+  /** Required for example; optional for post. */
+  dish?: string;
   priceNT?: number;
   priceFrom: boolean;
   priceSource?: string;
   pricePending?: boolean;
   priceCheckedAt: string | null;
   exit: string | null;
-  exitWalkMin: number;
-  area: string;
-  hours: string;
-  image: string;
+  exitWalkMin?: number | null;
+  area?: string;
+  hours?: string;
+  image?: string;
+  /** Only ever `false` (founder/licensed photo); absent means an AI illustration. Derived at build. */
+  imageAi?: false;
   sourcePosts: SourcePost[];
   addedAt: string;
   verified: boolean;
@@ -54,7 +67,6 @@ export type MetroStation = {
 
 export type MetroData = {
   _meta: {
-    example: boolean;
     asOf: string;
     note?: string;
   };
@@ -63,13 +75,19 @@ export type MetroData = {
 };
 
 export {
+  EXAMPLE_STAMP_NOTE,
   PRICE_PENDING_LABEL,
+  STORE_KINDS,
   daysBetween,
+  footNote,
   formatMd,
+  imageAlt,
+  isExampleStore,
   isNewDate,
   priceIsEstimate,
   priceIsPending,
   resolveClock,
+  stampNote,
   taipeiDate,
 };
 

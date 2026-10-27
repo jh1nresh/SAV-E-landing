@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
 import { ttfCmapCodepoints } from "./ttf-cmap.mjs";
+import { EXAMPLE_STAMP_NOTE, PRICE_PENDING_LABEL, footNote, imageAlt } from "../lib/metro-logic.mjs";
 
 const present = ttfCmapCodepoints("public/assets/fonts/Iansui-SavvySubset.ttf");
 
@@ -52,7 +53,15 @@ function collect(value, acc) {
   }
 }
 
-const strings = [...ui];
+// Label copy comes from the same pure functions the UI uses, so a new label can never skip the glyph guard.
+const labelCopy = [
+  EXAMPLE_STAMP_NOTE,
+  PRICE_PENDING_LABEL,
+  footNote({ kind: "example" }),
+  footNote({ kind: "post", image: "x" }),
+  imageAlt({ kind: "example", name: "", dish: "" }),
+];
+const strings = [...ui, ...labelCopy];
 collect(metro, strings);
 
 const skip = /[\s\dA-Za-z0-9.,:;!?'"“”‘’…—–\-_/#+@$%&()[\]{}<>~`|\\^*=]|[▲△○●□■]/u;

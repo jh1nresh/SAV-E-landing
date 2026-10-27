@@ -1,6 +1,8 @@
 import {
   PRICE_PENDING_LABEL,
+  footNote,
   formatMd,
+  imageAlt,
   isNewDate,
   priceIsEstimate,
   priceIsPending,
@@ -348,13 +350,17 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }`;
   };
   const fcard = (s: MetroStore) => {
-    const img = publicImage(s.image);
+    const img = publicImage(s.image ?? "");
     return `<article class="fc"><div class="ph">${
       img
-        ? `<img src="${img}" alt="${escapeHtml(s.dish)}（AI 示意圖）" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
+        ? `<img src="${img}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
     }${isNewDate(s.addedAt, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
-<div class="bd"><h4>${escapeHtml(s.name)}</h4><p class="dish">${escapeHtml(s.dish)}</p><div class="meta">${price(s)}<span>${escapeHtml(s.area)}</span></div><div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div></div>${chips(s.sourcePosts)}</article>`;
+<div class="bd"><h4>${escapeHtml(s.name)}</h4>${s.dish ? `<p class="dish">${escapeHtml(s.dish)}</p>` : ""}<div class="meta">${price(s)}${s.area ? `<span>${escapeHtml(s.area)}</span>` : ""}</div>${
+      s.exitWalkMin == null
+        ? ""
+        : `<div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div>`
+    }</div>${chips(s.sourcePosts)}</article>`;
   };
 
   function fillCard(id: string) {
@@ -376,7 +382,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
        `<button type="button" data-i="${i}" aria-label="${escapeHtml(x.name)}" aria-current="${i === 0}" style="${x.image ? `background-image:url(${publicImage(x.image)})` : ""}"></button>`,
    )
    .join("")}<span class="more">看全部 ${list.length} 間</span></div>
- <div class="cfoot">菜圖為 AI 示意，非店家實拍。價格為示意。</div>`;
+ <div class="cfoot">${escapeHtml(footNote(list[0]))}</div>`;
     bindImgFallback(cbody);
     cbody.querySelectorAll<HTMLButtonElement>(".thumbs button").forEach((b) =>
       b.addEventListener("click", () => {
@@ -392,6 +398,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         window.setTimeout(
           () => {
             slot.innerHTML = fcard(list[i]);
+            const foot = cbody.querySelector(".cfoot");
+            if (foot) foot.textContent = footNote(list[i]);
             bindImgFallback(slot);
             sizeCard();
             render();
