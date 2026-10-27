@@ -51,7 +51,8 @@ for (const store of pub.stores) {
     console.error("live-price store missing priceNT", store.id);
     process.exit(1);
   }
-  if (!store.image.startsWith("/assets/food/") || store.image.startsWith("data:")) {
+  if (store.kind === "post" && (store.image == null || store.image === "")) continue;
+  if (typeof store.image !== "string" || !store.image.startsWith("/assets/food/") || store.image.startsWith("data:")) {
     console.error("store image must be a public file path:", store.id, store.image);
     process.exit(1);
   }
