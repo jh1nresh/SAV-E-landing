@@ -100,6 +100,45 @@ export async function dragMap(page: Page, dx: number, dy: number) {
   await page.mouse.up();
 }
 
+/** Touch drag that starts on a pin and fires the pin's lostpointercapture (implicit capture). */
+export async function dispatchPinTouchDrag(page: Page, id: string, dx: number, dy: number) {
+  await page.evaluate(
+    ({ id, dx, dy }) => {
+      const pin = document.querySelector(`[data-testid=metro-pin-${id}] .hit`);
+      if (!pin) throw new Error(`pin hit missing: ${id}`);
+      const r = pin.getBoundingClientRect();
+      const x0 = r.left + r.width / 2;
+      const y0 = r.top + r.height / 2;
+      const fire = (type: string, x: number, y: number) => {
+        pin.dispatchEvent(
+          new PointerEvent(type, {
+            bubbles: true,
+            cancelable: true,
+            composed: true,
+            pointerId: 21,
+            pointerType: "touch",
+            isPrimary: true,
+            button: 0,
+            buttons: type === "pointerup" || type === "lostpointercapture" ? 0 : 1,
+            clientX: x,
+            clientY: y,
+          }),
+        );
+      };
+      fire("pointerdown", x0, y0);
+      const slopX = Math.sign(dx || 1) * 10;
+      fire("pointermove", x0 + slopX, y0 + Math.sign(dy) * 1);
+      fire("lostpointercapture", x0 + slopX, y0);
+      const steps = 10;
+      for (let i = 1; i <= steps; i++) {
+        fire("pointermove", x0 + (dx * i) / steps, y0 + (dy * i) / steps);
+      }
+      fire("pointerup", x0 + dx, y0 + dy);
+    },
+    { id, dx, dy },
+  );
+}
+
 export async function dispatchMapPointerDrag(
   page: Page,
   dx: number,

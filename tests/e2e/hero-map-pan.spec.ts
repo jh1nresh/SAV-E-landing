@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import {
   clickPin,
   dispatchMapPointerDrag,
+  dispatchPinTouchDrag,
   dragMap,
   emptyMapPoint,
   waitForCardOpen,
@@ -50,6 +51,34 @@ test.describe("hero map pan", () => {
 
   test("a tap still selects a station", async ({ page }) => {
     await clickPin(page, "houshanpi");
+    await waitForCardOpen(page);
+    await expect(page.locator("#cardTitle")).toContainText("後山埤");
+  });
+
+  test("touch drag starting on a pin pans and a tap still selects", async ({ page }) => {
+    const pin = page.locator("[data-testid=metro-pin-houshanpi] .hit");
+    const before = await page.evaluate(() => {
+      const world = document.getElementById("world")!.getBoundingClientRect();
+      const s = window.__savvyMap!.state();
+      return { left: world.left, top: world.top, camX: s.camX, camY: s.camY, openId: s.openId };
+    });
+    await dispatchPinTouchDrag(page, "houshanpi", 80, 8);
+    const after = await page.evaluate(() => {
+      const world = document.getElementById("world")!.getBoundingClientRect();
+      const s = window.__savvyMap!.state();
+      return { left: world.left, top: world.top, camX: s.camX, camY: s.camY, openId: s.openId };
+    });
+    expect(Math.hypot(after.left - before.left, after.top - before.top)).toBeGreaterThan(60);
+    expect(after.camX).not.toBeCloseTo(before.camX, 1);
+    expect(after.openId).toBeNull();
+    await expect(page.locator("#card")).toBeHidden();
+
+    await page.evaluate(() => window.__savvyMap!.goHome());
+    await expect.poll(async () => {
+      const s = await page.evaluate(() => window.__savvyMap!.state());
+      return Math.hypot(s.camX - before.camX, s.camY - before.camY);
+    }).toBeLessThan(2);
+    await pin.tap();
     await waitForCardOpen(page);
     await expect(page.locator("#cardTitle")).toContainText("後山埤");
   });

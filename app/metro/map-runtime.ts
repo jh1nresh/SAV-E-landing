@@ -715,8 +715,10 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const unbindPanWin = () => {
     window.removeEventListener("pointermove", onPanMove, panMoveOpts);
     window.removeEventListener("pointerup", onPanUp);
-    window.removeEventListener("pointercancel", onPanUp);
+    window.removeEventListener("pointercancel", onPanCancel);
   };
+  /** Pin hits take implicit touch capture; their release bubbles to .vp. */
+  const isDescendantCaptureLoss = (e: PointerEvent) => e.target !== vp;
   const takeCamera = () => {
     window.clearTimeout(flightTimer);
     cam.x.snapTo(cam.x.x);
@@ -774,7 +776,14 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     if (!pan || e.pointerId !== pan.id) return;
     cancelPan();
   };
+  const onPanCancel = (e: PointerEvent) => {
+    if (!pan || e.pointerId !== pan.id) return;
+    // After .vp has capture, a pin's implicit-capture cancel must not end the pan.
+    if (pan.claimed && isDescendantCaptureLoss(e)) return;
+    cancelPan();
+  };
   const onPanLost = (e: PointerEvent) => {
+    if (isDescendantCaptureLoss(e)) return;
     if (!pan || e.pointerId !== pan.id) return;
     vp.classList.remove("is-panning");
     unbindPanWin();
@@ -797,7 +806,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     };
     window.addEventListener("pointermove", onPanMove, panMoveOpts);
     window.addEventListener("pointerup", onPanUp);
-    window.addEventListener("pointercancel", onPanUp);
+    window.addEventListener("pointercancel", onPanCancel);
   };
   const onClickCapture = (e: Event) => {
     if (!suppressClick) return;
