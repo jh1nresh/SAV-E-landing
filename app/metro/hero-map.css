@@ -753,7 +753,7 @@ body.still .pin.new .gr {
 }
 
 .compass {
-  right: 10px;
+  right: 114px;
   bottom: 6px;
   z-index: 1;
 }
@@ -791,6 +791,33 @@ body.still .pin.new .gr {
   visibility: visible;
 }
 
+.mapzoom {
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.mapzoom button {
+  width: 44px;
+  height: 44px;
+  border: 1.8px solid var(--ink);
+  border-radius: 14px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  font-size: 24px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.mapzoom button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.mapzoom button:focus-visible,
 .reset:focus-visible,
 .x:focus-visible,
 .thumbs button:focus-visible,
@@ -1172,6 +1199,11 @@ body.rm .pin.new .gr {
     top: auto;
     bottom: 10px;
     right: 10px;
+  }
+
+  .mapzoom {
+    right: auto;
+    left: 10px;
   }
 
   section.s-cta {
