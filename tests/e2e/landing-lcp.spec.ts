@@ -101,11 +101,30 @@ test.describe("first-screen LCP hints and OSM credit", () => {
           po.observe({ type: "largest-contentful-paint", buffered: true });
           setTimeout(() => {
             po.disconnect();
-            const el = last?.element as HTMLElement | undefined;
+            const raw = last?.element as HTMLElement | undefined;
+            const norm = (s: string) => s.replace(/\s+/g, " ").trim();
+            // WebKit can report a detached pre-hydration snapshot of the
+            // headline <span>. Rebind to the live node, then walk ancestors
+            // with simple tag/class/id checks (closest() cannot leave a
+            // disconnected node to reach the h1 / badge).
+            const liveOf = (el: HTMLElement | undefined): HTMLElement | undefined => {
+              if (!el) return undefined;
+              if (el.isConnected) return el;
+              if (el instanceof HTMLImageElement && el.getAttribute("src")) {
+                const src = el.getAttribute("src")!;
+                const img = [...document.images].find((i) => i.getAttribute("src") === src);
+                if (img) return img;
+              }
+              const text = norm(el.textContent ?? "");
+              if (text) {
+                for (const n of document.querySelectorAll(el.tagName)) {
+                  if (norm(n.textContent ?? "") === text) return n as HTMLElement;
+                }
+              }
+              return el;
+            };
+            const el = liveOf(raw);
             const src = el instanceof HTMLImageElement ? el.getAttribute("src") ?? "" : "";
-            // WebKit can report LCP as the headline's inner <span>. Walk
-            // ancestors with simple tag/class/id checks — closest() with a
-            // descendant combinator in a selector list misses that span.
             const chain: Element[] = [];
             for (let n: Element | null | undefined = el; n; n = n.parentElement) chain.push(n);
             const underHeroTxt = (n: Element) => {
@@ -117,6 +136,11 @@ test.describe("first-screen LCP hints and OSM credit", () => {
               }
               return hero && txt;
             };
+            const heroH1 = document.querySelector(".hero .txt h1, .hero h1");
+            const lcpText = norm(el?.textContent ?? "");
+            const textInHeroHeadline = Boolean(
+              lcpText && heroH1 && norm(heroH1.textContent ?? "").includes(lcpText),
+            );
             resolve({
               tag: el?.tagName ?? "NONE",
               src,
@@ -131,7 +155,9 @@ test.describe("first-screen LCP hints and OSM credit", () => {
                   n.getAttribute("data-testid") === "metro-map" ||
                   n.getAttribute("data-testid") === "metro-map-slot",
               ),
-              isHeadline: chain.some((n) => n.tagName === "H1" || (n.classList.contains("h") && underHeroTxt(n))),
+              isHeadline:
+                chain.some((n) => n.tagName === "H1" || (n.classList.contains("h") && underHeroTxt(n))) ||
+                textInHeroHeadline,
               isBadge: chain.some((n) => n.getAttribute("data-testid") === "hero-appstore"),
               isFirstScreen: chain.some((n) => {
                 const id = n.getAttribute("data-testid");
