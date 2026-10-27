@@ -1,4 +1,4 @@
-import { formatMd, latestUpdatedAt, stampNote, type MetroData } from "../../lib/metro";
+import { formatMd, latestUpdatedAt, stampLevel, stampNote, type MetroData } from "../../lib/metro";
 import { useSiteLang } from "../SiteChrome";
 import { MapPaper } from "./MapPaper";
 import { MAP_SVG, SVG_DEFS } from "./map-svg";
@@ -13,6 +13,7 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
   const { lang } = useSiteLang();
   const latest = latestUpdatedAt(data);
   const note = stampNote(data.stores);
+  const partial = stampLevel(data.stores) === "partial";
   const stations = data.stations.slice().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
   return (
     <div className="mapwrap mapwrap-slot" data-testid="metro-map-slot" role="img"
@@ -30,7 +31,7 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
         <div className="mapcard">
           <MapPaper id="poster-map-paper" />
           <span className="tape a" />
-          <div className="stamp"><span>{latest ? `更新於 ${formatMd(latest)}` : ""}</span>{note ? <i>{note}</i> : null}</div>
+          <div className="stamp"><span>{latest ? `更新於 ${formatMd(latest)}` : ""}</span>{note ? <i className={partial ? "partial" : undefined}>{note}</i> : null}</div>
           <div className="vp poster-vp" data-testid="metro-map-skeleton">
             <div className="poster-world">
               <div dangerouslySetInnerHTML={{ __html: posterSvg(MAP_SVG) }} />

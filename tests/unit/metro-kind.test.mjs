@@ -3,14 +3,21 @@ import { test } from "node:test";
 import { readFileSync } from "node:fs";
 import {
   EXAMPLE_STAMP_NOTE,
+  EXAMPLE_STAMP_NOTE_EN,
+  PARTIAL_STAMP_NOTE,
+  PARTIAL_STAMP_NOTE_EN,
   PRICE_PENDING_LABEL,
+  countLabel,
+  countShort,
   footNote,
   imageAlt,
   isExampleStore,
   isNewDate,
   priceIsEstimate,
   priceIsPending,
+  stampLevel,
   stampNote,
+  weekNewCount,
 } from "../../lib/metro-logic.mjs";
 import { buildPublicMetro } from "../../scripts/build-metro.mjs";
 
@@ -84,14 +91,57 @@ test("a kind=post fixture validates, has no price, and is not labelled example",
   }
 });
 
-test("the map-level 範例資料 stamp appears only while every entry is an example", () => {
+test("P0-10 map-level stamp: all example = full stamp, mixed = smaller 部分為範例, all post = none", () => {
   const raw = load();
   raw.stores.push(postFixture());
   const mixed = buildPublicMetro(raw);
-  assert.equal(stampNote(mixed.stores), "");
-  assert.equal(stampNote(mixed.stores.filter((s) => s.kind === "example")), EXAMPLE_STAMP_NOTE);
-  assert.equal(stampNote(mixed.stores.filter((s) => s.kind === "post")), "");
+  const examples = mixed.stores.filter((s) => s.kind === "example");
+  const posts = mixed.stores.filter((s) => s.kind === "post");
+  assert.equal(stampLevel(examples), "example");
+  assert.equal(stampNote(examples), EXAMPLE_STAMP_NOTE);
+  assert.equal(stampNote(examples, "en"), EXAMPLE_STAMP_NOTE_EN);
+  assert.equal(stampLevel(mixed.stores), "partial");
+  assert.equal(stampNote(mixed.stores), "部分為範例");
+  assert.equal(stampNote(mixed.stores), PARTIAL_STAMP_NOTE);
+  assert.equal(stampNote(mixed.stores, "en"), PARTIAL_STAMP_NOTE_EN);
+  assert.equal(stampLevel(posts), "none");
+  assert.equal(stampNote(posts), "");
+  assert.equal(stampNote(posts, "en"), "");
+  assert.equal(stampLevel([]), "none");
   assert.equal(stampNote([]), "");
+  // a lone unknown kind is fail-safe example
+  assert.equal(stampLevel([{ kind: "whatever" }, { kind: "post" }]), "partial");
+});
+
+test("P0-10 'n 間' count: never one summed number when mixed", () => {
+  const ex = (n) => Array.from({ length: n }, () => ({ kind: "example" }));
+  const po = (n) => Array.from({ length: n }, () => ({ kind: "post" }));
+  // all example / all post / empty: plain count (unchanged for shipped data)
+  assert.equal(countLabel(ex(3)), "3 間");
+  assert.equal(countLabel(ex(3), "en"), "3 places");
+  assert.equal(countLabel(po(2)), "2 間");
+  assert.equal(countLabel(po(2), "en"), "2 places");
+  assert.equal(countLabel(po(1), "en"), "1 place");
+  assert.equal(countLabel([]), "0 間");
+  // mixed
+  assert.equal(countLabel([...po(1), ...ex(2)]), "3 間（1 間來自貼文、2 間為範例）");
+  assert.equal(countLabel([...po(1), ...ex(2)], "en"), "3 places (1 from posts, 2 examples)");
+  assert.equal(countLabel([...ex(1), ...po(3)]), "4 間（3 間來自貼文、1 間為範例）");
+  assert.equal(countShort(5), "5 間");
+  assert.equal(countShort(5, "en"), "5 places");
+});
+
+test("P0-10 headline 本週新增 N = every entry added within 7 days, whatever its kind (P-1 narrows to posts)", () => {
+  const raw = load();
+  raw.stores.push(postFixture({ addedAt: "2026-10-26" }));
+  const mixed = buildPublicMetro(raw);
+  const base = mixed.stores.filter((s) => s.kind === "example");
+  const today = "2026-10-27";
+  const exampleNew = weekNewCount(base, today);
+  assert.equal(weekNewCount(mixed.stores, today), exampleNew + 1);
+  // shipped all-example data today (10/27): same number the page printed before this change
+  assert.equal(exampleNew, base.filter((s) => isNewDate(s.addedAt, today)).length);
+  assert.equal(weekNewCount([], today), 0);
 });
 
 test("an unknown or missing kind is treated as example at render time (fail-safe: labelled)", () => {

@@ -1,5 +1,6 @@
 import {
   PRICE_PENDING_LABEL,
+  countLabel,
   footNote,
   formatMd,
   imageAlt,
@@ -7,6 +8,7 @@ import {
   priceIsEstimate,
   priceIsPending,
   resolveClock,
+  weekNewCount,
   type MetroData,
   type MetroStation,
   type MetroStore,
@@ -235,7 +237,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const pinById: Record<string, Pin> = {};
   let pins: Pin[] = [];
 
-  const weekCountNow = () => data.stores.filter((s) => isNewDate(s.addedAt, clock)).length;
+  const weekCountNow = () => weekNewCount(data.stores, clock);
 
   const paintStamp = () => {
     const n = weekCountNow();
@@ -289,7 +291,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         "aria-label",
         soon
           ? `${s.name}，即將更新`
-          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}，共 ${list.length} 間${nw ? "，新增" : ""}`,
+          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}，共 ${countLabel(list)}${nw ? "，新增" : ""}`,
       );
       el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${img}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${list.length} 間`}</span></span>`;
       layer.appendChild(el);
@@ -374,7 +376,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }
     const firstImg = list[0]?.image ? publicImage(list[0].image) : "";
     cmorph.style.backgroundImage = firstImg ? `url(${firstImg})` : "none";
-    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${list.length} 間</span></div>
+    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${countLabel(list)}</span></div>
  <div id="fcslot">${fcard(list[0])}</div>
  <div class="thumbs" role="group" aria-label="這一站的店家">${list
    .map(

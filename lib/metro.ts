@@ -1,8 +1,13 @@
 import publicMetro from "../app/metro/metro.public.json";
 import {
   EXAMPLE_STAMP_NOTE,
+  EXAMPLE_STAMP_NOTE_EN,
+  PARTIAL_STAMP_NOTE,
+  PARTIAL_STAMP_NOTE_EN,
   PRICE_PENDING_LABEL,
   STORE_KINDS,
+  countLabel,
+  countShort,
   daysBetween,
   footNote,
   formatMd,
@@ -12,8 +17,10 @@ import {
   priceIsEstimate,
   priceIsPending,
   resolveClock,
+  stampLevel,
   stampNote,
   taipeiDate,
+  weekNewCount,
 } from "./metro-logic.mjs";
 
 export type SourcePlatform = "ig" | "threads" | "xhs";
@@ -76,8 +83,13 @@ export type MetroData = {
 
 export {
   EXAMPLE_STAMP_NOTE,
+  EXAMPLE_STAMP_NOTE_EN,
+  PARTIAL_STAMP_NOTE,
+  PARTIAL_STAMP_NOTE_EN,
   PRICE_PENDING_LABEL,
   STORE_KINDS,
+  countLabel,
+  countShort,
   daysBetween,
   footNote,
   formatMd,
@@ -87,8 +99,10 @@ export {
   priceIsEstimate,
   priceIsPending,
   resolveClock,
+  stampLevel,
   stampNote,
   taipeiDate,
+  weekNewCount,
 };
 
 export function getPublicMetroData(): MetroData {

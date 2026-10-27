@@ -263,6 +263,12 @@ section.hero {
   letter-spacing: 0.04em;
 }
 
+/* Mixed data (post + example): the same stamp line, one step smaller and quieter. */
+.stamp i.partial {
+  font-size: 9.5px;
+  font-weight: 500;
+}
+
 .fc {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr);

@@ -13,6 +13,14 @@ export function resolveClock(search: string | URLSearchParams | null | undefined
 export const STORE_KINDS: readonly ["example", "post"];
 export function isExampleStore(store: { kind?: string } | null | undefined): boolean;
 export const EXAMPLE_STAMP_NOTE: string;
-export function stampNote(stores: ReadonlyArray<{ kind?: string }>): string;
+export const EXAMPLE_STAMP_NOTE_EN: string;
+export const PARTIAL_STAMP_NOTE: string;
+export const PARTIAL_STAMP_NOTE_EN: string;
+export type StampLevel = "example" | "partial" | "none";
+export function stampLevel(stores: ReadonlyArray<{ kind?: string }> | null | undefined): StampLevel;
+export function stampNote(stores: ReadonlyArray<{ kind?: string }>, lang?: "zh" | "en"): string;
+export function countShort(n: number, lang?: "zh" | "en"): string;
+export function countLabel(stores: ReadonlyArray<{ kind?: string }>, lang?: "zh" | "en"): string;
+export function weekNewCount(stores: ReadonlyArray<{ addedAt?: string | null }>, todayYmd: string): number;
 export function footNote(store: { kind?: string; image?: string; imageAi?: boolean }): string;
 export function imageAlt(store: { dish?: string; name: string; kind?: string; imageAi?: boolean }): string;

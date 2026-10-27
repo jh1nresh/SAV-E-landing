@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import metro from "../../app/metro/metro.public.json";
-import { footNote, imageAlt, isExampleStore, isNewDate, priceIsPending } from "../../lib/metro-logic.mjs";
+import { countLabel, footNote, imageAlt, isExampleStore, isNewDate, priceIsPending, stampLevel, stampNote, weekNewCount } from "../../lib/metro-logic.mjs";
 import { clickPin, openStation, waitForCardOpen, waitForMap } from "./helpers";
 
 test.describe("hero content and motion", () => {
@@ -17,7 +17,7 @@ test.describe("hero content and motion", () => {
     const clocks = [...new Set(anchors.flatMap((a) => [0, 6, 7, 8].map((n) => addDays(a, n))))];
 
     for (const clock of clocks) {
-      const weekCount = metro.stores.filter((x) => isNewDate(x.addedAt, clock)).length;
+      const weekCount = weekNewCount(metro.stores, clock);
       await page.goto(`/?clock=${clock}`);
       await waitForMap(page);
       expect(await page.evaluate(() => window.__savvyMap!.state().weekCount), `weekCount @${clock}`).toBe(weekCount);
@@ -43,13 +43,21 @@ test.describe("hero content and motion", () => {
     // tests/unit/metro-kind.test.mjs (no real entry is ever put into shipped data for a test).
     await page.goto("/?reduce=1");
     await waitForMap(page);
-    const everyExample = metro.stores.every((x) => isExampleStore(x));
-    await expect(page.locator("#mapcard .stamp i")).toHaveCount(everyExample ? 1 : 0);
-    if (everyExample) await expect(page.locator("#mapcard .stamp i")).toHaveText("範例資料 · 示意");
+    // Map-level stamp follows the data (P0-10): all example = full stamp, mixed = smaller 部分為範例, all post = none.
+    const level = stampLevel(metro.stores);
+    await expect(page.locator("#mapcard .stamp i")).toHaveCount(level === "none" ? 0 : 1);
+    if (level !== "none") await expect(page.locator("#mapcard .stamp i")).toHaveText(stampNote(metro.stores));
+    if (level === "partial") await expect(page.locator("#mapcard .stamp i")).toHaveClass(/partial/);
+    else if (level === "example") {
+      await expect(page.locator("#mapcard .stamp i")).toHaveText("範例資料 · 示意");
+      await expect(page.locator("#mapcard .stamp i")).not.toHaveClass(/partial/);
+    }
 
     for (const st of metro.stations.filter((x) => x.status === "live")) {
       const list = metro.stores.filter((x) => x.stationId === st.id);
+      await expect(page.locator(`[data-testid=metro-pin-${st.id}]`)).toHaveAttribute("aria-label", new RegExp(`共 ${countLabel(list).replace(/[()（）]/g, "\\$&")}`));
       await openStation(page, st.id);
+      await expect(page.locator("#card .ph-head .upd")).toContainText(`共 ${countLabel(list)}`);
       for (const [i, store] of list.entries()) {
         if (i > 0) await page.locator("#card .thumbs button").nth(i).click();
         await expect(page.locator("#card .fc h4")).toHaveText(store.name);

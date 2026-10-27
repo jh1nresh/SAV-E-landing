@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { formatMd, latestUpdatedAt, stampNote, type MetroData } from "../../lib/metro";
+import { formatMd, latestUpdatedAt, stampLevel, stampNote, type MetroData } from "../../lib/metro";
 import { MAP_SVG, SVG_DEFS } from "./map-svg";
 import { MapPaper } from "./MapPaper";
 import { bootMetroMap } from "./map-runtime";
@@ -10,6 +10,7 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
   const rootRef = useRef<HTMLDivElement>(null);
   const latest = latestUpdatedAt(data);
   const note = stampNote(data.stores);
+  const partial = stampLevel(data.stores) === "partial";
 
   useEffect(() => {
     const root = rootRef.current;
@@ -32,7 +33,7 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
         <div className="stamp" id="stamp">
           <b id="stampA" data-week-count="" />
           <span id="stampB">{latest ? `更新於 ${formatMd(latest)}` : ""}</span>
-          {note ? <i>{note}</i> : null}
+          {note ? <i className={partial ? "partial" : undefined}>{note}</i> : null}
         </div>
         <div className="vp" id="vp" data-testid="metro-vp">
           <div className="world" id="world" dangerouslySetInnerHTML={{ __html: MAP_SVG }} />
