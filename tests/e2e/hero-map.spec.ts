@@ -28,6 +28,8 @@ test.describe("hero map interactions", () => {
     const zoomed = await page.evaluate(() => window.__savvyMap!.state().camS);
     await expect(page.locator("[data-testid=metro-reset]")).toHaveClass(/on/);
     await page.locator("[data-testid=metro-reset]").click();
+    // Close latency is frame-bound (slow WebKit CI); wait for it on its own budget.
+    await page.waitForFunction(() => { const s = window.__savvyMap!.state(); return s.showing === null && !s.closing; }, null, { timeout: 45_000 });
     await expect(page.locator("#card")).toBeHidden();
     await page.waitForFunction((was) => window.__savvyMap!.state().camS < was, zoomed);
     await page.locator("[data-testid=metro-tab-dongmen]").click();
@@ -102,6 +104,8 @@ test.describe("hero map interactions", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(200);
     await page.evaluate(() => window.__savvyMap?.goHome());
+    // goHome() starts a frame-bound card close; wait for it on its own budget.
+    await page.waitForFunction(() => { const s = window.__savvyMap!.state(); return s.showing === null && !s.closing; }, null, { timeout: 45_000 });
     await expect(page.locator("#mapsvg")).toBeVisible();
     const metrics = await page.evaluate(() => {
       const svg = document.getElementById("mapsvg") as SVGElement | null;
@@ -123,6 +127,8 @@ test.describe("hero map interactions", () => {
     await page.setViewportSize({ width: 1440, height: 800 });
     await page.waitForTimeout(200);
     await page.evaluate(() => window.__savvyMap?.goHome());
+    // goHome() starts a frame-bound card close; wait for it on its own budget.
+    await page.waitForFunction(() => { const s = window.__savvyMap!.state(); return s.showing === null && !s.closing; }, null, { timeout: 45_000 });
     await expect(page.locator("#mapsvg")).toBeVisible();
     const metrics = await page.evaluate(() => {
       const svg = document.getElementById("mapsvg") as SVGElement | null;
