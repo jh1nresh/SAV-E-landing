@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { brotliDecompressSync } from "node:zlib";
 
 function u16(buf, off) {
   return buf.readUInt16BE(off);
@@ -7,19 +8,70 @@ function u32(buf, off) {
   return buf.readUInt32BE(off);
 }
 
-export function ttfCmapCodepoints(path) {
-  const buf = readFileSync(path);
+// WOFF2 known-table tags by flag index (W3C WOFF2 spec, section 5.1); only the
+// transform rules below matter for finding `cmap` in the decompressed stream.
+const WOFF2_TAGS = [
+  "cmap", "head", "hhea", "hmtx", "maxp", "name", "OS/2", "post", "cvt ", "fpgm",
+  "glyf", "loca", "prep", "CFF ", "VORG", "EBDT", "EBLC", "gasp", "hdmx", "kern",
+  "LTSH", "PCLT", "VDMX", "vhea", "vmtx", "BASE", "GDEF", "GPOS", "GSUB", "EBSC",
+  "JSTF", "MATH", "CBDT", "CBLC", "COLR", "CPAL", "SVG ", "sbix", "acnt", "avar",
+  "bdat", "bloc", "bsln", "cvar", "fdsc", "feat", "fmtx", "fvar", "gvar", "hsty",
+  "just", "lcar", "mort", "morx", "opbd", "prop", "trak", "Zapf", "Silf", "Glat",
+  "Gloc", "Feat", "Sill",
+];
+
+function readBase128(buf, pos) {
+  let value = 0;
+  for (let i = 0; i < 5; i++) {
+    const b = buf[pos.off++];
+    value = value * 128 + (b & 0x7f);
+    if (!(b & 0x80)) return value;
+  }
+  throw new Error("bad UIntBase128");
+}
+
+// Returns { cmap: Buffer } for a plain sfnt (TTF/OTF) or a WOFF2 container.
+// `cmap` is never transformed in WOFF2, so its bytes equal the sfnt cmap table.
+function readCmapTable(buf) {
+  const magic = buf.toString("ascii", 0, 4);
+  if (magic === "wOF2") {
+    const numTables = u16(buf, 12);
+    const totalCompressed = u32(buf, 20);
+    const pos = { off: 48 };
+    const tables = [];
+    for (let i = 0; i < numTables; i++) {
+      const flags = buf[pos.off++];
+      const idx = flags & 0x3f;
+      const version = flags >> 6;
+      const tag = idx === 63 ? buf.toString("ascii", pos.off, (pos.off += 4)) : WOFF2_TAGS[idx];
+      const origLength = readBase128(buf, pos);
+      const transformed = tag === "glyf" || tag === "loca" ? version === 0 : version !== 0;
+      const length = transformed ? readBase128(buf, pos) : origLength;
+      tables.push({ tag, length });
+    }
+    const raw = brotliDecompressSync(buf.subarray(pos.off, pos.off + totalCompressed));
+    let off = 0;
+    for (const t of tables) {
+      if (t.tag === "cmap") return raw.subarray(off, off + t.length);
+      off += t.length;
+    }
+    throw new Error("no cmap");
+  }
   const numTables = u16(buf, 4);
-  let cmapOff = 0;
   for (let i = 0; i < numTables; i++) {
     const rec = 12 + i * 16;
-    const tag = buf.toString("ascii", rec, rec + 4);
-    if (tag === "cmap") {
-      cmapOff = u32(buf, rec + 8);
-      break;
+    if (buf.toString("ascii", rec, rec + 4) === "cmap") {
+      const o = u32(buf, rec + 8);
+      return buf.subarray(o, o + u32(buf, rec + 12));
     }
   }
-  if (!cmapOff) throw new Error("no cmap");
+  throw new Error("no cmap");
+}
+
+// Reads the Unicode cmap of a .ttf or .woff2 file (name kept for importers).
+export function ttfCmapCodepoints(path) {
+  const buf = readCmapTable(readFileSync(path));
+  const cmapOff = 0;
   const num = u16(buf, cmapOff + 2);
   const cps = new Set();
   for (let i = 0; i < num; i++) {

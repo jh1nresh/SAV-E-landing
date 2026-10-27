@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { ttfCmapCodepoints } from "./ttf-cmap.mjs";
 
-const present = ttfCmapCodepoints("public/assets/fonts/Iansui-SavvySubset.ttf");
+const present = ttfCmapCodepoints("public/assets/fonts/Iansui-SavvySubset.woff2");
 
 const metro = JSON.parse(readFileSync("app/metro/metro.public.json", "utf8"));
 const ui = [

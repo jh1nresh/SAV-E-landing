@@ -43,9 +43,9 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
-          href="/assets/fonts/Iansui-SavvySubset.ttf"
+          href="/assets/fonts/Iansui-SavvySubset.woff2"
           as="font"
-          type="font/ttf"
+          type="font/woff2"
           crossOrigin="anonymous"
         />
         <link
