@@ -11,3 +11,6 @@ reports/playwright/
 reports/lighthouse-mobile.json
 playwright-report/
 blob-report/
+
+# Generated from data/metro.json before build, typecheck and tests.
+app/metro/metro.public.json
