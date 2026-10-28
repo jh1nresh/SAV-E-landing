@@ -85,8 +85,8 @@
       "order": 7,
       "name": "公館",
       "line": "松山新店線",
-      "status": "coming_soon",
-      "updatedAt": null,
+      "status": "live",
+      "updatedAt": "2026-10-28",
       "mapPos": {
         "line": "L_green",
         "at": [
@@ -728,6 +728,148 @@
       "area": "松山區",
       "exit": "5 號出口",
       "hours": "16:30–00:00（週一、週三休）"
+    },
+    {
+      "id": "gongguan-1",
+      "kind": "post",
+      "stationId": "gongguan",
+      "name": "藍家割包",
+      "priceNT": null,
+      "pricePending": true,
+      "verified": false,
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "https://www.instagram.com/savvysave_/p/De_t2ktFtia/",
+          "date": "2026-10-27"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De_t-dNFTVw",
+          "date": "2026-10-27"
+        }
+      ],
+      "addedAt": "2026-10-28",
+      "backfill": false,
+      "image": "/assets/food/gongguan-1.jpg",
+      "imageSource": "ai",
+      "dish": "割包",
+      "exit": "4 號出口",
+      "hours": "11:00–22:00（週一休）"
+    },
+    {
+      "id": "gongguan-2",
+      "kind": "post",
+      "stationId": "gongguan",
+      "name": "珍記豬血糕",
+      "priceNT": null,
+      "pricePending": true,
+      "verified": false,
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "https://www.instagram.com/savvysave_/p/De_t2ktFtia/",
+          "date": "2026-10-27"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De_t-dNFTVw",
+          "date": "2026-10-27"
+        }
+      ],
+      "addedAt": "2026-10-28",
+      "backfill": false,
+      "image": "/assets/food/gongguan-2.jpg",
+      "imageSource": "ai",
+      "dish": "豬血糕",
+      "exit": "4 號出口",
+      "hours": "12:00–21:30（週三休）"
+    },
+    {
+      "id": "gongguan-3",
+      "kind": "post",
+      "stationId": "gongguan",
+      "name": "17食堂",
+      "priceNT": null,
+      "pricePending": true,
+      "verified": false,
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "https://www.instagram.com/savvysave_/p/De_t2ktFtia/",
+          "date": "2026-10-27"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De_t-dNFTVw",
+          "date": "2026-10-27"
+        }
+      ],
+      "addedAt": "2026-10-28",
+      "backfill": false,
+      "image": "/assets/food/gongguan-3.jpg",
+      "imageSource": "ai",
+      "dish": "莆田荔枝肉客飯",
+      "exit": "4 號出口",
+      "exitWalkMin": 3,
+      "hours": "11:30–14:30、17:30–21:00（僅平日）"
+    },
+    {
+      "id": "gongguan-4",
+      "kind": "post",
+      "stationId": "gongguan",
+      "name": "龍記炒燴",
+      "priceNT": null,
+      "pricePending": true,
+      "verified": false,
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "https://www.instagram.com/savvysave_/p/De_t2ktFtia/",
+          "date": "2026-10-27"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De_t-dNFTVw",
+          "date": "2026-10-27"
+        }
+      ],
+      "addedAt": "2026-10-28",
+      "backfill": false,
+      "image": "/assets/food/gongguan-4.jpg",
+      "imageSource": "ai",
+      "dish": "滑蛋牛肉燴飯",
+      "exit": "1 號出口",
+      "exitWalkMin": 2,
+      "hours": "12:00–15:00、17:00–20:00（週一休＋不定休）"
+    },
+    {
+      "id": "gongguan-5",
+      "kind": "post",
+      "stationId": "gongguan",
+      "name": "李記正客家魷魚羹",
+      "priceNT": null,
+      "pricePending": true,
+      "verified": false,
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "https://www.instagram.com/savvysave_/p/De_t2ktFtia/",
+          "date": "2026-10-27"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/De_t-dNFTVw",
+          "date": "2026-10-27"
+        }
+      ],
+      "addedAt": "2026-10-28",
+      "backfill": false,
+      "image": "/assets/food/gongguan-5.jpg",
+      "imageSource": "ai",
+      "dish": "生魷魚羹麵",
+      "exit": "1 號出口",
+      "hours": "06:50–19:30（週一休）"
     }
   ]
 }
