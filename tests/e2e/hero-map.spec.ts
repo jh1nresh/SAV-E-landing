@@ -197,7 +197,7 @@ test.describe("hero map interactions", () => {
     await openStation(page, "arena");
     const arena = page.locator("#card .src");
     await expect(arena).toHaveCount(2);
-    await expect(arena.nth(0)).toHaveAttribute("href", "https://www.instagram.com/p/DewQqqNm7ay/");
+    await expect(arena.nth(0)).toHaveAttribute("href", "https://www.instagram.com/savvysave_/p/DewQqqNm7ay/");
     await expect(arena.nth(0)).toHaveAttribute("data-platform", "ig");
     await expect(arena.nth(1)).toHaveAttribute("href", "https://www.threads.com/@savvysave_/post/DewQ7Zrm-DR");
     await expect(arena.nth(1)).toHaveAttribute("data-platform", "threads");
@@ -214,7 +214,7 @@ test.describe("hero map interactions", () => {
     await openStation(page, "houshanpi");
     await expect(page.locator("#card .src[data-platform=ig]")).toHaveAttribute(
       "href",
-      "https://www.instagram.com/p/De6kh33mwwb/",
+      "https://www.instagram.com/savvysave_/p/De6kh33mwwb/",
     );
     await expect(page.locator("body")).not.toContainText("#example");
   });
