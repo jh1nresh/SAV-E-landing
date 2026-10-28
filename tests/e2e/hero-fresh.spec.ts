@@ -23,7 +23,8 @@ for (const width of [390, 1280]) {
         { ...post, id:'test-backfill', name:'補登測試', backfill:true },
         { ...post, id:'test-old', name:'舊文測試', sourcePosts:[{ platform:'threads', url:'https://www.threads.com/@savvysave_/post/TEST_ONLY', date:'2026-10-26' }] },
         { ...base, id:'test-example', addedAt:'2026-10-30' },
-        ...data.stores.filter((s) => s.stationId !== 'dongmen'),
+        // Keep real-data freshness out of this one-station synthetic boundary case.
+        ...data.stores.filter((s) => s.stationId !== 'dongmen').map((s) => ({ ...s, backfill: true })),
       ];
       await page.addScriptTag({ type:'module', content: logic+'\n'+runtime+'\nwindow.__testBoot = bootMetroMap;' });
       await page.waitForFunction(() => Boolean((window as any).__testBoot));
