@@ -2,10 +2,11 @@
 import { execSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { hasUnapprovedVendorMention } from "./public-guide-copy.mjs";
 
 const FORBIDDEN = ["本機互動原型", "10/25 預定", "INTERNAL_NOTE_MUST_NOT_SHIP", "#example"];
 const GOOGLE_HOSTS = ["googleapis", "gstatic", "maps.google", "maps.googleapis"];
-const GOOGLE_WORD = /google/i;
+
 const root = process.cwd();
 
 function walk(dir, acc = []) {
@@ -41,6 +42,7 @@ const sourceFiles = [
   ...walk(join(root, "lib")),
   ...walk(join(root, "public")),
   join(root, "README.md"),
+  join(root, "data/guides.json"),
 ].filter((f) => !f.endsWith("metro.public.json") && !f.includes("Iansui"));
 
 const sourceHits = grepFiles(sourceFiles, FORBIDDEN);
@@ -55,7 +57,7 @@ if (hostHits.length) {
   process.exit(1);
 }
 
-function grepWord(files, re) {
+function grepWord(files, predicate) {
   const hits = [];
   for (const file of files) {
     let text;
@@ -64,14 +66,14 @@ function grepWord(files, re) {
     } catch {
       continue;
     }
-    if (re.test(text)) hits.push(file);
+    if (predicate(text)) hits.push(file);
   }
   return hits;
 }
 
 const vendorSourceHits = grepWord(
   sourceFiles.filter((f) => !/\.(png|jpg|jpeg|webp|gif|ttf|woff2?|otf)$/i.test(f)),
-  GOOGLE_WORD,
+  hasUnapprovedVendorMention,
 );
 if (vendorSourceHits.length) {
   console.error("vendor name in source:\n" + vendorSourceHits.join("\n"));
@@ -109,7 +111,7 @@ if (existsSync(nextDir)) {
       /\/app[_/]/.test(f) ||
       /\/app\/metro\//.test(f),
   );
-  const vendorBuilt = grepWord(pageBuilt, GOOGLE_WORD);
+  const vendorBuilt = grepWord(pageBuilt, hasUnapprovedVendorMention);
   if (vendorBuilt.length) {
     console.error("vendor name leaked into page build output:\n" + vendorBuilt.join("\n"));
     process.exit(1);

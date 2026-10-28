@@ -97,6 +97,7 @@ function SiteFooter() {
 
   return (
     <footer className="site">
+      <a href="/zh-tw/guides" lang="zh-Hant">收藏整理指南（繁體中文）</a>
       <a href={hrefWithLang("/privacy", lang)}>Savvy Privacy Policy</a>
       <a href={hrefWithLang("/support", lang)}>Savvy Support</a>
       <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>

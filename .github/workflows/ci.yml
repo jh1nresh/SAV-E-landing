@@ -60,3 +60,12 @@ jobs:
 
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high
+
+      - name: Keep guide viewport evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: guide-screenshots-${{ github.sha }}
+          path: guide-screenshots/*.png
+          if-no-files-found: ignore
+          retention-days: 7
