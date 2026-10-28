@@ -373,6 +373,14 @@ section.hero {
   margin-top: 3px;
 }
 
+.post-hours {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
 .walk svg {
   width: 13px;
   height: 13px;

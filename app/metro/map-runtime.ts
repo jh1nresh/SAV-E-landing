@@ -344,7 +344,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     if (!posts.length) return `<span class="src pending">貼文即將發布</span>`;
     return `<div class="srcrow">${posts.map(chip).join("")}</div>`;
   };
-  const walk = (s: MetroStore) => `${s.exit ? `${s.exit} · ` : ""}步行約 ${s.exitWalkMin} 分`;
+  const walk = (s: MetroStore) => `${s.exit ? `${escapeHtml(s.exit)} · ` : ""}${s.exitWalkMin == null ? "步行時間未取得" : `步行約 ${s.exitWalkMin} 分`}`;
   const price = (s: MetroStore) => {
     if (priceIsPending(s)) {
       return `<span class="est" data-testid="price-pending">${PRICE_PENDING_LABEL}</span>`;
@@ -361,10 +361,10 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         : ""
     }${isNewStore(s, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
 <div class="bd"><h4>${escapeHtml(s.name)}</h4>${s.dish ? `<p class="dish">${escapeHtml(s.dish)}</p>` : ""}<div class="meta">${price(s)}${s.area ? `<span>${escapeHtml(s.area)}</span>` : ""}</div>${
-      s.exitWalkMin == null
+      s.exitWalkMin == null && s.kind === "example"
         ? ""
         : `<div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div>`
-    }</div>${chips(s.sourcePosts)}</article>`;
+    }${s.kind === "post" ? `<p class="post-hours">營業時間：${escapeHtml(s.hours || "未取得")}</p>` : ""}</div>${chips(s.sourcePosts)}</article>`;
   };
 
   function fillCard(id: string) {
@@ -372,7 +372,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const list = storesOf(id);
     const nw = stationIsNew(list, clock);
     if (s.status === "coming_soon") {
-      cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站</small></h3><span class="soontag">即將更新</span></div><div class="soonbody"><svg viewBox="-20 -46 40 50" width="34" height="42" fill="none" stroke="#8d857a" stroke-width="2.4" stroke-dasharray="3.5 4.5" stroke-linecap="round"><path d="M0 0 C-5 -9 -16 -19 -16 -31 a16 16 0 1 1 32 0 C16 -19 5 -9 0 0Z"/></svg><p><b>這一站的貼文還沒發。</b>貼文發出後，店家會自動長到這張地圖上。</p></div>`;
+      cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站</small></h3><span class="soontag">即將更新</span></div><div class="soonbody"><svg viewBox="-20 -46 40 50" width="34" height="42" fill="none" stroke="#8d857a" stroke-width="2.4" stroke-dasharray="3.5 4.5" stroke-linecap="round"><path d="M0 0 C-5 -9 -16 -19 -16 -31 a16 16 0 1 1 32 0 C16 -19 5 -9 0 0Z"/></svg><p><b>這一站的店家資料準備中。</b>核對完成後，會更新到這張地圖上。</p></div>`;
       cmorph.style.backgroundImage = "none";
       return;
     }

@@ -31,7 +31,7 @@ App Store badges keep `data-swap="appstore-url"` so the href can be swapped at l
 
 Homepage map, station strip, NEW badges, and “本週新增” are generated from one file: `data/metro.json`.
 
-- Every store has a `kind`: `"example"` (illustrative sample; today all entries) or `"post"` (grown from a real founder post). Labels follow each entry's `kind`, not a page-wide flag (`_meta.example` is retired and rejected by the build). Example entries are labelled **範例資料 · 示意** / prices **示意**; a `post` entry has no price number (shown 價格待查), carries no example label, and needs only `id`, `kind`, `stationId`, `name`, `sourcePosts`, `addedAt`. The map-level 範例資料 stamp shows only while every entry is an example.
+- Every store has a `kind`: `"example"` (illustrative sample) or `"post"` (grown from a real founder post). Labels follow each entry's `kind`, not a page-wide flag (`_meta.example` is retired and rejected by the build). Example entries are labelled **範例資料 · 示意** / prices **示意**; a `post` entry has no price number (shown 價格待查), carries no example label, and needs only `id`, `kind`, `stationId`, `name`, `sourcePosts`, `addedAt`. The map-level 範例資料 stamp shows only while every entry is an example.
 - Unverified example prices are labelled **示意** (`verified: false`).
 - Private `notes` fields are stripped by `scripts/build-metro.mjs` before anything is imported by the app. The public payload is `app/metro/metro.public.json`.
 - Station `mapPos` is a hand-drawn schematic point (not a geographic coordinate). The build snaps it onto the doodle line.

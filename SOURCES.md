@@ -12,3 +12,9 @@ Ported into this Next.js app (routes `/`, `/privacy`, `/support`). Founder appro
 | 4 | dark home | dark-main 第 1 欄 | 上下補背景色 |
 | 4 | paywall | light-flows 第 3 欄（Price unavailable） | 無 |
 只去掉 board 畫面外圍 2–3px 的灰色描邊，內容不裁不拉伸；中英文頁共用英文畫面。
+
+## 松山補登與公館預備站（2026-10-28 查看）
+
+- 松山4家：創辦人提供的 codex-bundle2.tgz，songshan/ 的店家 JSON、IG/Threads 全文與已核對連結紀錄。欄位以已提供 IG 實發全文為準；價格不採用，步行分鐘未取得。圖片沿用提供的 AI 示意圖，商用授權未查證；生成日僅有 credits checked 日期，非獨立生成紀錄。
+- 公館：同包 gongguan-raw/data.json 提供網站序號7，店家/貼文來源尚未核對，因此僅以即將更新的站點呈現，無店家、圖片或貼文連結。
+- 路線與站序：[臺北捷運公館站](https://web.metro.taipei/pages2026/WebStation/039/8)（G07 公館 → G08 台電大樓 → G09 古亭）。僅據此將公館放在既有綠線示意南段；座標不是地理位置。未使用官方地圖或標誌。

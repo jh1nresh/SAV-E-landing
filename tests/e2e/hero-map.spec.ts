@@ -119,7 +119,7 @@ test.describe("hero map interactions", () => {
     expect(metrics.viewH).toBeGreaterThan(8);
     expect(metrics.transform).not.toContain("scale(0)");
     await expect(page.locator("[data-testid=metro-pin-houshanpi] .ph")).toBeVisible();
-    await expect(page.locator(".pin .ph")).toHaveCount(5);
+    await expect(page.locator(".pin .ph")).toHaveCount(metroSource.stations.length);
   });
 
   test("C-4 widen resize while card is open does not blank the map", async ({ page }) => {
@@ -140,7 +140,7 @@ test.describe("hero map interactions", () => {
     expect(metrics.viewW).toBeGreaterThan(8);
     expect(metrics.viewH).toBeGreaterThan(8);
     await expect(page.locator("[data-testid=metro-pin-dongmen] .ph")).toBeVisible();
-    await expect(page.locator(".pin .ph")).toHaveCount(5);
+    await expect(page.locator(".pin .ph")).toHaveCount(metroSource.stations.length);
   });
 
   test("C-4 orientation-style width change does not blank the map", async ({ page }) => {
@@ -165,7 +165,7 @@ test.describe("hero map interactions", () => {
     expect(metrics.w).toBeGreaterThan(100);
     expect(metrics.viewW).toBeGreaterThan(8);
     await expect(page.locator("#mapsvg")).toBeVisible();
-    await expect(page.locator(".pin")).toHaveCount(5);
+    await expect(page.locator(".pin")).toHaveCount(metroSource.stations.length);
   });
 
   test("D-6 card stays usable when food images fail", async ({ page }) => {

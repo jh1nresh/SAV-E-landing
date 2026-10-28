@@ -80,8 +80,11 @@ test("source URLs must be https instagram.com or threads.com, never #example", (
 test("review-vendor shops become pricePending and drop source + number", () => {
   const raw = JSON.parse(readFileSync("data/metro.json", "utf8"));
   const pub = buildPublicMetro(raw);
-  const pending = pub.stores.filter((s) => s.pricePending);
-  assert.equal(pending.length, 3);
+  const vendorIds = raw.stores.filter((s) => /google/i.test(s.priceSource ?? "")).map((s) => s.id);
+  assert.ok(vendorIds.length > 0);
+  const pending = pub.stores.filter((s) => vendorIds.includes(s.id));
+  assert.equal(pending.length, vendorIds.length);
+  assert.ok(pending.every((s) => s.pricePending));
   assert.ok(pending.every((s) => s.priceNT === undefined));
   assert.ok(pending.every((s) => !("priceSource" in s)));
   assert.ok(priceIsPending(pending[0]));
