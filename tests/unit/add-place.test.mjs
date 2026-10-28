@@ -59,7 +59,7 @@ test('dry-run is read-only; import preserves existing entries; rerun is byte-ide
 test('refuses invalid entries without changing any file', (t) => {
   const cases = [
     [{ stationSuggest: 'unknown' }, /unknown station/],
-    [{ stationSuggest: 'songshan' }, /not live/],
+    [{ stationSuggest: 'TEST_PENDING_STATION' }, /not live/],
     [{ sourcePosts: [] }, /sourcePosts/],
     [{ priceNT: 800 }, /price fields/], [{ priceNT: null }, /price fields/], [{ pricePending: true }, /price fields/],
     [{ _f1: { status: '沒有' } }, /_f1/], [{ _f1: { status: '部分' } }, /_f1/],
@@ -74,7 +74,15 @@ test('refuses invalid entries without changing any file', (t) => {
     [{ _image: { file: './dish.jpg', imageSourceSuggest: 'licensed', imageStatus: '通過', licence:'未取得' } }, /licence/],
   ];
   for (const [entry, error] of cases) {
-    const opts = fixture(t, entry); const before = snapshot(opts.root);
+    const opts = fixture(t, entry);
+    if (entry.stationSuggest === 'TEST_PENDING_STATION') {
+      const data = structuredClone(raw);
+      data.stations.push({ ...raw.stations[0], id: 'test-pending', status: 'coming_soon', updatedAt: null });
+      const input = JSON.parse(readFileSync(opts.entryPath)); input.stationSuggest = 'test-pending';
+      writeFileSync(opts.entryPath, JSON.stringify(input));
+      writeFileSync(join(opts.root, 'data/metro.json'), JSON.stringify(data));
+    }
+    const before = snapshot(opts.root);
     assert.throws(() => addPlace(opts), error); assert.deepEqual(snapshot(opts.root), before);
   }
 });

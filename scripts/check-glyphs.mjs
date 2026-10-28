@@ -28,9 +28,11 @@ const ui = [
   "點一站，看吃什麼",
   "捷運口袋名單",
   "菜圖為 AI 示意，非店家實拍。價格為示意。",
-  "這一站的貼文還沒發。",
-  "貼文發出後，店家會自動長到這張地圖上。",
+  "這一站的店家資料準備中。",
+  "核對完成後，會更新到這張地圖上。",
   "步行約",
+  "步行時間未取得",
+  "營業時間：未取得",
   "分",
   "第",
   "站",
@@ -88,11 +90,11 @@ if (missing.size) {
   process.exit(1);
 }
 
-for (const ch of ["万", "菓", "双", "ㄦ"]) {
+for (const ch of ["万", "菓", "双", "ㄦ", "莆", "＋"]) {
   if (!present.has(ch.codePointAt(0))) {
     console.error(`required glyph ${ch} missing from Iansui subset`);
     process.exit(1);
   }
 }
 
-console.log(`check-glyphs: ok (${present.size} cmap entries, 万/菓/双/ㄦ present)`);
+console.log(`check-glyphs: ok (${present.size} cmap entries, 万/菓/双/ㄦ/莆/＋ present)`);

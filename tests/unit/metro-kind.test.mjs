@@ -39,13 +39,13 @@ const postFixture = (over = {}) => ({
   ...over,
 });
 
-test("every shipped store is kind=example, and _meta.example is gone", () => {
+test("every shipped store declares its kind, and _meta.example is gone", () => {
   const raw = load();
   assert.ok(raw.stores.length > 0);
-  assert.ok(raw.stores.every((s) => s.kind === "example"));
+  assert.ok(raw.stores.every((s) => ["example", "post"].includes(s.kind)));
   assert.equal("example" in raw._meta, false);
   const pub = buildPublicMetro(raw);
-  assert.ok(pub.stores.every((s) => s.kind === "example"));
+  assert.deepEqual(pub.stores.map((s) => s.kind), raw.stores.map((s) => s.kind));
   assert.equal("example" in pub._meta, false);
 });
 
@@ -64,8 +64,10 @@ test("kind is required and must be example|post; _meta.example is rejected", () 
 test("example entries keep today's exact labels", () => {
   const pub = buildPublicMetro(load());
   assert.equal(EXAMPLE_STAMP_NOTE, "範例資料 · 示意");
-  assert.equal(stampNote(pub.stores), "範例資料 · 示意");
-  for (const s of pub.stores) {
+  const examples = pub.stores.filter(isExampleStore);
+  assert.ok(examples.length > 0);
+  assert.equal(stampNote(examples), "範例資料 · 示意");
+  for (const s of examples) {
     assert.equal(isExampleStore(s), true);
     assert.equal(footNote(s), "菜圖為 AI 示意，非店家實拍。價格為示意。");
     assert.equal(imageAlt(s), `${s.dish}（AI 示意圖）`);
@@ -195,16 +197,16 @@ test("P0-11 AI sentence is per entry: AI post gets it, founder/licensed photo do
     return buildPublicMetro(raw).stores.at(-1);
   };
   const ai = build({ image: "/assets/food/fixture.jpg", [key]: "ai" });
-  assert.equal(footNote(ai), "菜圖為 AI 示意，非店家實拍。");
+  assert.equal(footNote(ai), "菜圖為 AI 示意，非店家實拍。價格、營業時間可能調整，出發前再確認。");
   assert.equal(imageAlt({ ...ai, dish: "鍋貼" }), "鍋貼（AI 示意圖）");
   for (const src of ["founder", "licensed"]) {
     const photo = build({ image: "/assets/food/fixture.jpg", [key]: src });
     assert.equal(photo.imageAi, false);
     assert.equal(key in photo, false); // internal, never public
-    assert.equal(footNote(photo), "");
+    assert.equal(footNote(photo), "價格、營業時間可能調整，出發前再確認。");
     assert.equal(imageAlt(photo), "測試用店家");
   }
-  assert.equal(footNote(build({})), "");
+  assert.equal(footNote(build({})), "價格、營業時間可能調整，出發前再確認。");
   // example entries never gain the field and keep today's sentence
   const ex = buildPublicMetro(load()).stores[0];
   assert.equal("imageAi" in ex, false);
@@ -245,7 +247,7 @@ test("imported imageAi cannot suppress the derived AI disclosure", () => {
       ...(source ? { imageSource: source } : {}) }));
     const post = buildPublicMetro(raw).stores.at(-1);
     assert.equal("imageAi" in post, false);
-    assert.equal(footNote(post), "菜圖為 AI 示意，非店家實拍。");
+    assert.equal(footNote(post), "菜圖為 AI 示意，非店家實拍。價格、營業時間可能調整，出發前再確認。");
     assert.match(imageAlt(post), /AI 示意圖/);
   }
 });

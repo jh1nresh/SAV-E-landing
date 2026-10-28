@@ -38,9 +38,7 @@ test.describe("hero content and motion", () => {
   });
 
   test("P-0 labels follow each entry's kind: example entries are labelled, post entries are not", async ({ page }) => {
-    // Data-driven over the shipped data. The shipped data is all kind=example, so this proves the
-    // example side end to end; the post side is proven on the same pure functions in
-    // tests/unit/metro-kind.test.mjs (no real entry is ever put into shipped data for a test).
+    // Exercise both kinds present in the shipped data; synthetic edge cases stay in unit tests.
     await page.goto("/?reduce=1");
     await waitForMap(page);
     // Map-level stamp follows the data (P0-10): all example = full stamp, mixed = smaller 部分為範例, all post = none.
@@ -68,6 +66,9 @@ test.describe("hero content and motion", () => {
         } else {
           await expect(page.locator("#card .cfoot")).not.toContainText("價格為示意");
           await expect(page.locator("#card .fc .est")).not.toHaveText("示意");
+          await expect(page.locator("#card .post-hours")).toHaveText(`營業時間：${store.hours || "未取得"}`);
+          if (store.exit) await expect(page.locator("#card .walk")).toContainText(store.exit);
+          if (store.exitWalkMin == null) await expect(page.locator("#card .walk")).toContainText("步行時間未取得");
         }
         const pending = priceIsPending(store);
         await expect(page.locator("#card .fc [data-testid=price-pending]")).toHaveCount(pending ? 1 : 0);

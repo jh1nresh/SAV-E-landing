@@ -24,3 +24,5 @@ Do not change names to look-alike characters to get past the guard. If a charact
 ## History
 - #12: initial subset, 4870 codepoints (万／菓 included).
 - Adds 双 (U+53CC) and ㄦ (U+3126), needed by 士林 entry 「双胞胎手工蛋餅捲ㄦ」: +648 bytes (3,723,732 → 3,724,380).
+
+- 公館資料：增加 莆 (U+8386) 與 ＋ (U+FF0B)，沿用上述固定來源；3,724,380 → 3,726,460 bytes。所有既有 glyph 的輪廓座標逐一比對相同。
