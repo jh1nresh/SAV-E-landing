@@ -90,11 +90,11 @@ if (missing.size) {
   process.exit(1);
 }
 
-for (const ch of ["万", "菓", "双", "ㄦ"]) {
+for (const ch of ["万", "菓", "双", "ㄦ", "莆", "＋"]) {
   if (!present.has(ch.codePointAt(0))) {
     console.error(`required glyph ${ch} missing from Iansui subset`);
     process.exit(1);
   }
 }
 
-console.log(`check-glyphs: ok (${present.size} cmap entries, 万/菓/双/ㄦ present)`);
+console.log(`check-glyphs: ok (${present.size} cmap entries, 万/菓/双/ㄦ/莆/＋ present)`);
