@@ -33,7 +33,7 @@ const postFixture = (over = {}) => ({
   kind: "post",
   stationId: "houshanpi",
   name: "測試用店家",
-  sourcePosts: [{ platform: "ig", url: "https://www.instagram.com/p/FIXTURE0001/", date: "2026-10-26" }],
+  sourcePosts: [{ platform: "ig", url: "https://www.instagram.com/savvysave_/p/FIXTURE0001/", date: "2026-10-26" }],
   addedAt: "2026-10-26",
   verified: false,
   ...over,
@@ -138,17 +138,12 @@ test("P0-10 'n 間' count: never one summed number when mixed", () => {
   assert.equal(countBadge(po(2)), "2 間");
 });
 
-test("P0-10 headline 本週新增 N = every entry added within 7 days, whatever its kind (P-1 narrows to posts)", () => {
+test("P-1 headline excludes examples and historical posts", () => {
   const raw = load();
   raw.stores.push(postFixture({ addedAt: "2026-10-26" }));
   const mixed = buildPublicMetro(raw);
-  const base = mixed.stores.filter((s) => s.kind === "example");
-  const today = "2026-10-27";
-  const exampleNew = weekNewCount(base, today);
-  assert.equal(weekNewCount(mixed.stores, today), exampleNew + 1);
-  // shipped all-example data today (10/27): same number the page printed before this change
-  assert.equal(exampleNew, base.filter((s) => isNewDate(s.addedAt, today)).length);
-  assert.equal(weekNewCount([], today), 0);
+  assert.equal(weekNewCount(mixed.stores, "2026-10-27"), 0);
+  assert.equal(weekNewCount([], "2026-10-27"), 0);
 });
 
 test("an unknown or missing kind is treated as example at render time (fail-safe: labelled)", () => {

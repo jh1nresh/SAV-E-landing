@@ -6,6 +6,8 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { isAllowedStoreSource } from "./source-links.mjs";
+export { isAllowedSourceUrl } from "./source-links.mjs";
 import { STORE_KINDS } from "../lib/metro-logic.mjs";
 import { snapToLine } from "./metro-lines.mjs";
 
@@ -21,20 +23,6 @@ const outPath = resolve(root, "app/metro/metro.public.json");
 const LINE_IDS = new Set(["L_red", "L_blue", "L_green"]);
 const PLATFORMS = new Set(["ig", "threads", "xhs"]);
 const YMD = /^\d{4}-\d{2}-\d{2}$/;
-const SOURCE_HOSTS = new Set(["instagram.com", "www.instagram.com", "threads.com", "www.threads.com"]);
-
-export function isAllowedSourceUrl(url) {
-  if (typeof url !== "string" || !url || url.includes("#example")) return false;
-  let parsed;
-  try {
-    parsed = new URL(url);
-  } catch {
-    return false;
-  }
-  if (parsed.protocol !== "https:") return false;
-  return SOURCE_HOSTS.has(parsed.hostname.toLowerCase());
-}
-
 export function fail(msg) {
   throw new Error(`metro schema: ${msg}`);
 }
@@ -128,6 +116,7 @@ function validate(data) {
     const p = `stores[${i}]`;
     if (!STORE_KINDS.includes(s.kind)) fail(`${p}.kind must be one of ${STORE_KINDS.join(", ")}`);
     const isPost = s.kind === "post";
+    if ("backfill" in s && typeof s.backfill !== "boolean") fail(`${p}.backfill must be boolean`);
     // example entries keep the full legacy field set; post entries need only identity + source + date,
     // and carry no price (shown as 價格待查), so everything else is optional-but-typed.
     for (const key of isPost
@@ -187,7 +176,7 @@ function validate(data) {
       if (!PLATFORMS.has(post.platform)) fail(`${p} bad source platform`);
       if (typeof post.url !== "string" || !post.url) fail(`${p} source url`);
       if (post.url.includes("#example")) fail(`${p} source url must not be a placeholder`);
-      if (!isAllowedSourceUrl(post.url)) fail(`${p} source url must be https on instagram.com or threads.com`);
+      if (!isAllowedStoreSource(s, post)) fail(`${p} source url must match the official account permalink whitelist`);
       if (!isYmd(post.date)) fail(`${p} source date`);
     }
     if (!isYmd(s.addedAt)) fail(`${p}.addedAt`);

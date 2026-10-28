@@ -67,7 +67,7 @@ test("schema fails on malformed status", () => {
 });
 
 test("source URLs must be https instagram.com or threads.com, never #example", () => {
-  assert.equal(isAllowedSourceUrl("https://www.instagram.com/p/DewQqqNm7ay/"), true);
+  assert.equal(isAllowedSourceUrl("https://www.instagram.com/p/DewQqqNm7ay/"), false);
   assert.equal(isAllowedSourceUrl("https://www.threads.com/@savvysave_/post/DewQ7Zrm-DR"), true);
   assert.equal(isAllowedSourceUrl("#example"), false);
   assert.equal(isAllowedSourceUrl("https://www.xiaohongshu.com/explore/6adb37d0000000003301e297"), false);

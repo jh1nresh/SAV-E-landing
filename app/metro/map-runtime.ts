@@ -5,7 +5,8 @@ import {
   footNote,
   formatMd,
   imageAlt,
-  isNewDate,
+  isNewStore,
+  stationIsNew,
   priceIsEstimate,
   priceIsPending,
   resolveClock,
@@ -280,7 +281,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const soon = s.status === "coming_soon";
       const list = storesOf(s.id);
       const img = list[0]?.image ? publicImage(list[0].image) : "";
-      const nw = !soon && isNewDate(s.updatedAt, clock);
+      const nw = !soon && stationIsNew(storesOf(s.id), clock);
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
       caps += `<text x="${x}" y="${y + 27}" text-anchor="middle" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
@@ -358,7 +359,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       img
         ? `<img src="${img}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
-    }${isNewDate(s.addedAt, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
+    }${isNewStore(s, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
 <div class="bd"><h4>${escapeHtml(s.name)}</h4>${s.dish ? `<p class="dish">${escapeHtml(s.dish)}</p>` : ""}<div class="meta">${price(s)}${s.area ? `<span>${escapeHtml(s.area)}</span>` : ""}</div>${
       s.exitWalkMin == null
         ? ""
@@ -369,7 +370,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   function fillCard(id: string) {
     const s = stations.find((x) => x.id === id) as MetroStation;
     const list = storesOf(id);
-    const nw = !!(s.updatedAt && isNewDate(s.updatedAt, clock));
+    const nw = stationIsNew(list, clock);
     if (s.status === "coming_soon") {
       cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站</small></h3><span class="soontag">即將更新</span></div><div class="soonbody"><svg viewBox="-20 -46 40 50" width="34" height="42" fill="none" stroke="#8d857a" stroke-width="2.4" stroke-dasharray="3.5 4.5" stroke-linecap="round"><path d="M0 0 C-5 -9 -16 -19 -16 -31 a16 16 0 1 1 32 0 C16 -19 5 -9 0 0Z"/></svg><p><b>這一站的貼文還沒發。</b>貼文發出後，店家會自動長到這張地圖上。</p></div>`;
       cmorph.style.backgroundImage = "none";
@@ -659,7 +660,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     strip.innerHTML = order
       .map((s) => {
         const soon = s.status === "coming_soon";
-        const nw = !soon && isNewDate(s.updatedAt, clock);
+        const nw = !soon && stationIsNew(storesOf(s.id), clock);
         return `<button class="tab ${soon ? "soon" : ""}" role="tab" aria-selected="false" data-id="${s.id}" data-testid="metro-tab-${s.id}">${escapeHtml(s.name)}${nw ? '<span class="newtag">NEW</span>' : ""}<i>${soon ? "即將更新" : formatMd(s.updatedAt ?? "")}</i></button>`;
       })
       .join("");

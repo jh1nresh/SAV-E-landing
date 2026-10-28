@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import metro from "../../app/metro/metro.public.json";
-import { countLabel, footNote, imageAlt, isExampleStore, isNewDate, priceIsPending, stampLevel, stampNote, weekNewCount } from "../../lib/metro-logic.mjs";
+import { countLabel, footNote, imageAlt, isExampleStore, isNewDate, stationIsNew, priceIsPending, stampLevel, stampNote, weekNewCount } from "../../lib/metro-logic.mjs";
 import { clickPin, openStation, waitForCardOpen, waitForMap } from "./helpers";
 
 test.describe("hero content and motion", () => {
@@ -25,7 +25,7 @@ test.describe("hero content and motion", () => {
       else await expect(page.locator("#stampA")).toHaveText("");
       for (const st of metro.stations) {
         const pin = page.locator(`[data-testid=metro-pin-${st.id}]`);
-        if (isNewDate(st.updatedAt, clock)) await expect(pin, `${st.id} @${clock}`).toHaveClass(/new/);
+        if (st.status === "live" && stationIsNew(metro.stores.filter((s) => s.stationId === st.id), clock)) await expect(pin, `${st.id} @${clock}`).toHaveClass(/new/);
         else await expect(pin, `${st.id} @${clock}`).not.toHaveClass(/new/);
       }
     }

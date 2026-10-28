@@ -15,6 +15,8 @@ import {
   imageAlt,
   isExampleStore,
   isNewDate,
+  isNewStore,
+  stationIsNew,
   priceIsEstimate,
   priceIsPending,
   resolveClock,
@@ -38,6 +40,7 @@ export type StoreKind = (typeof STORE_KINDS)[number];
 export type MetroStore = {
   id: string;
   kind: StoreKind;
+  backfill?: boolean;
   stationId: string;
   name: string;
   /** Required for example; optional for post. */
@@ -98,6 +101,8 @@ export {
   imageAlt,
   isExampleStore,
   isNewDate,
+  isNewStore,
+  stationIsNew,
   priceIsEstimate,
   priceIsPending,
   resolveClock,
