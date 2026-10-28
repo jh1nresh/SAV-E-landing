@@ -6,10 +6,15 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { isAllowedStoreSource } from "./source-links.mjs";
+export { isAllowedSourceUrl } from "./source-links.mjs";
+import { STORE_KINDS } from "../lib/metro-logic.mjs";
 import { snapToLine } from "./metro-lines.mjs";
 
 const PRIVATE_KEY = "not" + "es";
 const PRICE_SOURCE_KEY = "price" + "Source";
+const IMAGE_SOURCE_KEY = "image" + "Source";
+const IMAGE_SOURCES = new Set(["ai", "founder", "licensed"]);
 const GOOGLE_TYPE = "google" + "_reviews";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const srcPath = resolve(root, "data/metro.json");
@@ -18,20 +23,6 @@ const outPath = resolve(root, "app/metro/metro.public.json");
 const LINE_IDS = new Set(["L_red", "L_blue", "L_green"]);
 const PLATFORMS = new Set(["ig", "threads", "xhs"]);
 const YMD = /^\d{4}-\d{2}-\d{2}$/;
-const SOURCE_HOSTS = new Set(["instagram.com", "www.instagram.com", "threads.com", "www.threads.com"]);
-
-export function isAllowedSourceUrl(url) {
-  if (typeof url !== "string" || !url || url.includes("#example")) return false;
-  let parsed;
-  try {
-    parsed = new URL(url);
-  } catch {
-    return false;
-  }
-  if (parsed.protocol !== "https:") return false;
-  return SOURCE_HOSTS.has(parsed.hostname.toLowerCase());
-}
-
 export function fail(msg) {
   throw new Error(`metro schema: ${msg}`);
 }
@@ -58,7 +49,12 @@ function toPublicStores(data) {
     ...data,
     stores: data.stores.map((store) => {
       const next = { ...store };
-      const pending = isReviewVendorType(next[PRICE_SOURCE_KEY]);
+      const imageSource = next[IMAGE_SOURCE_KEY];
+      delete next[IMAGE_SOURCE_KEY];
+      // Public disclosure is derived here; imported flags cannot override provenance.
+      delete next.imageAi;
+      if (next.kind === "post" && (imageSource === "founder" || imageSource === "licensed")) next.imageAi = false;
+      const pending = isReviewVendorType(next[PRICE_SOURCE_KEY]) || (next.kind === "post" && next.priceNT == null);
       delete next[PRICE_SOURCE_KEY];
       if (pending) {
         next.pricePending = true;
@@ -84,7 +80,7 @@ function isYmd(v) {
 function validate(data) {
   if (!data || typeof data !== "object") fail("root must be an object");
   if (!data._meta || typeof data._meta !== "object") fail("missing _meta");
-  if (typeof data._meta.example !== "boolean") fail("_meta.example must be boolean");
+  if ("example" in data._meta) fail("_meta.example is retired; mark each store with kind: \"example\" | \"post\"");
   if (!isYmd(data._meta.asOf)) fail("_meta.asOf must be YYYY-MM-DD");
   if (!Array.isArray(data.stations) || data.stations.length < 1) fail("stations must be a non-empty array");
   if (!Array.isArray(data.stores)) fail("stores must be an array");
@@ -118,24 +114,31 @@ function validate(data) {
   const storeIds = new Set();
   for (const [i, s] of data.stores.entries()) {
     const p = `stores[${i}]`;
-    for (const key of [
-      "id",
-      "stationId",
-      "name",
-      "dish",
-      "priceNT",
-      "priceFrom",
-      "priceSource",
-      "priceCheckedAt",
-      "exit",
-      "exitWalkMin",
-      "area",
-      "hours",
-      "image",
-      "sourcePosts",
-      "addedAt",
-      "verified",
-    ]) {
+    if (!STORE_KINDS.includes(s.kind)) fail(`${p}.kind must be one of ${STORE_KINDS.join(", ")}`);
+    const isPost = s.kind === "post";
+    if ("backfill" in s && typeof s.backfill !== "boolean") fail(`${p}.backfill must be boolean`);
+    // example entries keep the full legacy field set; post entries need only identity + source + date,
+    // and carry no price (shown as 價格待查), so everything else is optional-but-typed.
+    for (const key of isPost
+      ? ["id", "stationId", "name", "sourcePosts", "addedAt", "verified"]
+      : [
+          "id",
+          "stationId",
+          "name",
+          "dish",
+          "priceNT",
+          "priceFrom",
+          "priceSource",
+          "priceCheckedAt",
+          "exit",
+          "exitWalkMin",
+          "area",
+          "hours",
+          "image",
+          "sourcePosts",
+          "addedAt",
+          "verified",
+        ]) {
       if (!(key in s)) fail(`${p} missing ${key}`);
     }
     if (typeof s.id !== "string" || !s.id) fail(`${p}.id`);
@@ -143,14 +146,28 @@ function validate(data) {
     storeIds.add(s.id);
     if (!ids.has(s.stationId)) fail(`${p}.stationId ${s.stationId} is not a station`);
     if (typeof s.name !== "string" || !s.name) fail(`${p}.name`);
-    if (typeof s.dish !== "string" || !s.dish) fail(`${p}.dish`);
-    if (typeof s.priceNT !== "number" || s.priceNT < 0) fail(`${p}.priceNT`);
-    if (typeof s.priceFrom !== "boolean") fail(`${p}.priceFrom`);
-    if (typeof s.priceSource !== "string") fail(`${p}.priceSource`);
-    if (s.priceCheckedAt !== null && !isYmd(s.priceCheckedAt)) fail(`${p}.priceCheckedAt`);
-    if (s.exit !== null && typeof s.exit !== "string") fail(`${p}.exit`);
-    if (typeof s.exitWalkMin !== "number" || s.exitWalkMin < 0) fail(`${p}.exitWalkMin`);
-    if (typeof s.image !== "string") fail(`${p}.image`);
+    if ((!isPost || "dish" in s) && (typeof s.dish !== "string" || !s.dish)) fail(`${p}.dish`);
+    if (isPost) {
+      if (s.priceNT != null) fail(`${p}.priceNT must be null/absent for kind=post (price shows as 價格待查)`);
+      if ("priceFrom" in s && typeof s.priceFrom !== "boolean") fail(`${p}.priceFrom`);
+      if (PRICE_SOURCE_KEY in s) fail(`${p} kind=post must not carry a price source`);
+      if (s.priceCheckedAt != null) fail(`${p}.priceCheckedAt must be absent for kind=post`);
+      if (s.pricePending !== undefined && s.pricePending !== true) fail(`${p}.pricePending must be true for kind=post`);
+      if (s.verified !== false) fail(`${p}.verified must be false for kind=post`);
+      if (IMAGE_SOURCE_KEY in s && !IMAGE_SOURCES.has(s[IMAGE_SOURCE_KEY])) fail(`${p} image source must be ai | founder | licensed`);
+    } else {
+      if (typeof s.priceNT !== "number" || s.priceNT < 0) fail(`${p}.priceNT`);
+      if (typeof s.priceFrom !== "boolean") fail(`${p}.priceFrom`);
+      if (typeof s.priceSource !== "string") fail(`${p}.priceSource`);
+    }
+    if (s.priceCheckedAt != null && !isYmd(s.priceCheckedAt)) fail(`${p}.priceCheckedAt`);
+    if (s.exit != null && typeof s.exit !== "string") fail(`${p}.exit`);
+    if (isPost) {
+      if (s.exitWalkMin != null && (typeof s.exitWalkMin !== "number" || s.exitWalkMin < 0)) fail(`${p}.exitWalkMin`);
+    } else if (typeof s.exitWalkMin !== "number" || s.exitWalkMin < 0) {
+      fail(`${p}.exitWalkMin`);
+    }
+    if ((!isPost || "image" in s) && typeof s.image !== "string") fail(`${p}.image`);
     if (s.image && (s.image.startsWith("data:") || s.image.includes("base64"))) {
       fail(`${p}.image must be a file path, not an inlined image`);
     }
@@ -159,11 +176,11 @@ function validate(data) {
       if (!PLATFORMS.has(post.platform)) fail(`${p} bad source platform`);
       if (typeof post.url !== "string" || !post.url) fail(`${p} source url`);
       if (post.url.includes("#example")) fail(`${p} source url must not be a placeholder`);
-      if (!isAllowedSourceUrl(post.url)) fail(`${p} source url must be https on instagram.com or threads.com`);
+      if (!isAllowedStoreSource(s, post)) fail(`${p} source url must match the official account permalink whitelist`);
       if (!isYmd(post.date)) fail(`${p} source date`);
     }
     if (!isYmd(s.addedAt)) fail(`${p}.addedAt`);
-    if (typeof s.verified !== "boolean") fail(`${p}.verified`);
+    if (!isPost && typeof s.verified !== "boolean") fail(`${p}.verified`);
   }
 }
 

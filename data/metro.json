@@ -1,7 +1,6 @@
 {
   "_meta": {
-    "example": true,
-    "asOf": "2026-10-26",
+    "asOf": "2026-10-28",
     "note": "EXAMPLE prices/verified flags. Source-post URLs are the founder/GTM station carousels (IG + Threads only). UI must still label unverified prices 示意.",
     "notes": "INTERNAL_NOTE_MUST_NOT_SHIP — strip at build/server; never send to the browser."
   },
@@ -26,16 +25,15 @@
       "order": 2,
       "name": "松山",
       "line": "松山新店線",
-      "status": "coming_soon",
-      "updatedAt": null,
+      "status": "live",
+      "updatedAt": "2026-10-28",
       "mapPos": {
         "line": "L_green",
         "at": [
           598,
           86
         ]
-      },
-      "notes": "INTERNAL_NOTE_MUST_NOT_SHIP — coming soon, no public notes."
+      }
     },
     {
       "id": "shuanglian",
@@ -81,11 +79,27 @@
           268
         ]
       }
+    },
+    {
+      "id": "gongguan",
+      "order": 7,
+      "name": "公館",
+      "line": "松山新店線",
+      "status": "coming_soon",
+      "updatedAt": null,
+      "mapPos": {
+        "line": "L_green",
+        "at": [
+          215,
+          330
+        ]
+      }
     }
   ],
   "stores": [
     {
       "id": "arena-2",
+      "kind": "example",
       "stationId": "arena",
       "name": "邊城孜然羊肉",
       "dish": "孜然羊肉鍋",
@@ -101,7 +115,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/DewQqqNm7ay/",
+          "url": "https://www.instagram.com/savvysave_/p/DewQqqNm7ay/",
           "date": "2026-10-21"
         },
         {
@@ -115,6 +129,7 @@
     },
     {
       "id": "arena-3",
+      "kind": "example",
       "stationId": "arena",
       "name": "麵麵聚到",
       "dish": "麻辣臭豆腐鴨血",
@@ -130,7 +145,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/DewQqqNm7ay/",
+          "url": "https://www.instagram.com/savvysave_/p/DewQqqNm7ay/",
           "date": "2026-10-21"
         },
         {
@@ -144,6 +159,7 @@
     },
     {
       "id": "arena-4",
+      "kind": "example",
       "stationId": "arena",
       "name": "中崙張記藥膳排骨",
       "dish": "藥燉排骨",
@@ -159,7 +175,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/DewQqqNm7ay/",
+          "url": "https://www.instagram.com/savvysave_/p/DewQqqNm7ay/",
           "date": "2026-10-21"
         },
         {
@@ -173,6 +189,7 @@
     },
     {
       "id": "shuanglian-1",
+      "kind": "example",
       "stationId": "shuanglian",
       "name": "阿田麵",
       "dish": "陽春麵全套",
@@ -197,6 +214,7 @@
     },
     {
       "id": "shuanglian-2",
+      "kind": "example",
       "stationId": "shuanglian",
       "name": "雙連蚵仔麵線",
       "dish": "蚵仔大腸麵線",
@@ -221,6 +239,7 @@
     },
     {
       "id": "shuanglian-3",
+      "kind": "example",
       "stationId": "shuanglian",
       "name": "滋奶谷菓子燒",
       "dish": "紅豆餅",
@@ -245,6 +264,7 @@
     },
     {
       "id": "shuanglian-4",
+      "kind": "example",
       "stationId": "shuanglian",
       "name": "雙連圓仔湯",
       "dish": "燒麻糬",
@@ -269,6 +289,7 @@
     },
     {
       "id": "shuanglian-5",
+      "kind": "example",
       "stationId": "shuanglian",
       "name": "貨室甜品",
       "dish": "麵茶牛乳雙拼刨冰",
@@ -293,6 +314,7 @@
     },
     {
       "id": "dongmen-1",
+      "kind": "example",
       "stationId": "dongmen",
       "name": "鼎泰豐信義店",
       "dish": "小籠包 10 顆",
@@ -308,7 +330,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "url": "https://www.instagram.com/savvysave_/p/De3-727lsyD/",
           "date": "2026-10-24"
         },
         {
@@ -322,6 +344,7 @@
     },
     {
       "id": "dongmen-2",
+      "kind": "example",
       "stationId": "dongmen",
       "name": "豆豆里 永康旗艦店",
       "dish": "迷你泡菜起司煎餅",
@@ -337,7 +360,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "url": "https://www.instagram.com/savvysave_/p/De3-727lsyD/",
           "date": "2026-10-24"
         },
         {
@@ -351,6 +374,7 @@
     },
     {
       "id": "dongmen-3",
+      "kind": "example",
       "stationId": "dongmen",
       "name": "天津蔥抓餅",
       "dish": "九層塔蛋蔥抓餅",
@@ -366,7 +390,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "url": "https://www.instagram.com/savvysave_/p/De3-727lsyD/",
           "date": "2026-10-24"
         },
         {
@@ -380,6 +404,7 @@
     },
     {
       "id": "dongmen-4",
+      "kind": "example",
       "stationId": "dongmen",
       "name": "思慕昔本館",
       "dish": "超級雪酪芒果雪花冰",
@@ -395,7 +420,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "url": "https://www.instagram.com/savvysave_/p/De3-727lsyD/",
           "date": "2026-10-24"
         },
         {
@@ -409,6 +434,7 @@
     },
     {
       "id": "dongmen-5",
+      "kind": "example",
       "stationId": "dongmen",
       "name": "永康牛肉麵",
       "dish": "紅燒牛肉麵",
@@ -424,7 +450,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De3-727lsyD/",
+          "url": "https://www.instagram.com/savvysave_/p/De3-727lsyD/",
           "date": "2026-10-24"
         },
         {
@@ -438,6 +464,7 @@
     },
     {
       "id": "houshanpi-1",
+      "kind": "example",
       "stationId": "houshanpi",
       "name": "珍好鍋貼",
       "dish": "鍋貼",
@@ -453,7 +480,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "url": "https://www.instagram.com/savvysave_/p/De6kh33mwwb/",
           "date": "2026-10-25"
         },
         {
@@ -468,6 +495,7 @@
     },
     {
       "id": "houshanpi-2",
+      "kind": "example",
       "stationId": "houshanpi",
       "name": "永吉涼麵",
       "dish": "麻醬涼麵",
@@ -483,7 +511,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "url": "https://www.instagram.com/savvysave_/p/De6kh33mwwb/",
           "date": "2026-10-25"
         },
         {
@@ -497,6 +525,7 @@
     },
     {
       "id": "houshanpi-3",
+      "kind": "example",
       "stationId": "houshanpi",
       "name": "阿來甜不辣",
       "dish": "甜不辣",
@@ -512,7 +541,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "url": "https://www.instagram.com/savvysave_/p/De6kh33mwwb/",
           "date": "2026-10-25"
         },
         {
@@ -526,6 +555,7 @@
     },
     {
       "id": "houshanpi-4",
+      "kind": "example",
       "stationId": "houshanpi",
       "name": "春來蚵仔麵線",
       "dish": "綜合麵線",
@@ -541,7 +571,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "url": "https://www.instagram.com/savvysave_/p/De6kh33mwwb/",
           "date": "2026-10-25"
         },
         {
@@ -555,6 +585,7 @@
     },
     {
       "id": "houshanpi-5",
+      "kind": "example",
       "stationId": "houshanpi",
       "name": "鄭姑媽雞排便當店",
       "dish": "雞排飯",
@@ -570,7 +601,7 @@
       "sourcePosts": [
         {
           "platform": "ig",
-          "url": "https://www.instagram.com/p/De6kh33mwwb/",
+          "url": "https://www.instagram.com/savvysave_/p/De6kh33mwwb/",
           "date": "2026-10-25"
         },
         {
@@ -581,6 +612,122 @@
       ],
       "addedAt": "2026-10-25",
       "verified": false
+    },
+    {
+      "id": "songshan-1",
+      "kind": "post",
+      "stationId": "songshan",
+      "name": "Whatever GG 脆皮蛋餅",
+      "priceNT": null,
+      "pricePending": true,
+      "verified": false,
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "https://www.instagram.com/savvysave_/p/DezAA-tGyEJ/",
+          "date": "2026-10-22"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/DezCsjVG5J6",
+          "date": "2026-10-22"
+        }
+      ],
+      "addedAt": "2026-10-28",
+      "backfill": true,
+      "image": "/assets/food/songshan-1.jpg",
+      "imageSource": "ai",
+      "dish": "三星蔥蛋餅",
+      "area": "松山區",
+      "exit": "5 號出口",
+      "hours": "17:00–23:30（週三休）"
+    },
+    {
+      "id": "songshan-2",
+      "kind": "post",
+      "stationId": "songshan",
+      "name": "福島屋圓圓燒",
+      "priceNT": null,
+      "pricePending": true,
+      "verified": false,
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "https://www.instagram.com/savvysave_/p/DezAA-tGyEJ/",
+          "date": "2026-10-22"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/DezCsjVG5J6",
+          "date": "2026-10-22"
+        }
+      ],
+      "addedAt": "2026-10-28",
+      "backfill": true,
+      "image": "/assets/food/songshan-2.jpg",
+      "imageSource": "ai",
+      "dish": "圓圓燒",
+      "area": "松山區",
+      "exit": "5 號出口",
+      "hours": "約 17:00–23:30，假日到 24:00（各來源時間不一）"
+    },
+    {
+      "id": "songshan-3",
+      "kind": "post",
+      "stationId": "songshan",
+      "name": "心心港式腸粉",
+      "priceNT": null,
+      "pricePending": true,
+      "verified": false,
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "https://www.instagram.com/savvysave_/p/DezAA-tGyEJ/",
+          "date": "2026-10-22"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/DezCsjVG5J6",
+          "date": "2026-10-22"
+        }
+      ],
+      "addedAt": "2026-10-28",
+      "backfill": true,
+      "image": "/assets/food/songshan-3.jpg",
+      "imageSource": "ai",
+      "dish": "蝦仁腸粉",
+      "area": "松山區",
+      "exit": "5 號出口",
+      "hours": "18:30–00:00（週一、週二休）"
+    },
+    {
+      "id": "songshan-4",
+      "kind": "post",
+      "stationId": "songshan",
+      "name": "安師傅冰火菠蘿",
+      "priceNT": null,
+      "pricePending": true,
+      "verified": false,
+      "sourcePosts": [
+        {
+          "platform": "ig",
+          "url": "https://www.instagram.com/savvysave_/p/DezAA-tGyEJ/",
+          "date": "2026-10-22"
+        },
+        {
+          "platform": "threads",
+          "url": "https://www.threads.com/@savvysave_/post/DezCsjVG5J6",
+          "date": "2026-10-22"
+        }
+      ],
+      "addedAt": "2026-10-28",
+      "backfill": true,
+      "image": "/assets/food/songshan-4.jpg",
+      "imageSource": "ai",
+      "dish": "冰火菠蘿",
+      "area": "松山區",
+      "exit": "5 號出口",
+      "hours": "16:30–00:00（週一、週三休）"
     }
   ]
 }

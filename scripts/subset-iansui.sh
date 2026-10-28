@@ -9,7 +9,7 @@ SRC="${1:?path to Iansui-Regular.ttf (ButTaiwan/iansui commit 18aa2c34e, Version
 EXTRA="${2:-}"
 OUT="public/assets/fonts/Iansui-SavvySubset.woff2"
 TMP="$(mktemp -d)"
-trap 'rm -rf "$TMP"' EXIT
+trap 'python3 -c "import shutil, sys; shutil.rmtree(sys.argv[1])" "$TMP"' EXIT
 python3 - "$OUT" "$EXTRA" "$TMP/unicodes.txt" <<'PY'
 import sys
 from fontTools.ttLib import TTFont

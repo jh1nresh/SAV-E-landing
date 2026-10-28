@@ -28,6 +28,8 @@ test.describe("hero map interactions", () => {
     const zoomed = await page.evaluate(() => window.__savvyMap!.state().camS);
     await expect(page.locator("[data-testid=metro-reset]")).toHaveClass(/on/);
     await page.locator("[data-testid=metro-reset]").click();
+    // Close latency is frame-bound (slow WebKit CI); wait for it on its own budget.
+    await page.waitForFunction(() => { const s = window.__savvyMap!.state(); return s.showing === null && !s.closing; }, null, { timeout: 45_000 });
     await expect(page.locator("#card")).toBeHidden();
     await page.waitForFunction((was) => window.__savvyMap!.state().camS < was, zoomed);
     await page.locator("[data-testid=metro-tab-dongmen]").click();
@@ -102,6 +104,8 @@ test.describe("hero map interactions", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(200);
     await page.evaluate(() => window.__savvyMap?.goHome());
+    // goHome() starts a frame-bound card close; wait for it on its own budget.
+    await page.waitForFunction(() => { const s = window.__savvyMap!.state(); return s.showing === null && !s.closing; }, null, { timeout: 45_000 });
     await expect(page.locator("#mapsvg")).toBeVisible();
     const metrics = await page.evaluate(() => {
       const svg = document.getElementById("mapsvg") as SVGElement | null;
@@ -115,7 +119,7 @@ test.describe("hero map interactions", () => {
     expect(metrics.viewH).toBeGreaterThan(8);
     expect(metrics.transform).not.toContain("scale(0)");
     await expect(page.locator("[data-testid=metro-pin-houshanpi] .ph")).toBeVisible();
-    await expect(page.locator(".pin .ph")).toHaveCount(5);
+    await expect(page.locator(".pin .ph")).toHaveCount(metroSource.stations.length);
   });
 
   test("C-4 widen resize while card is open does not blank the map", async ({ page }) => {
@@ -123,6 +127,8 @@ test.describe("hero map interactions", () => {
     await page.setViewportSize({ width: 1440, height: 800 });
     await page.waitForTimeout(200);
     await page.evaluate(() => window.__savvyMap?.goHome());
+    // goHome() starts a frame-bound card close; wait for it on its own budget.
+    await page.waitForFunction(() => { const s = window.__savvyMap!.state(); return s.showing === null && !s.closing; }, null, { timeout: 45_000 });
     await expect(page.locator("#mapsvg")).toBeVisible();
     const metrics = await page.evaluate(() => {
       const svg = document.getElementById("mapsvg") as SVGElement | null;
@@ -134,7 +140,7 @@ test.describe("hero map interactions", () => {
     expect(metrics.viewW).toBeGreaterThan(8);
     expect(metrics.viewH).toBeGreaterThan(8);
     await expect(page.locator("[data-testid=metro-pin-dongmen] .ph")).toBeVisible();
-    await expect(page.locator(".pin .ph")).toHaveCount(5);
+    await expect(page.locator(".pin .ph")).toHaveCount(metroSource.stations.length);
   });
 
   test("C-4 orientation-style width change does not blank the map", async ({ page }) => {
@@ -159,7 +165,7 @@ test.describe("hero map interactions", () => {
     expect(metrics.w).toBeGreaterThan(100);
     expect(metrics.viewW).toBeGreaterThan(8);
     await expect(page.locator("#mapsvg")).toBeVisible();
-    await expect(page.locator(".pin")).toHaveCount(5);
+    await expect(page.locator(".pin")).toHaveCount(metroSource.stations.length);
   });
 
   test("D-6 card stays usable when food images fail", async ({ page }) => {
@@ -191,7 +197,7 @@ test.describe("hero map interactions", () => {
     await openStation(page, "arena");
     const arena = page.locator("#card .src");
     await expect(arena).toHaveCount(2);
-    await expect(arena.nth(0)).toHaveAttribute("href", "https://www.instagram.com/p/DewQqqNm7ay/");
+    await expect(arena.nth(0)).toHaveAttribute("href", "https://www.instagram.com/savvysave_/p/DewQqqNm7ay/");
     await expect(arena.nth(0)).toHaveAttribute("data-platform", "ig");
     await expect(arena.nth(1)).toHaveAttribute("href", "https://www.threads.com/@savvysave_/post/DewQ7Zrm-DR");
     await expect(arena.nth(1)).toHaveAttribute("data-platform", "threads");
@@ -208,7 +214,7 @@ test.describe("hero map interactions", () => {
     await openStation(page, "houshanpi");
     await expect(page.locator("#card .src[data-platform=ig]")).toHaveAttribute(
       "href",
-      "https://www.instagram.com/p/De6kh33mwwb/",
+      "https://www.instagram.com/savvysave_/p/De6kh33mwwb/",
     );
     await expect(page.locator("body")).not.toContainText("#example");
   });

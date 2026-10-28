@@ -1,5 +1,5 @@
 /** Hand-drawn schematic. View units, not geographic coordinates. */
-export const MAP_SVG = `<svg id="mapsvg" viewBox="-150 -170 1000 940" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="台北捷運手繪示意地圖，標出小巨蛋、松山、雙連、東門、後山埤。位置為示意，不是精確地理座標。">
+export const MAP_SVG = `<svg id="mapsvg" viewBox="-150 -170 1000 940" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="台北捷運手繪示意地圖，標出小巨蛋、松山、雙連、東門、後山埤、公館。位置為示意，不是精確地理座標。">
 <g filter="url(#wob)" opacity=".95">
 <path d="M-150 -170 L-10 -170 L-10 60 C 18 100 24 160 14 220 C 6 270 20 320 14 395 C 10 470 24 560 8 780 L-150 780Z" fill="#cfe4e6" stroke="#8cb7bd" stroke-width="2"/>
 <path d="M300 -170 L300 -10 C 340 18 400 22 470 14 C 530 8 590 28 650 16 C 720 4 790 14 850 -6 L850 -170Z" fill="#cfe4e6" stroke="#8cb7bd" stroke-width="2"/>

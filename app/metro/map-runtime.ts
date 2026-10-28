@@ -1,10 +1,16 @@
 import {
   PRICE_PENDING_LABEL,
+  countBadge,
+  countLabel,
+  footNote,
   formatMd,
-  isNewDate,
+  imageAlt,
+  isNewStore,
+  stationIsNew,
   priceIsEstimate,
   priceIsPending,
   resolveClock,
+  weekNewCount,
   type MetroData,
   type MetroStation,
   type MetroStore,
@@ -233,7 +239,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const pinById: Record<string, Pin> = {};
   let pins: Pin[] = [];
 
-  const weekCountNow = () => data.stores.filter((s) => isNewDate(s.addedAt, clock)).length;
+  const weekCountNow = () => weekNewCount(data.stores, clock);
 
   const paintStamp = () => {
     const n = weekCountNow();
@@ -275,7 +281,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const soon = s.status === "coming_soon";
       const list = storesOf(s.id);
       const img = list[0]?.image ? publicImage(list[0].image) : "";
-      const nw = !soon && isNewDate(s.updatedAt, clock);
+      const nw = !soon && stationIsNew(storesOf(s.id), clock);
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
       caps += `<text x="${x}" y="${y + 27}" text-anchor="middle" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
@@ -287,9 +293,9 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         "aria-label",
         soon
           ? `${s.name}，即將更新`
-          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}，共 ${list.length} 間${nw ? "，新增" : ""}`,
+          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}，共 ${countLabel(list)}${nw ? "，新增" : ""}`,
       );
-      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${img}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${list.length} 間`}</span></span>`;
+      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${img}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${countBadge(list)}`}</span></span>`;
       layer.appendChild(el);
       bindImgFallback(el);
       el.addEventListener("click", (e) => {
@@ -338,7 +344,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     if (!posts.length) return `<span class="src pending">貼文即將發布</span>`;
     return `<div class="srcrow">${posts.map(chip).join("")}</div>`;
   };
-  const walk = (s: MetroStore) => `${s.exit ? `${s.exit} · ` : ""}步行約 ${s.exitWalkMin} 分`;
+  const walk = (s: MetroStore) => `${s.exit ? `${escapeHtml(s.exit)} · ` : ""}${s.exitWalkMin == null ? "步行時間未取得" : `步行約 ${s.exitWalkMin} 分`}`;
   const price = (s: MetroStore) => {
     if (priceIsPending(s)) {
       return `<span class="est" data-testid="price-pending">${PRICE_PENDING_LABEL}</span>`;
@@ -348,35 +354,39 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }`;
   };
   const fcard = (s: MetroStore) => {
-    const img = publicImage(s.image);
+    const img = publicImage(s.image ?? "");
     return `<article class="fc"><div class="ph">${
       img
-        ? `<img src="${img}" alt="${escapeHtml(s.dish)}（AI 示意圖）" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
+        ? `<img src="${img}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
-    }${isNewDate(s.addedAt, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
-<div class="bd"><h4>${escapeHtml(s.name)}</h4><p class="dish">${escapeHtml(s.dish)}</p><div class="meta">${price(s)}<span>${escapeHtml(s.area)}</span></div><div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div></div>${chips(s.sourcePosts)}</article>`;
+    }${isNewStore(s, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
+<div class="bd"><h4>${escapeHtml(s.name)}</h4>${s.dish ? `<p class="dish">${escapeHtml(s.dish)}</p>` : ""}<div class="meta">${price(s)}${s.area ? `<span>${escapeHtml(s.area)}</span>` : ""}</div>${
+      s.exitWalkMin == null && s.kind === "example"
+        ? ""
+        : `<div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div>`
+    }${s.kind === "post" ? `<p class="post-hours">營業時間：${escapeHtml(s.hours || "未取得")}</p>` : ""}</div>${chips(s.sourcePosts)}</article>`;
   };
 
   function fillCard(id: string) {
     const s = stations.find((x) => x.id === id) as MetroStation;
     const list = storesOf(id);
-    const nw = !!(s.updatedAt && isNewDate(s.updatedAt, clock));
+    const nw = stationIsNew(list, clock);
     if (s.status === "coming_soon") {
-      cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站</small></h3><span class="soontag">即將更新</span></div><div class="soonbody"><svg viewBox="-20 -46 40 50" width="34" height="42" fill="none" stroke="#8d857a" stroke-width="2.4" stroke-dasharray="3.5 4.5" stroke-linecap="round"><path d="M0 0 C-5 -9 -16 -19 -16 -31 a16 16 0 1 1 32 0 C16 -19 5 -9 0 0Z"/></svg><p><b>這一站的貼文還沒發。</b>貼文發出後，店家會自動長到這張地圖上。</p></div>`;
+      cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站</small></h3><span class="soontag">即將更新</span></div><div class="soonbody"><svg viewBox="-20 -46 40 50" width="34" height="42" fill="none" stroke="#8d857a" stroke-width="2.4" stroke-dasharray="3.5 4.5" stroke-linecap="round"><path d="M0 0 C-5 -9 -16 -19 -16 -31 a16 16 0 1 1 32 0 C16 -19 5 -9 0 0Z"/></svg><p><b>這一站的店家資料準備中。</b>核對完成後，會更新到這張地圖上。</p></div>`;
       cmorph.style.backgroundImage = "none";
       return;
     }
     const firstImg = list[0]?.image ? publicImage(list[0].image) : "";
     cmorph.style.backgroundImage = firstImg ? `url(${firstImg})` : "none";
-    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${list.length} 間</span></div>
+    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${countLabel(list)}</span></div>
  <div id="fcslot">${fcard(list[0])}</div>
  <div class="thumbs" role="group" aria-label="這一站的店家">${list
    .map(
      (x, i) =>
        `<button type="button" data-i="${i}" aria-label="${escapeHtml(x.name)}" aria-current="${i === 0}" style="${x.image ? `background-image:url(${publicImage(x.image)})` : ""}"></button>`,
    )
-   .join("")}<span class="more">看全部 ${list.length} 間</span></div>
- <div class="cfoot">菜圖為 AI 示意，非店家實拍。價格為示意。</div>`;
+    .join("")}<span class="more">看全部 ${countLabel(list)}</span></div>
+ <div class="cfoot">${escapeHtml(footNote(list[0]))}</div>`;
     bindImgFallback(cbody);
     cbody.querySelectorAll<HTMLButtonElement>(".thumbs button").forEach((b) =>
       b.addEventListener("click", () => {
@@ -392,6 +402,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         window.setTimeout(
           () => {
             slot.innerHTML = fcard(list[i]);
+            const foot = cbody.querySelector(".cfoot");
+            if (foot) foot.textContent = footNote(list[i]);
             bindImgFallback(slot);
             sizeCard();
             render();
@@ -648,7 +660,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     strip.innerHTML = order
       .map((s) => {
         const soon = s.status === "coming_soon";
-        const nw = !soon && isNewDate(s.updatedAt, clock);
+        const nw = !soon && stationIsNew(storesOf(s.id), clock);
         return `<button class="tab ${soon ? "soon" : ""}" role="tab" aria-selected="false" data-id="${s.id}" data-testid="metro-tab-${s.id}">${escapeHtml(s.name)}${nw ? '<span class="newtag">NEW</span>' : ""}<i>${soon ? "即將更新" : formatMd(s.updatedAt ?? "")}</i></button>`;
       })
       .join("");

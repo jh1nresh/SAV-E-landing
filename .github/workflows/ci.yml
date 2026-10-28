@@ -46,7 +46,11 @@ jobs:
         run: npm run check
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium webkit
+        run: |
+          # Keep the runner's official HTTPS archive/security fallbacks; skip the stalled Azure mirror.
+          grep -q '^https://archive\.ubuntu\.com/ubuntu/' /etc/apt/apt-mirrors.txt
+          sudo sed -i '\|^http://azure\.archive\.ubuntu\.com/ubuntu/[[:space:]]|d' /etc/apt/apt-mirrors.txt
+          npx playwright install --with-deps chromium webkit
 
       - name: Unit and Playwright tests
         env:

@@ -3,15 +3,15 @@
 (coordinates, flags, contour ends, instructions, components), hmtx/vmtx advances,
 and the raw bytes of all other tables except `glyf`/`loca`/`post`.
 
-Usage: python3 scripts/compare-fonts.py BASE.ttf NEW.woff2 [--allow-extra-codepoints]
-Exit 0 only if every glyph reachable in BASE is identical in NEW.
+Usage: python3 scripts/compare-fonts.py BASE.ttf NEW.woff2
+Exit 0 only if the compared fonts have identical glyph coverage and content.
+Use for format conversions, not glyph additions.
 Requires: pip install fonttools brotli
 """
 import sys
 from fontTools.ttLib import TTFont
 
-args = [a for a in sys.argv[1:] if not a.startswith("--")]
-allow_extra = "--allow-extra-codepoints" in sys.argv
+args = sys.argv[1:]
 base, new = TTFont(args[0]), TTFont(args[1])
 problems = []
 
@@ -35,7 +35,7 @@ for sub_b in base["cmap"].tables:
     miss = [hex(c) for c in nb if c not in nn]
     extra = [hex(c) for c in nn if c not in nb]
     if miss: problems.append(f"cmap {sub_b.platformID}/{sub_b.platEncID}: {len(miss)} codepoints missing, e.g. {miss[:5]}")
-    if extra and not allow_extra: problems.append(f"cmap: {len(extra)} extra codepoints, e.g. {extra[:5]}")
+    if extra: problems.append(f"cmap: {len(extra)} extra codepoints, e.g. {extra[:5]}")
 
 order_b, order_n = base.getGlyphOrder(), new.getGlyphOrder()
 if len(order_b) != len(order_n):

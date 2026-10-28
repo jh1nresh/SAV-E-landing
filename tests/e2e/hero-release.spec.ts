@@ -29,6 +29,8 @@ for (const mode of ["", "reduce=1"]) {
       expect(await page.evaluate(() => window.__savvyMap!.state().openId)).toBeNull();
       // Slow WebKit frames can extend the spring; the pending selection must
       // already be cancelled, then the original card must finish closing.
+      // Close latency is frame-bound (slow WebKit CI); wait for it on its own budget.
+      await page.waitForFunction(() => { const s = window.__savvyMap!.state(); return s.showing === null && !s.closing; }, null, { timeout: 45_000 });
       await expect(page.locator("#card")).toBeHidden();
     });
   }

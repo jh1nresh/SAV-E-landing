@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
 import { ttfCmapCodepoints } from "./ttf-cmap.mjs";
+import { EXAMPLE_STAMP_NOTE, PARTIAL_STAMP_NOTE, PRICE_PENDING_LABEL, countBadge, countLabel, footNote, imageAlt } from "../lib/metro-logic.mjs";
 
 const present = ttfCmapCodepoints("public/assets/fonts/Iansui-SavvySubset.woff2");
 
@@ -27,9 +28,11 @@ const ui = [
   "點一站，看吃什麼",
   "捷運口袋名單",
   "菜圖為 AI 示意，非店家實拍。價格為示意。",
-  "這一站的貼文還沒發。",
-  "貼文發出後，店家會自動長到這張地圖上。",
+  "這一站的店家資料準備中。",
+  "核對完成後，會更新到這張地圖上。",
   "步行約",
+  "步行時間未取得",
+  "營業時間：未取得",
   "分",
   "第",
   "站",
@@ -52,7 +55,18 @@ function collect(value, acc) {
   }
 }
 
-const strings = [...ui];
+// Label copy comes from the same pure functions the UI uses, so a new label can never skip the glyph guard.
+const labelCopy = [
+  EXAMPLE_STAMP_NOTE,
+  PARTIAL_STAMP_NOTE,
+  countLabel([{ kind: "post" }, { kind: "example" }]),
+  countBadge([{ kind: "post" }, { kind: "example" }]),
+  PRICE_PENDING_LABEL,
+  footNote({ kind: "example" }),
+  footNote({ kind: "post", image: "x" }),
+  imageAlt({ kind: "example", name: "", dish: "" }),
+];
+const strings = [...ui, ...labelCopy];
 collect(metro, strings);
 
 const skip = /[\s\dA-Za-z0-9.,:;!?'"“”‘’…—–\-_/#+@$%&()[\]{}<>~`|\\^*=]|[▲△○●□■]/u;
@@ -76,11 +90,11 @@ if (missing.size) {
   process.exit(1);
 }
 
-for (const ch of ["万", "菓"]) {
+for (const ch of ["万", "菓", "双", "ㄦ", "莆", "＋"]) {
   if (!present.has(ch.codePointAt(0))) {
     console.error(`required glyph ${ch} missing from Iansui subset`);
     process.exit(1);
   }
 }
 
-console.log(`check-glyphs: ok (${present.size} cmap entries, 万/菓 present)`);
+console.log(`check-glyphs: ok (${present.size} cmap entries, 万/菓/双/ㄦ/莆/＋ present)`);
