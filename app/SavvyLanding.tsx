@@ -3,6 +3,9 @@ import { getPublicMetroData } from "../lib/metro";
 import { HeroMapLazy } from "./metro/HeroMapLazy";
 import "./metro/hero-map.css";
 
+import { GUIDE_ROOT, guidePath, guides } from "./zh-tw/guides/content";
+import "./zh-tw/guides/guides.css";
+
 const STICKERS = [
   { src: "/assets/st-duck.png", alt: "珍珠奶茶" },
   { src: "/assets/st-noodle.png", alt: "麵碗" },
@@ -141,6 +144,16 @@ export default function SavvyLanding() {
             />
           </div>
         </div>
+      </section>
+
+      <section className="guide-home" lang="zh-Hant" aria-labelledby="guide-home-title">
+        <p className="guide-eyebrow">收藏整理指南 · 繁體中文</p>
+        <h2 id="guide-home-title">找到想去的店，接著呢？</h2>
+        <p>從一則貼文、一份收藏，到自己的地圖與行程。</p>
+        <div className="guide-grid">
+          {guides.map((guide) => <a className="guide-card" key={guide.slug} href={guidePath(guide.slug)}><h3>{guide.label}</h3><p>{guide.description}</p><span className="guide-read">閱讀指南 →</span></a>)}
+        </div>
+        <a href={GUIDE_ROOT}>查看全部整理指南 →</a>
       </section>
 
       <section className="s-cta" id="cta">
