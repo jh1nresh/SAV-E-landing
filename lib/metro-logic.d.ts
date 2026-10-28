@@ -22,6 +22,17 @@ export function stampNote(stores: ReadonlyArray<{ kind?: string }>, lang?: "zh" 
 export function countShort(n: number, lang?: "zh" | "en"): string;
 export function countLabel(stores: ReadonlyArray<{ kind?: string }>, lang?: "zh" | "en"): string;
 export function countBadge(stores: ReadonlyArray<{ kind?: string }>): string;
-export function weekNewCount(stores: ReadonlyArray<{ addedAt?: string | null }>, todayYmd: string): number;
+export function weekNewCount(stores: ReadonlyArray<NewStore>, todayYmd: string): number;
 export function footNote(store: { kind?: string; image?: string; imageAi?: boolean }): string;
 export function imageAlt(store: { dish?: string; name: string; kind?: string; imageAi?: boolean }): string;
+
+export type NewStore = {
+  kind?: string; backfill?: boolean; addedAt?: string | null;
+  sourcePosts?: ReadonlyArray<{ date: string }>;
+};
+export const NEW_FLOW_START: string;
+export const MAX_POST_TO_LIVE_DAYS: number;
+export function isCalendarDate(value: unknown): value is string;
+export function isFresh(store: NewStore | null | undefined): boolean;
+export function isNewStore(store: NewStore, todayYmd: string): boolean;
+export function stationIsNew(stores: ReadonlyArray<NewStore>, todayYmd: string): boolean;

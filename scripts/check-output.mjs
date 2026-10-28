@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { isAllowedStoreSource } from "./source-links.mjs";
 import { join } from "node:path";
 
 const PRIVATE_KEY = "not" + "es";
@@ -20,22 +21,14 @@ if (/google/i.test(pubText) || pubText.includes("priceSource")) {
   process.exit(1);
 }
 
-const SOURCE_HOSTS = new Set(["instagram.com", "www.instagram.com", "threads.com", "www.threads.com"]);
 for (const store of pub.stores) {
   if (!Array.isArray(store.sourcePosts) || store.sourcePosts.length < 1) {
     console.error("store is missing sourcePosts", store.id);
     process.exit(1);
   }
   for (const post of store.sourcePosts) {
-    let parsed;
-    try {
-      parsed = new URL(post.url);
-    } catch {
-      console.error("store has a non-URL source", store.id, post.url);
-      process.exit(1);
-    }
-    if (parsed.protocol !== "https:" || !SOURCE_HOSTS.has(parsed.hostname.toLowerCase())) {
-      console.error("store source must be https instagram.com or threads.com", store.id, post.url);
+    if (!isAllowedStoreSource(store, post)) {
+      console.error("store source must match the official account permalink whitelist", store.id);
       process.exit(1);
     }
   }
