@@ -10,30 +10,30 @@ const source = readFileSync('app/metro/map-runtime.ts', 'utf8').replace(/^import
 const runtime = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 } }).outputText;
 
 for (const width of [390, 1280]) {
-  test(`P-1 synthetic fresh/backfill/example markers at ${width}px and days 0/6/7/8`, async ({ page }, testInfo) => {
-    await page.setViewportSize({ width, height: 900 });
-    await page.goto('/?reduce=1&clock=2026-10-30');
-    await waitForMap(page);
-    const data = structuredClone(metro);
-    const base = data.stores.find((s) => s.stationId === 'dongmen')!;
-    const post = { ...base, kind: 'post', priceNT: undefined, pricePending: true, addedAt: '2026-10-30', sourcePosts: [{ platform: 'ig', url: 'https://www.instagram.com/savvysave_/p/TEST_ONLY/', date: '2026-10-27' }] };
-    (data as any).stores = [
-      { ...post, id:'test-fresh', name:'東門測試' },
-      { ...post, id:'test-backfill', name:'補登測試', backfill:true },
-      { ...post, id:'test-old', name:'舊文測試', sourcePosts:[{ platform:'threads', url:'https://www.threads.com/@savvysave_/post/TEST_ONLY', date:'2026-10-26' }] },
-      { ...base, id:'test-example', addedAt:'2026-10-30' },
-      ...data.stores.filter((s) => s.stationId !== 'dongmen'),
-    ];
-    await page.addScriptTag({ type:'module', content: logic+'\n'+runtime+'\nwindow.__testBoot = bootMetroMap;' });
-    await page.waitForFunction(() => Boolean((window as any).__testBoot));
-    await page.evaluate((fixture) => {
-      window.__savvyMap!.destroy();
-      const original = document.querySelector('[data-testid=metro-map]')!;
-      const root = original.cloneNode(true) as HTMLElement;
-      original.replaceWith(root);
-      window.__savvyMap = (window as any).__testBoot(root, fixture);
-    }, data);
-    for (const [clock, visible] of [['2026-10-30', true], ['2026-11-05', true], ['2026-11-06', false], ['2026-11-07', false]] as const) {
+  for (const [clock, visible] of [['2026-10-30', true], ['2026-11-05', true], ['2026-11-06', false], ['2026-11-07', false]] as const) {
+    test(`P-1 synthetic fresh/backfill/example markers at ${width}px on ${clock}`, async ({ page }, testInfo) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`/?reduce=1&clock=${clock}`);
+      await waitForMap(page);
+      const data = structuredClone(metro);
+      const base = data.stores.find((s) => s.stationId === 'dongmen')!;
+      const post = { ...base, kind: 'post', priceNT: undefined, pricePending: true, addedAt: '2026-10-30', sourcePosts: [{ platform: 'ig', url: 'https://www.instagram.com/savvysave_/p/TEST_ONLY/', date: '2026-10-27' }] };
+      (data as any).stores = [
+        { ...post, id:'test-fresh', name:'東門測試' },
+        { ...post, id:'test-backfill', name:'補登測試', backfill:true },
+        { ...post, id:'test-old', name:'舊文測試', sourcePosts:[{ platform:'threads', url:'https://www.threads.com/@savvysave_/post/TEST_ONLY', date:'2026-10-26' }] },
+        { ...base, id:'test-example', addedAt:'2026-10-30' },
+        ...data.stores.filter((s) => s.stationId !== 'dongmen'),
+      ];
+      await page.addScriptTag({ type:'module', content: logic+'\n'+runtime+'\nwindow.__testBoot = bootMetroMap;' });
+      await page.waitForFunction(() => Boolean((window as any).__testBoot));
+      await page.evaluate((fixture) => {
+        window.__savvyMap!.destroy();
+        const original = document.querySelector('[data-testid=metro-map]')!;
+        const root = original.cloneNode(true) as HTMLElement;
+        original.replaceWith(root);
+        window.__savvyMap = (window as any).__testBoot(root, fixture);
+      }, data);
       await page.evaluate((clock) => window.__savvyMap!.setClock(clock), clock);
       await expect(page.locator('#stampA')).toHaveText(visible ? '本週新增 1 家' : '');
       const pin = page.getByTestId('metro-pin-dongmen');
@@ -56,6 +56,6 @@ for (const width of [390, 1280]) {
       await page.screenshot({ path:testInfo.outputPath(`fresh-${width}-${clock}.png`), fullPage:true });
       await page.evaluate(() => window.__savvyMap!.closeCard({focus:false}));
       await page.waitForFunction(() => window.__savvyMap!.state().showing === null && !window.__savvyMap!.state().closing);
-    }
-  });
+    });
+  }
 }
