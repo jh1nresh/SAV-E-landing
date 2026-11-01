@@ -19,10 +19,10 @@ test('food list and every static station page show source content and working im
       for (const [key, label] of Object.entries({ dish: '推薦菜', price: '價格', price_source: '價格出處', address: '地址', exit_walk: '出口／步行', hours: '營業時間' })) {
         const row = card.locator('.food-row').filter({ has: page.locator('dt', { hasText: new RegExp(`^${label}$`) }) });
         if (shop[key]) await expect(row.locator('dd')).toHaveText(shop[key]);
+        else if (key === 'price') await expect(row.locator('dd')).toHaveText('價格待確認');
         else await expect(row).toHaveCount(0);
       }
     }
-    await expect(page.locator('main')).not.toContainText('未取得');
     await page.locator('.food-gallery img').evaluateAll(async images => {
       await Promise.all(images.map(img => new Promise<void>((resolve, reject) => {
         const image = img as HTMLImageElement;

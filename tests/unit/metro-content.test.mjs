@@ -24,7 +24,7 @@ test('all 12 stations preserve source display fields; served image paths exist',
   }
 });
 test('null, missing and empty fields hide the entire row independently', () => {
-  assert.deepEqual(foodShopRows({ dish: null, price: undefined, hours: '', address: '地址' }), [['地址', '地址']]);
+  assert.deepEqual(foodShopRows({ dish: null, price: undefined, hours: '', address: '地址' }), [['價格', '價格待確認'], ['地址', '地址']]);
   assert.deepEqual(foodShopRows({ price: '$60', price_source: null }), [['價格', '$60']]);
 });
 test('internal keys are removed at every depth, including arrays', () => {
