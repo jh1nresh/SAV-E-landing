@@ -113,7 +113,7 @@ export {
 };
 
 export function getPublicMetroData(): MetroData {
-  return publicMetro as MetroData;
+  return publicMetro as unknown as MetroData;
 }
 
 export function storesFor(data: MetroData, stationId: string): MetroStore[] {
@@ -128,4 +128,24 @@ export function latestUpdatedAt(data: MetroData): string | null {
 
 export function stationPoint(station: MetroStation): [number, number] {
   return station.mapPos.snapped ?? station.mapPos.at;
+}
+
+export type FoodShop = {
+  key?: string | null;
+  name?: string | null;
+  dish?: string | null;
+  price?: string | null;
+  price_source?: string | null;
+  address?: string | null;
+  exit_walk?: string | null;
+  hours?: string | null;
+};
+export type FoodStation = {
+  n: number; date: string; station: string; slug: string; tagline?: string | null;
+  shops: FoodShop[];
+  images: { photos: string[]; slides: string[] };
+  posts: { instagram?: string | null; threads?: string | null; xiaohongshu?: string | null };
+};
+export function getFoodStations(): FoodStation[] {
+  return (publicMetro as unknown as { foodStations: FoodStation[] }).foodStations;
 }

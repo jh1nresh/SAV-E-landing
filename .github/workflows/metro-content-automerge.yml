@@ -1,0 +1,72 @@
+name: Metro content auto-merge
+on:
+  pull_request:
+    paths: ['content/metro/**']
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      eligible: ${{ steps.files.outputs.eligible }}
+    steps:
+      # Run the gate from the trusted base, never executable code from the PR.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check every changed file against base
+        id: files
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch origin "$HEAD_SHA"
+          git diff --name-only --no-renames -z "$BASE_SHA...$HEAD_SHA" > changed-files
+          if test -f scripts/metro-content-gate.mjs; then
+            node scripts/metro-content-gate.mjs < changed-files
+          else
+            echo 'Skipping auto-merge: base does not yet contain the reviewed gate.'
+            echo 'eligible=false' >> "$GITHUB_OUTPUT"
+          fi
+  validate:
+    needs: gate
+    if: needs.gate.outputs.eligible == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Validate all content JSON
+        run: node --input-type=module -e "import {globSync,readFileSync} from 'node:fs'; for (const f of globSync('content/metro/**/*.json')) JSON.parse(readFileSync(f,'utf8'));"
+      - run: npm run check
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm test
+        env:
+          CI: 'true'
+  automerge:
+    needs: [gate, validate]
+    if: needs.gate.outputs.eligible == 'true' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Enable squash auto-merge with repository protections
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: gh pr merge "$PR_NUMBER" --auto --squash --match-head-commit "$HEAD_SHA"

@@ -36,3 +36,5 @@ export function isCalendarDate(value: unknown): value is string;
 export function isFresh(store: NewStore | null | undefined): boolean;
 export function isNewStore(store: NewStore, todayYmd: string): boolean;
 export function stationIsNew(stores: ReadonlyArray<NewStore>, todayYmd: string): boolean;
+export const FOOD_DISCLAIMER: string;
+export function foodShopRows(shop: import('./metro').FoodShop): [string, string][];

@@ -67,7 +67,9 @@ const labelCopy = [
   imageAlt({ kind: "example", name: "", dish: "" }),
 ];
 const strings = [...ui, ...labelCopy];
-collect(metro, strings);
+// Food guide pages use the system font so arbitrary new content does not require font regeneration.
+const { foodStations, ...mapData } = metro;
+collect(mapData, strings);
 
 const skip = /[\s\dA-Za-z0-9.,:;!?'"“”‘’…—–\-_/#+@$%&()[\]{}<>~`|\\^*=]|[▲△○●□■]/u;
 const missing = new Map();
