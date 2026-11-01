@@ -1,0 +1,143 @@
+{
+  "n": 12,
+  "date": "2026-11-01",
+  "station": "古亭",
+  "slug": "guting",
+  "tagline": "早餐飯糰到酸菜白肉鍋，5 間先收",
+  "shops": [
+    {
+      "key": "liumama",
+      "name": "劉媽媽飯糰",
+      "dish": "紫米飯糰",
+      "price": "$60",
+      "price_source": "iwoogo 2026/07",
+      "address": "中正區杭州南路二段88號",
+      "exit_walk": "6號出口步行3–5分鐘",
+      "hours": "05:10–11:30（週一休）",
+      "sources": [
+        "https://tenjo.tw/liumama-riceball/",
+        "https://playtw.i7tou.com/taipei-liu-mama-rice-balls/",
+        "https://iwoogo.com/taipei/posts/liu-mama-fantuan",
+        "https://pekoblog.tw/post-48205240/"
+      ]
+    },
+    {
+      "key": "jinhua",
+      "name": "金華麵店",
+      "dish": "炸醬麵",
+      "price": "$40",
+      "price_source": "小）NT$40（布雷克 2026/05",
+      "address": "大安區潮州街56號",
+      "exit_walk": "5號出口步行4分鐘",
+      "hours": "09:00–21:00（週日休）",
+      "sources": [
+        "https://blake.com.tw/blog/post/jinhua",
+        "https://lupanda.tw/huaginnoldle/",
+        "https://tenjo.tw/jinhuanoodles/"
+      ]
+    },
+    {
+      "key": "tongan",
+      "name": "同安街麵線羹",
+      "dish": "麵線羹",
+      "price": "$50",
+      "price_source": "食尚玩家 2026",
+      "address": "中正區同安街85-1號",
+      "exit_walk": "2號出口步行5分鐘",
+      "hours": "10:30–19:30（週一休）",
+      "sources": [
+        "https://supertaste.tvbs.com.tw/food/346966",
+        "https://blake.com.tw/blog/post/guting-food-2026",
+        "https://www.walkerland.com.tw/subject/view/423776",
+        "https://lupanda.tw/shintaomker/",
+        "https://pekoblog.tw/post-48160084/"
+      ]
+    },
+    {
+      "key": "tongxin",
+      "name": "同心大腸蚵仔麵線",
+      "dish": "臭豆腐",
+      "price": "$65",
+      "price_source": "趙先生 2026/05",
+      "address": "中正區同安街16號",
+      "exit_walk": "1號出口步行2分鐘",
+      "hours": "11:00–22:00（每日營業）",
+      "sources": [
+        "https://lupanda.tw/shintaomker/",
+        "https://pekoblog.tw/post-48160084/",
+        "https://blake.com.tw/blog/post/guting-food-2026"
+      ]
+    },
+    {
+      "key": "taipower",
+      "name": "台電勵進餐廳",
+      "dish": "酸菜白肉鍋吃到飽",
+      "price": "$600",
+      "price_source": "2026",
+      "address": "大安區和平東路一段75巷",
+      "exit_walk": "5號出口步行4–5分鐘",
+      "hours": "11:00–13:00、17:00–20:00（週日休）",
+      "sources": [
+        "https://www.opentable.com.tw/restaurant/profile/180986",
+        "https://playtw.i7tou.com/taipei-taipower-lijin-restaurant/",
+        "https://bunnyann.tw/taidian/",
+        "https://appletrees.tw/blog/post/lijinrestaurant"
+      ]
+    }
+  ],
+  "images": {
+    "photos": [
+      "images/12-guting/photos/jinhua.jpg",
+      "images/12-guting/photos/liumama.jpg",
+      "images/12-guting/photos/taipower.jpg",
+      "images/12-guting/photos/tongan.jpg",
+      "images/12-guting/photos/tongxin.jpg"
+    ],
+    "slides": [
+      "images/12-guting/slides/01-cover.png",
+      "images/12-guting/slides/02-liumama.png",
+      "images/12-guting/slides/03-jinhua.png",
+      "images/12-guting/slides/04-tongan.png",
+      "images/12-guting/slides/05-tongxin.png",
+      "images/12-guting/slides/06-taipower.png",
+      "images/12-guting/slides/07-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": null,
+    "threads": null,
+    "xiaohongshu": null
+  },
+  "sources": [
+    "https://tenjo.tw/liumama-riceball/",
+    "https://playtw.i7tou.com/taipei-liu-mama-rice-balls/",
+    "https://iwoogo.com/taipei/posts/liu-mama-fantuan",
+    "https://pekoblog.tw/post-48205240/",
+    "https://blake.com.tw/blog/post/jinhua",
+    "https://lupanda.tw/huaginnoldle/",
+    "https://tenjo.tw/jinhuanoodles/",
+    "https://supertaste.tvbs.com.tw/food/346966",
+    "https://blake.com.tw/blog/post/guting-food-2026",
+    "https://www.walkerland.com.tw/subject/view/423776",
+    "https://lupanda.tw/shintaomker/",
+    "https://pekoblog.tw/post-48160084/",
+    "https://www.opentable.com.tw/restaurant/profile/180986",
+    "https://playtw.i7tou.com/taipei-taipower-lijin-restaurant/",
+    "https://bunnyann.tw/taidian/",
+    "https://appletrees.tw/blog/post/lijinrestaurant",
+    "taipower.jp",
+    "taipower-notissue.jp",
+    "taipower-blurred-old.jp",
+    "https://www.google.com/maps/search/劉媽媽飯糰+杭州南路二段88號?hl=zh-TW｜4.3★",
+    "https://www.google.com/maps/search/金華麵店+潮州街56號?hl=zh-TW｜2,015則",
+    "https://www.google.com/maps/search/同安街麵線羹?hl=zh-TW｜4.2★",
+    "https://www.google.com/maps/search/同心大腸蚵仔麵線+同安街16號?hl=zh-TW｜4.2★",
+    "https://www.google.com/maps/search/台電勵進餐廳?hl=zh-TW｜4.0★",
+    "lh3.googleusercontent.com/gps-cs-s/…=w1200"
+  ],
+  "_source_files": {
+    "text": "/workspace/shared/gtm/savvy-ready/2026-11-01/threads.txt",
+    "data_json": "/workspace/shared/gtm/savvy-ready/2026-11-01/data.json",
+    "sources_md": "/workspace/shared/gtm/savvy-ready/2026-11-01/sources.md"
+  }
+}
