@@ -77,3 +77,27 @@ Put station records in `content/metro/stations.json`, or add a single station ob
 Put images in `content/metro/images/NN-slug/photos/` and `slides/`. References may use `images/NN-slug/photos/name.webp` or `photos/name.webp` (similarly for slides). The build supports existing JPG/PNG references whose committed counterpart is WebP, validates file containment/existence, and copies referenced files to generated `public/metro/images/`. Research sources and extraction metadata remain in the content files; only display fields enter the public payload. Existing predev/prebuild/pretest/typecheck hooks run this pipeline.
 
 A pull request touching `content/metro/**` triggers Metro content validation and auto-merge. The workflow compares **all changed files against the base**, including deletions and renames. Only content-only PRs run the dedicated validation/build/tests and then request GitHub squash auto-merge with `GITHUB_TOKEN`. Non-content changes need human review and skip auto-merge. The gate runs from the reviewed base; this implementation PR therefore requires human review. Fork PRs validate but cannot enable auto-merge through the restricted fork token. Repository auto-merge must be enabled and existing branch protections/required reviews and checks still apply. No protection bypass is used. After merge, the existing Vercel Git integration builds and deploys the site.
+
+## Public agent access
+
+The canonical site is `https://savvy.jeezlabs.io`. Public pages support
+`Accept: text/markdown` and `Accept: text/html`, honor media quality values,
+and Markdown responses include `Vary: Accept`. Unsupported representations return 406.
+HTML and Markdown responses use `private, no-store`: Next.js 16.4.3 overwrites
+the custom HTML `Vary` value, so negotiated pages must not be cached by URL alone. Missing
+pages keep HTTP 404 and provide Markdown recovery links when requested.
+Explicit Markdown URLs are `/index.md` for the homepage and `<page>.md` for
+other public pages. `/llms.txt` follows the llms.txt Markdown file-list format;
+`/sitemap.xml` enumerates curated public pages, never private account/share data.
+
+`/docs` explains this read-only HTTP interface and its boundaries. This landing
+site advertises no supported public account API, MCP server, SDK or CLI.
+Organization postal address and email are intentionally omitted from new content
+and structured data; existing support links remain in place.
+
+Endpoint, no-JS, metadata, schema and discovery checks live in
+`tests/e2e/agent-readiness.spec.ts`; Accept edge cases also have unit coverage.
+Run against a production build with `npm run build` followed by `CI=true npm test`.
+After a separately approved production deployment, rerun the HTTP checks against
+the canonical domain and repeat the Is Agentic audit. Code changes cannot promise
+search ranking or a new readiness score.

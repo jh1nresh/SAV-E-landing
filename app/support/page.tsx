@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { SUPPORT_EMAIL, TESTFLIGHT_URL } from "../site";
+import { SITE_ORIGIN } from "../../lib/site-content";
 
 export const metadata: Metadata = {
   title: "Savvy Support",
+  alternates: { canonical: `${SITE_ORIGIN}/support` },
 };
 
 export default function SupportPage() {
