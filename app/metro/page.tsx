@@ -1,9 +1,10 @@
 import { getFoodStations } from '../../lib/metro';
 import { FOOD_DISCLAIMER } from '../../lib/metro-logic.mjs';
+import { guideMetadata } from '../zh-tw/guides/content';
 import '../zh-tw/guides/guides.css';
 import './food.css';
 
-export const metadata = { title: '捷運美食清單｜Savvy' };
+export const metadata = guideMetadata('捷運美食清單｜Savvy', '從一站出發，閱讀台北捷運美食筆記與來源；營業時間、價格請在出發前再確認。', '/metro');
 export default function MetroFoodPage() {
   return <main className="guide-shell metro-food" lang="zh-Hant">
     <a className="guide-back" href="/">← 回到首頁</a>

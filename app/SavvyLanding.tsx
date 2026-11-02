@@ -6,6 +6,8 @@ import "./metro/hero-map.css";
 import { GUIDE_ROOT, guidePath, guides } from "./zh-tw/guides/content";
 import "./zh-tw/guides/guides.css";
 
+import { homeSections } from "../lib/site-content";
+
 const STICKERS = [
   { src: "/assets/st-duck.png", alt: "珍珠奶茶" },
   { src: "/assets/st-noodle.png", alt: "麵碗" },
@@ -154,6 +156,11 @@ export default function SavvyLanding() {
           {guides.map((guide) => <a className="guide-card" key={guide.slug} href={guidePath(guide.slug)}><h3>{guide.label}</h3><p>{guide.description}</p><span className="guide-read">閱讀指南 →</span></a>)}
         </div>
         <a href={GUIDE_ROOT}>查看全部整理指南 →</a>
+      </section>
+
+      <section className="guide-home" lang="en" aria-labelledby="product-overview-title">
+        <h2 id="product-overview-title">Savvy: saved-place memory and trip planning</h2>
+        {homeSections.map(section => <div key={section.heading}><h3>{section.heading}</h3><p>{section.text}</p></div>)}
       </section>
 
       <section className="s-cta" id="cta">

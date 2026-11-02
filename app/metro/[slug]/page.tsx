@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getFoodStations } from '../../../lib/metro';
 import { FOOD_DISCLAIMER, foodShopRows } from '../../../lib/metro-logic.mjs';
+import { guideMetadata } from '../../zh-tw/guides/content';
 import '../../zh-tw/guides/guides.css';
 import '../food.css';
 
@@ -9,7 +10,8 @@ export function generateStaticParams() { return getFoodStations().map(s => ({ sl
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const station = getFoodStations().find(s => s.slug === slug);
-  return { title: station ? `${station.station}站美食清單｜Savvy` : 'Savvy' };
+  if (!station) notFound();
+  return guideMetadata(`${station.station}站美食清單｜Savvy`, station.tagline || FOOD_DISCLAIMER, `/metro/${station.slug}`);
 }
 export default async function StationPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

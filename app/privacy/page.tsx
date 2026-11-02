@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { SUPPORT_EMAIL } from "../site";
+import { privacyGuidance, SITE_ORIGIN } from "../../lib/site-content";
 
 export const metadata: Metadata = {
   title: "Savvy Privacy Policy",
+  alternates: { canonical: `${SITE_ORIGIN}/privacy` },
 };
 
 export default function PrivacyPage() {
@@ -28,6 +30,7 @@ export default function PrivacyPage() {
       <p className="en">
         Questions: <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
       </p>
+      <div lang="en">{privacyGuidance.map(section => <div key={section.heading}><h2>{section.heading}</h2><p>{section.text}</p></div>)}</div>
     </main>
   );
 }
