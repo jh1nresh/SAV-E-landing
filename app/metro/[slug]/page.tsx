@@ -1,0 +1,35 @@
+import { notFound } from 'next/navigation';
+import { getFoodStations } from '../../../lib/metro';
+import { FOOD_DISCLAIMER, foodShopRows } from '../../../lib/metro-logic.mjs';
+import '../../zh-tw/guides/guides.css';
+import '../food.css';
+
+export const dynamicParams = false;
+export function generateStaticParams() { return getFoodStations().map(s => ({ slug: s.slug })); }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const station = getFoodStations().find(s => s.slug === slug);
+  return { title: station ? `${station.station}站美食清單｜Savvy` : 'Savvy' };
+}
+export default async function StationPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const station = getFoodStations().find(s => s.slug === slug);
+  if (!station) notFound();
+  return <main className="guide-shell metro-food" lang="zh-Hant">
+    <a className="guide-back" href="/metro">← 全部捷運美食清單</a>
+    <header className="guide-header">
+      <p className="guide-eyebrow">第 {station.n} 站 · {station.date}</p>
+      <h1 className="guide-title">{station.station}</h1>
+      {station.tagline && <p className="guide-lead">{station.tagline}</p>}
+      <p className="guide-small">{FOOD_DISCLAIMER}</p>
+      <div className="food-posts">{(['instagram', 'threads'] as const).map(platform => station.posts[platform] &&
+        <a key={platform} href={station.posts[platform]!} target="_blank" rel="noopener noreferrer">{platform === 'instagram' ? 'Instagram' : 'Threads'} ↗</a>)}</div>
+    </header>
+    <div className="guide-grid food-shops">{station.shops.map((shop, index) => <article className="guide-card" key={shop.key ?? index}>
+      {shop.name && <h2>{shop.name}</h2>}
+      <dl>{foodShopRows(shop).map(([label, value]) => <div className="food-row" key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+    </article>)}</div>
+    {station.images.photos.length > 0 && <section aria-label="美食照片" className="food-gallery">{station.images.photos.map(src =>
+      <img key={src} src={src} alt={`${station.station}美食照片`} width={800} height={600} loading="lazy" />)}</section>}
+  </main>;
+}

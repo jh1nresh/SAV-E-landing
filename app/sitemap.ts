@@ -1,3 +1,4 @@
+import { getFoodStations } from "../lib/metro";
 import type { MetadataRoute } from "next";
 import { GUIDE_ROOT, SITE_ORIGIN, guidePath, guides } from "./zh-tw/guides/content";
 
@@ -5,6 +6,8 @@ import { GUIDE_ROOT, SITE_ORIGIN, guidePath, guides } from "./zh-tw/guides/conte
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE_ORIGIN}/` },
+    { url: `${SITE_ORIGIN}/metro` },
+    ...getFoodStations().map(s => ({ url: `${SITE_ORIGIN}/metro/${s.slug}`, lastModified: s.date })),
     { url: `${SITE_ORIGIN}${GUIDE_ROOT}` },
     ...guides.map((guide) => ({ url: `${SITE_ORIGIN}${guidePath(guide.slug)}`, lastModified: guide.updatedAt })),
   ];

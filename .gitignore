@@ -16,3 +16,8 @@ blob-report/
 app/metro/metro.public.json
 
 /guide-screenshots/
+
+# Metro content images copied by the existing prebuild.
+/public/metro/images/
+
+/.npm-cache/

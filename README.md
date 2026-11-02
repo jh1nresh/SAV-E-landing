@@ -67,3 +67,13 @@ npm run typecheck
 npm run build
 npm test
 ```
+
+## Metro food content
+
+`/metro` lists the published food guides; `/metro/<slug>` is generated statically for every station. These pages share the existing Metro public payload, site navigation/footer, and guide styles. The homepage schematic keeps its existing map data and illustrative labels.
+
+Put station records in `content/metro/stations.json`, or add a single station object at `content/metro/daily/YYYY-MM-DD/web.json`. Daily directories are processed in date order; the later record replaces the entire station with the same `n`. No manual station registry is needed. See `content/metro/schema.md` for fields. Keys beginning with `_` are ignored recursively. Missing display fields are hidden.
+
+Put images in `content/metro/images/NN-slug/photos/` and `slides/`. References may use `images/NN-slug/photos/name.webp` or `photos/name.webp` (similarly for slides). The build supports existing JPG/PNG references whose committed counterpart is WebP, validates file containment/existence, and copies referenced files to generated `public/metro/images/`. Research sources and extraction metadata remain in the content files; only display fields enter the public payload. Existing predev/prebuild/pretest/typecheck hooks run this pipeline.
+
+A pull request touching `content/metro/**` triggers Metro content validation and auto-merge. The workflow compares **all changed files against the base**, including deletions and renames. Only content-only PRs run the dedicated validation/build/tests and then request GitHub squash auto-merge with `GITHUB_TOKEN`. Non-content changes need human review and skip auto-merge. The gate runs from the reviewed base; this implementation PR therefore requires human review. Fork PRs validate but cannot enable auto-merge through the restricted fork token. Repository auto-merge must be enabled and existing branch protections/required reviews and checks still apply. No protection bypass is used. After merge, the existing Vercel Git integration builds and deploys the site.

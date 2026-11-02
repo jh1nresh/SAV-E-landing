@@ -97,6 +97,7 @@ function SiteFooter() {
 
   return (
     <footer className="site">
+      <a href="/metro" lang="zh-Hant">捷運美食清單</a>
       <a href="/zh-tw/guides" lang="zh-Hant">收藏整理指南（繁體中文）</a>
       <a href={hrefWithLang("/privacy", lang)}>Savvy Privacy Policy</a>
       <a href={hrefWithLang("/support", lang)}>Savvy Support</a>

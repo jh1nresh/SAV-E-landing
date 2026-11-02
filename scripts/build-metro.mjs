@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { isAllowedStoreSource } from "./source-links.mjs";
 export { isAllowedSourceUrl } from "./source-links.mjs";
 import { STORE_KINDS } from "../lib/metro-logic.mjs";
+import { buildFoodStations } from "./metro-content.mjs";
 import { snapToLine } from "./metro-lines.mjs";
 
 const PRIVATE_KEY = "not" + "es";
@@ -208,6 +209,7 @@ function main() {
   try {
     const raw = JSON.parse(readFileSync(srcPath, "utf8"));
     const publicData = buildPublicMetro(raw);
+    publicData.foodStations = buildFoodStations(root);
     mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, `${JSON.stringify(publicData, null, 2)}\n`, "utf8");
     console.log(

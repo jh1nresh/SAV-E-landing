@@ -1,0 +1,1481 @@
+[
+  {
+    "n": 1,
+    "date": "2026-10-21",
+    "station": "小巨蛋",
+    "slug": "xiaojudan",
+    "tagline": "天氣一轉涼，下班走出小巨蛋站，最想要的就是一碗熱湯。這 4 間都在站外走路 10 分鐘內，沒有連鎖名店，是附近上班族和老鄰居會鑽進巷子吃的暖胃小店。先收藏，冷天直接打開地圖找。",
+    "shops": [
+      {
+        "key": null,
+        "name": "万端 By 肝苦嘆呷郎",
+        "dish": "牛肉麵、麻婆豆腐麵、炸黑豬排骨",
+        "price": "$380／$280／$180",
+        "price_source": null,
+        "address": "台北市松山區敦化北路165巷20號1樓",
+        "exit_walk": "小巨蛋站 1 號出口，步行約 6–8 分鐘",
+        "hours": "17:00–22:00（週二、週三休，建議先訂位）",
+        "sources": [
+          "https://bonie.tw/wanduan-beef-noodle-taipei/",
+          "https://www.poponote.com/note/6ad73d39fc9b58000784d6d5"
+        ]
+      },
+      {
+        "key": null,
+        "name": "邊城孜然羊肉",
+        "dish": "孜然羊肉鍋、羊肉鍋巴飯、烤羊肉串",
+        "price": "$850、羊肉串 3 串 $180",
+        "price_source": "2024 價格，可能已調整",
+        "address": "台北市松山區八德路三段155巷28-1號",
+        "exit_walk": "小巨蛋站 4 號出口，步行約 5 分鐘",
+        "hours": "12:00–14:00、17:00–21:00（週日、週一休）",
+        "sources": [
+          "https://ryokousharoody.blogspot.com/2024/04/bordertown-cumin-lamb.html",
+          "https://ifoodie.tw/restaurant/5fb327752261392bfcb27744",
+          "https://www.walkerland.com.tw/article/view/314867",
+          "https://gurunews.tw/bian-cheng/",
+          "https://rick2012.pixnet.net/blog/posts/17347220481",
+          "https://home.gamer.com.tw/artwork.php?sn=6057177"
+        ]
+      },
+      {
+        "key": null,
+        "name": "麵麵聚到",
+        "dish": "麻辣臭豆腐鴨血、金磚魯肉飯、瓜仔肉飯",
+        "price": "$90／$80／$80",
+        "price_source": "2026/10 外送價，現場可能不同",
+        "address": "台北市松山區南京東路四段133巷9弄1號",
+        "exit_walk": "小巨蛋站，步行約 5 分鐘",
+        "hours": "週一至五 11:30–21:30、週日 12:15–20:30（週六休）",
+        "sources": [
+          "https://evavin.com/shop/mian-mian-ju-dao",
+          "https://tpe.twagoda.com/entry/103396684.html",
+          "https://www.ubereats.com/tw/store/%E9%BA%B5%E9%BA%B5%E8%81%9A%E5%88%B0-%E9%BA%BB%E8%BE%A3%E8%87%AD%E8%B1%86%E8%85%90-%E9%B4%A8%E8%A1%80-%E5%A4%A7%E8%85%B8%E9%BA%B5%E7%B7%9A/aYEZ5-rHS7OKxIHDNKQKqQ"
+        ]
+      },
+      {
+        "key": null,
+        "name": "中崙張記藥膳排骨",
+        "dish": "藥燉排骨、藥燉羊肉麵線、小滷肉飯",
+        "price": "$100／$125／$35",
+        "price_source": "2025–2026 顧客評論",
+        "address": "台北市松山區八德路三段80號（中崙市場）",
+        "exit_walk": "小巨蛋站 4 號出口，步行約 6 分鐘",
+        "hours": "17:30–23:30（週六休）",
+        "sources": [
+          "https://info.gotoformosa.com/175406979"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/01-xiaojudan/photos/biancheng-photo.jpg",
+        "images/01-xiaojudan/photos/mianmian-photo.jpg",
+        "images/01-xiaojudan/photos/wanduan-photo.jpg",
+        "images/01-xiaojudan/photos/zhangji-photo.jpg"
+      ],
+      "slides": [
+        "images/01-xiaojudan/slides/01-cover.png",
+        "images/01-xiaojudan/slides/02-wanduan.png",
+        "images/01-xiaojudan/slides/03-biancheng.png",
+        "images/01-xiaojudan/slides/04-mianmian.png",
+        "images/01-xiaojudan/slides/05-zhangji.png",
+        "images/01-xiaojudan/slides/06-app.png",
+        "images/01-xiaojudan/slides/07-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/savvysave_/p/DewQqqNm7ay/",
+      "threads": "https://www.threads.com/@savvysave_/post/DewQ7Zrm-DR",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://bonie.tw/wanduan-beef-noodle-taipei/",
+      "https://www.poponote.com/note/6ad73d39fc9b58000784d6d5",
+      "https://ryokousharoody.blogspot.com/2024/04/bordertown-cumin-lamb.html",
+      "https://ifoodie.tw/restaurant/5fb327752261392bfcb27744",
+      "https://www.walkerland.com.tw/article/view/314867",
+      "https://gurunews.tw/bian-cheng/",
+      "https://evavin.com/shop/mian-mian-ju-dao",
+      "https://tpe.twagoda.com/entry/103396684.html",
+      "https://info.gotoformosa.com/175406979",
+      "https://rick2012.pixnet.net/blog/posts/17347220481",
+      "https://home.gamer.com.tw/artwork.php?sn=6057177",
+      "https://www.ubereats.com/tw/store/%E9%BA%B5%E9%BA%B5%E8%81%9A%E5%88%B0-%E9%BA%BB%E8%BE%A3%E8%87%AD%E8%B1%86%E8%85%90-%E9%B4%A8%E8%A1%80-%E5%A4%A7%E8%85%B8%E9%BA%B5%E7%B7%9A/aYEZ5-rHS7OKxIHDNKQKqQ"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/f1-evidence/2026-10-21-xiaojudan-ig.txt",
+      "data_json": null,
+      "sources_md": "/workspace/shared/gtm/2026-10-21-savvy-xiaojudan-warm/sources.md"
+    }
+  },
+  {
+    "n": 2,
+    "date": "2026-10-22",
+    "station": "饒河/松山",
+    "slug": "raohe-songshan",
+    "tagline": "晚上風一涼，從松山站 5 號出口走出來，大約 1 分鐘就到饒河夜市入口。這 4 攤都是現點現做的熱食，避開胡椒餅那條排隊人龍，先收藏，下次逛夜市直接打開地圖照著吃。",
+    "shops": [
+      {
+        "key": null,
+        "name": "Whatever GG 脆皮蛋餅",
+        "dish": "三合一蛋餅、三星蔥蛋餅",
+        "price": "$80、三星蔥 $100",
+        "price_source": "2025/03 報導價，可能已調整",
+        "address": "台北市松山區饒河街108號門口",
+        "exit_walk": "松山站 5 號出口→夜市入口約 1 分鐘，攤在夜市西段",
+        "hours": "17:00–23:30（週三休）",
+        "sources": [
+          "https://supertaste.tvbs.com.tw/infocard/31588",
+          "https://www.ubereats.com/tw/store/whatevergg-%E8%84%86%E7%9A%AE%E8%9B%8B%E9%A4%85-%E9%A5%92%E6%B2%B3%E5%A4%9C%E5%B8%82/EL0bEAoXVCeBswF71aoKVQ"
+        ]
+      },
+      {
+        "key": null,
+        "name": "福島屋圓圓燒",
+        "dish": "圓圓燒（高麗菜、蛋、培根、蝦仁、柴魚）",
+        "price": "$70／份",
+        "price_source": "2026 食記",
+        "address": "台北市松山區饒河街138號前（第174攤）",
+        "exit_walk": "松山站 5 號出口→夜市入口約 1 分鐘，攤在夜市中段",
+        "hours": "約 17:00–23:30，假日到 24:00（各來源時間不一）",
+        "sources": [
+          "https://supertaste.tvbs.com.tw/infocard/31582",
+          "https://foodieteller.com/raohe-street-tourist-night-market/"
+        ]
+      },
+      {
+        "key": null,
+        "name": "心心港式腸粉",
+        "dish": "蝦仁腸粉、牛肉腸粉",
+        "price": "$75–95",
+        "price_source": "2026/07 攤位牌價",
+        "address": "台北市松山區饒河街204號前（第036攤）",
+        "exit_walk": "松山站 5 號出口→夜市入口約 1 分鐘，靠慈祐宮那頭",
+        "hours": "18:30–00:00（週一、週二休）",
+        "sources": [
+          "https://evavin.com/shop/sin-sin-hk-rice-rolls"
+        ]
+      },
+      {
+        "key": null,
+        "name": "安師傅冰火菠蘿",
+        "dish": "冰火菠蘿、雪糕菠蘿",
+        "price": "$40、雪糕菠蘿 $65",
+        "price_source": null,
+        "address": "台北市松山區饒河街212號前",
+        "exit_walk": "松山站 5 號出口→夜市入口約 1 分鐘，入口旁騎樓",
+        "hours": "16:30–00:00（週一、週三休）",
+        "sources": [
+          "https://lupanda.tw/foodunfe/",
+          "https://aruki.tw/shops/raohe-master-an-ice-fire-pineapple-bun"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/02-raohe-songshan/photos/anshifu-photo.jpg",
+        "images/02-raohe-songshan/photos/fukushima-photo.jpg",
+        "images/02-raohe-songshan/photos/gg-photo.jpg",
+        "images/02-raohe-songshan/photos/xinxin-photo.jpg"
+      ],
+      "slides": [
+        "images/02-raohe-songshan/slides/01-cover.png",
+        "images/02-raohe-songshan/slides/02-gg.png",
+        "images/02-raohe-songshan/slides/03-fukushima.png",
+        "images/02-raohe-songshan/slides/04-xinxin.png",
+        "images/02-raohe-songshan/slides/05-anshifu.png",
+        "images/02-raohe-songshan/slides/06-app.png",
+        "images/02-raohe-songshan/slides/07-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/p/DezAA-tGyEJ/",
+      "threads": "https://www.threads.com/@savvysave_/post/DezCsjVG5J6",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://www.taiwan.net.tw/m1.aspx?sNO=0001040",
+      "https://supertaste.tvbs.com.tw/infocard/31588",
+      "https://www.ubereats.com/tw/store/whatevergg-%E8%84%86%E7%9A%AE%E8%9B%8B%E9%A4%85-%E9%A5%92%E6%B2%B3%E5%A4%9C%E5%B8%82/EL0bEAoXVCeBswF71aoKVQ",
+      "https://supertaste.tvbs.com.tw/infocard/31582",
+      "https://foodieteller.com/raohe-street-tourist-night-market/",
+      "https://evavin.com/shop/sin-sin-hk-rice-rolls",
+      "https://lupanda.tw/foodunfe/",
+      "https://aruki.tw/shops/raohe-master-an-ice-fire-pineapple-bun",
+      "https://youpouch.com/2025/03/03/1250018/"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/f1-evidence/2026-10-22-songshan-ig.txt",
+      "data_json": null,
+      "sources_md": "/workspace/shared/gtm/2026-10-22-savvy-songshan-carousel/sources.md"
+    }
+  },
+  {
+    "n": 3,
+    "date": "2026-10-23",
+    "station": "雙連",
+    "slug": "shuanglian",
+    "tagline": "常搭雙連站的人先收👇",
+    "shops": [
+      {
+        "key": null,
+        "name": "阿田麵",
+        "dish": "古早味陽春麵＋滷蛋",
+        "price": null,
+        "price_source": null,
+        "address": null,
+        "exit_walk": "1 號出口約 3 分鐘",
+        "hours": null,
+        "sources": null
+      },
+      {
+        "key": null,
+        "name": "雙連蚵仔麵線",
+        "dish": "一早就開的麵線",
+        "price": null,
+        "price_source": null,
+        "address": null,
+        "exit_walk": "1 號出口右手邊",
+        "hours": null,
+        "sources": null
+      },
+      {
+        "key": null,
+        "name": "滋奶谷菓子燒",
+        "dish": "日式鮮奶紅豆餅",
+        "price": null,
+        "price_source": null,
+        "address": null,
+        "exit_walk": "2 號出口約 1 分鐘",
+        "hours": null,
+        "sources": null
+      },
+      {
+        "key": null,
+        "name": "雙連圓仔湯",
+        "dish": "招牌燒麻糬",
+        "price": null,
+        "price_source": null,
+        "address": null,
+        "exit_walk": "1 號出口約 3 分鐘",
+        "hours": null,
+        "sources": null
+      },
+      {
+        "key": null,
+        "name": "貨室甜品",
+        "dish": "刨冰＋麵茶系列",
+        "price": null,
+        "price_source": null,
+        "address": null,
+        "exit_walk": "雙連站約 4 分鐘",
+        "hours": null,
+        "sources": null
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/03-shuanglian/photos/atian.jpg",
+        "images/03-shuanglian/photos/huoshi.jpg",
+        "images/03-shuanglian/photos/oyster.jpg",
+        "images/03-shuanglian/photos/yuanzai.jpg",
+        "images/03-shuanglian/photos/zinaigu.jpg"
+      ],
+      "slides": [
+        "images/03-shuanglian/slides/01-cover.png",
+        "images/03-shuanglian/slides/02-atian.png",
+        "images/03-shuanglian/slides/03-oyster.png",
+        "images/03-shuanglian/slides/04-zinaigu.png",
+        "images/03-shuanglian/slides/05-yuanzai.png",
+        "images/03-shuanglian/slides/06-huoshi.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/p/De1d4pNG-u4/",
+      "threads": "https://www.threads.com/@savvysave_/post/De1zvmkG_ae",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://chifeng.org.tw/%e9%98%bf%e7%94%b0%e9%ba%b5/",
+      "https://achu.tw/a-tian-mian-chifeng/",
+      "https://supertaste.tvbs.com.tw/food/346312",
+      "https://www.pchometravel.com/ticket/V000005B0U0GAXLVZ9B",
+      "https://ifoodie.tw/restaurant/55a5e6fac03a102ec1415622",
+      "https://www.sweetriceball.tw/about.html",
+      "https://foodstar.tw/24979",
+      "https://wunweistories.com/food-huoshih-202505/",
+      "https://www.mnews.tw/story/mm-20250804food001",
+      "https://www.ftnn.com.tw/news/474251",
+      "go.17eat.com/94",
+      "https://blog.footinder.app/%e5%8f%b0%e5%8c%97%e5%b8%82%e4%b8%ad%e5%b1%b1%e5%8d%80-2/%e5%8f%b0%e5%8c%97%e5%b8%82-%e4%b8%ad%e5%b1%b1%e5%8d%80-%e9%9b%99%e9%80%a3%e8%9a%b5%e4%bb%94%e9%ba%b5%e7%b7%9a/",
+      "https://wanchen-travel.com/shuanglian-noodle-2/",
+      "https://mibaoma.tw/sweetriceball/"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/f1-evidence/2026-10-23-shuanglian-ig.txt",
+      "data_json": null,
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-10-23/sources.md"
+    }
+  },
+  {
+    "n": 4,
+    "date": "2026-10-24",
+    "station": "東門",
+    "slug": "dongmen",
+    "tagline": "常搭東門站的人先收👇",
+    "shops": [
+      {
+        "key": null,
+        "name": "鼎泰豐信義店",
+        "dish": "小籠包 10 顆",
+        "price": "$290",
+        "price_source": "2026/10 食記菜單價",
+        "address": "台北市大安區信義路二段194號",
+        "exit_walk": "5 號出口約 60 公尺",
+        "hours": "平日 11:00–20:30、週末 10:30–20:30（現以外帶為主）",
+        "sources": [
+          "girlsplan.com/dinthaif",
+          "icecreamcat.tw/1122",
+          "fonfood.com/store/315354",
+          "shoujia.com/s/din-tai-fung-xinyi-taipei",
+          "trip.com"
+        ]
+      },
+      {
+        "key": null,
+        "name": "豆豆里 永康旗艦店",
+        "dish": "迷你泡菜起司煎餅",
+        "price": "$200",
+        "price_source": "線上菜單，2026/10 查",
+        "address": "台北市大安區永康街2巷7號",
+        "exit_walk": "5 號出口走約 1 分鐘",
+        "hours": "每日 11:30–21:00（建議先訂位）",
+        "sources": [
+          "tenjo.tw/dodoli",
+          "shop.ichefpos.com/store/ghFRrY5A/ordering",
+          "tenjo.tw"
+        ]
+      },
+      {
+        "key": null,
+        "name": "天津蔥抓餅",
+        "dish": "九層塔蛋蔥抓餅",
+        "price": "$50",
+        "price_source": "2026/03 食記",
+        "address": "台北市大安區永康街6巷1號",
+        "exit_walk": "5 號出口走約 3 分鐘",
+        "hours": "營業到約 22:00（只外帶，常排隊）",
+        "sources": [
+          "blake.com.tw/blog/post/tianjin-cong-zhua-bing",
+          "achu.tw"
+        ]
+      },
+      {
+        "key": null,
+        "name": "思慕昔本館",
+        "dish": "超級雪酪芒果雪花冰",
+        "price": "$290",
+        "price_source": "外送平台菜單，2026/10 查",
+        "address": "台北市大安區永康街15號",
+        "exit_walk": "5 號出口直行約 100 公尺",
+        "hours": "官網 11:00–21:00（食記寫週五六到 22:00）",
+        "sources": [
+          "smoothiehouse.com",
+          "jeremyfoodie.tw",
+          "uptogo.com.tw",
+          "mibaoma.tw"
+        ]
+      },
+      {
+        "key": null,
+        "name": "永康牛肉麵",
+        "dish": "紅燒牛肉麵 小碗",
+        "price": "$300 起",
+        "price_source": "2026/06 食記",
+        "address": "台北市大安區永康街2巷7號",
+        "exit_walk": "3 號出口走約 4 分鐘",
+        "hours": "每日 11:00–20:30",
+        "sources": [
+          "tenjo.tw/dodoli",
+          "shop.ichefpos.com/store/ghFRrY5A/ordering",
+          "tenjo.tw",
+          "smoothiehouse.com",
+          "jeremyfoodie.tw",
+          "uptogo.com.tw",
+          "mibaoma.tw",
+          "wanteatfood.com/55259",
+          "zanzan.tw/archives/66150",
+          "zanzan.tw"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/04-dongmen/photos/beefnoodle.jpg",
+        "images/04-dongmen/photos/dodoli.jpg",
+        "images/04-dongmen/photos/dtf.jpg",
+        "images/04-dongmen/photos/mango.jpg",
+        "images/04-dongmen/photos/scallion.jpg"
+      ],
+      "slides": [
+        "images/04-dongmen/slides/01-cover.png",
+        "images/04-dongmen/slides/02-dtf.png",
+        "images/04-dongmen/slides/03-dodoli.png",
+        "images/04-dongmen/slides/04-scallion.png",
+        "images/04-dongmen/slides/05-mango.png",
+        "images/04-dongmen/slides/06-beef.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/p/De3-727lsyD/",
+      "threads": "https://www.threads.com/@savvysave_/post/De3_XpdFWGb",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "girlsplan.com/dinthaif",
+      "icecreamcat.tw/1122",
+      "fonfood.com/store/315354",
+      "shoujia.com/s/din-tai-fung-xinyi-taipei",
+      "trip.com",
+      "tenjo.tw/dodoli",
+      "shop.ichefpos.com/store/ghFRrY5A/ordering",
+      "tenjo.tw",
+      "blake.com.tw/blog/post/tianjin-cong-zhua-bing",
+      "achu.tw",
+      "smoothiehouse.com",
+      "jeremyfoodie.tw",
+      "uptogo.com.tw",
+      "mibaoma.tw",
+      "wanteatfood.com/55259",
+      "zanzan.tw/archives/66150",
+      "zanzan.tw"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/f1-evidence/2026-10-24-dongmen-ig.txt",
+      "data_json": null,
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-10-24/sources.md"
+    }
+  },
+  {
+    "n": 5,
+    "date": "2026-10-25",
+    "station": "後山埤",
+    "slug": "houshanpi",
+    "tagline": "常搭後山埤站的人先收👇",
+    "shops": [
+      {
+        "key": null,
+        "name": "珍好鍋貼",
+        "dish": "鍋貼",
+        "price": "$7／顆",
+        "price_source": "2026/10 食記",
+        "address": "台北市南港區玉成街128號",
+        "exit_walk": "3 號出口對面約 1 分鐘",
+        "hours": "11:00–13:00、16:30–20:00（週日休）",
+        "sources": [
+          "nash.tw/herewegozhenhao202610"
+        ]
+      },
+      {
+        "key": null,
+        "name": "永吉涼麵",
+        "dish": "麻醬涼麵 小份",
+        "price": "$40 起",
+        "price_source": "2026/06 食記",
+        "address": "台北市南港區玉成街154號",
+        "exit_walk": "3 號出口約 1–2 分鐘",
+        "hours": "06:30–14:30（週三休）",
+        "sources": [
+          "blake.com.tw/blog/post/yongji-liang-mian",
+          "icecreamcat.tw/yong-ji",
+          "hamibobo.tw/post-229112162"
+        ]
+      },
+      {
+        "key": null,
+        "name": "阿來甜不辣",
+        "dish": "甜不辣 小碗",
+        "price": "$70",
+        "price_source": "2026/10 食記",
+        "address": "台北市南港區同德路45號（不在玉成街）",
+        "exit_walk": "3 號出口約 3 分鐘",
+        "hours": "10:00–19:30（週日休）",
+        "sources": [
+          "appletrees.tw/blog/post/alaitianbula",
+          "litwenblog.com/nangang-alaitempura"
+        ]
+      },
+      {
+        "key": null,
+        "name": "春來蚵仔麵線",
+        "dish": "綜合麵線 大碗",
+        "price": "$80",
+        "price_source": "2026/05 食記",
+        "address": "台北市信義區忠孝東路五段743巷7號",
+        "exit_walk": "1 號出口約 1 分鐘",
+        "hours": "07:30–20:30（週一休）",
+        "sources": [
+          "mibaoma.tw/chun-lai",
+          "travel366days.com/oysternoodles-taipei"
+        ]
+      },
+      {
+        "key": null,
+        "name": "鄭姑媽雞排便當店",
+        "dish": "雞排飯",
+        "price": "$130",
+        "price_source": "2026/09 食記",
+        "address": "台北市信義區忠孝東路五段790巷25弄13號",
+        "exit_walk": "2 號出口約 5 分鐘",
+        "hours": "週二至五 10:00–18:00",
+        "sources": [
+          "mibaoma.tw/aunt-zheng",
+          "appletrees.tw/blog/post/auntaheng"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/05-houshanpi/photos/guotie.jpg",
+        "images/05-houshanpi/photos/jipai.jpg",
+        "images/05-houshanpi/photos/liangmian.jpg",
+        "images/05-houshanpi/photos/mianxian.jpg",
+        "images/05-houshanpi/photos/tianbula.jpg"
+      ],
+      "slides": [
+        "images/05-houshanpi/slides/01-cover.png",
+        "images/05-houshanpi/slides/02-guotie.png",
+        "images/05-houshanpi/slides/03-liangmian.png",
+        "images/05-houshanpi/slides/04-tianbula.png",
+        "images/05-houshanpi/slides/05-mianxian.png",
+        "images/05-houshanpi/slides/06-jipai.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/p/De6kh33mwwb/",
+      "threads": "https://www.threads.com/@savvysave_/post/De6ktwCFNV7",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "nash.tw/herewegozhenhao202610",
+      "blake.com.tw/blog/post/yongji-liang-mian",
+      "icecreamcat.tw/yong-ji",
+      "hamibobo.tw/post-229112162",
+      "appletrees.tw/blog/post/alaitianbula",
+      "litwenblog.com/nangang-alaitempura",
+      "mibaoma.tw/chun-lai",
+      "travel366days.com/oysternoodles-taipei",
+      "mibaoma.tw/aunt-zheng",
+      "appletrees.tw/blog/post/auntaheng"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/f1-evidence/2026-10-25-houshanpi-ig.txt",
+      "data_json": null,
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-10-25/sources.md"
+    }
+  },
+  {
+    "n": 6,
+    "date": "2026-10-26",
+    "station": "士林",
+    "slug": "shilin",
+    "tagline": "一個人來也好點，5 間我會收",
+    "shops": [
+      {
+        "key": "danbing",
+        "name": "双胞胎手工蛋餅捲ㄦ",
+        "dish": "双胞胎捲",
+        "price": "$70",
+        "price_source": "2026/03 食記",
+        "address": "台北市士林區中山北路五段505巷29號",
+        "exit_walk": "2號出口約1分鐘",
+        "hours": "06:30–13:00（週日休）",
+        "sources": [
+          "vivawei.tw/shilin-mrt-food-2026",
+          "nash.tw/twinsomelette20251",
+          "blog.udn.com/justnike0803/186959981"
+        ]
+      },
+      {
+        "key": "hongdou",
+        "name": "晴光紅豆餅士林店",
+        "dish": "紅豆餅",
+        "price": null,
+        "price_source": null,
+        "address": "台北市士林區美德街40號",
+        "exit_walk": "1號出口約3分鐘",
+        "hours": "10:00–20:00，週日至19:00",
+        "sources": [
+          "vivawei.tw/shilin-mrt-food-2026",
+          "uptogo.com.tw"
+        ]
+      },
+      {
+        "key": "paigu",
+        "name": "海友十全排骨",
+        "dish": "十全藥燉肋排",
+        "price": "$120",
+        "price_source": "2026/08 食記",
+        "address": "台北市士林區大東路49號",
+        "exit_walk": "1號出口約5–7分鐘",
+        "hours": "15:00–00:00（週二休）",
+        "sources": [
+          "viviyu.com/archives/62343",
+          "hedonistjun.com/hai-you-shiquan-pork-rib-soup",
+          "clairetila.com/haiyou",
+          "wanteatfood.com/09846"
+        ]
+      },
+      {
+        "key": "shengjian",
+        "name": "鍾家原上海生煎包",
+        "dish": "鮮肉包",
+        "price": "$20／顆",
+        "price_source": "2026/08 食記",
+        "address": "台北市士林區小東街38號",
+        "exit_walk": "2號出口約7分鐘",
+        "hours": "15:00–20:00，六14–21、日14起（週三休）",
+        "sources": [
+          "tenjo.tw/shengjianbao",
+          "jamesdiscover.tw/blog/7693406"
+        ]
+      },
+      {
+        "key": "liangmian",
+        "name": "好朋友涼麵",
+        "dish": "涼麵 小碗",
+        "price": "$60",
+        "price_source": "2026/06 食記",
+        "address": "台北市士林區大南路31號",
+        "exit_walk": "2號出口約7分鐘",
+        "hours": "16:30–23:30（週四休）",
+        "sources": [
+          "pekoblog.tw/goodfriend",
+          "icecreamcat.tw/bhessy",
+          "supertaste.tvbs.com.tw/travel/337547",
+          "hedonistjun.com/good-friend-cold-noodles"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/06-shilin/photos/danbing.jpg",
+        "images/06-shilin/photos/hongdou.jpg",
+        "images/06-shilin/photos/liangmian.jpg",
+        "images/06-shilin/photos/paigu.jpg",
+        "images/06-shilin/photos/shengjian.jpg"
+      ],
+      "slides": [
+        "images/06-shilin/slides/01-cover.png",
+        "images/06-shilin/slides/02-danbing.png",
+        "images/06-shilin/slides/03-hongdou.png",
+        "images/06-shilin/slides/04-paigu.png",
+        "images/06-shilin/slides/05-shengjian.png",
+        "images/06-shilin/slides/06-liangmian.png",
+        "images/06-shilin/slides/07-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/savvysave_/p/De9O-oUlgTS/",
+      "threads": "https://www.threads.com/@savvysave_/post/De9MN_VlRw-",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "vivawei.tw/shilin-mrt-food-2026",
+      "nash.tw/twinsomelette20251",
+      "blog.udn.com/justnike0803/186959981",
+      "uptogo.com.tw",
+      "viviyu.com/archives/62343",
+      "hedonistjun.com/hai-you-shiquan-pork-rib-soup",
+      "clairetila.com/haiyou",
+      "wanteatfood.com/09846",
+      "tenjo.tw/shengjianbao",
+      "jamesdiscover.tw/blog/7693406",
+      "pekoblog.tw/goodfriend",
+      "icecreamcat.tw/bhessy",
+      "supertaste.tvbs.com.tw/travel/337547",
+      "hedonistjun.com/good-friend-cold-noodles"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/f1-evidence/2026-10-26-shilin-ig.txt",
+      "data_json": "/workspace/shared/gtm/savvy-ready/2026-10-26/data.json",
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-10-26/sources.md"
+    }
+  },
+  {
+    "n": 7,
+    "date": "2026-10-27",
+    "station": "公館",
+    "slug": "gongguan",
+    "tagline": "常搭公館站的人，這 5 間先收",
+    "shops": [
+      {
+        "key": "guabao",
+        "name": "藍家割包",
+        "dish": "割包",
+        "price": "$75",
+        "price_source": "2026/06 食記",
+        "address": "台北市中正區羅斯福路三段316巷8弄3號",
+        "exit_walk": "4號出口約2–4分鐘",
+        "hours": "11:00–22:00（週一休）",
+        "sources": [
+          "hanblog.tw/lanjia-guabao/",
+          "mibaoma.tw/lan-gebao-taipei/",
+          "irenelife.com/blog/post/lan_jia_gua_bao",
+          "blake.com.tw/blog/post/gongguan-food-2026",
+          "supertaste.tvbs.com.tw/pack/348817",
+          "stancylife.com/bluehome/"
+        ]
+      },
+      {
+        "key": "xuegao",
+        "name": "珍記豬血糕",
+        "dish": "豬血糕",
+        "price": "$30",
+        "price_source": "2026/02 食記",
+        "address": "台北市中正區羅斯福路四段24巷12弄12號（汀州路三段187號旁）",
+        "exit_walk": "4號出口約3–5分鐘",
+        "hours": "12:00–21:30（週三休）",
+        "sources": [
+          "pekoblog.tw/zhenji/",
+          "hits0805.pixnet.net",
+          "ifoodie.tw/post/697f10f9eb74c450f8420050",
+          "aruki.tw"
+        ]
+      },
+      {
+        "key": "shitang",
+        "name": "17食堂",
+        "dish": "莆田荔枝肉客飯",
+        "price": "$120",
+        "price_source": "2026/05 食記",
+        "address": "台北市中正區羅斯福路三段316巷16號2樓",
+        "exit_walk": "4號出口約3分鐘",
+        "hours": "11:30–14:30、17:30–21:00（僅平日）",
+        "sources": [
+          "littlepu.tw/17-canteen/"
+        ]
+      },
+      {
+        "key": "longji",
+        "name": "龍記炒燴",
+        "dish": "滑蛋牛肉燴飯",
+        "price": "$135",
+        "price_source": "2026/07 食記",
+        "address": "台北市中正區羅斯福路四段92號（水源市場1樓32號攤）",
+        "exit_walk": "1號出口約2分鐘",
+        "hours": "12:00–15:00、17:00–20:00（週一休＋不定休）",
+        "sources": [
+          "blake.com.tw/blog/post/longji",
+          "achu.tw/longji-fried-rice/",
+          "walkerland.com.tw/article/view/423966",
+          "supertaste.tvbs.com.tw/food/350967"
+        ]
+      },
+      {
+        "key": "youyu",
+        "name": "李記正客家魷魚羹",
+        "dish": "生魷魚羹麵 小",
+        "price": "$80",
+        "price_source": "2026/08 食記",
+        "address": "台北市中正區汀州路三段289號",
+        "exit_walk": "1號出口約4–5分鐘",
+        "hours": "06:50–19:30（週一休）",
+        "sources": [
+          "blake.com.tw/blog/post/kejia-youyu-geng",
+          "achu.tw/li-jizheng-hakka/",
+          "pekoblog.tw/squidli/"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/07-gongguan/photos/guabao.jpg",
+        "images/07-gongguan/photos/longji.jpg",
+        "images/07-gongguan/photos/shitang.jpg",
+        "images/07-gongguan/photos/xuegao.jpg",
+        "images/07-gongguan/photos/youyu.jpg"
+      ],
+      "slides": [
+        "images/07-gongguan/slides/01-cover.png",
+        "images/07-gongguan/slides/02-guabao.png",
+        "images/07-gongguan/slides/03-xuegao.png",
+        "images/07-gongguan/slides/04-shitang.png",
+        "images/07-gongguan/slides/05-longji.png",
+        "images/07-gongguan/slides/06-youyu.png",
+        "images/07-gongguan/slides/07-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/p/De_t2ktFtia/",
+      "threads": "https://www.threads.com/@savvysave_/post/De_t-dNFTVw",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "hanblog.tw/lanjia-guabao/",
+      "mibaoma.tw/lan-gebao-taipei/",
+      "irenelife.com/blog/post/lan_jia_gua_bao",
+      "blake.com.tw/blog/post/gongguan-food-2026",
+      "supertaste.tvbs.com.tw/pack/348817",
+      "stancylife.com/bluehome/",
+      "pekoblog.tw/zhenji/",
+      "hits0805.pixnet.net",
+      "ifoodie.tw/post/697f10f9eb74c450f8420050",
+      "aruki.tw",
+      "littlepu.tw/17-canteen/",
+      "blake.com.tw/blog/post/longji",
+      "achu.tw/longji-fried-rice/",
+      "walkerland.com.tw/article/view/423966",
+      "supertaste.tvbs.com.tw/food/350967",
+      "blake.com.tw/blog/post/kejia-youyu-geng",
+      "achu.tw/li-jizheng-hakka/",
+      "pekoblog.tw/squidli/"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/f1-evidence/2026-10-27-gongguan-ig.txt",
+      "data_json": "/workspace/shared/gtm/savvy-ready/2026-10-27/data.json",
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-10-27/sources.md"
+    }
+  },
+  {
+    "n": 8,
+    "date": "2026-10-28",
+    "station": "南京復興",
+    "slug": "nanjing-fuxing",
+    "tagline": "常搭南京復興站的人，這 5 間先收",
+    "shops": [
+      {
+        "key": "paigu",
+        "name": "合江街排骨湯",
+        "dish": "排骨湯",
+        "price": "$100",
+        "price_source": "2026/10 食記",
+        "address": "台北市中山區合江街2號",
+        "exit_walk": "1號出口約7分鐘",
+        "hours": "11:00–20:00（週日休）",
+        "sources": [
+          "https://blake.com.tw/blog/post/unnamed-ribs-soup-2610"
+        ]
+      },
+      {
+        "key": "shimu",
+        "name": "3元6虱目魚湯",
+        "dish": "虱目魚肚湯",
+        "price": "$130",
+        "price_source": "2026/10 食記",
+        "address": "台北市中山區龍江路191號",
+        "exit_walk": "1號出口約6–7分鐘",
+        "hours": "09:00–20:00（週日休）",
+        "sources": [
+          "https://blake.com.tw/blog/post/3-yuan-6-shi-2610"
+        ]
+      },
+      {
+        "key": "hainan",
+        "name": "慶城海南雞飯",
+        "dish": "1號餐",
+        "price": "$120",
+        "price_source": "2026/10 整理",
+        "address": "台北市松山區慶城街16巷8號",
+        "exit_walk": "7號出口約2–3分鐘",
+        "hours": "11:00–15:00、16:00–20:30（六日休）",
+        "sources": [
+          "https://evavin.com/shop/qingcheng-hainan-chicken-rice"
+        ]
+      },
+      {
+        "key": "liangmian",
+        "name": "福德涼麵",
+        "dish": "涼麵",
+        "price": "$60",
+        "price_source": "2026/03 食記",
+        "address": "台北市中山區興安街76號",
+        "exit_walk": "1號出口約5–7分鐘",
+        "hours": "24小時（週二休）",
+        "sources": [
+          "https://tenjo.tw/fude-noodles/",
+          "https://lordcat.net/archives/386",
+          "https://blake.com.tw/blog/post/fu-de-liang-mian"
+        ]
+      },
+      {
+        "key": "rouyuan",
+        "name": "正阿財彰化肉圓",
+        "dish": "肉圓",
+        "price": "$50",
+        "price_source": "2026/02 食記",
+        "address": "台北市中山區龍江路21巷13號",
+        "exit_walk": "2號出口約7–10分鐘",
+        "hours": "08:30–13:30（週日休）",
+        "sources": [
+          "https://blake.com.tw/blog/post/a-cai-zhanghua-rouyuan-2602",
+          "https://icecreamcat.tw/balls-money/"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/08-nanjing-fuxing/photos/hainan.jpg",
+        "images/08-nanjing-fuxing/photos/liangmian.jpg",
+        "images/08-nanjing-fuxing/photos/paigu.jpg",
+        "images/08-nanjing-fuxing/photos/rouyuan.jpg",
+        "images/08-nanjing-fuxing/photos/shimu.jpg"
+      ],
+      "slides": [
+        "images/08-nanjing-fuxing/slides/01-cover.png",
+        "images/08-nanjing-fuxing/slides/02-paigu.png",
+        "images/08-nanjing-fuxing/slides/03-shimu.png",
+        "images/08-nanjing-fuxing/slides/04-hainan.png",
+        "images/08-nanjing-fuxing/slides/05-liangmian.png",
+        "images/08-nanjing-fuxing/slides/06-rouyuan.png",
+        "images/08-nanjing-fuxing/slides/07-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/savvysave_/p/DfCR_U1m_Xl/",
+      "threads": "https://www.threads.com/@savvysave_/post/DfCSLuXG1E1",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://blake.com.tw/blog/post/unnamed-ribs-soup-2610",
+      "https://blake.com.tw/blog/post/3-yuan-6-shi-2610",
+      "https://evavin.com/shop/qingcheng-hainan-chicken-rice",
+      "https://tenjo.tw/fude-noodles/",
+      "https://lordcat.net/archives/386",
+      "https://blake.com.tw/blog/post/fu-de-liang-mian",
+      "https://blake.com.tw/blog/post/a-cai-zhanghua-rouyuan-2602",
+      "https://icecreamcat.tw/balls-money/",
+      "ethanadventures.tw",
+      "pltravel.tw",
+      "liyuan-tangbao.blogspot.com/2026",
+      "rouyuan.jp"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/savvy-ready/2026-10-28/ig.txt",
+      "data_json": "/workspace/shared/gtm/savvy-ready/2026-10-28/data.json",
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-10-28/sources.md"
+    }
+  },
+  {
+    "n": 9,
+    "date": "2026-10-29",
+    "station": "忠孝復興",
+    "slug": "zhongxiao-fuxing",
+    "tagline": "常搭忠孝復興站的人，這 5 間先收",
+    "shops": [
+      {
+        "key": "jiucai",
+        "name": "江蘇菜盒店",
+        "dish": "韭菜盒 約",
+        "price": "$50–55",
+        "price_source": "2026/10 整理",
+        "address": "大安區忠孝東路三段216巷3弄6號",
+        "exit_walk": "2號出口約5分鐘",
+        "hours": "10:40–20:00（週日休）",
+        "sources": [
+          "https://evavin.com/shop/jiangsu-caihe-zhongxiao-fuxing",
+          "https://appletrees.tw/blog/post/jiangsucaihe",
+          "https://pekoblog.tw/post-40926250/"
+        ]
+      },
+      {
+        "key": "liangmian",
+        "name": "高家涼麵",
+        "dish": "涼麵",
+        "price": "$50",
+        "price_source": "2026/10 整理",
+        "address": "大安區忠孝東路三段217巷2弄1號",
+        "exit_walk": "1號出口約5分鐘",
+        "hours": "10:00–16:00（週日休）",
+        "sources": [
+          "https://evavin.com/shop/gao-jia-liang-mian-zhongxiao-fuxing",
+          "https://supertaste.tvbs.com.tw/hot/337547"
+        ]
+      },
+      {
+        "key": "mushu",
+        "name": "四海木須麵",
+        "dish": "木須炒麵",
+        "price": "$120",
+        "price_source": "2026/02 食記",
+        "address": "台北市大安區安東街52號",
+        "exit_walk": "1號出口約1–2分鐘",
+        "hours": "11:00–14:00、16:00–21:00（週日休）",
+        "sources": [
+          "https://mibaoma.tw/sihai-noodles/",
+          "https://niniyeh.com/shmsm/"
+        ]
+      },
+      {
+        "key": "goose",
+        "name": "陳陽鵝肉大王",
+        "dish": "鵝肉飯",
+        "price": "$85",
+        "price_source": "2026/10 整理",
+        "address": "台北市大安區大安路一段31巷8號",
+        "exit_walk": "站外步行約5分鐘",
+        "hours": "11:00–20:00（週一休）",
+        "sources": [
+          "https://evavin.com/shop/chen-yang-goose-zhongxiao-fuxing"
+        ]
+      },
+      {
+        "key": "guotie",
+        "name": "頂好紫琳蒸餃館",
+        "dish": "鍋貼10個",
+        "price": "$100",
+        "price_source": "2026/09 食記",
+        "address": "忠孝東路四段97號B1",
+        "exit_walk": "地下街12號出口約3分鐘",
+        "hours": "11:00–21:00",
+        "sources": [
+          "https://appletrees.tw/blog/post/zilin"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/09-zhongxiao-fuxing/photos/goose.jpg",
+        "images/09-zhongxiao-fuxing/photos/guotie.jpg",
+        "images/09-zhongxiao-fuxing/photos/jiucai.jpg",
+        "images/09-zhongxiao-fuxing/photos/liangmian.jpg",
+        "images/09-zhongxiao-fuxing/photos/mushu.jpg"
+      ],
+      "slides": [
+        "images/09-zhongxiao-fuxing/slides/01-cover.png",
+        "images/09-zhongxiao-fuxing/slides/02-jiucai.png",
+        "images/09-zhongxiao-fuxing/slides/03-liangmian.png",
+        "images/09-zhongxiao-fuxing/slides/04-mushu.png",
+        "images/09-zhongxiao-fuxing/slides/05-goose.png",
+        "images/09-zhongxiao-fuxing/slides/06-guotie.png",
+        "images/09-zhongxiao-fuxing/slides/07-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/savvysave_/p/DfE2_jIlo6b/",
+      "threads": "https://www.threads.com/@savvysave_/post/DfE3RABFVLl",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://evavin.com/shop/jiangsu-caihe-zhongxiao-fuxing",
+      "https://appletrees.tw/blog/post/jiangsucaihe",
+      "https://pekoblog.tw/post-40926250/",
+      "https://evavin.com/shop/gao-jia-liang-mian-zhongxiao-fuxing",
+      "https://supertaste.tvbs.com.tw/hot/337547",
+      "https://mibaoma.tw/sihai-noodles/",
+      "https://niniyeh.com/shmsm/",
+      "https://evavin.com/shop/chen-yang-goose-zhongxiao-fuxing",
+      "https://appletrees.tw/blog/post/zilin",
+      "pqlife.tw",
+      "-original-generateimage.jp"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/savvy-ready/2026-10-29/ig.txt",
+      "data_json": "/workspace/shared/gtm/savvy-ready/2026-10-29/data.json",
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-10-29/sources.md"
+    }
+  },
+  {
+    "n": 10,
+    "date": "2026-10-30",
+    "station": "西門",
+    "slug": "ximen",
+    "tagline": "常搭西門站的人，這 5 間先收",
+    "shops": [
+      {
+        "key": "azong",
+        "name": "阿宗麵線",
+        "dish": "大腸麵線",
+        "price": "$65",
+        "price_source": "2026/04 食記",
+        "address": "萬華區峨眉街8-1號",
+        "exit_walk": "6號出口約2–3分鐘",
+        "hours": "09:00–22:30，週五至日到23:00（無休）",
+        "sources": [
+          "https://sekainomys.com/taipei-ximen-azong-noodles/",
+          "https://www.trvlogue.com/zh-Hant/ximending-taipei-food-guide",
+          "https://mibaoma.tw/azong-noodles/"
+        ]
+      },
+      {
+        "key": "goose",
+        "name": "鴨肉扁",
+        "dish": "鵝肉米粉",
+        "price": "$60",
+        "price_source": "2026/09 食記",
+        "address": "萬華區中華路一段98之2號",
+        "exit_walk": "6號出口約5分鐘",
+        "hours": "11:30–20:20（無固定公休）",
+        "sources": [
+          "https://shin.tw/taipei-ximending-duck/",
+          "https://amateone.pixnet.net/blog/posts/861421306433777955",
+          "https://taiwanlocallife.com/taipei-ximen-yaunubien/",
+          "https://eattravelmap.com/zh-TW/restaurant/ya-rou-bian-goose-ximen/"
+        ]
+      },
+      {
+        "key": "tiantianli",
+        "name": "天天利美食坊",
+        "dish": "滷肉飯加蛋",
+        "price": "$50",
+        "price_source": "2026/04 食記",
+        "address": "萬華區漢中街32巷1號",
+        "exit_walk": "6號出口約3–5分鐘",
+        "hours": "11:00–22:30（週一休）",
+        "sources": [
+          "https://icecreamcat.tw/tiantianli/",
+          "https://bigsharkgogogo.tw/tiantianlicc/",
+          "https://marsfood.tw/tian-tian-li/",
+          "https://auntie.tw/tantanlee/",
+          "https://uptogo.com.tw/美食/天天利美食坊メニュー/"
+        ]
+      },
+      {
+        "key": "starfruit",
+        "name": "成都楊桃冰",
+        "dish": "楊桃冰",
+        "price": "$55",
+        "price_source": "2026/10 食記",
+        "address": "萬華區中華路一段144-1號",
+        "exit_walk": "6號出口約2–3分鐘",
+        "hours": "13:30–22:30（公休未標示）",
+        "sources": [
+          "https://mibaoma.tw/chayatice/",
+          "https://goodeat.tw/food/chendu-starfruitsice1966/",
+          "https://taiwanlocallife.com/taipei-ximen-chengdustarfruit/"
+        ]
+      },
+      {
+        "key": "lautianlu",
+        "name": "老天祿滷味",
+        "dish": "鴨舌",
+        "price": "$200／份",
+        "price_source": "2026/09 食記",
+        "address": "萬華區武昌街二段55號",
+        "exit_walk": "6號出口約5分鐘",
+        "hours": "10:00–22:00（官網寫每日營業）",
+        "sources": [
+          "https://www.lautianlu.com.tw/faq/preservation/",
+          "https://www.lautianlu.com.tw/store-detail/wuchang-lautianlu/",
+          "https://icecreamcat.tw/lautianlu/",
+          "https://supertaste.tvbs.com.tw/review/359501"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/10-ximen/photos/azong.jpg",
+        "images/10-ximen/photos/goose.jpg",
+        "images/10-ximen/photos/lautianlu.jpg",
+        "images/10-ximen/photos/starfruit.jpg",
+        "images/10-ximen/photos/tiantianli.jpg"
+      ],
+      "slides": [
+        "images/10-ximen/slides/01-cover.png",
+        "images/10-ximen/slides/02-azong.png",
+        "images/10-ximen/slides/03-goose.png",
+        "images/10-ximen/slides/04-tiantianli.png",
+        "images/10-ximen/slides/05-starfruit.png",
+        "images/10-ximen/slides/06-lautianlu.png",
+        "images/10-ximen/slides/07-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/savvysave_/p/DfHbt93Fsj3/",
+      "threads": "https://www.threads.com/@savvysave_/post/DfHb3hGlcDq",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://sekainomys.com/taipei-ximen-azong-noodles/",
+      "https://www.trvlogue.com/zh-Hant/ximending-taipei-food-guide",
+      "https://mibaoma.tw/azong-noodles/",
+      "https://shin.tw/taipei-ximending-duck/",
+      "https://amateone.pixnet.net/blog/posts/861421306433777955",
+      "https://taiwanlocallife.com/taipei-ximen-yaunubien/",
+      "https://eattravelmap.com/zh-TW/restaurant/ya-rou-bian-goose-ximen/",
+      "https://icecreamcat.tw/tiantianli/",
+      "https://bigsharkgogogo.tw/tiantianlicc/",
+      "https://marsfood.tw/tian-tian-li/",
+      "https://auntie.tw/tantanlee/",
+      "https://uptogo.com.tw/美食/天天利美食坊メニュー/",
+      "https://mibaoma.tw/chayatice/",
+      "https://goodeat.tw/food/chendu-starfruitsice1966/",
+      "https://taiwanlocallife.com/taipei-ximen-chengdustarfruit/",
+      "https://www.lautianlu.com.tw/faq/preservation/",
+      "https://www.lautianlu.com.tw/store-detail/wuchang-lautianlu/",
+      "https://icecreamcat.tw/lautianlu/",
+      "https://supertaste.tvbs.com.tw/review/359501"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/savvy-ready/2026-10-30/ig.txt",
+      "data_json": "/workspace/shared/gtm/savvy-ready/2026-10-30/data.json",
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-10-30/sources.md"
+    }
+  },
+  {
+    "n": 11,
+    "date": "2026-10-31",
+    "station": "大安",
+    "slug": "daan",
+    "tagline": "早午晚餐一次排好，5 間先收",
+    "shops": [
+      {
+        "key": "yonghe",
+        "name": "永和豆漿大王",
+        "dish": "燒餅油條",
+        "price": "$40",
+        "price_source": "2026/02 食記",
+        "address": "大安區復興南路二段102號",
+        "exit_walk": "5號出口約3–6分鐘",
+        "hours": "05:00–14:00（週一休）",
+        "sources": [
+          "https://pekoblog.tw/daan-soymilk/",
+          "https://lupanda.tw/hamchamshampam/",
+          "https://shotfunlady.com/yong-he-dou-jiang-da-wang/"
+        ]
+      },
+      {
+        "key": "suispy",
+        "name": "酥軾 SUISPY",
+        "dish": "酥皮蛋餅",
+        "price": null,
+        "price_source": null,
+        "address": "大安區大安路一段228號",
+        "exit_walk": "6號出口約400公尺",
+        "hours": "平日07:00–14:00、假日到15:00",
+        "sources": [
+          "https://www.mecocute.com/suispy/"
+        ]
+      },
+      {
+        "key": "laozhao",
+        "name": "江蘇老趙刀切麵",
+        "dish": "豬腳麵",
+        "price": "$150",
+        "price_source": "2026/09 食記",
+        "address": "大安區信義路四段60之60號",
+        "exit_walk": "4號出口約4分鐘",
+        "hours": "11:30–20:00（週日、週一休）",
+        "sources": [
+          "https://blake.com.tw/blog/post/jiangsu-lao-zhao-2609",
+          "https://travel.ettoday.net/article/3209912.htm",
+          "https://achu.tw/daan-lao-zhao/",
+          "https://nash.tw/jiangsu-lao-zhao2026/"
+        ]
+      },
+      {
+        "key": "longji",
+        "name": "龍華燒臘（原龍記）",
+        "dish": "燒臘飯",
+        "price": null,
+        "price_source": null,
+        "address": "大安區信義路四段30巷32號",
+        "exit_walk": "大安站附近",
+        "hours": "11:00–14:00、16:30–20:30",
+        "sources": [
+          "https://boboeatking.pixnet.net/blog/posts/16191603959"
+        ]
+      },
+      {
+        "key": "overthere",
+        "name": "大安站那邊 精緻熱炒",
+        "dish": "脆皮雞半隻",
+        "price": "$680",
+        "price_source": "需預訂",
+        "address": "大安區復興南路二段13-1號",
+        "exit_walk": "5號出口約1分鐘",
+        "hours": "11:00–14:30、17:00–01:00",
+        "sources": [
+          "https://metrobites.app/taipei/daan/food/大安站那邊-精緻熱炒",
+          "https://jennieschen.pixnet.net/blog/posts/49777688"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/11-daan/photos/laozhao.jpg",
+        "images/11-daan/photos/longji.jpg",
+        "images/11-daan/photos/overthere.jpg",
+        "images/11-daan/photos/suispy.jpg",
+        "images/11-daan/photos/yonghe.jpg"
+      ],
+      "slides": [
+        "images/11-daan/slides/01-cover.png",
+        "images/11-daan/slides/02-yonghe.png",
+        "images/11-daan/slides/03-suispy.png",
+        "images/11-daan/slides/04-laozhao.png",
+        "images/11-daan/slides/05-longji.png",
+        "images/11-daan/slides/06-overthere.png",
+        "images/11-daan/slides/07-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/p/DfKDuWiFvfj/",
+      "threads": "https://www.threads.com/@savvysave_/post/DfKD4FhFWsb",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://pekoblog.tw/daan-soymilk/",
+      "https://lupanda.tw/hamchamshampam/",
+      "https://shotfunlady.com/yong-he-dou-jiang-da-wang/",
+      "https://www.mecocute.com/suispy/",
+      "https://blake.com.tw/blog/post/jiangsu-lao-zhao-2609",
+      "https://travel.ettoday.net/article/3209912.htm",
+      "https://achu.tw/daan-lao-zhao/",
+      "https://nash.tw/jiangsu-lao-zhao2026/",
+      "https://boboeatking.pixnet.net/blog/posts/16191603959",
+      "https://metrobites.app/taipei/daan/food/大安站那邊-精緻熱炒",
+      "https://jennieschen.pixnet.net/blog/posts/49777688",
+      "3.jp"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/savvy-ready/2026-10-31/ig.txt",
+      "data_json": "/workspace/shared/gtm/savvy-ready/2026-10-31/data.json",
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-10-31/sources.md"
+    }
+  },
+  {
+    "n": 12,
+    "date": "2026-11-01",
+    "station": "古亭",
+    "slug": "guting",
+    "tagline": "早餐飯糰到酸菜白肉鍋，5 間先收",
+    "shops": [
+      {
+        "key": "liumama",
+        "name": "劉媽媽飯糰",
+        "dish": "紫米飯糰",
+        "price": "$60",
+        "price_source": "iwoogo 2026/07",
+        "address": "中正區杭州南路二段88號",
+        "exit_walk": "6號出口步行3–5分鐘",
+        "hours": "05:10–11:30（週一休）",
+        "sources": [
+          "https://tenjo.tw/liumama-riceball/",
+          "https://playtw.i7tou.com/taipei-liu-mama-rice-balls/",
+          "https://iwoogo.com/taipei/posts/liu-mama-fantuan",
+          "https://pekoblog.tw/post-48205240/"
+        ]
+      },
+      {
+        "key": "jinhua",
+        "name": "金華麵店",
+        "dish": "炸醬麵",
+        "price": "$40",
+        "price_source": "小）NT$40（布雷克 2026/05",
+        "address": "大安區潮州街56號",
+        "exit_walk": "5號出口步行4分鐘",
+        "hours": "09:00–21:00（週日休）",
+        "sources": [
+          "https://blake.com.tw/blog/post/jinhua",
+          "https://lupanda.tw/huaginnoldle/",
+          "https://tenjo.tw/jinhuanoodles/"
+        ]
+      },
+      {
+        "key": "tongan",
+        "name": "同安街麵線羹",
+        "dish": "麵線羹",
+        "price": "$50",
+        "price_source": "食尚玩家 2026",
+        "address": "中正區同安街85-1號",
+        "exit_walk": "2號出口步行5分鐘",
+        "hours": "10:30–19:30（週一休）",
+        "sources": [
+          "https://supertaste.tvbs.com.tw/food/346966",
+          "https://blake.com.tw/blog/post/guting-food-2026",
+          "https://www.walkerland.com.tw/subject/view/423776",
+          "https://lupanda.tw/shintaomker/",
+          "https://pekoblog.tw/post-48160084/"
+        ]
+      },
+      {
+        "key": "tongxin",
+        "name": "同心大腸蚵仔麵線",
+        "dish": "臭豆腐",
+        "price": "$65",
+        "price_source": "趙先生 2026/05",
+        "address": "中正區同安街16號",
+        "exit_walk": "1號出口步行2分鐘",
+        "hours": "11:00–22:00（每日營業）",
+        "sources": [
+          "https://lupanda.tw/shintaomker/",
+          "https://pekoblog.tw/post-48160084/",
+          "https://blake.com.tw/blog/post/guting-food-2026"
+        ]
+      },
+      {
+        "key": "taipower",
+        "name": "台電勵進餐廳",
+        "dish": "酸菜白肉鍋吃到飽",
+        "price": "$600",
+        "price_source": "2026",
+        "address": "大安區和平東路一段75巷",
+        "exit_walk": "5號出口步行4–5分鐘",
+        "hours": "11:00–13:00、17:00–20:00（週日休）",
+        "sources": [
+          "https://www.opentable.com.tw/restaurant/profile/180986",
+          "https://playtw.i7tou.com/taipei-taipower-lijin-restaurant/",
+          "https://bunnyann.tw/taidian/",
+          "https://appletrees.tw/blog/post/lijinrestaurant"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/12-guting/photos/jinhua.jpg",
+        "images/12-guting/photos/liumama.jpg",
+        "images/12-guting/photos/taipower.jpg",
+        "images/12-guting/photos/tongan.jpg",
+        "images/12-guting/photos/tongxin.jpg"
+      ],
+      "slides": [
+        "images/12-guting/slides/01-cover.png",
+        "images/12-guting/slides/02-liumama.png",
+        "images/12-guting/slides/03-jinhua.png",
+        "images/12-guting/slides/04-tongan.png",
+        "images/12-guting/slides/05-tongxin.png",
+        "images/12-guting/slides/06-taipower.png",
+        "images/12-guting/slides/07-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": null,
+      "threads": null,
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://tenjo.tw/liumama-riceball/",
+      "https://playtw.i7tou.com/taipei-liu-mama-rice-balls/",
+      "https://iwoogo.com/taipei/posts/liu-mama-fantuan",
+      "https://pekoblog.tw/post-48205240/",
+      "https://blake.com.tw/blog/post/jinhua",
+      "https://lupanda.tw/huaginnoldle/",
+      "https://tenjo.tw/jinhuanoodles/",
+      "https://supertaste.tvbs.com.tw/food/346966",
+      "https://blake.com.tw/blog/post/guting-food-2026",
+      "https://www.walkerland.com.tw/subject/view/423776",
+      "https://lupanda.tw/shintaomker/",
+      "https://pekoblog.tw/post-48160084/",
+      "https://www.opentable.com.tw/restaurant/profile/180986",
+      "https://playtw.i7tou.com/taipei-taipower-lijin-restaurant/",
+      "https://bunnyann.tw/taidian/",
+      "https://appletrees.tw/blog/post/lijinrestaurant",
+      "taipower.jp",
+      "taipower-notissue.jp",
+      "taipower-blurred-old.jp",
+      "https://www.google.com/maps/search/劉媽媽飯糰+杭州南路二段88號?hl=zh-TW｜4.3★",
+      "https://www.google.com/maps/search/金華麵店+潮州街56號?hl=zh-TW｜2,015則",
+      "https://www.google.com/maps/search/同安街麵線羹?hl=zh-TW｜4.2★",
+      "https://www.google.com/maps/search/同心大腸蚵仔麵線+同安街16號?hl=zh-TW｜4.2★",
+      "https://www.google.com/maps/search/台電勵進餐廳?hl=zh-TW｜4.0★",
+      "lh3.googleusercontent.com/gps-cs-s/…=w1200"
+    ],
+    "_source_files": {
+      "text": "/workspace/shared/gtm/savvy-ready/2026-11-01/threads.txt",
+      "data_json": "/workspace/shared/gtm/savvy-ready/2026-11-01/data.json",
+      "sources_md": "/workspace/shared/gtm/savvy-ready/2026-11-01/sources.md"
+    }
+  }
+]
