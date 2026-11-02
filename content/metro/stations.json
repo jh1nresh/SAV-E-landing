@@ -1477,5 +1477,131 @@
       "data_json": "/workspace/shared/gtm/savvy-ready/2026-11-01/data.json",
       "sources_md": "/workspace/shared/gtm/savvy-ready/2026-11-01/sources.md"
     }
+  },
+  {
+    "n": 13,
+    "date": "2026-11-02",
+    "station": "中山",
+    "slug": "zhongshan",
+    "tagline": "蒸餃、酸辣粉到螺螄粉，5 間先收",
+    "shops": [
+      {
+        "key": "fuda",
+        "name": "福大蒸餃館",
+        "dish": "蒸餃",
+        "price": "$110",
+        "price_source": "女子的休假計劃 2026/06",
+        "address": "中山區中山北路一段140巷11號",
+        "exit_walk": "1號出口步行約2分鐘",
+        "hours": "11:30–15:00、16:30–20:30（週一休）",
+        "sources": [
+          "https://girlsplan.com/fudaazq/",
+          "https://appletrees.tw/blog/post/fuda",
+          "https://www.fonfood.com/store/2305401"
+        ]
+      },
+      {
+        "key": "chuanyu",
+        "name": "川渝小吃坊",
+        "dish": "重慶手工酸辣粉",
+        "price": "$125",
+        "price_source": "The Taiwan Table 2026/10",
+        "address": "大同區南京西路18巷6弄8之1號",
+        "exit_walk": "1號出口步行約2分鐘",
+        "hours": "11:30–21:00",
+        "sources": [
+          "https://taiwantable.com/articles/sichuan-chongqing-snack-house-a-taste-of-chongqing-in-taiwan",
+          "https://chuanyu-snack.weebly.com/",
+          "https://info.gotoformosa.com/127523852",
+          "https://pekoblog.tw/post-47727816/"
+        ]
+      },
+      {
+        "key": "zhengyuan",
+        "name": "正原担魷魚羹蚵仔煎",
+        "dish": "招牌魷魚羹",
+        "price": "$80",
+        "price_source": "東蛙池塘 2026/10",
+        "address": "大同區南京西路18巷6弄3-1號",
+        "exit_walk": "1號出口步行約1分鐘",
+        "hours": "11:00–22:00（週日休）",
+        "sources": [
+          "https://dongwa.tw/yuandan/"
+        ]
+      },
+      {
+        "key": "paigu",
+        "name": "赤峰街無名排骨飯",
+        "dish": "排骨飯",
+        "price": "$120",
+        "price_source": "Darren 2026/01",
+        "address": "大同區赤峰街4號",
+        "exit_walk": "5號出口步行約2分鐘",
+        "hours": "12:30–14:00、17:30–20:00（週六日休）",
+        "sources": [
+          "https://appletrees.tw/blog/post/cstreetpr",
+          "https://otona-everyday.com/gourmet/t_gourmet/13518.html",
+          "https://mibaoma.tw/cstreetpr/",
+          "https://travel.ettoday.net/article/2742539.htm"
+        ]
+      },
+      {
+        "key": "luosi",
+        "name": "螺螄福",
+        "dish": "經典螺螄粉",
+        "price": "$158",
+        "price_source": "米寶麻 2026/01",
+        "address": "大同區赤峰街14-1號",
+        "exit_walk": "5號出口步行約2–6分鐘",
+        "hours": "週日–四12:00–20:00、週五六12:00–21:00",
+        "sources": [
+          "https://mibaoma.tw/rose-food-chifengstreet/",
+          "http://ylwofficial.com.tw/ContactUs",
+          "https://playtw.i7tou.com/taipei-rose-food-authentic-liuzhou-river-snail-rice-noodles/",
+          "https://pipichocho.com/rose-food/"
+        ]
+      }
+    ],
+    "images": {
+      "photos": [
+        "images/13-zhongshan/photos/fuda.webp",
+        "images/13-zhongshan/photos/chuanyu.webp",
+        "images/13-zhongshan/photos/zhengyuan.webp",
+        "images/13-zhongshan/photos/paigu.webp",
+        "images/13-zhongshan/photos/luosi.webp"
+      ],
+      "slides": [
+        "images/13-zhongshan/slides/01-cover.webp",
+        "images/13-zhongshan/slides/02-fuda.webp",
+        "images/13-zhongshan/slides/03-chuanyu.webp",
+        "images/13-zhongshan/slides/04-zhengyuan.webp",
+        "images/13-zhongshan/slides/05-paigu.webp",
+        "images/13-zhongshan/slides/06-luosi.webp",
+        "images/13-zhongshan/slides/07-cta.webp"
+      ]
+    },
+    "posts": {
+      "instagram": null,
+      "threads": null,
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://girlsplan.com/fudaazq/",
+      "https://appletrees.tw/blog/post/fuda",
+      "https://www.fonfood.com/store/2305401",
+      "https://taiwantable.com/articles/sichuan-chongqing-snack-house-a-taste-of-chongqing-in-taiwan",
+      "https://chuanyu-snack.weebly.com/",
+      "https://info.gotoformosa.com/127523852",
+      "https://pekoblog.tw/post-47727816/",
+      "https://dongwa.tw/yuandan/",
+      "https://appletrees.tw/blog/post/cstreetpr",
+      "https://otona-everyday.com/gourmet/t_gourmet/13518.html",
+      "https://mibaoma.tw/cstreetpr/",
+      "https://travel.ettoday.net/article/2742539.htm",
+      "https://mibaoma.tw/rose-food-chifengstreet/",
+      "http://ylwofficial.com.tw/ContactUs",
+      "https://playtw.i7tou.com/taipei-rose-food-authentic-liuzhou-river-snail-rice-noodles/",
+      "https://pipichocho.com/rose-food/"
+    ]
   }
 ]
