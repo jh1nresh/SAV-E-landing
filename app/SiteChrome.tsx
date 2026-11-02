@@ -9,6 +9,10 @@ import {
   type ReactNode,
 } from "react";
 import {
+  SITE_DESCRIPTION_EN,
+  SITE_DESCRIPTION_ZH,
+  SITE_TITLE_EN,
+  SITE_TITLE_ZH,
   SUPPORT_EMAIL,
   TESTFLIGHT_URL,
   hrefWithLang,
@@ -34,6 +38,13 @@ function persistLang(lang: SiteLang) {
   if (lang === "en") url.searchParams.set("lang", "en");
   else url.searchParams.delete("lang");
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  if (url.pathname === "/") {
+    document.title = lang === "en" ? SITE_TITLE_EN : SITE_TITLE_ZH;
+    document.querySelector('meta[name="description"]')?.setAttribute(
+      "content",
+      lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION_ZH,
+    );
+  }
 }
 
 export function SiteChrome({ children }: { children: ReactNode }) {

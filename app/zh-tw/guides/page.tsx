@@ -3,7 +3,7 @@ import "./guides.css";
 
 export const metadata = guideMetadata(
   "收藏整理指南：從餐廳貼文到自己的地圖｜Savvy",
-  "從 IG 餐廳貼文、Google Maps 收藏和已確認地點開始，學會保留來源、核對位置，再安排一個可調整的出遊草稿。",
+  "從 IG 餐廳貼文、Google Maps 收藏和已確認地點開始，學會保留來源、核對位置，再放到自己的地圖上。",
   GUIDE_ROOT,
 );
 

@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteChrome } from "./SiteChrome";
-import { LANG_BOOT_SCRIPT } from "./site";
-import { SITE_ORIGIN, SITE_TITLE, SITE_DESCRIPTION, PRODUCT_TERMS } from "../lib/site-content";
+import { LANG_BOOT_SCRIPT, SITE_DESCRIPTION_ZH, SITE_TITLE_ZH } from "./site";
+import { SITE_ORIGIN, PRODUCT_TERMS } from "../lib/site-content";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
-  title: SITE_TITLE,
-  description:
-    SITE_DESCRIPTION,
+  title: SITE_TITLE_ZH,
+  description: SITE_DESCRIPTION_ZH,
   keywords: [...PRODUCT_TERMS],
   openGraph: {
-    title: SITE_TITLE,
-    description:
-      SITE_DESCRIPTION,
+    title: SITE_TITLE_ZH,
+    description: SITE_DESCRIPTION_ZH,
     url: SITE_ORIGIN,
     siteName: "Savvy",
     locale: "zh_Hant_TW",
@@ -29,9 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_TITLE,
-    description:
-      SITE_DESCRIPTION,
+    title: SITE_TITLE_ZH,
+    description: SITE_DESCRIPTION_ZH,
     images: ["/og.png"],
   },
 };

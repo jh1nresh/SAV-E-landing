@@ -9,7 +9,7 @@ The suggested paths are retained without trailing slashes, following Next.js's e
 - `/zh-tw/guides`: guide index.
 - `/zh-tw/guides/instagram-restaurants-to-map`: one shared post, branch identity and missing-address FAQ.
 - `/zh-tw/guides/import-google-maps-saves`: JSON/GeoJSON/KML and supported ZIP contents, preview/selection, CSV and sync limitations.
-- `/zh-tw/guides/plan-from-saved-places`: confirmed places, time constraints, adjustable drafts and reservation/route limitations.
+- `/zh-tw/guides/plan-from-saved-places`: a list of confirmed places you want to visit next. The page keeps the original URL and does not describe a route builder.
 
 Homepage and footer links lead to the index/articles. Related links connect all three. Core content is server-rendered/static and does not need JavaScript; examples are explicitly fictional. Existing source clue → review candidate → user-confirmed Map Stamp distinctions are retained. No city/category combination pages, private examples, ratings, tracking or forms were added.
 

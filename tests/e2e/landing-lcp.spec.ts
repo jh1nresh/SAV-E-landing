@@ -124,7 +124,11 @@ test.describe("first-screen LCP hints and OSM credit", () => {
                   n.getAttribute("data-testid") === "metro-map-slot",
               ),
               isHeadline: chain.some(
-                (n) => n.tagName === "H1" || n.tagName === "H2" || n.classList.contains("h"),
+                (n) =>
+                  n.tagName === "H1" ||
+                  n.tagName === "H2" ||
+                  n.classList.contains("h") ||
+                  (n.classList.contains("sub") && chain.some((p) => p.classList.contains("hero") || p.id === "hero")),
               ),
               isBadge: chain.some((n) => n.getAttribute("data-testid") === "hero-appstore"),
               isFirstScreen: chain.some((n) => {

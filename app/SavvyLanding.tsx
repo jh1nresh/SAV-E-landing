@@ -5,8 +5,7 @@ import "./metro/hero-map.css";
 
 import { GUIDE_ROOT, guidePath, guides } from "./zh-tw/guides/content";
 import "./zh-tw/guides/guides.css";
-
-import { homeSections } from "../lib/site-content";
+import { HERO_EN, HERO_ZH, SITE_TITLE_EN, SITE_TITLE_ZH } from "./site";
 
 const STICKERS = [
   { src: "/assets/st-duck.png", alt: "珍珠奶茶" },
@@ -34,7 +33,20 @@ export default function SavvyLanding() {
                 Remember where <span className="u">you've been</span>
               </span>
             </h1>
-            <p className="sub">Savvy: Turn links into pins</p>
+            <p className="sub zh">
+              {HERO_ZH[0]}
+              <br />
+              {HERO_ZH[1]}
+              <br />
+              {HERO_ZH[2]}
+            </p>
+            <p className="sub en">
+              {HERO_EN[0]}
+              <br />
+              {HERO_EN[1]}
+              <br />
+              {HERO_EN[2]}
+            </p>
             <div data-testid="hero-appstore">
               <AppStoreBadge />
             </div>
@@ -151,16 +163,11 @@ export default function SavvyLanding() {
       <section className="guide-home" lang="zh-Hant" aria-labelledby="guide-home-title">
         <p className="guide-eyebrow">收藏整理指南 · 繁體中文</p>
         <h2 id="guide-home-title">找到想去的店，接著呢？</h2>
-        <p>從一則貼文、一份收藏，到自己的地圖與行程。</p>
+        <p>從一則貼文、一份收藏，到自己地圖上的點。</p>
         <div className="guide-grid">
           {guides.map((guide) => <a className="guide-card" key={guide.slug} href={guidePath(guide.slug)}><h3>{guide.label}</h3><p>{guide.description}</p><span className="guide-read">閱讀指南 →</span></a>)}
         </div>
         <a href={GUIDE_ROOT}>查看全部整理指南 →</a>
-      </section>
-
-      <section className="guide-home" lang="en" aria-labelledby="product-overview-title">
-        <h2 id="product-overview-title">Savvy: saved-place memory and trip planning</h2>
-        {homeSections.map(section => <div key={section.heading}><h3>{section.heading}</h3><p>{section.text}</p></div>)}
       </section>
 
       <section className="s-cta" id="cta">
@@ -173,7 +180,8 @@ export default function SavvyLanding() {
             <span>Save the places you love</span>
             <span className="u">onto your map</span>
           </h2>
-          <p className="sub">Savvy: Turn links into pins</p>
+          <p className="sub zh">{SITE_TITLE_ZH}</p>
+          <p className="sub en">{SITE_TITLE_EN}</p>
           <AppStoreBadge />
           <div className="stkrow">
             <img src="/assets/st-noodle.png" alt="" width={66} height={66} loading="lazy" decoding="async" />
