@@ -2,16 +2,19 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteChrome } from "./SiteChrome";
 import { LANG_BOOT_SCRIPT } from "./site";
+import { SITE_ORIGIN, SITE_TITLE, SITE_DESCRIPTION, PRODUCT_TERMS } from "../lib/site-content";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sav-e-landing.vercel.app"),
-  title: "Savvy: Turn links into pins",
+  metadataBase: new URL(SITE_ORIGIN),
+  title: SITE_TITLE,
   description:
-    "Savvy turns links into pins. Free keeps 50 saved places. Pro is unlimited saved places.",
+    SITE_DESCRIPTION,
+  keywords: [...PRODUCT_TERMS],
   openGraph: {
-    title: "Savvy: Turn links into pins",
+    title: SITE_TITLE,
     description:
-      "Savvy turns links into pins. Free keeps 50 saved places. Pro is unlimited saved places.",
+      SITE_DESCRIPTION,
+    url: SITE_ORIGIN,
     siteName: "Savvy",
     locale: "zh_Hant_TW",
     type: "website",
@@ -26,9 +29,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Savvy: Turn links into pins",
+    title: SITE_TITLE,
     description:
-      "Savvy turns links into pins. Free keeps 50 saved places. Pro is unlimited saved places.",
+      SITE_DESCRIPTION,
     images: ["/og.png"],
   },
 };
@@ -41,6 +44,7 @@ export default function RootLayout({
   return (
     <html lang="zh-Hant" suppressHydrationWarning>
       <head>
+        <link rel="describedby" href="/llms.txt" />
         <link
           rel="preload"
           href="/assets/fonts/Iansui-SavvySubset.woff2"

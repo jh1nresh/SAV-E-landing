@@ -97,6 +97,10 @@ function SiteFooter() {
 
   return (
     <footer className="site">
+      <a href="/about">About Savvy</a>
+      <a href="/contact">Contact</a>
+      <a href="/docs">Savvy API documentation</a>
+      <a href="https://github.com/jh1nresh/SAV-E-landing">GitHub</a>
       <a href="/metro" lang="zh-Hant">捷運美食清單</a>
       <a href="/zh-tw/guides" lang="zh-Hant">收藏整理指南（繁體中文）</a>
       <a href={hrefWithLang("/privacy", lang)}>Savvy Privacy Policy</a>

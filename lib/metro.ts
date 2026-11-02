@@ -113,7 +113,9 @@ export {
 };
 
 export function getPublicMetroData(): MetroData {
-  return publicMetro as unknown as MetroData;
+  const { _meta, stations, stores } = publicMetro as unknown as MetroData;
+  // Food-guide records are read separately; the interactive hero does not use them.
+  return { _meta, stations, stores };
 }
 
 export function storesFor(data: MetroData, stationId: string): MetroStore[] {
