@@ -166,7 +166,7 @@ test.describe("hero content and motion", () => {
             tag: el?.tagName ?? "NONE",
             src,
             inMap: Boolean(el?.closest?.(".mapwrap, #mapcard, .map-slot, .map-stage")),
-            isHeadline: Boolean(el?.closest?.("h1, .hero .txt .h")),
+            isHeadline: Boolean(el?.closest?.("h1, .hero .txt .h, .hero .txt .sub")),
             isBadge: Boolean(el?.closest?.("[data-testid=hero-appstore]")),
             isFirstScreen: Boolean(
               el?.closest?.("[data-testid=first-screen-phone-zh], [data-testid=first-screen-phone-en]"),
@@ -207,10 +207,22 @@ test.describe("hero content and motion", () => {
 
   test("F-1 metadata includes title description and OG image", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/Savvy: Turn links into pins/);
-    const desc = await page.locator('meta[name="description"]').getAttribute("content");
-    expect(desc).toMatch(/Savvy/);
+    await expect(page).toHaveTitle("Savvy：把連結存成地圖上的點");
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北捷運美食指南。",
+    );
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", "Savvy：把連結存成地圖上的點");
+    await expect(page.locator(".hero .sub.zh")).toContainText("存連結 → 確認地點 → 地圖章。");
     const og = await page.locator('meta[property="og:image"]').getAttribute("content");
     expect(og).toMatch(/og\.png/);
+
+    await page.goto("/?lang=en");
+    await expect(page).toHaveTitle("Savvy: Turn links into pins");
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei MRT food guides.",
+    );
+    await expect(page.locator(".hero .sub.en")).toContainText("Save a link → confirm the place → pin it on your map.");
   });
 });

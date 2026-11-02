@@ -105,12 +105,17 @@ test("no-JS homepage and trust pages expose meaningful content, metadata and hon
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/savvy\.jeezlabs\.io\/?$/);
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", `${origin}/og.png`);
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "website");
-    await expect(page.locator('meta[name="keywords"]')).toHaveAttribute("content", /saved-place memory/);
+    await expect(page.locator('meta[name="keywords"]')).toHaveAttribute("content", /place memory/);
+    await expect(page.locator('meta[name="keywords"]')).toHaveAttribute("content", /地點記憶/);
     await expect(page.locator("html")).toHaveAttribute("lang", "zh-Hant");
     const content = await page.locator("main").innerText();
     expect(content.length).toBeGreaterThan(500);
-    expect(content).toContain("Review Candidate");
-    expect(content).toContain("Map Stamp");
+    expect(content).toContain("存連結 → 確認地點 → 地圖章。");
+    expect(content).toContain("從收藏地點整理下次想去的清單");
+    const lowered = content.toLowerCase();
+    expect(lowered).not.toContain(["trip", "planning"].join(" "));
+    expect(lowered).not.toContain(["trip", "planner"].join(" "));
+    expect(lowered).not.toContain(["itiner", "ary"].join(""));
     const raw = await response!.text();
     expect(raw).not.toContain("foodStations");
     const textCharacters = await page.evaluate(() => {
@@ -118,7 +123,10 @@ test("no-JS homepage and trust pages expose meaningful content, metadata and hon
       content.querySelectorAll("script,style,svg").forEach(element => element.remove());
       return content.textContent!.replace(/\s+/g, " ").trim().length;
     });
-    expect(textCharacters / raw.length).toBeGreaterThanOrEqual(0.05);
+    // The homepage is a map plus short place-memory copy. The inline map SVG
+    // dominates byte size, so a prose-wall ratio is the wrong bar.
+    expect(textCharacters).toBeGreaterThan(800);
+    expect(textCharacters / raw.length).toBeGreaterThan(0.01);
     const schema = JSON.parse(await page.locator('script[type="application/ld+json"]').innerText());
     const app = schema["@graph"].find((item: { "@type": string }) => item["@type"] === "SoftwareApplication");
     expect(app).toMatchObject({ name: "Savvy", url: origin, operatingSystem: "iOS" });

@@ -1,8 +1,8 @@
 import { guides, GUIDE_ROOT, guidePath } from "../app/zh-tw/guides/content";
 import { getFoodStations } from "./metro";
 import { FOOD_DISCLAIMER, foodShopRows } from "./metro-logic.mjs";
-import { TESTFLIGHT_URL } from "../app/site";
-import { homeSections, infoPages, privacyGuidance, SITE_ORIGIN, SITE_TITLE, SITE_DESCRIPTION } from "./site-content";
+import { HERO_EN, HERO_ZH, SITE_DESCRIPTION_EN, SITE_DESCRIPTION_ZH, SITE_TITLE_EN, SITE_TITLE_ZH, TESTFLIGHT_URL } from "../app/site";
+import { infoPages, privacyGuidance, SITE_ORIGIN } from "./site-content";
 
 const link = (name: string, path: string) => `[${name}](${SITE_ORIGIN}${path})`;
 const sections = (items: readonly { heading: string; text: string }[]) => items.map(item => `## ${item.heading}\n\n${item.text}`).join("\n\n");
@@ -14,7 +14,7 @@ const resources = `## Public resources\n\n${[
 
 export const llmsText = `# Savvy
 
-> Savvy is an iOS app for saved-place memory and trip planning. This site publishes product information, Traditional Chinese guides and public Taipei food notes.
+> Savvy is place memory. Save a link, confirm the spot, stamp it on your map. This site publishes product information, Traditional Chinese guides and public Taipei MRT food notes.
 
 When to use this: reach for Savvy when explaining how a shared place link becomes a clue, a Review Candidate and then a user-confirmed Map Stamp; when organizing saved restaurant sources; or when reading the public Taipei food guides. Public notes are not a user's saved or visited places.
 
@@ -42,7 +42,7 @@ ${guides.map(guide => `- ${link(guide.label, `${guidePath(guide.slug)}.md`)}: ${
 
 // Only curated public data enters this representation; no account or share lookup.
 export function markdownFor(path: string): string | null {
-  if (path === "/") return `# ${SITE_TITLE}\n\n${SITE_DESCRIPTION}\n\n${sections(homeSections)}\n\n[Public iOS TestFlight invitation](${TESTFLIGHT_URL})\n\n${resources}\n`;
+  if (path === "/") return `# ${SITE_TITLE_ZH}\n\n${SITE_DESCRIPTION_ZH}\n\n${SITE_TITLE_EN}\n\n${SITE_DESCRIPTION_EN}\n\n${HERO_ZH.join("\n")}\n\n${HERO_EN.join("\n")}\n\n[Public iOS TestFlight invitation](${TESTFLIGHT_URL})\n\n${resources}\n`;
   const key = path.slice(1) as keyof typeof infoPages;
   if (Object.hasOwn(infoPages, key)) {
     const page = infoPages[key];
