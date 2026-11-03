@@ -228,8 +228,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     W = w;
     H = h;
     mobile = W < 520;
-    s0 = mobile ? W / 680 : Math.min(W / 660, H / 560);
-    home = clampCam(mobile ? 262 : 296, mobile ? 150 : 116, s0);
+    s0 = mobile ? W / 760 : Math.min(W / 660, H / 600);
+    home = clampCam(mobile ? 278 : 296, mobile ? 150 : 145, s0);
     return true;
   };
 
@@ -284,12 +284,13 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const nw = !soon && stationIsNew(storesOf(s.id), clock);
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
       const side = s.mapPos.label;
-      const lx = side === "right" ? x + 14 : side === "left" ? x - 14 : x;
-      const ly = side ? y + 5 : y + 27;
+      // 古亭 sits between two photo heads; keep its name in the clear space below 東門.
+      const lx = s.id === "guting" ? x + 55 : side === "right" ? x + 14 : side === "left" ? x - 14 : x;
+      const ly = s.id === "guting" ? y + 45 : side ? y + 5 : y + 27;
       caps += `<text x="${lx}" y="${ly}" text-anchor="${side === "right" ? "start" : side === "left" ? "end" : "middle"}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
       el.type = "button";
-      el.className = `pin ${soon ? "soon " : ""}${nw ? "new " : ""}${!soon && !img ? "nophoto" : ""}`;
+      el.className = `pin ${soon ? "soon " : ""}${nw ? "new " : ""}${!soon && !img ? "nophoto" : ""}${!soon && !list.length ? " content-only" : ""}`;
       el.dataset.id = s.id;
       el.setAttribute("data-testid", `metro-pin-${s.id}`);
       el.setAttribute(
@@ -594,7 +595,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       p.sx = sx;
       p.sy = sy;
       p.el.style.transform = `translate3d(${sx.toFixed(1)}px,${sy.toFixed(1)}px,0)`;
-      p.el.style.zIndex = String(Math.round(sy) + 1000);
+      p.el.style.zIndex = String(p.el.classList.contains("content-only") ? 1 : Math.round(sy) + 1000);
       const b = p.b.x;
       const d = 44 + 16 * b;
       p.inn.style.setProperty("--d", `${d.toFixed(1)}px`);
