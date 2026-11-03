@@ -228,8 +228,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     W = w;
     H = h;
     mobile = W < 520;
-    s0 = mobile ? W / 680 : Math.min(W / 660, H / 490);
-    home = clampCam(mobile ? 262 : 296, mobile ? 150 : 160, s0);
+    s0 = mobile ? W / 680 : Math.min(W / 660, H / 560);
+    home = clampCam(mobile ? 262 : 296, mobile ? 150 : 116, s0);
     return true;
   };
 
