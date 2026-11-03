@@ -42,4 +42,6 @@
 - 新增一站：GTM 寫 `savvy-ready/<日期>/web.json`；同時把該站附加到 `stations.json`（以 `n` 為鍵，重複就覆蓋，不要新增第二筆）。
 - 新站必須帶 `map`（向 DESIGN 要位置），否則首頁地圖 build 會失敗。
 
+`map.labelOffset` 可選，格式 `[dx, dy]`（兩個有限數字，CSS px），用來在 `label` 預設位置上再微調站名；目前小巨蛋 `[-14, 0]`、雙連 `[0, 12]`，格式錯誤時 build 會失敗（`map.labelOffset must be [dx, dy]`）。
+
 站名使用 `label` 對應的預設位置；古亭使用 `"label": "left"`。所有站點的 `at` 與線上吸附點距離須在 2 個 viewBox 單位以內。
