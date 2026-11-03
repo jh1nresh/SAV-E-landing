@@ -1,0 +1,139 @@
+{
+  "n": 14,
+  "date": "2026-11-03",
+  "station": "大橋頭",
+  "slug": "daqiaotou",
+  "tagline": "早上油飯到宵夜麻糬，5 間先收",
+  "shops": [
+    {
+      "key": "zhuji",
+      "name": "珠記大橋頭油飯",
+      "dish": "油飯",
+      "price": "$40",
+      "price_source": "娜姐 FOODELICIOUS 2026/02",
+      "address": "大同區民權西路236號",
+      "exit_walk": "1、2號出口步行約2分鐘",
+      "hours": "07:00–13:30（週日休）",
+      "sources": [
+        "https://globalfoodelicious.com/zhu-ji-daqiaotou-sticky-rice/",
+        "https://tw.trip.com/moments/detail/taipei-360-144160235/",
+        "https://appletrees.tw/blog/post/zhujiyoufan",
+        "https://www.fonfood.com/store/4807011"
+      ]
+    },
+    {
+      "key": "migao",
+      "name": "大橋頭老牌筒仔米糕",
+      "dish": "筒仔米糕",
+      "price": "$45",
+      "price_source": "貓大爺 2026/03",
+      "address": "大同區延平北路三段41號",
+      "exit_walk": "1A出口步行約3分鐘",
+      "hours": "07:00–16:00（週二休）",
+      "sources": [
+        "https://lordcat.net/archives/326",
+        "https://wanteatfood.com/87965",
+        "https://twobunnytravel.tw/dqtfood/",
+        "https://appletrees.tw/blog/post/daqiaotoufood"
+      ]
+    },
+    {
+      "key": "zaoding",
+      "name": "灶頂原汁排骨湯",
+      "dish": "原汁排骨湯",
+      "price": "$90",
+      "price_source": "窩客島 2026/06",
+      "address": "大同區延平北路三段17巷2號",
+      "exit_walk": "1A出口步行約2分鐘",
+      "hours": "09:30–21:00（週一休，售完即收）",
+      "sources": [
+        "https://www.walkerland.com.tw/article/view/423651",
+        "https://icecreamcat.tw/zao-ding/",
+        "https://playtw.i7tou.com/taipei-pork-rib-soup-and-cabbage-rice-served-on-the-stove-top/",
+        "https://goodeat.tw/food/cabbage-rice-and-pork-rib-soup/",
+        "https://twobunnytravel.tw/zao-ding/"
+      ]
+    },
+    {
+      "key": "shijia",
+      "name": "施家鮮肉湯圓",
+      "dish": "鮮肉湯圓",
+      "price": "$60–70",
+      "price_source": "2026 食記",
+      "address": "大同區延平北路三段58號",
+      "exit_walk": "1號出口步行約5分鐘",
+      "hours": "11:30–15:00、17:00–22:30（公休看粉專）",
+      "sources": [
+        "https://shokunomajutsushi.blogspot.com/2026/09/tangyuan.html",
+        "https://hedonistjun.com/shih-chia-big-rice-ball/",
+        "https://icecreamcat.tw/shijia-tangyuan/"
+      ]
+    },
+    {
+      "key": "weixiangji",
+      "name": "魏祥記純糖麻糬",
+      "dish": "綜合麻糬",
+      "price": "$60",
+      "price_source": "米寶麻 2026/03",
+      "address": "大同區延平北路三段30號",
+      "exit_walk": "1A出口步行約2–3分鐘",
+      "hours": "17:00–23:00",
+      "sources": [
+        "https://mibaoma.tw/wei-mochi/",
+        "https://twobunnytravel.tw/weixiangji-mochi/",
+        "https://almablog.tw/blog/post/wei-mochi",
+        "https://www.mecocute.com/xiang-mochi/"
+      ]
+    }
+  ],
+  "images": {
+    "photos": [
+      "photos/zhuji.jpg",
+      "photos/migao.jpg",
+      "photos/zaoding.jpg",
+      "photos/shijia.jpg",
+      "photos/weixiangji.jpg"
+    ],
+    "slides": [
+      "slides/01-cover.png",
+      "slides/02-zhuji.png",
+      "slides/03-migao.png",
+      "slides/04-zaoding.png",
+      "slides/05-shijia.png",
+      "slides/06-weixiangji.png",
+      "slides/07-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": null,
+    "threads": null,
+    "xiaohongshu": null
+  },
+  "sources": [
+    "https://globalfoodelicious.com/zhu-ji-daqiaotou-sticky-rice/",
+    "https://tw.trip.com/moments/detail/taipei-360-144160235/",
+    "https://appletrees.tw/blog/post/zhujiyoufan",
+    "https://www.fonfood.com/store/4807011",
+    "https://lordcat.net/archives/326",
+    "https://wanteatfood.com/87965",
+    "https://twobunnytravel.tw/dqtfood/",
+    "https://appletrees.tw/blog/post/daqiaotoufood",
+    "https://www.walkerland.com.tw/article/view/423651",
+    "https://icecreamcat.tw/zao-ding/",
+    "https://playtw.i7tou.com/taipei-pork-rib-soup-and-cabbage-rice-served-on-the-stove-top/",
+    "https://goodeat.tw/food/cabbage-rice-and-pork-rib-soup/",
+    "https://twobunnytravel.tw/zao-ding/",
+    "https://shokunomajutsushi.blogspot.com/2026/09/tangyuan.html",
+    "https://hedonistjun.com/shih-chia-big-rice-ball/",
+    "https://icecreamcat.tw/shijia-tangyuan/",
+    "https://mibaoma.tw/wei-mochi/",
+    "https://twobunnytravel.tw/weixiangji-mochi/",
+    "https://almablog.tw/blog/post/wei-mochi",
+    "https://www.mecocute.com/xiang-mochi/"
+  ],
+  "_source_files": {
+    "data": "savvy-ready/2026-11-03/data.json",
+    "threads": "savvy-ready/2026-11-03/threads.txt",
+    "ig": "savvy-ready/2026-11-03/ig.txt"
+  }
+}
