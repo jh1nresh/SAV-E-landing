@@ -284,9 +284,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const nw = !soon && stationIsNew(storesOf(s.id), clock);
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
       const side = s.mapPos.label;
-      // 古亭 sits between two photo heads; keep its name in the clear space below 東門.
-      const lx = s.id === "guting" ? x + 55 : side === "right" ? x + 14 : side === "left" ? x - 14 : x;
-      const ly = s.id === "guting" ? y + 45 : side ? y + 5 : y + 27;
+      const lx = side === "right" ? x + 36 : side === "left" ? x - 14 : x;
+      const ly = side === "right" ? y + 30 : side ? y + 5 : y + 27;
       caps += `<text x="${lx}" y="${ly}" text-anchor="${side === "right" ? "start" : side === "left" ? "end" : "middle"}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
       el.type = "button";
