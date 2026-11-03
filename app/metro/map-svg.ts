@@ -18,7 +18,7 @@ export const MAP_SVG = `<svg id="mapsvg" viewBox="-150 -170 1000 940" xmlns="htt
 <path d="M700 -20 C 690 60 712 140 700 250 S 706 420 700 770"/>
 </g>
 <g filter="url(#wobS)">
-<use href="#tree" x="372" y="226"/><use href="#tree" x="588" y="236"/><use href="#tree" x="96" y="306"/><use href="#tree" x="470" y="338"/><use href="#tree" x="236" y="140"/>
+<use href="#tree" x="372" y="226"/><use href="#tree" x="588" y="236"/><use href="#tree" x="112" y="336"/><use href="#tree" x="470" y="338"/><use href="#tree" x="236" y="140"/>
 <use href="#house" x="396" y="280"/><use href="#house" x="600" y="334"/><use href="#house" x="330" y="108"/><use href="#house" x="250" y="170"/>
 <use href="#tree" x="690" y="150"/><use href="#tree" x="770" y="260"/><use href="#tree" x="640" y="430"/><use href="#tree" x="420" y="520"/><use href="#tree" x="130" y="500"/><use href="#tree" x="560" y="-60"/><use href="#tree" x="120" y="-40"/><use href="#tree" x="250" y="-80"/>
 <use href="#house" x="720" y="210"/><use href="#house" x="480" y="470"/><use href="#house" x="260" y="500"/><use href="#house" x="90" y="420"/><use href="#house" x="640" y="-30"/><use href="#house" x="60" y="-70"/>
@@ -40,7 +40,7 @@ export const MAP_SVG = `<svg id="mapsvg" viewBox="-150 -170 1000 940" xmlns="htt
 <g font-family="Iansui" font-size="14" fill="#2f2e23" stroke="#fff9eb" stroke-width="4" paint-order="stroke" stroke-linejoin="round">
 <circle cx="46" cy="160" r="5.5" fill="#b4443a" stroke="#2f2e23" stroke-width="1.5"/><text x="56" y="165">淡水信義線</text>
 <circle cx="36" cy="184" r="5.5" fill="#3f6fb0" stroke="#2f2e23" stroke-width="1.5"/><text x="46" y="189">板南線</text>
-<circle cx="462" cy="192" r="5.5" fill="#3f9b6b" stroke="#2f2e23" stroke-width="1.5"/><text x="472" y="197">松山新店線</text>
+<circle cx="36" cy="270" r="5.5" fill="#3f9b6b" stroke="#2f2e23" stroke-width="1.5"/><text x="46" y="275">松山新店線</text>
 <line x1="26" y1="246" x2="46" y2="246" stroke="#e0902a" stroke-width="6" stroke-dasharray="6 4"/>
 <text x="52" y="251">中和新蘆線（虛線）</text>
 </g>

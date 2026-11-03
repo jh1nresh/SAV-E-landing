@@ -12,6 +12,8 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     // accepted by DESIGN 2026-11-04
     const acceptedPairs = [
       { width: 1440, a: "label:雙連", b: "photo:shuanglian" },
+      // label 框碰圖釘白邊，DESIGN 已確認字完整
+      { width: 1440, a: "label:小巨蛋", b: "photo:houshanpi" },
       { width: 390, a: "label:雙連", b: "photo:shuanglian" },
       { width: 390, a: "label:小巨蛋", b: "photo:houshanpi" },
     ];

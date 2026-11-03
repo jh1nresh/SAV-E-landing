@@ -210,8 +210,9 @@ test('ending both tracked fingers unlocks gestures while an outside touch remain
     fire(document.body, 'touchend', []);
   });
   const before = await page.evaluate(() => window.__savvyMap!.state());
-  await dragMap(page, 60, 10);
-  expect((await page.evaluate(() => window.__savvyMap!.state())).camX).toBeLessThan(before.camX);
+  // Home starts at the left camera bound with the wider design framing.
+  await dragMap(page, -60, -10);
+  expect((await page.evaluate(() => window.__savvyMap!.state())).camX).toBeGreaterThan(before.camX);
   const box = (await page.locator('#vp').boundingBox())!;
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
   await page.keyboard.down('Control');

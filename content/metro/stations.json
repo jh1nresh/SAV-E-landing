@@ -760,8 +760,8 @@
     "map": {
       "line": "L_green",
       "at": [
-        201.71,
-        384.82
+        196,
+        440
       ]
     },
     "map_id": "gongguan",
@@ -1433,8 +1433,7 @@
         221,
         310
       ],
-      "label": "left",
-      "labelOffset": [-14, -16]
+      "label": "left"
     },
     "tagline": "早餐飯糰到酸菜白肉鍋，5 間先收",
     "shops": [

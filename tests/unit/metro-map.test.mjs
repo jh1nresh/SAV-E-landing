@@ -23,7 +23,6 @@ test('every content station has a hero marker snapped within two units of its po
     assert.ok(marker.mapPos.snapped.every(Number.isFinite));
     assert.ok(Math.hypot(...marker.mapPos.snapped.map((v, i) => v - station.map.at[i])) <= 2, station.slug);
     assert.equal(marker.order, station.n);
-    assert.deepEqual(marker.mapPos.labelOffset, station.map.labelOffset);
   }
 });
 
@@ -54,10 +53,4 @@ test('daily records inherit map and legacy id while overriding content fields', 
 
 test('stores must reference a derived station id', () => {
   assert.throws(() => buildPublicMetro({ ...raw, stores: [{ ...raw.stores[0], stationId: 'unknown' }] }), /is not a station/);
-});
-
-test('label offsets require two finite numbers', () => {
-  for (const labelOffset of [[1], [1, 2, 3], ['1', 2], [NaN, 2], 'left']) {
-    assert.throws(() => mergeFoodStations([{ ...base[0], map: { ...base[0].map, labelOffset } }]), /map.labelOffset must be two finite numbers/);
-  }
 });

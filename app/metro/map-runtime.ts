@@ -228,8 +228,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     W = w;
     H = h;
     mobile = W < 520;
-    s0 = mobile ? W / 760 : Math.min(W / 660, H / 600);
-    home = clampCam(mobile ? 278 : 296, mobile ? 150 : 145, s0);
+    s0 = mobile ? W / 760 : Math.min(W / 700, H / 660);
+    home = clampCam(mobile ? 278 : 296, mobile ? 150 : 165, s0);
     return true;
   };
 
@@ -238,7 +238,6 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   const pinById: Record<string, Pin> = {};
   let pins: Pin[] = [];
-  let offsetLabels: { el: SVGTextElement; offset: [number, number] }[] = [];
 
   const weekCountNow = () => weekNewCount(data.stores, clock);
 
@@ -329,9 +328,6 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     });
     if (stdots) {
       stdots.innerHTML = dots + caps;
-      const labels = stdots.querySelectorAll<SVGTextElement>("text");
-      offsetLabels = stations.flatMap((station, i) => station.mapPos.labelOffset
-        ? [{ el: labels[i], offset: station.mapPos.labelOffset }] : []);
     }
   }
 
@@ -594,10 +590,6 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const cy = cam.y.x;
     const worldTransform = `translate3d(${W / 2 - (cx - WB.x) * s}px,${H / 2 - (cy - WB.y) * s}px,0) scale(${s / R})`;
     world.style.transform = worldTransform;
-    // Photo pins keep their screen size, so label clearance must also survive resizing/zooming.
-    offsetLabels.forEach(({ el, offset: [dx, dy] }) => {
-      el.setAttribute("transform", `translate(${dx / s} ${dy / s})`);
-    });
     pins.forEach((p) => {
       const sx = (p.x - cx) * s + W / 2;
       const sy = (p.y - cy) * s + H / 2;
