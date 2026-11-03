@@ -1,6 +1,65 @@
 import { expect, test } from "@playwright/test";
 import { waitForMap } from "./helpers";
 
+const visibleArtworkHitTesting = `
+  #stdots text, #stdots text *, .pin .ph, .pin .ph *,
+  .pin.new .gr, .pin.sel .gr, .pin .tl, .pin .nwd, .pin .lab, .pin .lab * {
+    pointer-events: auto !important;
+  }
+  #vp, .pin .hit { pointer-events: none !important; }
+`;
+
+// Shared by the allowlist assertions and the deliberately occluded negative test.
+function checkLabelCharacters({ width, height, names }: { width: number; height: number; names: string[] }) {
+  const offenders: string[] = [];
+  const describe = (el: Element | null) => el ? JSON.stringify({
+    tag: el.tagName, id: el.id, classes: el.getAttribute("class"),
+    testId: el.getAttribute("data-testid"),
+    marker: el.closest(".pin")?.getAttribute("data-testid") ?? null,
+  }) : "null";
+  const checkLabel = (el: Element) => {
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      let offset = 0;
+      for (const char of node.textContent || "") {
+        const range = document.createRange();
+        range.setStart(node, offset);
+        offset += char.length;
+        range.setEnd(node, offset);
+        const rects = [...range.getClientRects()];
+        const context = `label:${el.textContent?.trim()} char:${JSON.stringify(char)} viewport:${width}x${height}`;
+        if (!rects.length) offenders.push(`${context} point:unavailable covering:unavailable (no glyph rect)`);
+        for (const r of rects) {
+          const points = [
+            { name: "centre", x: r.left + r.width / 2, y: r.top + r.height / 2 },
+            { name: "top-left", x: r.left + 1, y: r.top + 1 },
+            { name: "top-right", x: r.right - 1, y: r.top + 1 },
+            { name: "bottom-left", x: r.left + 1, y: r.bottom - 1 },
+            { name: "bottom-right", x: r.right - 1, y: r.bottom - 1 },
+          ];
+          for (const point of points) {
+            const top = document.elementFromPoint(point.x, point.y);
+            // DESIGN ruling /workspace/shared/design/2026-11-04-pr40-shuanglian-corner-ruling.md:
+            // ONLY corner points of 「連」 in 雙連 may touch 雙連's own pin/photo. Centre, any
+            // other covering element, and any 「雙」 point remain failures.
+            const isCorner = point.name !== "centre";
+            const ownShuanglianPin = !!top?.closest('[data-testid="metro-pin-shuanglian"]');
+            if (el.textContent?.trim() === "雙連" && char === "連" && isCorner && ownShuanglianPin) continue;
+            if (!top || !el.contains(top)) offenders.push(`${context} point:${point.name} (${point.x}, ${point.y}) covering:${describe(top)}`);
+          }
+        }
+      }
+    }
+  };
+
+  for (const name of names) {
+    const el = [...document.querySelectorAll("#stdots text")].find(el => el.textContent?.trim() === name);
+    if (!el) throw new Error(`Missing station label: ${name}`);
+    checkLabel(el);
+  }
+  return offenders;
+}
+
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
   test(`station labels do not overlap at ${viewport.width}x${viewport.height}`, async ({ page }) => {
     await page.setViewportSize(viewport);
@@ -9,6 +68,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     await page.locator("#vp").scrollIntoViewIfNeeded();
     await page.evaluate(() => document.fonts.ready);
     await page.waitForTimeout(1500);
+    await page.addStyleTag({ content: visibleArtworkHitTesting });
     // accepted by DESIGN 2026-11-04
     const acceptedPairs = [
       { width: 1440, a: "label:雙連", b: "photo:shuanglian" },
@@ -19,8 +79,9 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       { width: 390, a: "label:雙連", b: "photo:shuanglian" },
       { width: 390, a: "label:小巨蛋", b: "photo:houshanpi" },
     ];
-    const result = await page.evaluate(({ width, acceptedPairs }) => {
+    const result = await page.evaluate(({ width, height, acceptedPairs }) => {
       const collect = (selector: string) => [...document.querySelectorAll(selector)].map(el => ({
+        el,
         name: el.textContent?.trim() || el.closest<HTMLElement>(".pin")?.dataset.id || selector,
         key: el.matches("#stdots text") ? `label:${el.textContent?.trim()}` :
           el.matches(".pin .ph") ? `photo:${el.closest<HTMLElement>(".pin")?.dataset.id}` : selector,
@@ -33,6 +94,22 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       const obstacles = [...collect(".pin .ph, .cart, #stampB"), ...legends];
       const vp = document.querySelector("#vp")!.getBoundingClientRect();
       const offenders: string[] = [];
+      const describe = (el: Element | null) => el ? JSON.stringify({
+        tag: el.tagName, id: el.id, classes: el.getAttribute("class"),
+        testId: el.getAttribute("data-testid"),
+        marker: el.closest(".pin")?.getAttribute("data-testid") ?? null,
+      }) : "null";
+      // QA r9 gives no photo/photo criterion. At 390, require both overlapping
+      // 小巨蛋/後山埤 photo pins to retain ownership of their own hit centres.
+      if (width === 390) {
+        for (const id of ["arena", "houshanpi"]) {
+          const marker = document.querySelector(`[data-testid="metro-pin-${id}"]`)!;
+          const r = marker.querySelector(".hit")!.getBoundingClientRect();
+          const x = r.left + r.width / 2, y = r.top + r.height / 2;
+          const top = document.elementFromPoint(x, y);
+          if (!top || !marker.contains(top)) offenders.push(`photo:${id} viewport:${width}x${height} point:hit centre (${x}, ${y}) covering:${describe(top)}`);
+        }
+      }
       for (const [i, label] of labels.entries()) {
         const a = label.rect;
         if (a.left < vp.left || a.right > vp.right || a.top < vp.top || a.bottom > vp.bottom) offenders.push(`${label.name} outside #vp: ${JSON.stringify(a)}`);
@@ -40,8 +117,11 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
           const b = other.rect;
           if (Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 &&
               Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1) {
-            if (accepted(label.key, other.key)) continue;
-            offenders.push(`${label.key} intersects ${other.key} by ${Math.min(a.right, b.right) - Math.max(a.left, b.left)}px horizontally and ${Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)}px vertically: ${JSON.stringify(a)} / ${JSON.stringify(b)}`);
+            if (accepted(label.key, other.key)) {
+              // Allowlisted labels are checked independently below.
+            } else {
+              offenders.push(`${label.key} intersects ${other.key} by ${Math.min(a.right, b.right) - Math.max(a.left, b.left)}px horizontally and ${Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top)}px vertically: ${JSON.stringify(a)} / ${JSON.stringify(b)}`);
+            }
           }
         }
       }
@@ -52,9 +132,50 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
         if (gap < 16) offenders.push(`caption ↔ bubble horizontal gap ${gap}px; requires 16px (short by ${16 - gap}px)`);
       }
       return { count: labels.length, offenders };
-    }, { width: viewport.width, acceptedPairs });
+    }, { width: viewport.width, height: viewport.height, acceptedPairs });
+    result.offenders.push(...await page.evaluate(checkLabelCharacters, {
+      ...viewport,
+      names: [...new Set(acceptedPairs.filter(pair => pair.width === viewport.width)
+        .flatMap(pair => [pair.a, pair.b]).filter(key => key.startsWith("label:"))
+        .map(key => key.slice("label:".length)))],
+    }));
     expect(result.count).toBe(14);
     expect(result.offenders, result.offenders.join("\n")).toEqual([]);
+  });
+}
+
+for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+  test(`character check detects a photo moved over 小巨蛋 at ${viewport.width}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/?reduce=1");
+    await waitForMap(page);
+    await page.locator("#vp").scrollIntoViewIfNeeded();
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForTimeout(1500);
+    await page.addStyleTag({ content: visibleArtworkHitTesting });
+    const marker = page.getByTestId("metro-pin-houshanpi");
+    const originalStyle = await marker.getAttribute("style");
+    try {
+      await marker.evaluate(el => {
+        const label = [...document.querySelectorAll("#stdots text")]
+          .find(label => label.textContent?.trim() === "小巨蛋")!;
+        const target = label.getBoundingClientRect();
+        const photo = el.querySelector(".ph")!.getBoundingClientRect();
+        // Pin-layer positions are in viewport pixels.
+        const pin = el as HTMLElement;
+        pin.style.left = `${(parseFloat(pin.style.left) || 0) + target.left + target.width / 2 - photo.left - photo.width / 2}px`;
+        pin.style.top = `${(parseFloat(pin.style.top) || 0) + target.top + target.height / 2 - photo.top - photo.height / 2}px`;
+      });
+      const failures = await page.evaluate(checkLabelCharacters, { ...viewport, names: ["小巨蛋"] });
+      expect(failures.some(failure => failure.includes("label:小巨蛋") &&
+        failure.includes(`viewport:${viewport.width}x${viewport.height}`) &&
+        failure.includes('"marker":"metro-pin-houshanpi"')), failures.join("\n")).toBe(true);
+    } finally {
+      await marker.evaluate((el, style) => {
+        if (style === null) el.removeAttribute("style");
+        else el.setAttribute("style", style);
+      }, originalStyle);
+    }
   });
 }
 
