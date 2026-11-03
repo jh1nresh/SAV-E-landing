@@ -53,8 +53,10 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
                 })}
               </svg>
             </div>
-            <div className="hud hint">點一站，看吃什麼</div>
-            <div className="hud cart"><b>Taipei</b><span>捷運口袋名單 · 示意位置</span></div>
+            <div className="hud map-caption-group">
+              <div className="hud cart"><b>Taipei</b><span>捷運口袋名單 · 示意位置</span></div>
+              <div className="hud hint">點一站，看吃什麼</div>
+            </div>
           </div>
         </div>
       </div>

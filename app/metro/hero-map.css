@@ -735,9 +735,9 @@ body.still .pin.new .gr {
 }
 
 .hint {
-  left: 50%;
+  left: 0;
   top: 12px;
-  transform: translateX(-50%);
+  transform: translateY(0);
   font: 400 16px/1 Iansui, Caveat, serif;
   color: var(--ink);
   background: var(--paper);
@@ -753,19 +753,20 @@ body.still .pin.new .gr {
 
 .hint.gone {
   opacity: 0;
-  transform: translate(-50%, -8px);
+  transform: translateY(-8px);
   animation: none;
 }
 
 @keyframes metro-bob {
   50% {
-    transform: translate(-50%, 3px);
+    transform: translateY(3px);
   }
 }
 
 .cart {
-  left: 12px;
-  bottom: 8px;
+  left: 10px;
+  top: 10px;
+  bottom: auto;
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -1255,4 +1256,19 @@ body.rm .pin.new .gr {
   .hero .h.zh {
     font-size: 32px;
   }
+}
+
+/* Keep the invitation beside the caption, including the static poster. */
+.map-caption-group {
+  left: 10px;
+  top: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.map-caption-group .cart,
+.map-caption-group .hint {
+  position: relative;
+  left: auto;
+  top: auto;
 }

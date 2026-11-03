@@ -81,11 +81,7 @@ for (const viewport of [{ width: 1280, height: 720 }, { width: 390, height: 844 
       const label = el.getBoundingClientRect();
       return [...document.querySelectorAll('.pin:not(.content-only) .ph')].every(photo => {
         const r = photo.getBoundingClientRect();
-        // Photo heads are circles; their bounding-box corners are transparent.
-        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-        const x = Math.max(label.left, Math.min(label.right, cx));
-        const y = Math.max(label.top, Math.min(label.bottom, cy));
-        return Math.hypot(x - cx, y - cy) >= r.width / 2;
+        return label.right <= r.left || label.left >= r.right || label.bottom <= r.top || label.top >= r.bottom;
       });
     });
     expect(gutingClear).toBe(true);

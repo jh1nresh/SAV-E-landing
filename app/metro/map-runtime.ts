@@ -238,6 +238,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   const pinById: Record<string, Pin> = {};
   let pins: Pin[] = [];
+  let offsetLabels: { el: SVGTextElement; offset: [number, number] }[] = [];
 
   const weekCountNow = () => weekNewCount(data.stores, clock);
 
@@ -284,8 +285,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const nw = !soon && stationIsNew(storesOf(s.id), clock);
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
       const side = s.mapPos.label;
-      const lx = side === "right" ? x + 36 : side === "left" ? x - 14 : x;
-      const ly = side === "right" ? y + 30 : side ? y + 5 : y + 27;
+      const lx = side === "right" ? x + 14 : side === "left" ? x - 14 : x;
+      const ly = side ? y + 5 : y + 27;
       caps += `<text x="${lx}" y="${ly}" text-anchor="${side === "right" ? "start" : side === "left" ? "end" : "middle"}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
       el.type = "button";
@@ -326,7 +327,12 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       pinById[s.id] = p;
       return p;
     });
-    if (stdots) stdots.innerHTML = dots + caps;
+    if (stdots) {
+      stdots.innerHTML = dots + caps;
+      const labels = stdots.querySelectorAll<SVGTextElement>("text");
+      offsetLabels = stations.flatMap((station, i) => station.mapPos.labelOffset
+        ? [{ el: labels[i], offset: station.mapPos.labelOffset }] : []);
+    }
   }
 
   let openId: string | null = null;
@@ -588,6 +594,10 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const cy = cam.y.x;
     const worldTransform = `translate3d(${W / 2 - (cx - WB.x) * s}px,${H / 2 - (cy - WB.y) * s}px,0) scale(${s / R})`;
     world.style.transform = worldTransform;
+    // Photo pins keep their screen size, so label clearance must also survive resizing/zooming.
+    offsetLabels.forEach(({ el, offset: [dx, dy] }) => {
+      el.setAttribute("transform", `translate(${dx / s} ${dy / s})`);
+    });
     pins.forEach((p) => {
       const sx = (p.x - cx) * s + W / 2;
       const sy = (p.y - cy) * s + H / 2;

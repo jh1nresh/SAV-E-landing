@@ -42,12 +42,14 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
             <button type="button" id="zoomIn" aria-label="放大地圖">＋</button>
             <button type="button" id="zoomOut" aria-label="縮小地圖">−</button>
           </div>
-          <div className="hud hint" id="hint">
-            點一站，看吃什麼
-          </div>
-          <div className="hud cart">
-            <b>Taipei</b>
-            <span>捷運口袋名單 · 示意位置</span>
+          <div className="hud map-caption-group">
+            <div className="hud cart">
+              <b>Taipei</b>
+              <span>捷運口袋名單 · 示意位置</span>
+            </div>
+            <div className="hud hint" id="hint">
+              點一站，看吃什麼
+            </div>
           </div>
           <div className="hud compass" aria-hidden="true">
             <svg viewBox="-18 -26 36 44" width="34" height="42" fill="none" stroke="#2f2e23" strokeWidth="2.2" strokeLinecap="round">

@@ -77,6 +77,8 @@ export type MetroStation = {
     snapped?: [number, number];
     /** Label beside the dot instead of below it (keeps clear of neighbouring photo pins). */
     label?: "left" | "right";
+    /** Additional screen-pixel offset from the default label position. */
+    labelOffset?: [number, number];
   };
 };
 

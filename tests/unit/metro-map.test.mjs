@@ -11,7 +11,7 @@ const root = resolve('.');
 const raw = JSON.parse(readFileSync('data/metro.json', 'utf8'));
 const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
 
-test('every content station has a hero marker snapped near its position', () => {
+test('every content station has a hero marker snapped within two units of its position', () => {
   const food = buildFoodStations(root);
   const hero = buildPublicMetro(raw, food).stations;
   assert.equal(food.length, 14);
@@ -21,10 +21,9 @@ test('every content station has a hero marker snapped near its position', () => 
     assert.ok(marker, station.slug);
     assert.ok(marker.mapPos.line in LINE_PATHS);
     assert.ok(marker.mapPos.snapped.every(Number.isFinite));
-    // 公館's reviewed [204, 385] anchor is slightly farther from the sampled green curve.
-    const tolerance = station.slug === 'gongguan' ? 3 : 2;
-    assert.ok(Math.hypot(...marker.mapPos.snapped.map((v, i) => v - station.map.at[i])) <= tolerance, station.slug);
+    assert.ok(Math.hypot(...marker.mapPos.snapped.map((v, i) => v - station.map.at[i])) <= 2, station.slug);
     assert.equal(marker.order, station.n);
+    assert.deepEqual(marker.mapPos.labelOffset, station.map.labelOffset);
   }
 });
 
@@ -55,4 +54,10 @@ test('daily records inherit map and legacy id while overriding content fields', 
 
 test('stores must reference a derived station id', () => {
   assert.throws(() => buildPublicMetro({ ...raw, stores: [{ ...raw.stores[0], stationId: 'unknown' }] }), /is not a station/);
+});
+
+test('label offsets require two finite numbers', () => {
+  for (const labelOffset of [[1], [1, 2, 3], ['1', 2], [NaN, 2], 'left']) {
+    assert.throws(() => mergeFoodStations([{ ...base[0], map: { ...base[0].map, labelOffset } }]), /map.labelOffset must be two finite numbers/);
+  }
 });

@@ -760,8 +760,8 @@
     "map": {
       "line": "L_green",
       "at": [
-        204,
-        385
+        201.71,
+        384.82
       ]
     },
     "map_id": "gongguan",
@@ -1033,7 +1033,7 @@
         372,
         234
       ],
-      "label": "left"
+      "label": "right"
     },
     "tagline": "常搭忠孝復興站的人，這 5 間先收",
     "shops": [
@@ -1433,7 +1433,8 @@
         221,
         310
       ],
-      "label": "right"
+      "label": "left",
+      "labelOffset": [-14, -16]
     },
     "tagline": "早餐飯糰到酸菜白肉鍋，5 間先收",
     "shops": [
