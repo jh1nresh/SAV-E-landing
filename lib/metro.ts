@@ -64,13 +64,15 @@ export type MetroStore = {
 
 export type MetroStation = {
   id: string;
+  /** Food-page slug: /metro/<slug>. */
+  slug?: string;
   order: number;
   name: string;
   line: string;
   status: "live" | "coming_soon";
   updatedAt: string | null;
   mapPos: {
-    line: "L_red" | "L_blue" | "L_green";
+    line: "L_red" | "L_blue" | "L_green" | "L_orange";
     at: [number, number];
     snapped?: [number, number];
   };

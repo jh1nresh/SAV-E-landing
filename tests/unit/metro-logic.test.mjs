@@ -54,16 +54,10 @@ test("build strips private fields, snaps mapPos, keeps public data", () => {
   assert.ok(pub.stores.some((s) => s.name === "珍好鍋貼"));
 });
 
-test("schema fails on missing mapPos", () => {
-  const raw = JSON.parse(readFileSync("data/metro.json", "utf8"));
-  delete raw.stations[0].mapPos;
-  assert.throws(() => buildPublicMetro(raw), /mapPos/);
-});
-
-test("schema fails on malformed status", () => {
+test("hero status is derived from content rather than legacy metadata", () => {
   const raw = JSON.parse(readFileSync("data/metro.json", "utf8"));
   raw.stations[0].status = "draft";
-  assert.throws(() => buildPublicMetro(raw), /status/);
+  assert.ok(buildPublicMetro(raw).stations.every(s => s.status === "live"));
 });
 
 test("source URLs must be https instagram.com or threads.com, never #example", () => {

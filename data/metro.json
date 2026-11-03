@@ -11,14 +11,7 @@
       "name": "小巨蛋",
       "line": "松山新店線",
       "status": "live",
-      "updatedAt": "2026-10-21",
-      "mapPos": {
-        "line": "L_green",
-        "at": [
-          440,
-          142
-        ]
-      }
+      "updatedAt": "2026-10-21"
     },
     {
       "id": "songshan",
@@ -26,14 +19,7 @@
       "name": "松山",
       "line": "松山新店線",
       "status": "live",
-      "updatedAt": "2026-10-28",
-      "mapPos": {
-        "line": "L_green",
-        "at": [
-          598,
-          86
-        ]
-      }
+      "updatedAt": "2026-10-28"
     },
     {
       "id": "shuanglian",
@@ -41,14 +27,7 @@
       "name": "雙連",
       "line": "淡水信義線",
       "status": "live",
-      "updatedAt": "2026-10-23",
-      "mapPos": {
-        "line": "L_red",
-        "at": [
-          128,
-          116
-        ]
-      }
+      "updatedAt": "2026-10-23"
     },
     {
       "id": "dongmen",
@@ -56,14 +35,7 @@
       "name": "東門",
       "line": "淡水信義線",
       "status": "live",
-      "updatedAt": "2026-10-24",
-      "mapPos": {
-        "line": "L_red",
-        "at": [
-          300,
-          302
-        ]
-      }
+      "updatedAt": "2026-10-24"
     },
     {
       "id": "houshanpi",
@@ -71,14 +43,7 @@
       "name": "後山埤",
       "line": "板南線",
       "status": "live",
-      "updatedAt": "2026-10-25",
-      "mapPos": {
-        "line": "L_blue",
-        "at": [
-          500,
-          268
-        ]
-      }
+      "updatedAt": "2026-10-25"
     },
     {
       "id": "gongguan",
@@ -86,14 +51,7 @@
       "name": "公館",
       "line": "松山新店線",
       "status": "live",
-      "updatedAt": "2026-10-28",
-      "mapPos": {
-        "line": "L_green",
-        "at": [
-          215,
-          330
-        ]
-      }
+      "updatedAt": "2026-10-28"
     }
   ],
   "stores": [

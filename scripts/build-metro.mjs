@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Read data/metro.json, drop private keys, snap mapPos to the schematic
+ * Read content stations and legacy store metadata, drop private keys, snap map positions to the schematic
  * lines, validate, and write the public payload used by the site.
  */
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import { isAllowedStoreSource } from "./source-links.mjs";
 export { isAllowedSourceUrl } from "./source-links.mjs";
 import { STORE_KINDS } from "../lib/metro-logic.mjs";
-import { buildFoodStations } from "./metro-content.mjs";
+import { buildFoodStations, validateStationMap } from "./metro-content.mjs";
 import { snapToLine } from "./metro-lines.mjs";
 
 const PRIVATE_KEY = "not" + "es";
@@ -21,7 +21,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const srcPath = resolve(root, "data/metro.json");
 const outPath = resolve(root, "app/metro/metro.public.json");
 
-const LINE_IDS = new Set(["L_red", "L_blue", "L_green"]);
+const LINE_IDS = new Set(["L_red", "L_blue", "L_green", "L_orange"]);
 const PLATFORMS = new Set(["ig", "threads", "xhs"]);
 const YMD = /^\d{4}-\d{2}-\d{2}$/;
 export function fail(msg) {
@@ -185,9 +185,18 @@ function validate(data) {
   }
 }
 
-export function buildPublicMetro(raw) {
+const LINE_LABELS = { L_red: "淡水信義線", L_blue: "板南線", L_green: "松山新店線", L_orange: "中和新蘆線" };
+export function buildPublicMetro(raw, foodStations = buildFoodStations(root)) {
   const stripped = stripPrivate(raw);
   if (hasPrivate(stripped)) fail("private field survived strip");
+  stripped.stations = foodStations.map(station => {
+    validateStationMap(station);
+    const id = station.map_id ?? station.slug;
+    const legacy = stripped.stations?.find(s => s.id === id);
+    return { id, slug: station.slug, order: station.n, name: legacy?.name ?? station.station,
+      line: LINE_LABELS[station.map.line], status: "live", updatedAt: legacy?.updatedAt ?? station.date,
+      mapPos: { line: station.map.line, at: station.map.at } };
+  });
   validate(stripped);
   const publicData = toPublicStores(stripped);
   for (const station of publicData.stations) {
@@ -208,8 +217,9 @@ export function buildPublicMetro(raw) {
 function main() {
   try {
     const raw = JSON.parse(readFileSync(srcPath, "utf8"));
-    const publicData = buildPublicMetro(raw);
-    publicData.foodStations = buildFoodStations(root);
+    const foodStations = buildFoodStations(root);
+    const publicData = buildPublicMetro(raw, foodStations);
+    publicData.foodStations = foodStations;
     mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, `${JSON.stringify(publicData, null, 2)}\n`, "utf8");
     console.log(

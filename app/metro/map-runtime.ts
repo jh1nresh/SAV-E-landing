@@ -376,6 +376,12 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       cmorph.style.backgroundImage = "none";
       return;
     }
+    if (!list.length) {
+      // Content-only station: no hero stores yet, so point at its food page instead of an empty card.
+      cmorph.style.backgroundImage = "none";
+      cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${countLabel(list)}</span></div><div class="soonbody"><p><a href="/metro/${escapeHtml(s.slug ?? "")}" data-testid="metro-food-link-${escapeHtml(s.id)}">看${escapeHtml(s.name)}站美食清單 →</a></p></div>`;
+      return;
+    }
     const firstImg = list[0]?.image ? publicImage(list[0].image) : "";
     cmorph.style.backgroundImage = firstImg ? `url(${firstImg})` : "none";
     cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${countLabel(list)}</span></div>

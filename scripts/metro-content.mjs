@@ -1,6 +1,7 @@
 /** Content adapter for the existing Metro public-payload build. Never fetch remote content. */
 import { readFileSync, readdirSync, existsSync, realpathSync, mkdirSync, copyFileSync } from 'node:fs';
 import { resolve, dirname, relative } from 'node:path';
+import { LINE_PATHS } from './metro-lines.mjs';
 import { isCalendarDate } from '../lib/metro-logic.mjs';
 
 export function stripInternal(value) {
@@ -11,11 +12,16 @@ export function stripInternal(value) {
 }
 const optionalText = (value) => value == null || typeof value === 'string';
 const error = (message) => { throw new Error(`metro content: ${message}`); };
+export const LINE_IDS = new Set(Object.keys(LINE_PATHS));
+export function validateStationMap(s) {
+  if (!s.map || !LINE_IDS.has(s.map.line) || !Array.isArray(s.map.at) ||
+      s.map.at.length !== 2 || !s.map.at.every(Number.isFinite)) error(`station ${s.n} missing map position`);
+}
 export function mergeFoodStations(base, daily = []) {
   if (!Array.isArray(base)) error('stations.json must be an array');
   const stations = new Map();
   for (const raw of [...base, ...daily]) {
-    const s = stripInternal(raw);
+    const s = { ...stations.get(raw?.n), ...stripInternal(raw) };
     if (!s || !Number.isSafeInteger(s.n) || s.n < 1 || typeof s.slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(s.slug ?? '') ||
         typeof s.station !== 'string' || !s.station || !isCalendarDate(s.date)) error('invalid station identity/date');
     if (!optionalText(s.tagline) || (s.shops != null && !Array.isArray(s.shops))) error(`invalid fields at ${s.n}`);
@@ -37,6 +43,7 @@ export function mergeFoodStations(base, daily = []) {
     stations.set(s.n, s);
   }
   const result = [...stations.values()].sort((a, b) => a.n - b.n);
+  for (const s of result) validateStationMap(s);
   if (new Set(result.map(s => s.slug)).size !== result.length) error('duplicate slug');
   return result;
 }
@@ -70,7 +77,7 @@ export function buildFoodStations(root) {
     }));
     // Publish display fields only; research URLs and extraction metadata stay in content/.
     const fields = ['key', 'name', 'dish', 'price', 'price_source', 'address', 'exit_walk', 'hours'];
-    return { n: s.n, date: s.date, station: s.station, slug: s.slug, tagline: s.tagline ?? null,
+    return { n: s.n, date: s.date, station: s.station, slug: s.slug, map: s.map, ...(s.map_id != null ? { map_id: s.map_id } : {}), tagline: s.tagline ?? null,
       shops: (s.shops ?? []).map(shop => Object.fromEntries(fields.map(key => [key, shop[key] ?? null]))),
       images, posts: s.posts ?? {} };
   });
