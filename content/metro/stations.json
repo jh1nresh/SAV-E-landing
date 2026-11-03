@@ -9,6 +9,10 @@
       "at": [
         440,
         142
+      ],
+      "labelOffset": [
+        -14,
+        0
       ]
     },
     "map_id": "arena",
@@ -238,7 +242,11 @@
         128,
         116
       ],
-      "label": "left"
+      "label": "left",
+      "labelOffset": [
+        0,
+        12
+      ]
     },
     "map_id": "shuanglian",
     "tagline": "常搭雙連站的人先收👇",

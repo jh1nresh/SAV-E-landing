@@ -17,6 +17,8 @@ export function validateStationMap(s) {
   if (!s.map || !LINE_IDS.has(s.map.line) || !Array.isArray(s.map.at) ||
       s.map.at.length !== 2 || !s.map.at.every(Number.isFinite)) error(`station ${s.n} missing map position`);
   if (s.map.label != null && !['left', 'right'].includes(s.map.label)) error(`station ${s.n} map.label must be left | right`);
+  if (s.map.labelOffset != null && !(Array.isArray(s.map.labelOffset) && s.map.labelOffset.length === 2 &&
+      s.map.labelOffset.every(Number.isFinite))) error(`station ${s.n} map.labelOffset must be [dx, dy]`);
 }
 export function mergeFoodStations(base, daily = []) {
   if (!Array.isArray(base)) error('stations.json must be an array');
