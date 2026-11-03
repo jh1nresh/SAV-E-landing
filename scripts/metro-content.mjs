@@ -16,6 +16,7 @@ export const LINE_IDS = new Set(Object.keys(LINE_PATHS));
 export function validateStationMap(s) {
   if (!s.map || !LINE_IDS.has(s.map.line) || !Array.isArray(s.map.at) ||
       s.map.at.length !== 2 || !s.map.at.every(Number.isFinite)) error(`station ${s.n} missing map position`);
+  if (s.map.label != null && !['left', 'right'].includes(s.map.label)) error(`station ${s.n} map.label must be left | right`);
 }
 export function mergeFoodStations(base, daily = []) {
   if (!Array.isArray(base)) error('stations.json must be an array');

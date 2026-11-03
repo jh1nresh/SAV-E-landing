@@ -19,6 +19,8 @@
 | posts.instagram / threads / xiaohongshu | string \| null | 已發貼文網址 |
 | sources | string[] \| null | 本站全部查證連結 |
 | _source_files | object | 內部欄位：抽取來源檔。**`_` 開頭的鍵網站要忽略** |
+| map | object | **必填**。首頁示意地圖位置：`{"line": "L_red"\|"L_blue"\|"L_green"\|"L_orange", "at": [x, y], "label"?: "left"\|"right"}`。`at` 是示意圖 viewBox 單位，不是經緯度，由 DESIGN 提供；build 會吸附到最近的線上。缺少或無效時 build 會失敗（`station <n> missing map position`）。`label` 可選，用來把站名放到點的左邊或右邊，避開旁邊的照片圖釘 |
+| map_id | string | 選填。舊首頁站點 id（arena／songshan／shuanglian／dongmen／houshanpi／gongguan），讓 `data/metro.json` 的店家 `stationId` 對得上。新站不要填，預設用 `slug`。daily web.json 沒寫 map／map_id 時沿用 stations.json 的值 |
 
 ## shop 欄位
 | 欄位 | 說明 |
@@ -38,3 +40,4 @@
 - 事實以實發貼文為準（#1–#7 取自 f1-evidence 實發全文，其餘取自當日 ig.txt / threads.txt / data.json）。
 - 價格與營業時間可能變動，網站請顯示「出發前再確認」。
 - 新增一站：GTM 寫 `savvy-ready/<日期>/web.json`；同時把該站附加到 `stations.json`（以 `n` 為鍵，重複就覆蓋，不要新增第二筆）。
+- 新站必須帶 `map`（向 DESIGN 要位置），否則首頁地圖 build 會失敗。

@@ -228,8 +228,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     W = w;
     H = h;
     mobile = W < 520;
-    s0 = mobile ? W / 580 : Math.min(W / 630, H / 440);
-    home = clampCam(mobile ? 325 : 322, mobile ? 228 : 175, s0);
+    s0 = mobile ? W / 680 : Math.min(W / 660, H / 490);
+    home = clampCam(mobile ? 262 : 296, mobile ? 150 : 160, s0);
     return true;
   };
 
@@ -283,7 +283,10 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const img = list[0]?.image ? publicImage(list[0].image) : "";
       const nw = !soon && stationIsNew(storesOf(s.id), clock);
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
-      caps += `<text x="${x}" y="${y + 27}" text-anchor="middle" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
+      const side = s.mapPos.label;
+      const lx = side === "right" ? x + 14 : side === "left" ? x - 14 : x;
+      const ly = side ? y + 5 : y + 27;
+      caps += `<text x="${lx}" y="${ly}" text-anchor="${side === "right" ? "start" : side === "left" ? "end" : "middle"}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
       el.type = "button";
       el.className = `pin ${soon ? "soon " : ""}${nw ? "new " : ""}${!soon && !img ? "nophoto" : ""}`;

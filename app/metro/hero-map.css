@@ -221,7 +221,8 @@ section.hero {
 
 .stamp {
   position: absolute;
-  left: 20px;
+  /* Right side: the left edge holds 士林／大橋頭. */
+  right: 20px;
   top: -30px;
   z-index: 7;
   pointer-events: none;
@@ -530,10 +531,11 @@ section.s-cta {
 
 .pin .hit {
   position: absolute;
-  left: -26px;
-  top: -72px;
-  width: 52px;
-  height: 84px;
+  /* Head + dot only (still ≥44px): with 14 stations, taller hits stole clicks from the pin above. */
+  left: -23px;
+  top: -54px;
+  width: 46px;
+  height: 62px;
   pointer-events: auto;
   cursor: pointer;
   border-radius: 26px;

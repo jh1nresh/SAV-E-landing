@@ -195,7 +195,7 @@ export function buildPublicMetro(raw, foodStations = buildFoodStations(root)) {
     const legacy = stripped.stations?.find(s => s.id === id);
     return { id, slug: station.slug, order: station.n, name: legacy?.name ?? station.station,
       line: LINE_LABELS[station.map.line], status: "live", updatedAt: legacy?.updatedAt ?? station.date,
-      mapPos: { line: station.map.line, at: station.map.at } };
+      mapPos: { line: station.map.line, at: station.map.at, ...(station.map.label ? { label: station.map.label } : {}) } };
   });
   validate(stripped);
   const publicData = toPublicStores(stripped);
@@ -204,6 +204,7 @@ export function buildPublicMetro(raw, foodStations = buildFoodStations(root)) {
       line: station.mapPos.line,
       at: station.mapPos.at,
       snapped: snapToLine(station.mapPos.line, station.mapPos.at),
+      ...(station.mapPos.label ? { label: station.mapPos.label } : {}),
     };
   }
   const text = JSON.stringify(publicData);

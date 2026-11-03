@@ -75,6 +75,8 @@ export type MetroStation = {
     line: "L_red" | "L_blue" | "L_green" | "L_orange";
     at: [number, number];
     snapped?: [number, number];
+    /** Label beside the dot instead of below it (keeps clear of neighbouring photo pins). */
+    label?: "left" | "right";
   };
 };
 
