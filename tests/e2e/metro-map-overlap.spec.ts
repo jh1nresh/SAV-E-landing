@@ -14,7 +14,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       { width: 1440, a: "label:雙連", b: "photo:shuanglian" },
       // label 框碰圖釘白邊，DESIGN 已確認字完整
       // DESIGN r6 line 29:「Eng 的 allowlist：小巨蛋 label 和 390w 後山埤圖釘 … ✅ 接受 … 只有文字框和圖釘白邊碰在一起，沒有任何字被蓋到」
-      // NOTE: DESIGN's written acceptance names 390w; 1440 acceptance pending
+      // 1440 accepted by DESIGN in writing: /workspace/shared/design/2026-11-04-pr40-xiaojudan-1440-exception.md — scope: text box touches pin outline/white border only, all 3 characters intact; any covered character is a blocker.
       { width: 1440, a: "label:小巨蛋", b: "photo:houshanpi" },
       { width: 390, a: "label:雙連", b: "photo:shuanglian" },
       { width: 390, a: "label:小巨蛋", b: "photo:houshanpi" },
