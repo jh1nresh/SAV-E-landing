@@ -541,6 +541,14 @@ section.s-cta {
   border-radius: 26px;
 }
 
+/* Keep 雙連's photo target clear of 中山, including integer pointer coordinates. */
+.pin[data-id="shuanglian"] .hit {
+  left: -22px;
+  top: -46px;
+  width: 44px;
+  height: 44px;
+}
+
 .pin:focus-visible {
   outline: none;
 }

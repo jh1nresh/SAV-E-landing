@@ -20,21 +20,20 @@ for (const s of noShop) {
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto("/?reduce=1");
     await waitForMap(page);
-    // Photo targets take priority where targets overlap. Click an exposed point
-    // of the centred station target using real pointer input.
-    await page.locator('#vp').scrollIntoViewIfNeeded();
-    const hit = page.getByTestId(`metro-pin-${s.id}`).locator('.hit');
-    const point = await hit.evaluate(el => {
+    const marker = page.getByTestId(`metro-pin-${s.id}`);
+    await marker.scrollIntoViewIfNeeded();
+    const hit = marker.locator('.hit');
+    const target = await hit.evaluate(el => {
       const r = el.getBoundingClientRect();
-      for (let y = 4; y < r.height; y += 4) {
-        for (let x = 4; x < r.width; x += 4) {
-          if (document.elementFromPoint(r.x + x, r.y + y) === el) return { x: r.x + x, y: r.y + y };
-        }
-      }
-      return null;
+      const x = r.x + r.width / 2, y = r.y + r.height / 2;
+      const top = document.elementFromPoint(x, y);
+      return { x, y, owner: top?.closest('[data-testid]')?.getAttribute('data-testid'),
+        description: JSON.stringify({ tag: top?.tagName, classes: top?.getAttribute('class'),
+          testId: top?.getAttribute('data-testid'), closestTestId: top?.closest('[data-testid]')?.getAttribute('data-testid') }) };
     });
-    expect(point, `${s.id} has an exposed pointer target`).not.toBeNull();
-    await page.mouse.click(point!.x, point!.y);
+    console.log(`${s.id} hit center: ${target.description}`);
+    expect(target.owner, `${s.id} hit center covered by ${target.description}`).toBe(`metro-pin-${s.id}`);
+    await page.mouse.click(target.x, target.y);
     await waitForCardOpen(page);
     await expect(page.locator("#card .soonbody")).not.toBeEmpty();
     await expect(page.locator("#cardTitle")).toContainText(s.name);

@@ -5,7 +5,6 @@ import {
   dragMap,
   emptyMapPoint,
   realTouchDrag,
-  realTouchDragFromPin,
   realTouchTapPin,
   waitForCardOpen,
   waitForMap,
@@ -24,21 +23,42 @@ test.describe("hero map pan", () => {
     const before = await page.evaluate(() => window.__savvyMap!.state());
     await expect(page.locator("#vp")).toHaveCSS("cursor", "grab");
     // The wider home view starts at the left camera bound; drag toward available travel.
-    await dragMap(page, -90, -40);
+    await dragMap(page, -90, 0);
     const after = await page.evaluate(() => window.__savvyMap!.state());
     expect(after.worldTransform).not.toBe(before.worldTransform);
     expect(after.camX).toBeGreaterThan(before.camX);
-    expect(after.camY).toBeGreaterThan(before.camY);
+    expect(after.camY).toBeCloseTo(before.camY, 1);
     expect(after.openId).toBeNull();
   });
 
   test("touch drag pans the camera", async ({ page }) => {
     const before = await page.evaluate(() => window.__savvyMap!.state());
-    await dispatchMapPointerDrag(page, -80, -10, "touch");
+    await dispatchMapPointerDrag(page, -80, 0, "touch");
     const after = await page.evaluate(() => window.__savvyMap!.state());
     expect(after.worldTransform).not.toBe(before.worldTransform);
     expect(after.camX).toBeGreaterThan(before.camX);
     expect(after.openId).toBeNull();
+  });
+
+  test("home: drag toward the left camera edge is clamped", async ({ page }) => {
+    const before = await worldScreenPos(page);
+    const state = await page.evaluate(() => window.__savvyMap!.state());
+    const bound = -150 + state.viewW / (2 * state.camS);
+    expect(state.camX).toBeCloseTo(bound, 5);
+    const start = await emptyMapPoint(page);
+    await page.mouse.move(start.x, start.y);
+    await page.mouse.down();
+    for (let dx = 10; dx <= 70; dx += 10) {
+      await page.mouse.move(start.x + dx, start.y);
+      const current = await page.evaluate(() => window.__savvyMap!.state());
+      expect(current.camX).toBeGreaterThanOrEqual(bound);
+      expect(Math.abs((current.camX - state.camX) * current.camS)).toBeLessThan(2);
+    }
+    await page.mouse.up();
+    const after = await worldScreenPos(page);
+    expect(Math.abs(after.left - before.left)).toBeLessThan(2);
+    expect(Math.abs(after.top - before.top)).toBeLessThan(2);
+    expect((await page.evaluate(() => window.__savvyMap!.state())).camX).toBeGreaterThanOrEqual(bound);
   });
 
   test("a drag on a pin does not select the station", async ({ page }) => {
@@ -64,23 +84,23 @@ test.describe("hero map pan", () => {
 
     async function assertPinTouchPans(page: Page, pinId: string, home = false) {
       const before = await worldScreenPos(page);
-      if (home) {
-        // Horizontal travel is bounded in the wider home view; a horizontal-led
-        // diagonal gesture also exercises the available vertical travel.
-        const box = (await page.getByTestId(`metro-pin-${pinId}`).locator(".hit").boundingBox())!;
-        await realTouchDrag(page, { x: box.x + box.width / 2, y: box.y + box.height / 2 }, -70, -65);
-      } else {
-        await realTouchDragFromPin(page, pinId, 70);
-      }
+      const box = (await page.getByTestId(`metro-pin-${pinId}`).locator('.hit').boundingBox())!;
+      await realTouchDrag(page, { x: box.x + box.width / 2, y: box.y + box.height / 2 }, home ? -70 : 70, 0);
       await page.waitForTimeout(50);
       const after = await worldScreenPos(page);
-      const moved = Math.hypot(after.left - before.left, after.top - before.top);
-      expect(moved, `map moved ${moved.toFixed(1)}px of a 70px pin-start touch drag`).toBeGreaterThan(60);
+      const dx = after.left - before.left;
+      expect(home ? -dx : dx, `horizontal movement ${dx.toFixed(1)}px`).toBeGreaterThan(60);
+      expect(Math.abs(after.top - before.top)).toBeLessThan(5);
       expect(await page.evaluate(() => window.__savvyMap!.state().openId)).toBeNull();
       await expect(page.locator("#card")).toBeHidden();
     }
 
-    test("home: diagonal touch drag from a pin pans and does not select", async ({ page }) => {
+    test("home: touch drag from a pin pans ~70px and does not select", async ({ page }) => {
+      // At 1280 the fixed world bounds leave only 25.7px of horizontal travel.
+      // Use a mobile touch viewport with room for the full 70px gesture.
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.evaluate(() => window.__savvyMap!.applySize());
+      await page.locator('#vp').scrollIntoViewIfNeeded();
       await assertPinTouchPans(page, "houshanpi", true);
       await page.evaluate(() => window.__savvyMap!.goHome());
       await page.waitForTimeout(50);
@@ -100,7 +120,7 @@ test.describe("hero map pan", () => {
 
     test("Enter on a pin still selects after a touch pan", async ({ page }) => {
       const start = await emptyMapPoint(page);
-      await realTouchDrag(page, start, 70, 6);
+      await realTouchDrag(page, start, 70, 0);
       await expect(page.locator("#card")).toBeHidden();
       const pin = page.locator("[data-testid=metro-pin-houshanpi]");
       await pin.focus();
@@ -123,7 +143,7 @@ test.describe("hero map pan", () => {
     await page.locator("[data-testid=metro-vp]").scrollIntoViewIfNeeded();
 
     const before = await page.evaluate(() => window.__savvyMap!.state());
-    await dispatchMapPointerDrag(page, 4, 80, "touch");
+    await dispatchMapPointerDrag(page, 0, 80, "touch");
     const after = await page.evaluate(() => window.__savvyMap!.state());
     expect(after.camX).toBeCloseTo(before.camX, 1);
     expect(after.camY).toBeCloseTo(before.camY, 1);
@@ -167,7 +187,7 @@ test.describe("hero map pan", () => {
     expect(await page.locator("#vp").evaluate((el) => getComputedStyle(el).touchAction)).toBe("none");
 
     const before = await page.evaluate(() => window.__savvyMap!.state());
-    await dispatchMapPointerDrag(page, 8, 60, "touch");
+    await dispatchMapPointerDrag(page, 0, 60, "touch");
     const after = await page.evaluate(() => window.__savvyMap!.state());
     expect(after.camY).not.toBeCloseTo(before.camY, 1);
     expect(after.worldTransform).not.toBe(before.worldTransform);
@@ -178,7 +198,7 @@ test.describe("hero map pan", () => {
       const s = window.__savvyMap!.state();
       return { x: s.camX, y: s.camY, t: s.worldTransform };
     });
-    await dragMap(page, -100, -30);
+    await dragMap(page, -100, 0);
     await expect(page.locator("[data-testid=metro-reset]")).toHaveClass(/on/);
     const moved = await page.evaluate(() => window.__savvyMap!.state().worldTransform);
     expect(moved).not.toBe(home.t);
@@ -192,7 +212,7 @@ test.describe("hero map pan", () => {
   });
 
   test("selecting a station after a pan still flies the camera", async ({ page }) => {
-    await dragMap(page, 70, 20);
+    await dragMap(page, -70, 0);
     await clickPin(page, "arena");
     await waitForCardOpen(page);
     await expect(page.locator("#cardTitle")).toContainText("小巨蛋");
@@ -202,7 +222,7 @@ test.describe("hero map pan", () => {
   });
 
   test("a huge drag stays clamped in view", async ({ page }) => {
-    await dragMap(page, 2400, 1800);
+    await dragMap(page, 2400, 0);
     const st = await page.evaluate(() => {
       const s = window.__savvyMap!.state();
       const world = document.getElementById("world")!.getBoundingClientRect();

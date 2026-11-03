@@ -55,3 +55,60 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     expect(result.offenders, result.offenders.join("\n")).toEqual([]);
   });
 }
+
+for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+  test(`every station owns its hit center at ${viewport.width}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto('/?reduce=1');
+    await waitForMap(page);
+    await page.locator('#vp').scrollIntoViewIfNeeded();
+    await page.evaluate(() => document.fonts.ready);
+    const markers = page.locator('[data-testid^="metro-pin-"]');
+    expect(await markers.count()).toBeGreaterThan(0);
+    for (const marker of await markers.all()) {
+      await marker.scrollIntoViewIfNeeded();
+      const result = await marker.evaluate(el => {
+        const hit = el.querySelector('.hit')!;
+        const r = hit.getBoundingClientRect();
+        const top = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+        return {
+          expected: el.getAttribute('data-testid'),
+          actual: top?.closest('[data-testid^="metro-pin-"]')?.getAttribute('data-testid') ?? null,
+          covering: {
+            tag: top?.tagName,
+            classes: top?.getAttribute('class'),
+            testId: top?.getAttribute('data-testid'),
+            closestTestId: top?.closest('[data-testid]')?.getAttribute('data-testid'),
+          },
+        };
+      });
+      expect(result.actual, `${result.expected} hit center covered by ${JSON.stringify(result.covering)}`).toBe(result.expected);
+    }
+  });
+}
+
+for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+  test(`zhongshan upper hit edge selects its own station at ${viewport.width}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto('/?reduce=1');
+    await waitForMap(page);
+    const marker = page.getByTestId('metro-pin-zhongshan');
+    await marker.scrollIntoViewIfNeeded();
+    // WebKit rounds native mouse coordinates to integers. The old fractional
+    // exposed-point scan could land on 雙連 after that rounding.
+    const target = await marker.locator('.hit').evaluate(el => {
+      const r = el.getBoundingClientRect();
+      const x = Math.floor(r.x + r.width / 2 - 3), y = Math.floor(r.y + 4);
+      const top = document.elementFromPoint(x, y);
+      return { x, y, owner: top?.closest('[data-testid^="metro-pin-"]')?.getAttribute('data-testid'),
+        covering: top?.outerHTML };
+    });
+    expect(target.owner, `中山 upper hit edge covered by ${target.covering}`).toBe('metro-pin-zhongshan');
+    const hit = await page.getByTestId('metro-pin-shuanglian').locator('.hit').boundingBox();
+    expect(hit!.width).toBeGreaterThanOrEqual(44);
+    expect(hit!.height).toBeGreaterThanOrEqual(44);
+    await page.mouse.click(target.x, target.y);
+    await expect(page.locator('#card')).toBeVisible();
+    await expect(page.locator('#cardTitle')).toContainText('中山');
+  });
+}
