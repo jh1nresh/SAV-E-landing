@@ -10,7 +10,7 @@ const visibleArtworkHitTesting = `
 `;
 
 // Shared by the allowlist assertions and the deliberately occluded negative test.
-function checkLabelCharacters({ width, height, names }: { width: number; height: number; names: string[] }) {
+function checkLabelCharacters({ width, height, names, movePhoto = false }: { width: number; height: number; names: string[]; movePhoto?: boolean }) {
   const offenders: string[] = [];
   const describe = (el: Element | null) => el ? JSON.stringify({
     tag: el.tagName, id: el.id, classes: el.getAttribute("class"),
@@ -18,36 +18,49 @@ function checkLabelCharacters({ width, height, names }: { width: number; height:
     marker: el.closest(".pin")?.getAttribute("data-testid") ?? null,
   }) : "null";
   const checkLabel = (el: Element) => {
-    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      let offset = 0;
-      for (const char of node.textContent || "") {
-        const range = document.createRange();
-        range.setStart(node, offset);
-        offset += char.length;
-        range.setEnd(node, offset);
-        const rects = [...range.getClientRects()];
-        const context = `label:${el.textContent?.trim()} char:${JSON.stringify(char)} viewport:${width}x${height}`;
-        if (!rects.length) offenders.push(`${context} point:unavailable covering:unavailable (no glyph rect)`);
-        for (const r of rects) {
-          const points = [
-            { name: "centre", x: r.left + r.width / 2, y: r.top + r.height / 2 },
-            { name: "top-left", x: r.left + 1, y: r.top + 1 },
-            { name: "top-right", x: r.right - 1, y: r.top + 1 },
-            { name: "bottom-left", x: r.left + 1, y: r.bottom - 1 },
-            { name: "bottom-right", x: r.right - 1, y: r.bottom - 1 },
-          ];
-          for (const point of points) {
-            const top = document.elementFromPoint(point.x, point.y);
-            // DESIGN ruling /workspace/shared/design/2026-11-04-pr40-shuanglian-corner-ruling.md:
-            // ONLY corner points of 「連」 in 雙連 may touch 雙連's own pin/photo. Centre, any
-            // other covering element, and any 「雙」 point remain failures.
-            const isCorner = point.name !== "centre";
-            const ownShuanglianPin = !!top?.closest('[data-testid="metro-pin-shuanglian"]');
-            if (el.textContent?.trim() === "雙連" && char === "連" && isCorner && ownShuanglianPin) continue;
-            if (!top || !el.contains(top)) offenders.push(`${context} point:${point.name} (${point.x}, ${point.y}) covering:${describe(top)}`);
-          }
+    // QA method (a): divide the label content box evenly, identically in both engines.
+    const box = el.getBoundingClientRect();
+    const style = getComputedStyle(el);
+    const px = (value: string) => parseFloat(value) || 0;
+    const left = box.left + px(style.paddingLeft) + px(style.borderLeftWidth);
+    const right = box.right - px(style.paddingRight) - px(style.borderRightWidth);
+    const top = box.top + px(style.paddingTop) + px(style.borderTopWidth);
+    const bottom = box.bottom - px(style.paddingBottom) - px(style.borderBottomWidth);
+    const characters = [...(el.textContent?.trim() || "")];
+    if (!characters.length || right <= left || bottom <= top) throw new Error("Empty label content box");
+    const cellWidth = (right - left) / characters.length;
+    const cells = characters.map((char, index) => {
+      const cellLeft = left + index * cellWidth;
+      return { char, points: [
+        { name: "centre", x: cellLeft + cellWidth / 2, y: (top + bottom) / 2 },
+        { name: "top-left", x: cellLeft + 1, y: top + 1 },
+        { name: "top-right", x: cellLeft + cellWidth - 1, y: top + 1 },
+        { name: "bottom-left", x: cellLeft + 1, y: bottom - 1 },
+        { name: "bottom-right", x: cellLeft + cellWidth - 1, y: bottom - 1 },
+      ] };
+    });
+    if (movePhoto) {
+      const pin = document.querySelector<HTMLElement>('[data-testid="metro-pin-houshanpi"]')!;
+      const photo = pin.querySelector(".ph")!.getBoundingClientRect();
+      const target = cells[Math.floor(cells.length / 2)].points[0];
+      // Pin-layer positions are in viewport pixels; target the same cells checked below.
+      pin.style.left = `${(parseFloat(pin.style.left) || 0) + target.x - photo.left - photo.width / 2}px`;
+      pin.style.top = `${(parseFloat(pin.style.top) || 0) + target.y - photo.top - photo.height / 2}px`;
+    }
+    for (const { char, points } of cells) {
+      const context = `label:${el.textContent?.trim()} char:${JSON.stringify(char)} viewport:${width}x${height}`;
+      for (const point of points) {
+        if (point.x < box.left || point.x > box.right || point.y < box.top || point.y > box.bottom) {
+          throw new Error(`${context} point:${point.name} lies outside label box`);
         }
+        const top = document.elementFromPoint(point.x, point.y);
+        // DESIGN ruling /workspace/shared/design/2026-11-04-pr40-shuanglian-corner-ruling.md:
+        // ONLY corner points of 「連」 in 雙連 may touch 雙連's own pin/photo. Centre, any
+        // other covering element, and any 「雙」 point remain failures.
+        const isCorner = point.name !== "centre";
+        const ownShuanglianPin = !!top?.closest('[data-testid="metro-pin-shuanglian"]');
+        if (el.textContent?.trim() === "雙連" && char === "連" && isCorner && ownShuanglianPin) continue;
+        if (!top || !el.contains(top)) offenders.push(`${context} point:${point.name} (${point.x}, ${point.y}) covering:${describe(top)}`);
       }
     }
   };
@@ -135,7 +148,8 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     }, { width: viewport.width, height: viewport.height, acceptedPairs });
     result.offenders.push(...await page.evaluate(checkLabelCharacters, {
       ...viewport,
-      names: [...new Set(acceptedPairs.filter(pair => pair.width === viewport.width)
+      // 大橋頭 is isolated from neighbouring labels/photos; every point must hit it.
+      names: ["大橋頭", ...new Set(acceptedPairs.filter(pair => pair.width === viewport.width)
         .flatMap(pair => [pair.a, pair.b]).filter(key => key.startsWith("label:"))
         .map(key => key.slice("label:".length)))],
     }));
@@ -156,17 +170,8 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     const marker = page.getByTestId("metro-pin-houshanpi");
     const originalStyle = await marker.getAttribute("style");
     try {
-      await marker.evaluate(el => {
-        const label = [...document.querySelectorAll("#stdots text")]
-          .find(label => label.textContent?.trim() === "小巨蛋")!;
-        const target = label.getBoundingClientRect();
-        const photo = el.querySelector(".ph")!.getBoundingClientRect();
-        // Pin-layer positions are in viewport pixels.
-        const pin = el as HTMLElement;
-        pin.style.left = `${(parseFloat(pin.style.left) || 0) + target.left + target.width / 2 - photo.left - photo.width / 2}px`;
-        pin.style.top = `${(parseFloat(pin.style.top) || 0) + target.top + target.height / 2 - photo.top - photo.height / 2}px`;
-      });
-      const failures = await page.evaluate(checkLabelCharacters, { ...viewport, names: ["小巨蛋"] });
+      const failures = await page.evaluate(checkLabelCharacters, { ...viewport, names: ["小巨蛋"], movePhoto: true });
+      expect(failures.some(failure => failure.includes('"id":"mapcard"')), failures.join("\n")).toBe(false);
       expect(failures.some(failure => failure.includes("label:小巨蛋") &&
         failure.includes(`viewport:${viewport.width}x${viewport.height}`) &&
         failure.includes('"marker":"metro-pin-houshanpi"')), failures.join("\n")).toBe(true);
