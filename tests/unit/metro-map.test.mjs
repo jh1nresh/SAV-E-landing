@@ -5,7 +5,7 @@ import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { buildFoodStations, mergeFoodStations } from '../../scripts/metro-content.mjs';
 import { buildPublicMetro } from '../../scripts/build-metro.mjs';
-import { LINE_PATHS } from '../../scripts/metro-lines.mjs';
+import { LINE_PATHS, snapToLine } from '../../scripts/metro-lines.mjs';
 
 const root = resolve('.');
 const raw = JSON.parse(readFileSync('data/metro.json', 'utf8'));
@@ -72,4 +72,12 @@ test('map ids must be simple slugs', () => {
 test('map positions more than two units off their line fail the build', () => {
   const station = { ...base[0], map: { line: 'L_orange', at: [52, 32] } };
   assert.throws(() => mergeFoodStations([station]), /station 1 map.at is [\d.]+ units off L_orange/);
+});
+
+test('green line curve positions use a refined nearest point', () => {
+  const at = [182.61, 649.08];
+  const snapped = snapToLine('L_green', at);
+  assert.ok(Math.hypot(...snapped.map((v, i) => v - at[i])) < 0.1);
+  assert.doesNotThrow(() => mergeFoodStations([{ ...base[0], map: { line: 'L_green', at } }]));
+  assert.throws(() => mergeFoodStations([{ ...base[0], map: { line: 'L_green', at: [192.61, 649.08] } }]), /station 1 map.at is [\d.]+ units off L_green/);
 });

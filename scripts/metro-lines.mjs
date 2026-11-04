@@ -61,21 +61,44 @@ const CACHE = new Map();
 export function snapToLine(lineId, at) {
   const d = LINE_PATHS[lineId];
   if (!d) throw new Error(`Unknown metro line id: ${lineId}`);
-  let pts = CACHE.get(lineId);
-  if (!pts) {
-    pts = samplePath(d, 0.008);
-    CACHE.set(lineId, pts);
+  let curves = CACHE.get(lineId);
+  if (!curves) {
+    const numbers = d.match(/-?\d+(?:\.\d+)?/g).map(Number);
+    let current = numbers.splice(0, 2);
+    curves = [];
+    while (numbers.length) {
+      const curve = [current, numbers.splice(0, 2), numbers.splice(0, 2), numbers.splice(0, 2)];
+      curves.push(curve);
+      current = curve[3];
+    }
+    CACHE.set(lineId, curves);
   }
-  let best = pts[0];
+  let best;
   let bestD = Infinity;
-  for (const p of pts) {
-    const dx = p[0] - at[0];
-    const dy = p[1] - at[1];
-    const dist = dx * dx + dy * dy;
-    if (dist < bestD) {
-      bestD = dist;
-      best = p;
+  for (const curve of curves) {
+    const point = t => cubic(...curve, t);
+    const distance = t => {
+      const p = point(t);
+      return (p[0] - at[0]) ** 2 + (p[1] - at[1]) ** 2;
+    };
+    // Refine every sampled local minimum, including curve endpoints.
+    const steps = 125;
+    const distances = Array.from({ length: steps + 1 }, (_, i) => distance(i / steps));
+    for (let i = 0; i <= steps; i++) {
+      if ((i > 0 && distances[i] > distances[i - 1]) || (i < steps && distances[i] > distances[i + 1])) continue;
+      let lo = Math.max(0, (i - 1) / steps);
+      let hi = Math.min(1, (i + 1) / steps);
+      for (let iteration = 0; iteration < 50; iteration++) {
+        const left = lo + (hi - lo) / 3;
+        const right = hi - (hi - lo) / 3;
+        if (distance(left) < distance(right)) hi = right;
+        else lo = left;
+      }
+      for (const t of [i / steps, (lo + hi) / 2]) {
+        const dist = distance(t);
+        if (dist < bestD) { bestD = dist; best = point(t); }
+      }
     }
   }
-  return [Math.round(best[0] * 100) / 100, Math.round(best[1] * 100) / 100];
+  return best.map(value => Math.round(value * 100) / 100);
 }

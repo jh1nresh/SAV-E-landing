@@ -78,8 +78,8 @@ section.hero {
 .poster-world {
   position: absolute;
   left: 50%;
-  top: 50%;
-  width: min(calc(100cqw * 1000 / 800), calc(100cqh * 1000 / 660));
+  top: calc(50% + 20px);
+  width: min(calc(100cqw * 1000 / 800), calc(100cqh * 1000 / 700));
   aspect-ratio: 1000 / 940;
   transform: translate(-44.6%, -35.6383%);
 }
@@ -1161,7 +1161,7 @@ body.rm .pin.new .gr {
   }
 
   .poster-world {
-    width: min(calc(100cqw * 1000 / 800), calc(100cqh * 1000 / 660));
+    width: min(calc(100cqw * 1000 / 800), calc(100cqh * 1000 / 700));
     transform: translate(-44.6%, -35.6383%);
   }
 

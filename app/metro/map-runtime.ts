@@ -1,3 +1,4 @@
+import { stationLabelPosition } from "./map-label";
 import {
   PRICE_PENDING_LABEL,
   countBadge,
@@ -283,11 +284,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const img = list[0]?.image ? publicImage(list[0].image) : "";
       const nw = !soon && stationIsNew(storesOf(s.id), clock);
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
-      const side = s.mapPos.label;
-      const [dx, dy] = s.mapPos.labelOffset ?? [0, 0];
-      const lx = (side === "right" ? x + 14 : side === "left" ? x - 14 : x) + dx;
-      const ly = (side ? y + 5 : y + 27) + dy;
-      caps += `<text x="${lx}" y="${ly}" text-anchor="${side === "right" ? "start" : side === "left" ? "end" : "middle"}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
+      const { x: lx, y: ly, anchor } = stationLabelPosition(s.mapPos);
+      caps += `<text x="${lx}" y="${ly}" text-anchor="${anchor}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
       el.type = "button";
       el.className = `pin ${soon ? "soon " : ""}${nw ? "new " : ""}${!soon && !img ? "nophoto" : ""}${!soon && !list.length ? " content-only" : ""}`;
