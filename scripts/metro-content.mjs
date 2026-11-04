@@ -1,7 +1,7 @@
 /** Content adapter for the existing Metro public-payload build. Never fetch remote content. */
 import { readFileSync, readdirSync, existsSync, realpathSync, mkdirSync, copyFileSync } from 'node:fs';
 import { resolve, dirname, relative } from 'node:path';
-import { LINE_PATHS } from './metro-lines.mjs';
+import { LINE_PATHS, snapToLine } from './metro-lines.mjs';
 import { isCalendarDate } from '../lib/metro-logic.mjs';
 
 export function stripInternal(value) {
@@ -14,8 +14,12 @@ const optionalText = (value) => value == null || typeof value === 'string';
 const error = (message) => { throw new Error(`metro content: ${message}`); };
 export const LINE_IDS = new Set(Object.keys(LINE_PATHS));
 export function validateStationMap(s) {
+  if (s.map_id != null && (typeof s.map_id !== 'string' || !/^[a-z0-9-]+$/.test(s.map_id))) error(`station ${s.n} map_id must be a simple slug`);
   if (!s.map || !LINE_IDS.has(s.map.line) || !Array.isArray(s.map.at) ||
       s.map.at.length !== 2 || !s.map.at.every(Number.isFinite)) error(`station ${s.n} missing map position`);
+  const snapped = snapToLine(s.map.line, s.map.at);
+  const distance = Math.hypot(...snapped.map((v, i) => v - s.map.at[i]));
+  if (distance > 2) error(`station ${s.n} map.at is ${distance.toFixed(2)} units off ${s.map.line}`);
   if (s.map.label != null && !['left', 'right'].includes(s.map.label)) error(`station ${s.n} map.label must be left | right`);
   if (s.map.labelOffset != null && !(Array.isArray(s.map.labelOffset) && s.map.labelOffset.length === 2 &&
       s.map.labelOffset.every(Number.isFinite))) error(`station ${s.n} map.labelOffset must be [dx, dy]`);

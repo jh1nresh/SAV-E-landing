@@ -37,6 +37,8 @@ for (const s of noShop) {
     await waitForCardOpen(page);
     await expect(page.locator("#card .soonbody")).not.toBeEmpty();
     await expect(page.locator("#cardTitle")).toContainText(s.name);
+    await expect(page.locator("#card")).not.toContainText("共 0 間");
+    await expect(marker).not.toHaveAttribute("aria-label", /共 0 間/);
     const link = page.getByTestId(`metro-food-link-${s.id}`);
     await expect(link).toBeVisible();
     await expect(link).toHaveAttribute("href", `/metro/${s.slug}`);
@@ -121,5 +123,28 @@ for (const viewport of [{ width: 1280, height: 720 }, { width: 390, height: 844 
       }));
     });
     for (const photoWins of overlaps) expect(photoWins).toBe(true);
+  });
+}
+
+
+for (const viewport of [{ width: 390, height: 844 }, { width: 1280, height: 720 }]) {
+  test(`no-JS poster contains every station marker at ${viewport.width}`, async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false, viewport });
+    try {
+      const page = await context.newPage();
+      await page.goto('/');
+      const poster = page.locator('.poster-vp');
+      await poster.scrollIntoViewIfNeeded();
+      const frame = (await poster.boundingBox())!;
+      await expect(page.locator('.poster-pins [data-station="士林"]')).toHaveCount(1);
+      await expect(page.locator('.poster-pins [data-station="大橋頭"]')).toHaveCount(1);
+      for (const station of metro.stations) {
+        const box = (await page.getByTestId(`metro-poster-marker-${station.id}`).boundingBox())!;
+        expect(box.x, station.name).toBeGreaterThanOrEqual(frame.x);
+        expect(box.y, station.name).toBeGreaterThanOrEqual(frame.y);
+        expect(box.x + box.width, station.name).toBeLessThanOrEqual(frame.x + frame.width);
+        expect(box.y + box.height, station.name).toBeLessThanOrEqual(frame.y + frame.height);
+      }
+    } finally { await context.close(); }
   });
 }

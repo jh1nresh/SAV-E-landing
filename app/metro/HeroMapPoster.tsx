@@ -40,7 +40,7 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
                   const [x, y] = s.mapPos.snapped ?? s.mapPos.at;
                   const image = data.stores.find(store => store.stationId === s.id)?.image;
                   const soon = s.status === "coming_soon";
-                  return <g key={s.id}>
+                  return <g key={s.id} data-testid={`metro-poster-marker-${s.id}`} data-station={s.name}>
                     <circle cx={x} cy={y} r="7.5" fill="#fff9eb" stroke="#2f2e23" strokeWidth="2.6" />
                     <text x={x} y={y + 27} textAnchor="middle" fontFamily="Iansui" fontSize="15" fill="#2f2e23" stroke="#fff9eb" strokeWidth="4.5" paintOrder="stroke">{s.name}</text>
                     <path d={`M${x-7} ${y-13} L${x} ${y} L${x+7} ${y-13}`} fill="#fff9eb" stroke="#2f2e23" strokeWidth="2" />

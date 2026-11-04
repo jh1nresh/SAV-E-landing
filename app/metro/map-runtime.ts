@@ -297,9 +297,9 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         "aria-label",
         soon
           ? `${s.name}，即將更新`
-          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}，共 ${countLabel(list)}${nw ? "，新增" : ""}`,
+          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}${list.length ? `，共 ${countLabel(list)}` : ""}${nw ? "，新增" : ""}`,
       );
-      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${img}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${countBadge(list)}`}</span></span>`;
+      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${escapeHtml(img)}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${list.length ? countBadge(list) : ""}`}</span></span>`;
       layer.appendChild(el);
       bindImgFallback(el);
       el.addEventListener("click", (e) => {
@@ -363,7 +363,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const img = publicImage(s.image ?? "");
     return `<article class="fc"><div class="ph">${
       img
-        ? `<img src="${img}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
+        ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
     }${isNewStore(s, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
 <div class="bd"><h4>${escapeHtml(s.name)}</h4>${s.dish ? `<p class="dish">${escapeHtml(s.dish)}</p>` : ""}<div class="meta">${price(s)}${s.area ? `<span>${escapeHtml(s.area)}</span>` : ""}</div>${
@@ -385,7 +385,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     if (!list.length) {
       // Content-only station: no hero stores yet, so point at its food page instead of an empty card.
       cmorph.style.backgroundImage = "none";
-      cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${countLabel(list)}</span></div><div class="soonbody"><p><a href="/metro/${escapeHtml(s.slug ?? "")}" data-testid="metro-food-link-${escapeHtml(s.id)}">看${escapeHtml(s.name)}站美食清單 →</a></p></div>`;
+      cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")}</span></div><div class="soonbody"><p><a href="/metro/${escapeHtml(s.slug ?? "")}" data-testid="metro-food-link-${escapeHtml(s.id)}">看${escapeHtml(s.name)}站美食清單 →</a></p></div>`;
       return;
     }
     const firstImg = list[0]?.image ? publicImage(list[0].image) : "";
@@ -669,16 +669,29 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   function renderStrip() {
     const order = stations.slice().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
-    strip.innerHTML = order
-      .map((s) => {
-        const soon = s.status === "coming_soon";
-        const nw = !soon && stationIsNew(storesOf(s.id), clock);
-        return `<button class="tab ${soon ? "soon" : ""}" role="tab" aria-selected="false" data-id="${s.id}" data-testid="metro-tab-${s.id}">${escapeHtml(s.name)}${nw ? '<span class="newtag">NEW</span>' : ""}<i>${soon ? "即將更新" : formatMd(s.updatedAt ?? "")}</i></button>`;
-      })
-      .join("");
-    strip.querySelectorAll<HTMLButtonElement>(".tab").forEach((b) =>
-      b.addEventListener("click", () => select(b.dataset.id!)),
-    );
+    strip.replaceChildren(...order.map((s) => {
+      const soon = s.status === "coming_soon";
+      const nw = !soon && stationIsNew(storesOf(s.id), clock);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `tab ${soon ? "soon" : ""}`;
+      button.setAttribute("role", "tab");
+      button.setAttribute("aria-selected", "false");
+      button.dataset.id = s.id;
+      button.setAttribute("data-testid", `metro-tab-${s.id}`);
+      button.textContent = s.name;
+      if (nw) {
+        const badge = document.createElement("span");
+        badge.className = "newtag";
+        badge.textContent = "NEW";
+        button.append(badge);
+      }
+      const date = document.createElement("i");
+      date.textContent = soon ? "即將更新" : formatMd(s.updatedAt ?? "");
+      button.append(date);
+      button.addEventListener("click", () => select(s.id));
+      return button;
+    }));
   }
 
   function syncTabs() {

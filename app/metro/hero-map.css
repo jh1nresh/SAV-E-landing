@@ -79,9 +79,9 @@ section.hero {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: min(calc(100cqw * 1000 / 630), calc(100cqh * 1000 / 440));
+  width: min(calc(100cqw * 1000 / 800), calc(100cqh * 1000 / 660));
   aspect-ratio: 1000 / 940;
-  transform: translate(-47.2%, -36.70213%);
+  transform: translate(-44.6%, -35.6383%);
 }
 .poster-world svg { display: block; width: 100%; height: 100%; }
 .poster-world > div, .poster-pins { position: absolute; inset: 0; }
@@ -1161,8 +1161,8 @@ body.rm .pin.new .gr {
   }
 
   .poster-world {
-    width: calc(100cqw * 1000 / 580);
-    transform: translate(-47.5%, -42.34043%);
+    width: min(calc(100cqw * 1000 / 800), calc(100cqh * 1000 / 660));
+    transform: translate(-44.6%, -35.6383%);
   }
 
   .vp,

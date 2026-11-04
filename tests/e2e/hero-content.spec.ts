@@ -53,9 +53,18 @@ test.describe("hero content and motion", () => {
 
     for (const st of metro.stations.filter((x) => x.status === "live")) {
       const list = metro.stores.filter((x) => x.stationId === st.id);
-      await expect(page.locator(`[data-testid=metro-pin-${st.id}]`)).toHaveAttribute("aria-label", new RegExp(`共 ${countLabel(list).replace(/[()（）]/g, "\\$&")}`));
+      const marker = page.locator(`[data-testid=metro-pin-${st.id}]`);
+      if (list.length) {
+        await expect(marker).toHaveAttribute("aria-label", new RegExp(`共 ${countLabel(list).replace(/[()（）]/g, "\\$&")}`));
+      } else {
+        await expect(marker).not.toHaveAttribute("aria-label", /共 0 間/);
+      }
       await openStation(page, st.id);
-      await expect(page.locator("#card .ph-head .upd")).toContainText(`共 ${countLabel(list)}`);
+      if (list.length) {
+        await expect(page.locator("#card .ph-head .upd")).toContainText(`共 ${countLabel(list)}`);
+      } else {
+        await expect(page.locator("#card")).not.toContainText("共 0 間");
+      }
       for (const [i, store] of list.entries()) {
         if (i > 0) await page.locator("#card .thumbs button").nth(i).click();
         await expect(page.locator("#card .fc h4")).toHaveText(store.name);

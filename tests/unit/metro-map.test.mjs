@@ -61,3 +61,15 @@ test('label offsets require two finite numbers', () => {
     assert.throws(() => mergeFoodStations([{ ...base[0], map: { ...base[0].map, labelOffset } }]), /map.labelOffset must be \[dx, dy\]/);
   }
 });
+
+
+test('map ids must be simple slugs', () => {
+  for (const map_id of ['bad"><img', 'Upper', 'a b', '', 123]) {
+    assert.throws(() => mergeFoodStations([{ ...base[0], map_id }]), /station 1 map_id must be a simple slug/);
+  }
+});
+
+test('map positions more than two units off their line fail the build', () => {
+  const station = { ...base[0], map: { line: 'L_orange', at: [52, 32] } };
+  assert.throws(() => mergeFoodStations([station]), /station 1 map.at is [\d.]+ units off L_orange/);
+});
