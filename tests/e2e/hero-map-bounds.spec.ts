@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
-import metro from "../../app/metro/metro.public.json";
+import { getPublicMetroData } from "../../lib/metro";
+const metro = getPublicMetroData();
 
 const sizes = [[1280, 800], [1440, 900], [390, 844], [375, 667]];
 

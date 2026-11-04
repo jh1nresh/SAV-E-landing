@@ -8,6 +8,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { isAllowedStoreSource } from "./source-links.mjs";
 export { isAllowedSourceUrl } from "./source-links.mjs";
+import { articleMapStores } from "../lib/metro-articles.mjs";
 import { STORE_KINDS } from "../lib/metro-logic.mjs";
 import { buildFoodStations, validateStationMap } from "./metro-content.mjs";
 import { snapToLine } from "./metro-lines.mjs";
@@ -226,6 +227,7 @@ function main() {
     const foodStations = buildFoodStations(root);
     const publicData = buildPublicMetro(raw, foodStations);
     publicData.foodStations = foodStations;
+    publicData.mapStores = articleMapStores(foodStations);
     mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, `${JSON.stringify(publicData, null, 2)}\n`, "utf8");
     console.log(

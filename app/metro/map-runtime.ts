@@ -1,9 +1,10 @@
-import { stationLabelPosition } from "./map-label";
+import { stationLabelPosition, layoutPhotoPins } from "./map-label";
 import {
   PRICE_PENDING_LABEL,
   countBadge,
   countLabel,
   footNote,
+  foodShopRows,
   formatMd,
   imageAlt,
   isNewStore,
@@ -297,7 +298,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
           ? `${s.name}，即將更新`
           : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}${list.length ? `，共 ${countLabel(list)}` : ""}${nw ? "，新增" : ""}`,
       );
-      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${escapeHtml(img)}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${list.length ? countBadge(list) : ""}`}</span></span>`;
+      el.innerHTML = `<svg class="pin-leader" aria-hidden="true"><line /></svg><span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${escapeHtml(img)}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${list.length ? countBadge(list) : ""}`}</span></span>`;
       layer.appendChild(el);
       bindImgFallback(el);
       el.addEventListener("click", (e) => {
@@ -358,6 +359,11 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }`;
   };
   const fcard = (s: MetroStore) => {
+    if (s.article) {
+      const rows = foodShopRows(s.article).map(([label, value]) =>
+        `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
+      return `<article class="fc article-fc"><div class="ph"><img src="${escapeHtml(publicImage(s.image ?? ""))}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async">${isNewStore(s, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div><div class="bd"><h4>${escapeHtml(s.name)}</h4><dl class="article-details">${rows}</dl></div>${s.sourcePosts.length ? chips(s.sourcePosts) : ""}</article>`;
+    }
     const img = publicImage(s.image ?? "");
     return `<article class="fc"><div class="ph">${
       img
@@ -395,8 +401,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
      (x, i) =>
        `<button type="button" data-i="${i}" aria-label="${escapeHtml(x.name)}" aria-current="${i === 0}" style="${x.image ? `background-image:url(${publicImage(x.image)})` : ""}"></button>`,
    )
-    .join("")}<span class="more">看全部 ${countLabel(list)}</span></div>
- <div class="cfoot">${escapeHtml(footNote(list[0]))}</div>`;
+    .join("")}<span class="more">共 ${countLabel(list)}</span></div>
+ <div class="cfoot">${escapeHtml(footNote(list[0]))}</div>${s.slug ? `<a class="article-link" href="/metro/${escapeHtml(s.slug)}" data-testid="metro-food-link-${escapeHtml(s.id)}">看${escapeHtml(s.name)}站完整美食清單 →</a>` : ""}`;
     bindImgFallback(cbody);
     cbody.querySelectorAll<HTMLButtonElement>(".thumbs button").forEach((b) =>
       b.addEventListener("click", () => {
@@ -415,6 +421,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
             const foot = cbody.querySelector(".cfoot");
             if (foot) foot.textContent = footNote(list[i]);
             bindImgFallback(slot);
+            cbody.scrollTop = 0;
             sizeCard();
             render();
             const n = slot.firstElementChild;
@@ -589,12 +596,23 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const cy = cam.y.x;
     const worldTransform = `translate3d(${W / 2 - (cx - WB.x) * s}px,${H / 2 - (cy - WB.y) * s}px,0) scale(${s / R})`;
     world.style.transform = worldTransform;
+    const labels = [...(stdots?.querySelectorAll<SVGGraphicsElement>("text") ?? [])].map(label => {
+      const b = label.getBBox();
+      return { x: (b.x - cx) * s + W / 2 - 3, y: (b.y - cy) * s + H / 2 - 3,
+        width: b.width * s + 6, height: b.height * s + 6 };
+    });
+    const positions = layoutPhotoPins(pins.map(p => ({ id: p.id, x: (p.x - cx) * s + W / 2,
+      y: (p.y - cy) * s + H / 2, diameter: 44 + 16 * p.b.x })), labels, W, H);
     pins.forEach((p) => {
       const sx = (p.x - cx) * s + W / 2;
       const sy = (p.y - cy) * s + H / 2;
-      p.sx = sx;
-      p.sy = sy;
-      p.el.style.transform = `translate3d(${sx.toFixed(1)}px,${sy.toFixed(1)}px,0)`;
+      const position = positions.get(p.id)!;
+      p.sx = position.x;
+      p.sy = position.y;
+      const leader = p.el.querySelector("line")!;
+      leader.setAttribute("x2", (sx - position.x).toFixed(1));
+      leader.setAttribute("y2", (sy - position.y).toFixed(1));
+      p.el.style.transform = `translate3d(${position.x.toFixed(1)}px,${position.y.toFixed(1)}px,0)`;
       p.el.style.zIndex = String(p.el.classList.contains("content-only") ? 1 : Math.round(sy) + 1000);
       const b = p.b.x;
       const d = 44 + 16 * b;

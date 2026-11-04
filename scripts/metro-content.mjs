@@ -2,6 +2,7 @@
 import { readFileSync, readdirSync, existsSync, realpathSync, mkdirSync, copyFileSync } from 'node:fs';
 import { resolve, dirname, relative } from 'node:path';
 import { LINE_PATHS, snapToLine } from './metro-lines.mjs';
+import { articleMapStores } from '../lib/metro-articles.mjs';
 import { isCalendarDate } from '../lib/metro-logic.mjs';
 
 export function stripInternal(value) {
@@ -86,8 +87,11 @@ export function buildFoodStations(root) {
     }));
     // Publish display fields only; research URLs and extraction metadata stay in content/.
     const fields = ['key', 'name', 'dish', 'price', 'price_source', 'address', 'exit_walk', 'hours'];
-    return { n: s.n, date: s.date, station: s.station, slug: s.slug, map: s.map, ...(s.map_id != null ? { map_id: s.map_id } : {}), tagline: s.tagline ?? null,
+    const station = { n: s.n, date: s.date, station: s.station, slug: s.slug, map: s.map, ...(s.map_id != null ? { map_id: s.map_id } : {}), tagline: s.tagline ?? null,
       shops: (s.shops ?? []).map(shop => Object.fromEntries(fields.map(key => [key, shop[key] ?? null]))),
       images, posts: s.posts ?? {} };
+    // Validate the same projection consumed by the hero, before any site can ship.
+    articleMapStores([station]);
+    return station;
   });
 }

@@ -66,8 +66,10 @@ export async function heroBadgeBox(page: Page) {
 export async function dispatchSwipe(page: Page, dy: number) {
   const box = await page.locator("#card").boundingBox();
   if (!box) throw new Error("card not visible");
-  const x = box.x + box.width / 2;
-  const y = box.y + 28;
+  const grab = await page.locator("#card .grab").boundingBox();
+  // Tall article content scrolls natively; drag the actual dismissal handle.
+  const x = grab ? grab.x + grab.width / 2 : box.x + box.width / 2;
+  const y = grab ? grab.y + grab.height / 2 : box.y + 28;
   await page.mouse.move(x, y);
   await page.mouse.down();
   await page.mouse.move(x, y + dy, { steps: 10 });
