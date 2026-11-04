@@ -544,9 +544,10 @@ section.s-cta {
 /* Keep 雙連's photo target clear of 中山, including integer pointer coordinates. */
 .pin[data-id="shuanglian"] .hit {
   left: -22px;
-  top: -46px;
+  /* 1px of slack upward (away from 中山): WebKit measures fractional layouts at 43.99997px. */
+  top: -47px;
   width: 44px;
-  height: 44px;
+  height: 45px;
 }
 
 .pin:focus-visible {
