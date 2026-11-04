@@ -1,3 +1,4 @@
+import { stationLabelPosition } from "./map-label";
 import {
   PRICE_PENDING_LABEL,
   countBadge,
@@ -228,8 +229,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     W = w;
     H = h;
     mobile = W < 520;
-    s0 = mobile ? W / 580 : Math.min(W / 630, H / 440);
-    home = clampCam(mobile ? 325 : 322, mobile ? 228 : 175, s0);
+    s0 = mobile ? W / 760 : Math.min(W / 700, H / 660);
+    home = clampCam(mobile ? 278 : 296, mobile ? 150 : 165, s0);
     return true;
   };
 
@@ -283,19 +284,20 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const img = list[0]?.image ? publicImage(list[0].image) : "";
       const nw = !soon && stationIsNew(storesOf(s.id), clock);
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
-      caps += `<text x="${x}" y="${y + 27}" text-anchor="middle" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
+      const { x: lx, y: ly, anchor } = stationLabelPosition(s.mapPos);
+      caps += `<text x="${lx}" y="${ly}" text-anchor="${anchor}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
       el.type = "button";
-      el.className = `pin ${soon ? "soon " : ""}${nw ? "new " : ""}${!soon && !img ? "nophoto" : ""}`;
+      el.className = `pin ${soon ? "soon " : ""}${nw ? "new " : ""}${!soon && !img ? "nophoto" : ""}${!soon && !list.length ? " content-only" : ""}`;
       el.dataset.id = s.id;
       el.setAttribute("data-testid", `metro-pin-${s.id}`);
       el.setAttribute(
         "aria-label",
         soon
           ? `${s.name}，即將更新`
-          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}，共 ${countLabel(list)}${nw ? "，新增" : ""}`,
+          : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}${list.length ? `，共 ${countLabel(list)}` : ""}${nw ? "，新增" : ""}`,
       );
-      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${img}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${countBadge(list)}`}</span></span>`;
+      el.innerHTML = `<span class="gr"></span><span class="hit"></span><span class="pin-in"><span class="ph">${soon ? "?" : img ? `<img src="${escapeHtml(img)}" alt="" width="60" height="60" loading="lazy" decoding="async" fetchpriority="low">` : ""}</span><i class="tl"></i>${nw ? '<span class="nwd"></span>' : ""}<span class="lab">${soon ? "即將更新" : `${nw ? "<em>NEW</em>" : ""}${list.length ? countBadge(list) : ""}`}</span></span>`;
       layer.appendChild(el);
       bindImgFallback(el);
       el.addEventListener("click", (e) => {
@@ -323,7 +325,9 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       pinById[s.id] = p;
       return p;
     });
-    if (stdots) stdots.innerHTML = dots + caps;
+    if (stdots) {
+      stdots.innerHTML = dots + caps;
+    }
   }
 
   let openId: string | null = null;
@@ -357,7 +361,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const img = publicImage(s.image ?? "");
     return `<article class="fc"><div class="ph">${
       img
-        ? `<img src="${img}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
+        ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
     }${isNewStore(s, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
 <div class="bd"><h4>${escapeHtml(s.name)}</h4>${s.dish ? `<p class="dish">${escapeHtml(s.dish)}</p>` : ""}<div class="meta">${price(s)}${s.area ? `<span>${escapeHtml(s.area)}</span>` : ""}</div>${
@@ -374,6 +378,12 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     if (s.status === "coming_soon") {
       cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站</small></h3><span class="soontag">即將更新</span></div><div class="soonbody"><svg viewBox="-20 -46 40 50" width="34" height="42" fill="none" stroke="#8d857a" stroke-width="2.4" stroke-dasharray="3.5 4.5" stroke-linecap="round"><path d="M0 0 C-5 -9 -16 -19 -16 -31 a16 16 0 1 1 32 0 C16 -19 5 -9 0 0Z"/></svg><p><b>這一站的店家資料準備中。</b>核對完成後，會更新到這張地圖上。</p></div>`;
       cmorph.style.backgroundImage = "none";
+      return;
+    }
+    if (!list.length) {
+      // Content-only station: no hero stores yet, so point at its food page instead of an empty card.
+      cmorph.style.backgroundImage = "none";
+      cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")}</span></div><div class="soonbody"><p><a href="/metro/${escapeHtml(s.slug ?? "")}" data-testid="metro-food-link-${escapeHtml(s.id)}">看${escapeHtml(s.name)}站美食清單 →</a></p></div>`;
       return;
     }
     const firstImg = list[0]?.image ? publicImage(list[0].image) : "";
@@ -585,7 +595,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       p.sx = sx;
       p.sy = sy;
       p.el.style.transform = `translate3d(${sx.toFixed(1)}px,${sy.toFixed(1)}px,0)`;
-      p.el.style.zIndex = String(Math.round(sy) + 1000);
+      p.el.style.zIndex = String(p.el.classList.contains("content-only") ? 1 : Math.round(sy) + 1000);
       const b = p.b.x;
       const d = 44 + 16 * b;
       p.inn.style.setProperty("--d", `${d.toFixed(1)}px`);
@@ -657,16 +667,29 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   function renderStrip() {
     const order = stations.slice().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
-    strip.innerHTML = order
-      .map((s) => {
-        const soon = s.status === "coming_soon";
-        const nw = !soon && stationIsNew(storesOf(s.id), clock);
-        return `<button class="tab ${soon ? "soon" : ""}" role="tab" aria-selected="false" data-id="${s.id}" data-testid="metro-tab-${s.id}">${escapeHtml(s.name)}${nw ? '<span class="newtag">NEW</span>' : ""}<i>${soon ? "即將更新" : formatMd(s.updatedAt ?? "")}</i></button>`;
-      })
-      .join("");
-    strip.querySelectorAll<HTMLButtonElement>(".tab").forEach((b) =>
-      b.addEventListener("click", () => select(b.dataset.id!)),
-    );
+    strip.replaceChildren(...order.map((s) => {
+      const soon = s.status === "coming_soon";
+      const nw = !soon && stationIsNew(storesOf(s.id), clock);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `tab ${soon ? "soon" : ""}`;
+      button.setAttribute("role", "tab");
+      button.setAttribute("aria-selected", "false");
+      button.dataset.id = s.id;
+      button.setAttribute("data-testid", `metro-tab-${s.id}`);
+      button.textContent = s.name;
+      if (nw) {
+        const badge = document.createElement("span");
+        badge.className = "newtag";
+        badge.textContent = "NEW";
+        button.append(badge);
+      }
+      const date = document.createElement("i");
+      date.textContent = soon ? "即將更新" : formatMd(s.updatedAt ?? "");
+      button.append(date);
+      button.addEventListener("click", () => select(s.id));
+      return button;
+    }));
   }
 
   function syncTabs() {

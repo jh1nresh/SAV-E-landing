@@ -1,3 +1,4 @@
+import { stationLabelPosition } from "./map-label";
 import { formatMd, latestUpdatedAt, stampLevel, stampNote, type MetroData } from "../../lib/metro";
 import { useSiteLang } from "../SiteChrome";
 import { MapPaper } from "./MapPaper";
@@ -38,13 +39,14 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
               <svg viewBox="-150 -170 1000 940" className="poster-pins">
                 {stations.map(s => {
                   const [x, y] = s.mapPos.snapped ?? s.mapPos.at;
+                  const label = stationLabelPosition(s.mapPos, "poster");
                   const image = data.stores.find(store => store.stationId === s.id)?.image;
                   const soon = s.status === "coming_soon";
-                  return <g key={s.id}>
+                  return <g key={s.id} data-testid={`metro-poster-marker-${s.id}`} data-station={s.name}>
                     <circle cx={x} cy={y} r="7.5" fill="#fff9eb" stroke="#2f2e23" strokeWidth="2.6" />
-                    <text x={x} y={y + 27} textAnchor="middle" fontFamily="Iansui" fontSize="15" fill="#2f2e23" stroke="#fff9eb" strokeWidth="4.5" paintOrder="stroke">{s.name}</text>
+                    <text data-testid={`metro-poster-label-${s.id}`} x={label.x} y={label.y} textAnchor={label.anchor} fontFamily="Iansui" fontSize="15" fill="#2f2e23" stroke="#fff9eb" strokeWidth="4.5" paintOrder="stroke">{s.name}</text>
                     <path d={`M${x-7} ${y-13} L${x} ${y} L${x+7} ${y-13}`} fill="#fff9eb" stroke="#2f2e23" strokeWidth="2" />
-                    <circle cx={x} cy={y-36} r="25" fill="#fff9eb" stroke={soon ? "#8d857a" : "#2f2e23"} strokeWidth="2" />
+                    <circle data-testid={`metro-poster-pin-${s.id}`} cx={x} cy={y-36} r="25" fill="#fff9eb" stroke={soon ? "#8d857a" : "#2f2e23"} strokeWidth="2" />
                     {image ? <>
                       <clipPath id={`poster-photo-${s.id}`}><circle cx={x} cy={y-36} r="21" /></clipPath>
                       <image href={image} x={x-21} y={y-57} width="42" height="42" clipPath={`url(#poster-photo-${s.id})`} />
@@ -53,8 +55,10 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
                 })}
               </svg>
             </div>
-            <div className="hud hint">點一站，看吃什麼</div>
-            <div className="hud cart"><b>Taipei</b><span>捷運口袋名單 · 示意位置</span></div>
+            <div className="hud map-caption-group">
+              <div className="hud cart" data-testid="metro-poster-title"><b>Taipei</b><span>捷運口袋名單 · 示意位置</span></div>
+              <div className="hud hint">點一站，看吃什麼</div>
+            </div>
           </div>
         </div>
       </div>

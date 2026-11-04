@@ -4,6 +4,18 @@
     "date": "2026-10-21",
     "station": "小巨蛋",
     "slug": "xiaojudan",
+    "map": {
+      "line": "L_green",
+      "at": [
+        440,
+        142
+      ],
+      "labelOffset": [
+        -14,
+        0
+      ]
+    },
+    "map_id": "arena",
     "tagline": "天氣一轉涼，下班走出小巨蛋站，最想要的就是一碗熱湯。這 4 間都在站外走路 10 分鐘內，沒有連鎖名店，是附近上班族和老鄰居會鑽進巷子吃的暖胃小店。先收藏，冷天直接打開地圖找。",
     "shops": [
       {
@@ -114,6 +126,14 @@
     "date": "2026-10-22",
     "station": "饒河/松山",
     "slug": "raohe-songshan",
+    "map": {
+      "line": "L_green",
+      "at": [
+        598,
+        86
+      ]
+    },
+    "map_id": "songshan",
     "tagline": "晚上風一涼，從松山站 5 號出口走出來，大約 1 分鐘就到饒河夜市入口。這 4 攤都是現點現做的熱食，避開胡椒餅那條排隊人龍，先收藏，下次逛夜市直接打開地圖照著吃。",
     "shops": [
       {
@@ -216,6 +236,19 @@
     "date": "2026-10-23",
     "station": "雙連",
     "slug": "shuanglian",
+    "map": {
+      "line": "L_red",
+      "at": [
+        128,
+        116
+      ],
+      "label": "left",
+      "labelOffset": [
+        0,
+        12
+      ]
+    },
+    "map_id": "shuanglian",
     "tagline": "常搭雙連站的人先收👇",
     "shops": [
       {
@@ -323,6 +356,14 @@
     "date": "2026-10-24",
     "station": "東門",
     "slug": "dongmen",
+    "map": {
+      "line": "L_red",
+      "at": [
+        300,
+        302
+      ]
+    },
+    "map_id": "dongmen",
     "tagline": "常搭東門站的人先收👇",
     "shops": [
       {
@@ -462,6 +503,14 @@
     "date": "2026-10-25",
     "station": "後山埤",
     "slug": "houshanpi",
+    "map": {
+      "line": "L_blue",
+      "at": [
+        500,
+        268
+      ]
+    },
+    "map_id": "houshanpi",
     "tagline": "常搭後山埤站的人先收👇",
     "shops": [
       {
@@ -580,6 +629,18 @@
     "date": "2026-10-26",
     "station": "士林",
     "slug": "shilin",
+    "map": {
+      "line": "L_red",
+      "at": [
+        16,
+        -59
+      ],
+      "label": "right",
+      "posterLabelOffset": [
+        20,
+        0
+      ]
+    },
     "tagline": "一個人來也好點，5 間我會收",
     "shops": [
       {
@@ -708,6 +769,14 @@
     "date": "2026-10-27",
     "station": "公館",
     "slug": "gongguan",
+    "map": {
+      "line": "L_green",
+      "at": [
+        196,
+        440
+      ]
+    },
+    "map_id": "gongguan",
     "tagline": "常搭公館站的人，這 5 間先收",
     "shops": [
       {
@@ -843,6 +912,18 @@
     "date": "2026-10-28",
     "station": "南京復興",
     "slug": "nanjing-fuxing",
+    "map": {
+      "line": "L_green",
+      "at": [
+        372,
+        166
+      ],
+      "label": "left",
+      "posterLabelOffset": [
+        -22,
+        0
+      ]
+    },
     "tagline": "常搭南京復興站的人，這 5 間先收",
     "shops": [
       {
@@ -962,6 +1043,18 @@
     "date": "2026-10-29",
     "station": "忠孝復興",
     "slug": "zhongxiao-fuxing",
+    "map": {
+      "line": "L_blue",
+      "at": [
+        372,
+        234
+      ],
+      "label": "right",
+      "posterLabelOffset": [
+        0,
+        12
+      ]
+    },
     "tagline": "常搭忠孝復興站的人，這 5 間先收",
     "shops": [
       {
@@ -1081,6 +1174,13 @@
     "date": "2026-10-30",
     "station": "西門",
     "slug": "ximen",
+    "map": {
+      "line": "L_blue",
+      "at": [
+        -40,
+        199
+      ]
+    },
     "tagline": "常搭西門站的人，這 5 間先收",
     "shops": [
       {
@@ -1218,6 +1318,13 @@
     "date": "2026-10-31",
     "station": "大安",
     "slug": "daan",
+    "map": {
+      "line": "L_red",
+      "at": [
+        351,
+        363
+      ]
+    },
     "tagline": "早午晚餐一次排好，5 間先收",
     "shops": [
       {
@@ -1340,6 +1447,18 @@
     "date": "2026-11-01",
     "station": "古亭",
     "slug": "guting",
+    "map": {
+      "line": "L_green",
+      "at": [
+        221,
+        310
+      ],
+      "label": "left",
+      "posterLabelOffset": [
+        -22,
+        0
+      ]
+    },
     "tagline": "早餐飯糰到酸菜白肉鍋，5 間先收",
     "shops": [
       {
@@ -1483,6 +1602,13 @@
     "date": "2026-11-02",
     "station": "中山",
     "slug": "zhongshan",
+    "map": {
+      "line": "L_red",
+      "at": [
+        157,
+        157
+      ]
+    },
     "tagline": "蒸餃、酸辣粉到螺螄粉，5 間先收",
     "shops": [
       {
@@ -1609,6 +1735,13 @@
     "date": "2026-11-03",
     "station": "大橋頭",
     "slug": "daqiaotou",
+    "map": {
+      "line": "L_orange",
+      "at": [
+        8,
+        30
+      ]
+    },
     "tagline": "早上油飯到宵夜麻糬，5 間先收",
     "shops": [
       {

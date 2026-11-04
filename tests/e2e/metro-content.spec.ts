@@ -38,7 +38,7 @@ const dailyStations = existsSync(dailyDir)
         return existsSync(path) ? [JSON.parse(readFileSync(path, 'utf8')) as Station] : [];
       })
   : [];
-// Same merge the site serves: stations.json, then each daily file replaces the station with the same n.
+// Same merge the site serves: stations.json, then each daily file merges fields into the station with the same n.
 const stations = mergeFoodStations(baseStations, dailyStations) as Station[];
 const disclaimer = '營業時間、價格可能調整，出發前再確認';
 

@@ -64,15 +64,23 @@ export type MetroStore = {
 
 export type MetroStation = {
   id: string;
+  /** Food-page slug: /metro/<slug>. */
+  slug?: string;
   order: number;
   name: string;
   line: string;
   status: "live" | "coming_soon";
   updatedAt: string | null;
   mapPos: {
-    line: "L_red" | "L_blue" | "L_green";
+    line: "L_red" | "L_blue" | "L_green" | "L_orange";
     at: [number, number];
     snapped?: [number, number];
+    /** Label beside the dot instead of below it (keeps clear of neighbouring photo pins). */
+    label?: "left" | "right";
+    /** Extra [dx, dy] nudge for the station name, in map units (DESIGN r12). */
+    labelOffset?: [number, number];
+    /** No-JS poster only: replaces labelOffset there so the interactive map stays unchanged (DESIGN r15). */
+    posterLabelOffset?: [number, number];
   };
 };
 

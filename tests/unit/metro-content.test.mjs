@@ -10,10 +10,10 @@ const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
 const daily = readdirSync('content/metro/daily').filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort()
   .map(d => `content/metro/daily/${d}/web.json`).filter(existsSync).map(p => JSON.parse(readFileSync(p, 'utf8')));
 const expected = mergeFoodStations(base, daily);
-test('all 12 stations preserve source display fields; served image paths exist', () => {
+test('all content stations preserve source display fields; served image paths exist', () => {
   const stations = buildFoodStations(resolve('.'));
   assert.equal(stations.length, expected.length);
-  for (let n = 1; n <= 12; n++) assert.ok(stations.some(s => s.n === n));
+  for (let n = 1; n <= expected.length; n++) assert.ok(stations.some(s => s.n === n));
   for (const s of stations) {
     const raw = expected.find(b => b.n === s.n);
     for (const key of ['n', 'date', 'station', 'slug', 'tagline', 'posts']) assert.deepEqual(s[key], raw[key]);
@@ -50,7 +50,7 @@ test('daily files add stations automatically and later daily replaces duplicate 
     assert.equal(result.at(-1).tagline, 'later');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
-test('base duplicates and daily corrections use the last whole record', () => {
+test('base duplicates and daily corrections use the latest supplied fields', () => {
   assert.deepEqual(mergeFoodStations([base[0], base[0]], [{ ...base[0], tagline: null }]).map(s => s.tagline), [null]);
 });
 test('unsafe content fails closed', () => {

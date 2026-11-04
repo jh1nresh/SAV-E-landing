@@ -78,10 +78,10 @@ section.hero {
 .poster-world {
   position: absolute;
   left: 50%;
-  top: 50%;
-  width: min(calc(100cqw * 1000 / 630), calc(100cqh * 1000 / 440));
+  top: calc(50% + 20px);
+  width: min(calc(100cqw * 1000 / 800), calc(100cqh * 1000 / 700));
   aspect-ratio: 1000 / 940;
-  transform: translate(-47.2%, -36.70213%);
+  transform: translate(-44.6%, -35.6383%);
 }
 .poster-world svg { display: block; width: 100%; height: 100%; }
 .poster-world > div, .poster-pins { position: absolute; inset: 0; }
@@ -221,7 +221,8 @@ section.hero {
 
 .stamp {
   position: absolute;
-  left: 20px;
+  /* Right side: the left edge holds 士林／大橋頭. */
+  right: 20px;
   top: -30px;
   z-index: 7;
   pointer-events: none;
@@ -530,13 +531,23 @@ section.s-cta {
 
 .pin .hit {
   position: absolute;
-  left: -26px;
-  top: -72px;
-  width: 52px;
-  height: 84px;
+  /* Head + dot only (still ≥44px): with 14 stations, taller hits stole clicks from the pin above. */
+  left: -23px;
+  top: -54px;
+  width: 46px;
+  height: 62px;
   pointer-events: auto;
   cursor: pointer;
   border-radius: 26px;
+}
+
+/* Keep 雙連's photo target clear of 中山, including integer pointer coordinates. */
+.pin[data-id="shuanglian"] .hit {
+  left: -22px;
+  /* 1px of slack upward (away from 中山): WebKit measures fractional layouts at 43.99997px. */
+  top: -47px;
+  width: 44px;
+  height: 45px;
 }
 
 .pin:focus-visible {
@@ -667,6 +678,21 @@ section.s-cta {
   background: var(--coral);
 }
 
+/* Content-only stations retain the SVG dot and name, with a centred touch target. */
+.pin.content-only .hit {
+  left: -23px;
+  top: -23px;
+  width: 46px;
+  height: 46px;
+  background: transparent;
+  border-radius: 50%;
+}
+
+.pin.content-only .pin-in,
+.pin.content-only .gr {
+  display: none;
+}
+
 .pin.soon .ph {
   background: rgba(255, 249, 235, 0.92);
   border: 2.6px dashed var(--grey);
@@ -718,9 +744,9 @@ body.still .pin.new .gr {
 }
 
 .hint {
-  left: 50%;
+  left: 0;
   top: 12px;
-  transform: translateX(-50%);
+  transform: translateY(0);
   font: 400 16px/1 Iansui, Caveat, serif;
   color: var(--ink);
   background: var(--paper);
@@ -736,19 +762,20 @@ body.still .pin.new .gr {
 
 .hint.gone {
   opacity: 0;
-  transform: translate(-50%, -8px);
+  transform: translateY(-8px);
   animation: none;
 }
 
 @keyframes metro-bob {
   50% {
-    transform: translate(-50%, 3px);
+    transform: translateY(3px);
   }
 }
 
 .cart {
-  left: 12px;
-  bottom: 8px;
+  left: 10px;
+  top: 10px;
+  bottom: auto;
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -1077,6 +1104,34 @@ body.rm .pin.new .gr {
   }
 }
 
+/* Reserve the full wrapped strip and card height, including before hydration. */
+@media (min-width: 801px) {
+  .map-stage {
+    display: grid;
+    height: auto;
+    min-height: 566px;
+  }
+
+  .map-stage > .mapwrap-slot,
+  .map-live {
+    grid-area: 1 / 1;
+  }
+
+  .map-live {
+    position: relative;
+    inset: auto;
+  }
+
+  .mapwrap {
+    height: auto;
+    min-height: 566px;
+  }
+
+  .strip-wrap {
+    height: auto;
+  }
+}
+
 @media (max-width: 800px) {
   section.hero {
     padding: 26px 20px 40px;
@@ -1135,8 +1190,8 @@ body.rm .pin.new .gr {
   }
 
   .poster-world {
-    width: calc(100cqw * 1000 / 580);
-    transform: translate(-47.5%, -42.34043%);
+    width: min(calc(100cqw * 1000 / 800), calc(100cqh * 1000 / 700));
+    transform: translate(-44.6%, -35.6383%);
   }
 
   .vp,
@@ -1238,4 +1293,19 @@ body.rm .pin.new .gr {
   .hero .h.zh {
     font-size: 32px;
   }
+}
+
+/* Keep the invitation beside the caption, including the static poster. */
+.map-caption-group {
+  left: 10px;
+  top: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.map-caption-group .cart,
+.map-caption-group .hint {
+  position: relative;
+  left: auto;
+  top: auto;
 }

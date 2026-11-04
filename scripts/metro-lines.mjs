@@ -1,5 +1,6 @@
 /** Hand-drawn schematic line geometry (view units, not geographic). */
 export const LINE_PATHS = {
+  L_orange: "M52 22 C 38 24 22 27 4 31",
   L_red: "M-30 -150 C 0 -90 28 -40 52 22 C76 56 104 90 128 116 C150 144 168 174 186 200 C206 230 224 250 246 268 C268 288 284 296 300 302 C324 312 342 340 360 382 C 376 430 392 520 420 770",
   L_blue:
     "M-150 194 C -100 198 -40 200 18 200 C80 202 140 200 186 200 C250 200 330 222 410 244 C470 260 520 274 560 276 C590 278 612 284 634 292 C 700 300 780 320 850 342",
@@ -60,21 +61,44 @@ const CACHE = new Map();
 export function snapToLine(lineId, at) {
   const d = LINE_PATHS[lineId];
   if (!d) throw new Error(`Unknown metro line id: ${lineId}`);
-  let pts = CACHE.get(lineId);
-  if (!pts) {
-    pts = samplePath(d, 0.008);
-    CACHE.set(lineId, pts);
+  let curves = CACHE.get(lineId);
+  if (!curves) {
+    const numbers = d.match(/-?\d+(?:\.\d+)?/g).map(Number);
+    let current = numbers.splice(0, 2);
+    curves = [];
+    while (numbers.length) {
+      const curve = [current, numbers.splice(0, 2), numbers.splice(0, 2), numbers.splice(0, 2)];
+      curves.push(curve);
+      current = curve[3];
+    }
+    CACHE.set(lineId, curves);
   }
-  let best = pts[0];
+  let best;
   let bestD = Infinity;
-  for (const p of pts) {
-    const dx = p[0] - at[0];
-    const dy = p[1] - at[1];
-    const dist = dx * dx + dy * dy;
-    if (dist < bestD) {
-      bestD = dist;
-      best = p;
+  for (const curve of curves) {
+    const point = t => cubic(...curve, t);
+    const distance = t => {
+      const p = point(t);
+      return (p[0] - at[0]) ** 2 + (p[1] - at[1]) ** 2;
+    };
+    // Refine every sampled local minimum, including curve endpoints.
+    const steps = 125;
+    const distances = Array.from({ length: steps + 1 }, (_, i) => distance(i / steps));
+    for (let i = 0; i <= steps; i++) {
+      if ((i > 0 && distances[i] > distances[i - 1]) || (i < steps && distances[i] > distances[i + 1])) continue;
+      let lo = Math.max(0, (i - 1) / steps);
+      let hi = Math.min(1, (i + 1) / steps);
+      for (let iteration = 0; iteration < 50; iteration++) {
+        const left = lo + (hi - lo) / 3;
+        const right = hi - (hi - lo) / 3;
+        if (distance(left) < distance(right)) hi = right;
+        else lo = left;
+      }
+      for (const t of [i / steps, (lo + hi) / 2]) {
+        const dist = distance(t);
+        if (dist < bestD) { bestD = dist; best = point(t); }
+      }
     }
   }
-  return [Math.round(best[0] * 100) / 100, Math.round(best[1] * 100) / 100];
+  return best.map(value => Math.round(value * 100) / 100);
 }
