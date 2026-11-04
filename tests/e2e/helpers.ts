@@ -64,6 +64,9 @@ export async function heroBadgeBox(page: Page) {
 }
 
 export async function dispatchSwipe(page: Page, dy: number) {
+  const handle = page.locator("#card .grab");
+  // Wait for the short-swipe spring to settle before sampling a five-pixel target.
+  await (await handle.isVisible() ? handle : page.locator("#card")).hover();
   const box = await page.locator("#card").boundingBox();
   if (!box) throw new Error("card not visible");
   const grab = await page.locator("#card .grab").boundingBox();
