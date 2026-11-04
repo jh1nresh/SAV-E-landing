@@ -67,8 +67,8 @@ const labelCopy = [
   imageAlt({ kind: "example", name: "", dish: "" }),
 ];
 const strings = [...ui, ...labelCopy];
-// Food guide pages use the system font so arbitrary new content does not require font regeneration.
-const { foodStations, ...mapData } = metro;
+// Article text uses the system font in food pages and map cards; new shops need no font regeneration.
+const { foodStations, mapStores, ...mapData } = metro;
 collect(mapData, strings);
 
 const skip = /[\s\dA-Za-z0-9.,:;!?'"“”‘’…—–\-_/#+@$%&()[\]{}<>~`|\\^*=]|[▲△○●□■]/u;

@@ -6,7 +6,7 @@ import { waitForMap, openStation } from './helpers';
 
 // Exercise the actual runtime with synthetic posts, without shipping a fixture endpoint/data.
 const logic = readFileSync('lib/metro-logic.mjs', 'utf8');
-const source = readFileSync('app/metro/map-runtime.ts', 'utf8').replace(/^import[\s\S]*?from "\.\.\/\.\.\/lib\/metro";\s*/, '');
+const source = readFileSync('app/metro/map-runtime.ts', 'utf8').replace(/^import[\s\S]*?from "\.\.\/\.\.\/lib\/metro";\s*/, '').replace(/^import[^;]+from "\.\/map-label";\s*/m, '');
 const labelSource = readFileSync('app/metro/map-label.ts', 'utf8').replace(/^import[^;]+;\s*/, '');
 const runtime = ts.transpileModule(labelSource + '\n' + source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 } }).outputText;
 

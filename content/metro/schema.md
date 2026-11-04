@@ -25,7 +25,7 @@
 ## shop 欄位
 | 欄位 | 說明 |
 |---|---|
-| key | 圖片檔名代稱（photos/<key>.jpg），舊站可能 null |
+| key | **必填且站內唯一**。對應 photos/<key>.jpg（或 webp/png/jpeg），須恰好一張；建置會檢查，不可用照片陣列順序配對 |
 | name | 店名 |
 | dish | 推薦菜 |
 | price | 價格字串，例如 "$60" |
@@ -47,3 +47,5 @@
 `map.posterLabelOffset` 可選，格式同上，**只給無 JS 海報（`HeroMapPoster`）用**；有設定時會取代海報上的 `labelOffset`，互動地圖不受影響（DESIGN r15）。目前士林 `[20, 0]`、南京復興 `[-22, 0]`、忠孝復興 `[0, 12]`、古亭 `[-22, 0]`。格式錯誤時 build 會失敗（`map.posterLabelOffset must be [dx, dy]`）。
 
 站名使用 `label` 對應的預設位置；古亭使用 `"label": "left"`。所有站點的 `at` 與線上吸附點距離須在 2 個 viewBox 單位以內。
+
+首頁照片圖釘、店家數和卡片內容由同一份文章的 `shops` 與 `images.photos` 自動產生。只需更新 stations.json 或 daily web.json 與照片，不用另改 data/metro.json。店名／配圖缺漏或 key 重複會讓建置失敗。

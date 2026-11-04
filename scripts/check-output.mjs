@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { articleMapStores } from "../lib/metro-articles.mjs";
 import { isAllowedStoreSource } from "./source-links.mjs";
 import { join } from "node:path";
 
@@ -19,6 +20,18 @@ if (pubText.includes("#example")) {
 if (/google/i.test(pubText) || pubText.includes("priceSource")) {
   console.error("metro.public.json leaked a private price source");
   process.exit(1);
+}
+
+// The website must receive the exact projection of the article content, not a stale manual list.
+if (pub.foodStations) {
+  if (JSON.stringify(pub.mapStores) !== JSON.stringify(articleMapStores(pub.foodStations))) {
+    throw new Error("article map stores are missing or out of sync");
+  }
+  for (const store of pub.mapStores) {
+    if (!store.image.startsWith("/metro/images/") || !existsSync(join(root, "public", store.image))) {
+      throw new Error(`missing article photo: ${store.id}`);
+    }
+  }
 }
 
 for (const store of pub.stores) {

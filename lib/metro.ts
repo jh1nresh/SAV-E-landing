@@ -11,6 +11,7 @@ import {
   countShort,
   daysBetween,
   footNote,
+  foodShopRows,
   formatMd,
   imageAlt,
   isExampleStore,
@@ -60,6 +61,8 @@ export type MetroStore = {
   sourcePosts: SourcePost[];
   addedAt: string;
   verified: boolean;
+  /** Display fields from the station article, without numeric price/walk guesses. */
+  article?: FoodShop;
 };
 
 export type MetroStation = {
@@ -105,6 +108,7 @@ export {
   countShort,
   daysBetween,
   footNote,
+  foodShopRows,
   formatMd,
   imageAlt,
   isExampleStore,
@@ -121,9 +125,8 @@ export {
 };
 
 export function getPublicMetroData(): MetroData {
-  const { _meta, stations, stores } = publicMetro as unknown as MetroData;
-  // Food-guide records are read separately; the interactive hero does not use them.
-  return { _meta, stations, stores };
+  const { _meta, stations, mapStores } = publicMetro as unknown as MetroData & { mapStores: MetroStore[] };
+  return { _meta, stations, stores: mapStores };
 }
 
 export function storesFor(data: MetroData, stationId: string): MetroStore[] {

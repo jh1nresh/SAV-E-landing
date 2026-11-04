@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
-import metro from "../../app/metro/metro.public.json";
+import { getPublicMetroData } from "../../lib/metro";
+const metro = getPublicMetroData();
 import { countLabel, footNote, imageAlt, isExampleStore, isNewDate, stationIsNew, priceIsPending, stampLevel, stampNote, weekNewCount } from "../../lib/metro-logic.mjs";
 import { clickPin, openStation, waitForCardOpen, waitForMap } from "./helpers";
 
@@ -69,7 +70,11 @@ test.describe("hero content and motion", () => {
         if (i > 0) await page.locator("#card .thumbs button").nth(i).click();
         await expect(page.locator("#card .fc h4")).toHaveText(store.name);
         await expect(page.locator("#card .cfoot")).toHaveText(footNote(store));
-        if (isExampleStore(store)) {
+        if (store.article) {
+          await expect(page.locator("#card .article-details")).toContainText(store.article.price || "價格待確認");
+          await expect(page.locator("#card .fc .ph img")).toHaveAttribute("alt", imageAlt(store));
+          if (store.article.exit_walk) await expect(page.locator("#card .article-details")).toContainText(store.article.exit_walk);
+        } else if (isExampleStore(store)) {
           await expect(page.locator("#card .cfoot")).toContainText("價格為示意");
           await expect(page.locator("#card .fc .ph img")).toHaveAttribute("alt", imageAlt(store));
         } else {
@@ -79,7 +84,7 @@ test.describe("hero content and motion", () => {
           if (store.exit) await expect(page.locator("#card .walk")).toContainText(store.exit);
           if (store.exitWalkMin == null) await expect(page.locator("#card .walk")).toContainText("步行時間未取得");
         }
-        const pending = priceIsPending(store);
+        const pending = !store.article && priceIsPending(store);
         await expect(page.locator("#card .fc [data-testid=price-pending]")).toHaveCount(pending ? 1 : 0);
       }
     }

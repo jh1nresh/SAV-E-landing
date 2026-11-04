@@ -23,8 +23,8 @@ export function countShort(n: number, lang?: "zh" | "en"): string;
 export function countLabel(stores: ReadonlyArray<{ kind?: string }>, lang?: "zh" | "en"): string;
 export function countBadge(stores: ReadonlyArray<{ kind?: string }>): string;
 export function weekNewCount(stores: ReadonlyArray<NewStore>, todayYmd: string): number;
-export function footNote(store: { kind?: string; image?: string; imageAi?: boolean }): string;
-export function imageAlt(store: { dish?: string; name: string; kind?: string; imageAi?: boolean }): string;
+export function footNote(store: { kind?: string; image?: string; imageAi?: boolean; article?: import("./metro").FoodShop }): string;
+export function imageAlt(store: { dish?: string; name: string; kind?: string; imageAi?: boolean; article?: import("./metro").FoodShop }): string;
 
 export type NewStore = {
   kind?: string; backfill?: boolean; addedAt?: string | null;
