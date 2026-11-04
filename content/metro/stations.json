@@ -636,7 +636,7 @@
         -59
       ],
       "label": "right",
-      "labelOffset": [
+      "posterLabelOffset": [
         20,
         0
       ]
@@ -919,7 +919,7 @@
         166
       ],
       "label": "left",
-      "labelOffset": [
+      "posterLabelOffset": [
         -22,
         0
       ]
@@ -1050,7 +1050,7 @@
         234
       ],
       "label": "right",
-      "labelOffset": [
+      "posterLabelOffset": [
         0,
         12
       ]
@@ -1454,7 +1454,7 @@
         310
       ],
       "label": "left",
-      "labelOffset": [
+      "posterLabelOffset": [
         -22,
         0
       ]

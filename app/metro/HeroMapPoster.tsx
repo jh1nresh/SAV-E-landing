@@ -39,7 +39,7 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
               <svg viewBox="-150 -170 1000 940" className="poster-pins">
                 {stations.map(s => {
                   const [x, y] = s.mapPos.snapped ?? s.mapPos.at;
-                  const label = stationLabelPosition(s.mapPos);
+                  const label = stationLabelPosition(s.mapPos, "poster");
                   const image = data.stores.find(store => store.stationId === s.id)?.image;
                   const soon = s.status === "coming_soon";
                   return <g key={s.id} data-testid={`metro-poster-marker-${s.id}`} data-station={s.name}>

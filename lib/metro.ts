@@ -79,6 +79,8 @@ export type MetroStation = {
     label?: "left" | "right";
     /** Extra [dx, dy] nudge for the station name, in map units (DESIGN r12). */
     labelOffset?: [number, number];
+    /** No-JS poster only: replaces labelOffset there so the interactive map stays unchanged (DESIGN r15). */
+    posterLabelOffset?: [number, number];
   };
 };
 

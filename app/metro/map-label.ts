@@ -1,9 +1,9 @@
 import type { MetroStation } from "../../lib/metro";
 
 /** Shared schematic label placement for the poster and interactive map. */
-export function stationLabelPosition(map: MetroStation["mapPos"]) {
+export function stationLabelPosition(map: MetroStation["mapPos"], surface: "map" | "poster" = "map") {
   const [x, y] = map.snapped ?? map.at;
-  const [dx, dy] = map.labelOffset ?? [0, 0];
+  const [dx, dy] = (surface === "poster" ? map.posterLabelOffset ?? map.labelOffset : map.labelOffset) ?? [0, 0];
   return {
     x: x + (map.label === "right" ? 14 : map.label === "left" ? -14 : 0) + dx,
     y: y + (map.label ? 5 : 27) + dy,

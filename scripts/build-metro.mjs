@@ -197,7 +197,8 @@ export function buildPublicMetro(raw, foodStations = buildFoodStations(root)) {
       line: LINE_LABELS[station.map.line], status: "live",
       updatedAt: legacy?.updatedAt > station.date ? legacy.updatedAt : station.date,
       mapPos: { line: station.map.line, at: station.map.at, ...(station.map.label ? { label: station.map.label } : {}),
-        ...(station.map.labelOffset ? { labelOffset: station.map.labelOffset } : {}) } };
+        ...(station.map.labelOffset ? { labelOffset: station.map.labelOffset } : {}),
+        ...(station.map.posterLabelOffset ? { posterLabelOffset: station.map.posterLabelOffset } : {}) } };
   });
   validate(stripped);
   const publicData = toPublicStores(stripped);
@@ -208,6 +209,7 @@ export function buildPublicMetro(raw, foodStations = buildFoodStations(root)) {
       snapped: snapToLine(station.mapPos.line, station.mapPos.at),
       ...(station.mapPos.label ? { label: station.mapPos.label } : {}),
       ...(station.mapPos.labelOffset ? { labelOffset: station.mapPos.labelOffset } : {}),
+      ...(station.mapPos.posterLabelOffset ? { posterLabelOffset: station.mapPos.posterLabelOffset } : {}),
     };
   }
   const text = JSON.stringify(publicData);

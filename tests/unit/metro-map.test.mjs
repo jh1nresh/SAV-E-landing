@@ -24,6 +24,7 @@ test('every content station has a hero marker snapped within two units of its po
     assert.ok(Math.hypot(...marker.mapPos.snapped.map((v, i) => v - station.map.at[i])) <= 2, station.slug);
     assert.equal(marker.order, station.n);
     assert.deepEqual(marker.mapPos.labelOffset, station.map.labelOffset);
+    assert.deepEqual(marker.mapPos.posterLabelOffset, station.map.posterLabelOffset);
   }
 });
 
@@ -59,7 +60,15 @@ test('stores must reference a derived station id', () => {
 test('label offsets require two finite numbers', () => {
   for (const labelOffset of [[1], [1, 2, 3], ['1', 2], [NaN, 2], 'left']) {
     assert.throws(() => mergeFoodStations([{ ...base[0], map: { ...base[0].map, labelOffset } }]), /map.labelOffset must be \[dx, dy\]/);
+    assert.throws(() => mergeFoodStations([{ ...base[0], map: { ...base[0].map, posterLabelOffset: labelOffset } }]), /map.posterLabelOffset must be \[dx, dy\]/);
   }
+});
+
+test('interactive map labelOffset stays at the DESIGN r13 values; poster offsets are separate', () => {
+  const offsets = Object.fromEntries(base.filter(s => s.map.labelOffset).map(s => [s.station, s.map.labelOffset]));
+  assert.deepEqual(offsets, { 小巨蛋: [-14, 0], 雙連: [0, 12] });
+  const poster = Object.fromEntries(base.filter(s => s.map.posterLabelOffset).map(s => [s.station, s.map.posterLabelOffset]));
+  assert.deepEqual(poster, { 士林: [20, 0], 南京復興: [-22, 0], 忠孝復興: [0, 12], 古亭: [-22, 0] });
 });
 
 
