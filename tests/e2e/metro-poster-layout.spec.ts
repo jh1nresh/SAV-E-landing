@@ -16,14 +16,18 @@ for (const width of [390, 1280, 1440]) {
       await expect(labels).toHaveCount(14);
       await expect(pins).toHaveCount(14);
       const title = (await page.getByTestId('metro-poster-title').boundingBox())!;
+      const r = (b: Box) => [b.x, b.y, b.x + b.width, b.y + b.height].map(v => v.toFixed(1)).join(',');
+      const labelBoxes = await Promise.all((await labels.all()).map(async l => ({ name: await l.textContent(), box: (await l.boundingBox())! })));
+      const overlaps: string[] = [];
       for (const pin of await pins.all()) {
         const pinBox = (await pin.boundingBox())!;
         const pinId = await pin.getAttribute('data-testid');
-        expect(intersects(pinBox, title), `${pinId} overlaps title`).toBe(false);
-        for (const label of await labels.all()) {
-          expect(intersects((await label.boundingBox())!, pinBox), `${await label.textContent()} overlaps ${pinId}`).toBe(false);
+        if (intersects(pinBox, title)) overlaps.push(`${pinId} [${r(pinBox)}] overlaps title [${r(title)}]`);
+        for (const { name, box } of labelBoxes) {
+          if (intersects(box, pinBox)) overlaps.push(`${name} [${r(box)}] overlaps ${pinId} [${r(pinBox)}]`);
         }
       }
+      expect(overlaps).toEqual([]);
     } finally { await context.close(); }
   });
 }
