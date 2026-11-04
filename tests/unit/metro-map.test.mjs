@@ -81,3 +81,16 @@ test('green line curve positions use a refined nearest point', () => {
   assert.doesNotThrow(() => mergeFoodStations([{ ...base[0], map: { line: 'L_green', at } }]));
   assert.throws(() => mergeFoodStations([{ ...base[0], map: { line: 'L_green', at: [192.61, 649.08] } }]), /station 1 map.at is [\d.]+ units off L_green/);
 });
+
+for (const [label, legacyDate, expected] of [
+  ['older legacy', '2026-10-30', '2026-11-02'],
+  ['newer legacy', '2026-11-03', '2026-11-03'],
+  ['no legacy', null, '2026-11-02'],
+]) {
+  test(`public station uses the latest update date with ${label}`, () => {
+    const station = { ...base[0], date: '2026-11-02' };
+    const stations = legacyDate ? [{ id: station.map_id ?? station.slug, updatedAt: legacyDate }] : [];
+    const result = buildPublicMetro({ ...raw, stations, stores: [] }, [station]);
+    assert.equal(result.stations[0].updatedAt, expected);
+  });
+}

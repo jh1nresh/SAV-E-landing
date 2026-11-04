@@ -194,7 +194,8 @@ export function buildPublicMetro(raw, foodStations = buildFoodStations(root)) {
     const id = station.map_id ?? station.slug;
     const legacy = stripped.stations?.find(s => s.id === id);
     return { id, slug: station.slug, order: station.n, name: legacy?.name ?? station.station,
-      line: LINE_LABELS[station.map.line], status: "live", updatedAt: legacy?.updatedAt ?? station.date,
+      line: LINE_LABELS[station.map.line], status: "live",
+      updatedAt: legacy?.updatedAt > station.date ? legacy.updatedAt : station.date,
       mapPos: { line: station.map.line, at: station.map.at, ...(station.map.label ? { label: station.map.label } : {}),
         ...(station.map.labelOffset ? { labelOffset: station.map.labelOffset } : {}) } };
   });

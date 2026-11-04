@@ -1103,6 +1103,34 @@ body.rm .pin.new .gr {
   }
 }
 
+/* Reserve the full wrapped strip and card height, including before hydration. */
+@media (min-width: 801px) {
+  .map-stage {
+    display: grid;
+    height: auto;
+    min-height: 566px;
+  }
+
+  .map-stage > .mapwrap-slot,
+  .map-live {
+    grid-area: 1 / 1;
+  }
+
+  .map-live {
+    position: relative;
+    inset: auto;
+  }
+
+  .mapwrap {
+    height: auto;
+    min-height: 566px;
+  }
+
+  .strip-wrap {
+    height: auto;
+  }
+}
+
 @media (max-width: 800px) {
   section.hero {
     padding: 26px 20px 40px;
