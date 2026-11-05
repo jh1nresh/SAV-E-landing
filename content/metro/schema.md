@@ -49,3 +49,8 @@
 站名使用 `label` 對應的預設位置；古亭使用 `"label": "left"`。所有站點的 `at` 與線上吸附點距離須在 2 個 viewBox 單位以內。
 
 首頁照片圖釘、店家數和卡片內容由同一份文章的 `shops` 與 `images.photos` 自動產生。只需更新 stations.json 或 daily web.json 與照片，不用另改 data/metro.json。店名／配圖缺漏或 key 重複會讓建置失敗。
+
+## GTM inbox（2026-11-05）
+- 上傳入口改為 git 分支 `gtm/inbox`／`<YYYY-MM-DD>/`（見 `docs/GTM-INBOX.md`），不再依賴本機 `/workspace/shared/gtm/savvy-ready`。
+- 地圖座標的唯一核准來源：`content/metro/design-stations.json`（DESIGN）。daily `web.json` 不得帶 `map`／`map_id`；build 會套用 DESIGN 並在缺條目時失敗。
+- 內容 auto-merge 只允許 `content/metro/daily/**/web.json` 與 `content/metro/images/<NN-slug>/{photos,slides}/*`。

@@ -1,0 +1,81 @@
+# Scan gtm/inbox for complete ready packages → content-only PR (or one blocking issue).
+# Schedule ~20:17 Asia/Shanghai (12:17 UTC). GitHub cron can drift; workflow_dispatch for catch-up.
+name: Metro GTM inbox sync
+on:
+  schedule:
+    - cron: '17 12 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout trusted main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          path: main
+          persist-credentials: false
+
+      - name: Checkout gtm/inbox (tolerate if missing)
+        id: inbox
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        continue-on-error: true
+        with:
+          ref: gtm/inbox
+          path: inbox
+          persist-credentials: false
+
+      - name: Skip when inbox branch absent
+        if: steps.inbox.outcome != 'success'
+        run: |
+          echo 'Branch gtm/inbox not found yet. GTM must upload the first package (see docs/GTM-INBOX.md).'
+          mkdir -p inbox
+          echo '[]' > empty-plan.json
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Build sync plan from trusted main scripts
+        id: plan
+        run: |
+          if test ! -d inbox/.git && test ! -f inbox/README.md && test -z "$(find inbox -mindepth 1 -maxdepth 1 -type d -name '20*' 2>/dev/null)"; then
+            echo 'plan=empty-plan.json' >> "$GITHUB_OUTPUT"
+            printf '%s\n' '{"generated_at":"","packages":[]}' > empty-plan.json
+            exit 0
+          fi
+          node main/scripts/metro-gtm-inbox-sync.mjs --repo-root main --inbox-root inbox --out inbox-sync-plan.json
+          echo 'plan=inbox-sync-plan.json' >> "$GITHUB_OUTPUT"
+
+      - name: Mint GitHub App token (required to open PRs without human workflow approval)
+        id: app-token
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        continue-on-error: true
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+
+      - name: Execute plan (issues + content PRs)
+        env:
+          GH_REPO: ${{ github.repository }}
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          DEFAULT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PLAN_FILE: ${{ steps.plan.outputs.plan }}
+        run: |
+          set -euo pipefail
+          TOKEN="${APP_TOKEN:-}"
+          if test -z "$TOKEN"; then
+            echo '::warning::GitHub App token unavailable. Falling back to GITHUB_TOKEN.'
+            echo 'PRs opened with GITHUB_TOKEN may require a human to approve workflows (see docs/GTM-INBOX.md).'
+            echo 'Founder action: install the repo-scoped App and set secrets/vars (docs/GITHUB-APP-METRO-INBOX.md).'
+            TOKEN="$DEFAULT_TOKEN"
+          fi
+          export GH_TOKEN="$TOKEN"
+          node main/scripts/metro-gtm-inbox-apply.mjs --plan "$PLAN_FILE" --work-root pr-work

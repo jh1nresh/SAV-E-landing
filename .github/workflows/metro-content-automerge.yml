@@ -24,11 +24,18 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           git fetch origin "$HEAD_SHA"
-          git diff --name-only --no-renames -z "$BASE_SHA...$HEAD_SHA" > changed-files
+          # name-status so deletes/renames are visible to the tightened gate
+          git diff --name-status --no-renames -z "$BASE_SHA...$HEAD_SHA" > changed-files
           if test -f scripts/metro-content-gate.mjs; then
             node scripts/metro-content-gate.mjs < changed-files
           else
             echo 'Skipping auto-merge: base does not yet contain the reviewed gate.'
+            echo 'eligible=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Reject symlinks introduced on the PR head (checked via tree from trusted git)
+          if git -c core.symlinks=false ls-tree -r "$HEAD_SHA" | awk '$1 ~ /^120/ {print; found=1} END {exit found?0:1}'; then
+            echo 'Skipping auto-merge: symlink present in PR head.'
             echo 'eligible=false' >> "$GITHUB_OUTPUT"
           fi
   validate:

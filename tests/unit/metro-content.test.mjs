@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync, mkdtempSync, mkdirSync, writeFileSync, cpSync, rmSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { buildFoodStations, mergeFoodStations, stripInternal } from '../../scripts/metro-content.mjs';
-import { contentOnly } from '../../scripts/metro-content-gate.mjs';
+import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, applyDesignMaps } from '../../scripts/metro-content.mjs';
+import { contentOnly, contentOnlyFromNameStatus, isAllowedMetroContentPath } from '../../scripts/metro-content-gate.mjs';
 import { foodShopRows, FOOD_DISCLAIMER } from '../../lib/metro-logic.mjs';
 const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
 const daily = readdirSync('content/metro/daily').filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort()
@@ -39,10 +39,15 @@ test('daily files add stations automatically and later daily replaces duplicate 
     cpSync('content/metro', join(root, 'content/metro'), { recursive: true });
     const fixtureN = Math.max(...expected.map(s => s.n)) + 1;
     const fixture = { ...base[0], n: fixtureN, slug: 'fixture', images: null, shops: [], posts: {} };
+    const designPath = join(root, 'content/metro/design-stations.json');
+    const design = JSON.parse(readFileSync(designPath, 'utf8'));
+    design.push({ n: fixtureN, slug: 'fixture', station: fixture.station, map: structuredClone(base[0].map) });
+    writeFileSync(designPath, JSON.stringify(design));
     for (const [date, tagline] of [['9999-11-02', 'first'], ['9999-11-03', 'later']]) {
       const dir = join(root, 'content/metro/daily', date);
       mkdirSync(dir, { recursive: true });
-      writeFileSync(join(dir, 'web.json'), JSON.stringify({ ...fixture, tagline }));
+      const { map, map_id, ...daily } = fixture;
+      writeFileSync(join(dir, 'web.json'), JSON.stringify({ ...daily, tagline }));
     }
     const result = buildFoodStations(root);
     assert.equal(result.length, expected.length + 1);
@@ -57,9 +62,41 @@ test('unsafe content fails closed', () => {
   assert.throws(() => mergeFoodStations([{ ...base[0], slug: '../escape' }]));
   assert.throws(() => mergeFoodStations([{ ...base[0], posts: { instagram: 'javascript:alert(1)' } }]));
 });
-test('changed-file gate requires a nonempty exclusively content diff', () => {
-  assert.equal(contentOnly(['content/metro/stations.json', 'content/metro/daily/2026-11-02/web.json']), true);
-  for (const files of [[], ['README.md'], ['content/metro/stations.json', 'package.json'], ['content/metro-fake/file'], ['content/metro/../file']]) assert.equal(contentOnly(files), false);
+test('changed-file gate allows only daily JSON and station images', () => {
+  assert.equal(contentOnly([
+    'content/metro/daily/2026-11-02/web.json',
+    'content/metro/images/13-zhongshan/photos/chuanyu.webp',
+  ]), true);
+  assert.equal(isAllowedMetroContentPath('content/metro/stations.json'), false);
+  assert.equal(isAllowedMetroContentPath('content/metro/design-stations.json'), false);
+  assert.equal(isAllowedMetroContentPath('content/metro/build.py'), false);
+  assert.equal(isAllowedMetroContentPath('.github/workflows/ci.yml'), false);
+  for (const files of [
+    [],
+    ['README.md'],
+    ['content/metro/stations.json'],
+    ['content/metro/daily/2026-11-02/web.json', 'package.json'],
+    ['content/metro-fake/file'],
+    ['content/metro/../file'],
+  ]) assert.equal(contentOnly(files), false);
+  assert.equal(contentOnlyFromNameStatus([
+    { status: 'A', path: 'content/metro/daily/2026-11-02/web.json' },
+  ]), true);
+  assert.equal(contentOnlyFromNameStatus([
+    { status: 'D', path: 'content/metro/daily/2026-11-02/web.json' },
+  ]), false);
+});
+
+test('DESIGN catalog is required and overrides package coordinates', () => {
+  const design = loadDesignStations(resolve('content/metro'));
+  assert.equal(design.length, base.length);
+  const poisoned = mergeFoodStations(base, [{ ...base[0], map: { line: 'L_red', at: [0, 0] }, tagline: 'x' }]);
+  // without design arg, base map remains after strip of daily map
+  assert.deepEqual(poisoned[0].map, base[0].map);
+  const applied = mergeFoodStations(base, [{ n: base[0].n, slug: base[0].slug, station: base[0].station, date: base[0].date, tagline: 'y' }], design);
+  assert.deepEqual(applied[0].map, design[0].map);
+  assert.equal(applied[0].tagline, 'y');
+  assert.throws(() => applyDesignMaps([{ ...base[0], n: 999, slug: 'missing-design' }], design), /no DESIGN-approved map/);
 });
 test('both pages use the exact disclaimer', () => {
   assert.equal(FOOD_DISCLAIMER, '營業時間、價格可能調整，出發前再確認');
@@ -72,6 +109,9 @@ test('image traversal and missing images stop the build', () => {
   try {
     const dir = join(root, 'content/metro');
     mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, 'design-stations.json'), JSON.stringify([
+      { n: base[0].n, slug: base[0].slug, station: base[0].station, map: base[0].map, ...(base[0].map_id ? { map_id: base[0].map_id } : {}) },
+    ]));
     for (const path of ['../secret.webp', 'photos/missing.webp']) {
       writeFileSync(join(dir, 'stations.json'), JSON.stringify([{ ...base[0], images: { photos: [path] } }]));
       assert.throws(() => buildFoodStations(root), /unsafe image path|missing image/);

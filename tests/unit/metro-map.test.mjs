@@ -35,7 +35,11 @@ test('missing or invalid map positions fail content and hero builds', () => {
     const station = { ...base[0], images: {} };
     delete station.map;
     writeFileSync(join(dir, 'content/metro/stations.json'), JSON.stringify([station]));
-    assert.throws(() => buildFoodStations(dir), /metro content: station 1 missing map position/);
+    // DESIGN catalog is required; without an approved entry the build fails closed.
+    writeFileSync(join(dir, 'content/metro/design-stations.json'), JSON.stringify([
+      { n: 2, slug: 'other', station: '其他', map: base[1].map },
+    ]));
+    assert.throws(() => buildFoodStations(dir), /no DESIGN-approved map/);
     assert.throws(() => buildPublicMetro(raw, [station]), /missing map position/);
     for (const map of [null, { line: 'unknown', at: [0, 0] }, { line: 'L_red', at: [Infinity, 0] }, { line: 'L_red', at: [0] }]) {
       assert.throws(() => mergeFoodStations([{ ...station, map }]), /missing map position/);
