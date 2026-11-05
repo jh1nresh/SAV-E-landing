@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { getPublicMetroData } from "../../lib/metro";
 const metro = getPublicMetroData();
-import { countLabel, footNote, imageAlt, isExampleStore, isNewDate, stationIsNew, priceIsPending, stampLevel, stampNote, weekNewCount } from "../../lib/metro-logic.mjs";
+import { countLabel, imageAlt, isExampleStore, isNewDate, stationIsNew, priceIsPending, stampLevel, stampNote, weekNewCount } from "../../lib/metro-logic.mjs";
 import { clickPin, openStation, waitForCardOpen, waitForMap } from "./helpers";
 
 test.describe("hero content and motion", () => {
@@ -62,27 +62,20 @@ test.describe("hero content and motion", () => {
       }
       await openStation(page, st.id);
       if (list.length) {
-        await expect(page.locator("#card .ph-head .upd")).toContainText(`共 ${countLabel(list)}`);
+        await expect(page.locator("#card .thumbs .more")).toContainText(`共 ${countLabel(list)}`);
       } else {
         await expect(page.locator("#card")).not.toContainText("共 0 間");
       }
       for (const [i, store] of list.entries()) {
         if (i > 0) await page.locator("#card .thumbs button").nth(i).click();
         await expect(page.locator("#card .fc h4")).toHaveText(store.name);
-        await expect(page.locator("#card .cfoot")).toHaveText(footNote(store));
+        await expect(page.locator("#card dt")).toHaveText(["地址", "價格"]);
+        await expect(page.locator("#card .fc .ph img")).toHaveAttribute("alt", imageAlt(store));
+        await expect(page.locator("#card .cfoot, #card .walk, #card .post-hours, #card .src")).toHaveCount(0);
         if (store.article) {
-          await expect(page.locator("#card .article-details")).toContainText(store.article.price || "價格待確認");
-          await expect(page.locator("#card .fc .ph img")).toHaveAttribute("alt", imageAlt(store));
-          if (store.article.exit_walk) await expect(page.locator("#card .article-details")).toContainText(store.article.exit_walk);
-        } else if (isExampleStore(store)) {
-          await expect(page.locator("#card .cfoot")).toContainText("價格為示意");
-          await expect(page.locator("#card .fc .ph img")).toHaveAttribute("alt", imageAlt(store));
-        } else {
-          await expect(page.locator("#card .cfoot")).not.toContainText("價格為示意");
-          await expect(page.locator("#card .fc .est")).not.toHaveText("示意");
-          await expect(page.locator("#card .post-hours")).toHaveText(`營業時間：${store.hours || "未取得"}`);
-          if (store.exit) await expect(page.locator("#card .walk")).toContainText(store.exit);
-          if (store.exitWalkMin == null) await expect(page.locator("#card .walk")).toContainText("步行時間未取得");
+          await expect(page.locator("#card dd")).toHaveText([store.article.address?.trim() || "地址待確認", store.article.price?.trim() || "價格待確認"]);
+        } else if (isExampleStore(store) && !priceIsPending(store)) {
+          await expect(page.locator("#card dd").last()).toContainText("示意");
         }
         const pending = !store.article && priceIsPending(store);
         await expect(page.locator("#card .fc [data-testid=price-pending]")).toHaveCount(pending ? 1 : 0);
