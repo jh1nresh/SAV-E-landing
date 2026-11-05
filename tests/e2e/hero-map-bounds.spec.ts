@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { getPublicMetroData } from "../../lib/metro";
 const metro = getPublicMetroData();
 
-const sizes = [[1280, 800], [1440, 900], [390, 844], [375, 667]];
+const sizes = [[1280, 800], [1440, 900], [390, 844], [375, 667], [320, 568]];
 
 async function bounds(page: Page) {
   return page.evaluate(() => {
@@ -13,7 +13,7 @@ async function bounds(page: Page) {
       left: card.left - frame.left, top: card.top - frame.top,
       right: frame.right - card.right, bottom: frame.bottom - card.bottom,
       titleInside: title.top >= card.top && title.bottom <= card.bottom && title.left >= card.left && title.right <= card.right,
-      overflow: body.scrollWidth > body.clientWidth,
+      overflow: body.scrollWidth > body.clientWidth + 1 || body.scrollHeight > body.clientHeight + 1,
       stamp: getComputedStyle(document.querySelector("#stamp")!).visibility,
     };
   });
@@ -66,27 +66,9 @@ for (const [width, height] of sizes) {
         }
         await expect.poll(() => bounds(page)).toMatchObject({ titleInside: true, overflow: false, stamp: "hidden" });
         await expect.poll(async () => Math.min(...Object.entries(await bounds(page)).filter(([key]) => ["left", "right", "top", "bottom"].includes(key)).map(([, value]) => Number(value)))).toBeGreaterThanOrEqual(10);
-        if (width >= 1280 && stores[i]?.sourcePosts.length === 2) {
-          const rows = await page.locator("#fcslot .src").evaluateAll(els => els.map(el => el.getBoundingClientRect().top));
-          expect(rows[0]).toBe(rows[1]);
-        }
       }
       await page.evaluate(() => window.__savvyMap!.closeCard({focus:false}));
       await expect(page.locator("#stamp")).toHaveCSS("visibility", "visible");
     }
   });
 }
-
-test("N2 tall content scrolls inside the card", async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 667 });
-  await page.goto("/?reduce=1");
-  await page.waitForFunction(() => !!window.__savvyMap);
-  await page.evaluate(() => window.__savvyMap!.select("arena"));
-  await page.addStyleTag({content: ".card .fc { min-height: 600px; }"});
-  await page.evaluate(() => window.__savvyMap!.applySize());
-  expect((await bounds(page)).top).toBeGreaterThanOrEqual(11);
-  expect((await bounds(page)).bottom).toBeGreaterThanOrEqual(11);
-  expect(await page.locator("#cbody").evaluate(el => el.scrollHeight > el.clientHeight)).toBe(true);
-  await page.locator("#cbody").evaluate(el => { el.scrollTop = el.scrollHeight; });
-  expect(await page.locator("#cbody").evaluate(el => el.scrollTop)).toBeGreaterThan(0);
-});

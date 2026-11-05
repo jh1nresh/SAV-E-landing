@@ -3,11 +3,9 @@ import {
   PRICE_PENDING_LABEL,
   countBadge,
   countLabel,
-  footNote,
-  foodShopRows,
   formatMd,
   imageAlt,
-  isNewStore,
+  isExampleStore,
   stationIsNew,
   priceIsEstimate,
   priceIsPending,
@@ -23,12 +21,6 @@ export const MOTION = {
   cardOpen: [0.46, 0.74] as const,
   cardClose: [0.51, 0.86] as const,
   camera: [1.05, 0.76] as const,
-};
-
-const PLAT: Record<string, [string, string]> = {
-  ig: ["IG", "IG 貼文"],
-  threads: ["Th", "Threads 貼文"],
-  xhs: ["小", "小紅書 筆記"],
 };
 
 const WB = { x: -150, y: -170, w: 1000, h: 940 };
@@ -341,40 +333,20 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   let cw = 340;
   let ch = 250;
 
-  const chip = (p: MetroStore["sourcePosts"][number]) => {
-    const [ab, lab] = PLAT[p.platform] ?? ["·", "貼文"];
-    return `<a class="src" data-platform="${escapeHtml(p.platform)}" href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer"><b>${ab}</b>${lab} · ${formatMd(p.date)}<u>↗</u></a>`;
-  };
-  const chips = (posts: MetroStore["sourcePosts"]) => {
-    if (!posts.length) return `<span class="src pending">貼文即將發布</span>`;
-    return `<div class="srcrow">${posts.map(chip).join("")}</div>`;
-  };
-  const walk = (s: MetroStore) => `${s.exit ? `${escapeHtml(s.exit)} · ` : ""}${s.exitWalkMin == null ? "步行時間未取得" : `步行約 ${s.exitWalkMin} 分`}`;
   const price = (s: MetroStore) => {
+    if (s.article) return escapeHtml(s.article.price?.trim() || "價格待確認");
     if (priceIsPending(s)) {
-      return `<span class="est" data-testid="price-pending">${PRICE_PENDING_LABEL}</span>`;
+      return `<span data-testid="price-pending">${PRICE_PENDING_LABEL}${isExampleStore(s) ? "（示意）" : ""}</span>`;
     }
-    return `<span class="price"><small>NT$</small>${s.priceNT}${s.priceFrom ? "<em>起</em>" : ""}</span>${
-      priceIsEstimate(s) ? '<span class="est" title="價格未經查證">示意</span>' : '<span class="ok">已查證</span>'
-    }`;
+    return `NT$${s.priceNT}${s.priceFrom ? " 起" : ""}${isExampleStore(s) || priceIsEstimate(s) ? "（示意）" : ""}`;
   };
   const fcard = (s: MetroStore) => {
-    if (s.article) {
-      const rows = foodShopRows(s.article).map(([label, value]) =>
-        `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
-      return `<article class="fc article-fc"><div class="ph"><img src="${escapeHtml(publicImage(s.image ?? ""))}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async">${isNewStore(s, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div><div class="bd"><h4>${escapeHtml(s.name)}</h4><dl class="article-details">${rows}</dl></div>${s.sourcePosts.length ? chips(s.sourcePosts) : ""}</article>`;
-    }
     const img = publicImage(s.image ?? "");
     return `<article class="fc"><div class="ph">${
       img
         ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
-    }${isNewStore(s, clock) ? '<span class="newtag mini">NEW</span>' : ""}</div>
-<div class="bd"><h4>${escapeHtml(s.name)}</h4>${s.dish ? `<p class="dish">${escapeHtml(s.dish)}</p>` : ""}<div class="meta">${price(s)}${s.area ? `<span>${escapeHtml(s.area)}</span>` : ""}</div>${
-      s.exitWalkMin == null && s.kind === "example"
-        ? ""
-        : `<div class="walk"><svg viewBox="0 0 14 14" fill="none" stroke="#62594f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="2.4" r="1.4"/><path d="M8 4.5 L6.5 8 L8.5 10 L8 13 M6.5 8 L4.5 9 M8 5.5 L10 7 M6.5 8 L5.5 13"/></svg>${walk(s)}</div>`
-    }${s.kind === "post" ? `<p class="post-hours">營業時間：${escapeHtml(s.hours || "未取得")}</p>` : ""}</div>${chips(s.sourcePosts)}</article>`;
+    }</div><div class="bd"><h4>${escapeHtml(s.name)}</h4><dl class="article-details"><div><dt>地址</dt><dd>${escapeHtml(s.article?.address?.trim() || "地址待確認")}</dd></div><div><dt>價格</dt><dd>${price(s)}</dd></div></dl></div></article>`;
   };
 
   function fillCard(id: string) {
@@ -394,15 +366,14 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }
     const firstImg = list[0]?.image ? publicImage(list[0].image) : "";
     cmorph.style.backgroundImage = firstImg ? `url(${firstImg})` : "none";
-    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站 · ${escapeHtml(s.line)}</small></h3>${nw ? '<span class="newtag">NEW</span>' : ""}<span class="upd">更新於 ${formatMd(s.updatedAt ?? "")} · 共 ${countLabel(list)}</span></div>
+    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}</h3></div>
  <div id="fcslot">${fcard(list[0])}</div>
  <div class="thumbs" role="group" aria-label="這一站的店家">${list
    .map(
      (x, i) =>
        `<button type="button" data-i="${i}" aria-label="${escapeHtml(x.name)}" aria-current="${i === 0}" style="${x.image ? `background-image:url(${publicImage(x.image)})` : ""}"></button>`,
    )
-    .join("")}<span class="more">共 ${countLabel(list)}</span></div>
- <div class="cfoot">${escapeHtml(footNote(list[0]))}</div>${s.slug ? `<a class="article-link" href="/metro/${escapeHtml(s.slug)}" data-testid="metro-food-link-${escapeHtml(s.id)}">看${escapeHtml(s.name)}站完整美食清單 →</a>` : ""}`;
+    .join("")}<span class="more">共 ${countLabel(list)}</span></div>`;
     bindImgFallback(cbody);
     cbody.querySelectorAll<HTMLButtonElement>(".thumbs button").forEach((b) =>
       b.addEventListener("click", () => {
@@ -418,8 +389,6 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         window.setTimeout(
           () => {
             slot.innerHTML = fcard(list[i]);
-            const foot = cbody.querySelector(".cfoot");
-            if (foot) foot.textContent = footNote(list[i]);
             bindImgFallback(slot);
             cbody.scrollTop = 0;
             sizeCard();
@@ -972,8 +941,6 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   let drag: { y0: number; dy: number; moved: boolean; vy: number; ly: number; lt: number } | null = null;
   const onTouchStart = (e: TouchEvent) => {
     if (e.touches.length !== 1 || closing) return;
-    // A tall card owns native scrolling; its separate grab handle still dismisses.
-    if (cbody.contains(e.target as Node) && cbody.scrollHeight > cbody.clientHeight) return;
     drag = {
       y0: e.touches[0].clientY,
       dy: 0,
@@ -1017,7 +984,6 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   const onMouseDown = (e: MouseEvent) => {
     if ((e.target as Element).closest("button,a")) return;
-    if (cbody.contains(e.target as Node) && cbody.scrollHeight > cbody.clientHeight) return;
     const y0 = e.clientY;
     let moved = false;
     const mv = (ev: MouseEvent) => {
