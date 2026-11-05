@@ -1,0 +1,138 @@
+{
+  "n": 15,
+  "date": "2026-11-04",
+  "station": "中正紀念堂",
+  "slug": "chiang-kai-shek-memorial-hall",
+  "tagline": "早餐豆漿到宵夜魯肉飯，5 間先收",
+  "shops": [
+    {
+      "key": "dingyuan",
+      "name": "鼎元豆漿",
+      "dish": "鹹豆漿",
+      "price": "$35",
+      "price_source": "鄉民食堂 2026/06",
+      "address": "中正區金華街30-1號",
+      "exit_walk": "3號出口步行約5分鐘",
+      "hours": "05:00–11:30",
+      "sources": [
+        "https://goodeat.tw/food/dingyuan-soy-milk/",
+        "https://www.walkerland.com.tw/article/view/424084",
+        "https://appletrees.tw/blog/post/dingyuan",
+        "https://jayhellola.com/cks-nanmen-market-food-guide/"
+      ]
+    },
+    {
+      "key": "hehuan",
+      "name": "合歡刀削麵館",
+      "dish": "番茄煮牛肉麵",
+      "price": "$130–150",
+      "price_source": "食記 2026/06–09",
+      "address": "中正區羅斯福路一段8號2樓",
+      "exit_walk": "2號出口步行約3–5分鐘",
+      "hours": "10:00–15:00（週末到15:30，週一休）",
+      "sources": [
+        "https://tinalife.tw/blog/post/hehuanmian",
+        "https://auntie.tw/20260313/",
+        "https://sunnypoen101.pixnet.net/blog/posts/930328290429405432",
+        "https://icecreamcat.tw/hehuan-noodles/",
+        "https://appletrees.tw/blog/post/hehuan"
+      ]
+    },
+    {
+      "key": "jinfeng",
+      "name": "金峰魯肉飯",
+      "dish": "魯肉飯",
+      "price": "$35",
+      "price_source": "阿府 2026/09",
+      "address": "中正區羅斯福路一段10-1號",
+      "exit_walk": "2號出口步行約1分鐘",
+      "hours": "11:00–01:00（週日到23:00，週一休）",
+      "sources": [
+        "https://wanteatfood.com/57724",
+        "https://smilecat1215.pixnet.net/blog/posts/941171005962113897",
+        "https://appletrees.tw/blog/post/jfluroufan",
+        "https://jayhellola.com/cks-nanmen-market-food-guide/"
+      ]
+    },
+    {
+      "key": "zhenwei",
+      "name": "臻味胡椒餅",
+      "dish": "胡椒餅",
+      "price": "$50",
+      "price_source": "水晶安蹄 2026/02",
+      "address": "中正區羅斯福路一段25號",
+      "exit_walk": "3號出口步行約3分鐘",
+      "hours": "11:00–20:00（週日休）",
+      "sources": [
+        "https://auntie.tw/202702273-2/",
+        "https://icecreamcat.tw/jhen-wei/"
+      ]
+    },
+    {
+      "key": "letian",
+      "name": "樂天羊肉",
+      "dish": "當歸羊肉湯",
+      "price": "$140–160",
+      "price_source": "水晶安蹄 2026/04",
+      "address": "中正區羅斯福路一段25號",
+      "exit_walk": "3號出口步行約3分鐘",
+      "hours": "11:30–21:00（週日休）",
+      "sources": [
+        "https://auntie.tw/20260414/",
+        "https://appletrees.tw/blog/post/mutton",
+        "https://www.uncleric.com/2026/09/letian-mutton-soup-nanmen.html",
+        "https://globalfoodelicious.com/le-tian-lamb/"
+      ]
+    }
+  ],
+  "images": {
+    "photos": [
+      "photos/dingyuan.jpg",
+      "photos/hehuan.jpg",
+      "photos/jinfeng.jpg",
+      "photos/zhenwei.jpg",
+      "photos/letian.jpg"
+    ],
+    "slides": [
+      "slides/01-cover.png",
+      "slides/02-dingyuan.png",
+      "slides/03-hehuan.png",
+      "slides/04-jinfeng.png",
+      "slides/05-zhenwei.png",
+      "slides/06-letian.png",
+      "slides/07-summary.png",
+      "slides/08-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": null,
+    "threads": null,
+    "xiaohongshu": null
+  },
+  "sources": [
+    "https://goodeat.tw/food/dingyuan-soy-milk/",
+    "https://www.walkerland.com.tw/article/view/424084",
+    "https://appletrees.tw/blog/post/dingyuan",
+    "https://jayhellola.com/cks-nanmen-market-food-guide/",
+    "https://tinalife.tw/blog/post/hehuanmian",
+    "https://auntie.tw/20260313/",
+    "https://sunnypoen101.pixnet.net/blog/posts/930328290429405432",
+    "https://icecreamcat.tw/hehuan-noodles/",
+    "https://appletrees.tw/blog/post/hehuan",
+    "https://wanteatfood.com/57724",
+    "https://smilecat1215.pixnet.net/blog/posts/941171005962113897",
+    "https://appletrees.tw/blog/post/jfluroufan",
+    "https://jayhellola.com/cks-nanmen-market-food-guide/",
+    "https://auntie.tw/202702273-2/",
+    "https://icecreamcat.tw/jhen-wei/",
+    "https://auntie.tw/20260414/",
+    "https://appletrees.tw/blog/post/mutton",
+    "https://www.uncleric.com/2026/09/letian-mutton-soup-nanmen.html",
+    "https://globalfoodelicious.com/le-tian-lamb/"
+  ],
+  "_source_files": {
+    "data": "savvy-ready/2026-11-04/data.json",
+    "threads": "savvy-ready/2026-11-04/threads.txt",
+    "ig": "savvy-ready/2026-11-04/ig.txt"
+  }
+}

@@ -1,5 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { waitForMap } from "./helpers";
+import { readFileSync } from "node:fs";
+
+const STATION_COUNT = (JSON.parse(readFileSync("content/metro/stations.json", "utf8")) as unknown[]).length;
 
 const visibleArtworkHitTesting = `
   #stdots text, #stdots text *, .pin .ph, .pin .ph *,
@@ -153,7 +156,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
         .flatMap(pair => [pair.a, pair.b]).filter(key => key.startsWith("label:"))
         .map(key => key.slice("label:".length)))],
     }));
-    expect(result.count).toBe(14);
+    expect(result.count).toBe(STATION_COUNT);
     expect(result.offenders, result.offenders.join("\n")).toEqual([]);
   });
 }
