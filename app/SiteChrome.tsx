@@ -131,35 +131,39 @@ function SiteFooter() {
   );
 }
 
+const DOWNLOAD_LABELS = {
+  "zh-Hant": "在 App Store 下載",
+  en: "Download on the App Store",
+} as const;
+
 export function AppStoreBadge() {
   const { lang } = useSiteLang();
   const noteId = useId();
   return (
-    <div className="download-entry">
-      <a
-        className="badge"
-        href={TESTFLIGHT_URL}
-        aria-describedby={noteId}
-        data-swap="appstore-url"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img
-          className="zh"
-          src="/assets/appstore-badge-zh.svg"
-          alt="在 App Store 下載"
-          data-testid="appstore-badge-zh"
-        />
-        <img
-          className="en"
-          src="/assets/appstore-badge-en.svg"
-          alt="Download on the App Store"
-          data-testid="appstore-badge-en"
-        />
-      </a>
+    <a
+      className="download-entry badge"
+      href={TESTFLIGHT_URL}
+      aria-label={DOWNLOAD_LABELS[lang]}
+      aria-describedby={noteId}
+      data-swap="appstore-url"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        className="zh"
+        src="/assets/appstore-badge-zh.svg"
+        alt={DOWNLOAD_LABELS["zh-Hant"]}
+        data-testid="appstore-badge-zh"
+      />
+      <img
+        className="en"
+        src="/assets/appstore-badge-en.svg"
+        alt={DOWNLOAD_LABELS.en}
+        data-testid="appstore-badge-en"
+      />
       <p className="download-note" id={noteId}>
         {lang === "en" ? "iOS beta · Install with TestFlight" : "iOS 測試版 · 透過 TestFlight 安裝"}
       </p>
-    </div>
+    </a>
   );
 }

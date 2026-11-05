@@ -179,6 +179,7 @@ section {
 
 .download-entry {
   display: inline-flex;
+  text-decoration: none;
   flex-direction: column;
   align-items: flex-start;
   max-width: 100%;
