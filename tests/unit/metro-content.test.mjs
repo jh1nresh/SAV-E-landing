@@ -56,7 +56,7 @@ test('daily files add stations automatically and later daily replaces duplicate 
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 test('base duplicates and daily corrections use the latest supplied fields', () => {
-  assert.deepEqual(mergeFoodStations([base[0], base[0]], [{ ...base[0], tagline: null }]).map(s => s.tagline), [null]);
+  assert.deepEqual(mergeFoodStations([base[0], base[0]], [(({ map: _m, map_id: _id, ...rest }) => ({ ...rest, tagline: null }))(base[0])]).map(s => s.tagline), [null]);
 });
 test('unsafe content fails closed', () => {
   assert.throws(() => mergeFoodStations([{ ...base[0], slug: '../escape' }]));
@@ -90,9 +90,6 @@ test('changed-file gate allows only daily JSON and station images', () => {
 test('DESIGN catalog is required and overrides package coordinates', () => {
   const design = loadDesignStations(resolve('content/metro'));
   assert.equal(design.length, base.length);
-  const poisoned = mergeFoodStations(base, [{ ...base[0], map: { line: 'L_red', at: [0, 0] }, tagline: 'x' }]);
-  // without design arg, base map remains after strip of daily map
-  assert.deepEqual(poisoned[0].map, base[0].map);
   const applied = mergeFoodStations(base, [{ n: base[0].n, slug: base[0].slug, station: base[0].station, date: base[0].date, tagline: 'y' }], design);
   assert.deepEqual(applied[0].map, design[0].map);
   assert.equal(applied[0].tagline, 'y');
@@ -116,5 +113,19 @@ test('image traversal and missing images stop the build', () => {
       writeFileSync(join(dir, 'stations.json'), JSON.stringify([{ ...base[0], images: { photos: [path] } }]));
       assert.throws(() => buildFoodStations(root), /unsafe image path|missing image/);
     }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('F-6: daily web.json carrying map or map_id fails validation instead of being stripped', () => {
+  const clean = { n: base[0].n, slug: base[0].slug, station: base[0].station, date: base[0].date, tagline: 'ok' };
+  assert.throws(() => mergeFoodStations(base, [{ ...clean, map: { line: 'L_red', at: [0, 0] } }]), /must not include map; DESIGN owns coordinates/);
+  assert.throws(() => mergeFoodStations(base, [{ ...clean, map_id: 'arena' }]), /must not include map_id; DESIGN owns coordinates/);
+  assert.doesNotThrow(() => mergeFoodStations(base, [clean]));
+  const root = mkdtempSync(join(tmpdir(), 'metro-f6-'));
+  try {
+    cpSync('content', join(root, 'content'), { recursive: true });
+    mkdirSync(join(root, 'content/metro/daily/2099-01-01'), { recursive: true });
+    writeFileSync(join(root, 'content/metro/daily/2099-01-01/web.json'), JSON.stringify({ ...clean, map: base[0].map }));
+    assert.throws(() => buildFoodStations(root), /content\/metro\/daily\/2099-01-01\/web\.json \(station 1\) must not include map/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

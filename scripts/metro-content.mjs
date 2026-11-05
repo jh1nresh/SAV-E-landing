@@ -27,11 +27,16 @@ export function validateStationMap(s) {
   if (s.map.posterLabelOffset != null && !(Array.isArray(s.map.posterLabelOffset) && s.map.posterLabelOffset.length === 2 &&
       s.map.posterLabelOffset.every(Number.isFinite))) error(`station ${s.n} map.posterLabelOffset must be [dx, dy]`);
 }
-/** Strip map fields so GTM / daily packages can never overwrite DESIGN coordinates. */
-export function stripPackageMap(station) {
-  if (!station || typeof station !== 'object') return station;
-  const { map: _map, map_id: _mapId, ...rest } = stripInternal(station);
-  return rest;
+/**
+ * Daily / GTM packages must never carry map fields: DESIGN owns coordinates.
+ * Fail validation (do not silently strip) so a poisoned content PR cannot merge.
+ */
+export function rejectPackageMap(station, label = 'daily web.json') {
+  if (!station || typeof station !== 'object' || Array.isArray(station)) return station;
+  for (const key of ['map', 'map_id']) {
+    if (Object.hasOwn(station, key)) error(`${label} (station ${station.n ?? '?'}) must not include ${key}; DESIGN owns coordinates`);
+  }
+  return station;
 }
 
 export function loadDesignStations(contentRoot) {
@@ -75,7 +80,7 @@ export function applyDesignMaps(stations, design) {
 export function mergeFoodStations(base, daily = [], design = null) {
   if (!Array.isArray(base)) error('stations.json must be an array');
   const stations = new Map();
-  const cleanedDaily = daily.map(stripPackageMap);
+  const cleanedDaily = daily.map(station => rejectPackageMap(station));
   for (const raw of [...base, ...cleanedDaily]) {
     const s = { ...stations.get(raw?.n), ...stripInternal(raw) };
     if (!s || !Number.isSafeInteger(s.n) || s.n < 1 || typeof s.slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(s.slug ?? '') ||
@@ -110,7 +115,8 @@ export function buildFoodStations(root) {
   const design = loadDesignStations(content);
   const dailyRoot = resolve(content, 'daily');
   const daily = existsSync(dailyRoot) ? readdirSync(dailyRoot).filter(isCalendarDate).sort()
-    .map(date => resolve(dailyRoot, date, 'web.json')).filter(existsSync).map(read) : [];
+    .map(date => resolve(dailyRoot, date, 'web.json')).filter(existsSync)
+    .map(path => rejectPackageMap(read(path), relative(root, path))) : [];
   const stations = mergeFoodStations(read(resolve(content, 'stations.json')), daily, design);
   return stations.map(s => {
     const folder = `${String(s.n).padStart(2, '0')}-${s.slug}`;
