@@ -201,5 +201,22 @@
         30
       ]
     }
+  },
+  {
+    "n": 15,
+    "slug": "chiang-kai-shek-memorial-hall",
+    "station": "中正紀念堂",
+    "map": {
+      "line": "L_red",
+      "at": [
+        246,
+        268
+      ],
+      "label": "left",
+      "posterLabelOffset": [
+        -40,
+        2
+      ]
+    }
   }
 ]
