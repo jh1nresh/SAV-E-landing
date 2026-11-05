@@ -132,8 +132,8 @@
       ],
       "label": "right",
       "posterLabelOffset": [
-        0,
-        12
+        -56,
+        40
       ]
     }
   },
@@ -216,6 +216,22 @@
       "posterLabelOffset": [
         -40,
         2
+      ]
+    }
+  },
+  {
+    "n": 16,
+    "slug": "taipei-city-hall",
+    "station": "市政府",
+    "map": {
+      "line": "L_blue",
+      "at": [
+        420,
+        247
+      ],
+      "posterLabelOffset": [
+        0,
+        12
       ]
     }
   }
