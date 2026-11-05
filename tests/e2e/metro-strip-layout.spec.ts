@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { waitForMap } from './helpers';
-import { readFileSync } from 'node:fs';
+import { buildFoodStations } from '../../scripts/metro-content.mjs';
 
-const STATION_COUNT = (JSON.parse(readFileSync('content/metro/stations.json', 'utf8')) as unknown[]).length;
+const STATION_COUNT = buildFoodStations('.').length;
 
 for (const width of [1280, 1440]) {
   test(`desktop strip tabs clear the map and receive bottom-edge hits at ${width}`, async ({ page }) => {

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { buildFoodStations } from '../../scripts/metro-content.mjs';
 
-const STATION_COUNT = (JSON.parse(readFileSync('content/metro/stations.json', 'utf8')) as unknown[]).length;
+const STATION_COUNT = buildFoodStations('.').length;
 
 type Box = { x: number; y: number; width: number; height: number };
 // WebKit's getBoundingClientRect for SVG <text> ignores x/y, so map getBBox through getScreenCTM in every engine.

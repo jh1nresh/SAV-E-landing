@@ -61,12 +61,16 @@ test('new daily article and later correction automatically update map cards with
       shops: [{ key: 'new-shop', name: '新店', price: '$60–80', exit_walk: '1 號出口，3–5 分鐘', address: '<地址>', hours: null }],
       images: { photos: ['photos/new-shop.webp'] }, posts: {},
     };
+    writeFileSync(join(dir, 'design-stations.json'), JSON.stringify([
+      { n: 15, slug: 'new-station', station: '新站', map: { line: 'L_red', at: [128, 116] } },
+    ]));
     const photoDir = join(dir, 'images/15-new-station/photos');
     mkdirSync(photoDir, { recursive: true });
     writeFileSync(join(photoDir, 'new-shop.webp'), 'test-only-image');
     const daily = join(dir, 'daily/2026-11-04');
     mkdirSync(daily, { recursive: true });
-    writeFileSync(join(daily, 'web.json'), JSON.stringify(station));
+    const { map, map_id, ...dailyStation } = station;
+    writeFileSync(join(daily, 'web.json'), JSON.stringify(dailyStation));
     const [first] = articleMapStores(buildFoodStations(root));
     assert.equal(first.stationId, 'new-station');
     assert.equal(first.article.price, '$60–80');
@@ -76,13 +80,13 @@ test('new daily article and later correction automatically update map cards with
     assert.equal(isNewStore(first, '2026-11-04'), false); // No fabricated social post.
     station.shops[0].price = '$70–90';
     station.shops[0].hours = '11:00–20:00';
-    writeFileSync(join(daily, 'web.json'), JSON.stringify(station));
+    writeFileSync(join(daily, 'web.json'), JSON.stringify({ ...dailyStation, shops: station.shops, images: station.images }));
     const [updated] = articleMapStores(buildFoodStations(root));
     assert.equal(updated.id, first.id);
     assert.equal(updated.article.price, '$70–90');
     assert.equal(updated.article.hours, '11:00–20:00');
     station.shops[0].key = 'missing';
-    writeFileSync(join(daily, 'web.json'), JSON.stringify(station));
+    writeFileSync(join(daily, 'web.json'), JSON.stringify({ ...dailyStation, shops: station.shops, images: station.images }));
     assert.throws(() => buildFoodStations(root), /exactly one photo/);
   } finally { rmSync(root, { recursive: true }); }
 });

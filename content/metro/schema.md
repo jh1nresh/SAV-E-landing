@@ -2,7 +2,7 @@
 
 ## 檔案
 - `stations.json`：陣列，一站一筆，依 `n` 排序。現有 #1–#12。
-- 每日新站：`/workspace/shared/gtm/savvy-ready/<YYYY-MM-DD>/web.json`，內容是**單一站物件**（格式同 stations.json 的一筆）。GTM 每天 17:00 產出時一起寫。
+- 每日新站：GTM 上傳到 git 分支 `gtm/inbox/<YYYY-MM-DD>/web.json`（見 `docs/GTM-INBOX.md`），內容是**單一站物件**（格式同 stations.json 的一筆）。Actions 會同步進 `content/metro/daily/<YYYY-MM-DD>/web.json`。
 - 圖片：`images/<NN>-<slug>/photos/*.jpg`（各店底圖）、`images/<NN>-<slug>/slides/*.png`（輪播 1080×1350）。web.json 內的圖片路徑相對於該日資料夾（`photos/…`、`slides/…`）。
 - `gaps.json`：每站缺漏欄位（給人看，網站不需讀）。
 
@@ -19,8 +19,8 @@
 | posts.instagram / threads / xiaohongshu | string \| null | 已發貼文網址 |
 | sources | string[] \| null | 本站全部查證連結 |
 | _source_files | object | 內部欄位：抽取來源檔。**`_` 開頭的鍵網站要忽略** |
-| map | object | **必填**。首頁示意地圖位置：`{"line": "L_red"\|"L_blue"\|"L_green"\|"L_orange", "at": [x, y], "label"?: "left"\|"right"}`。`at` 是示意圖 viewBox 單位，不是經緯度，由 DESIGN 提供；build 會吸附到最近的線上。缺少或無效時 build 會失敗（`station <n> missing map position`）。`label` 可選，用來把站名放到點的左邊或右邊，避開旁邊的照片圖釘 |
-| map_id | string | 選填。舊首頁站點 id（arena／songshan／shuanglian／dongmen／houshanpi／gongguan），讓 `data/metro.json` 的店家 `stationId` 對得上。新站不要填，預設用 `slug`。daily web.json 沒寫 map／map_id 時沿用 stations.json 的值 |
+| map | object | **網站建置後必填**（由 `content/metro/design-stations.json` 套用）。daily `web.json` **不得**帶 `map`／`map_id`（見 F-6）。座標唯一來源是 DESIGN：`{"line": "L_red"\|"L_blue"\|"L_green"\|"L_orange", "at": [x, y], "label"?: "left"\|"right"}`。`at` 是示意圖 viewBox 單位。缺 DESIGN 條目時 build 失敗 |
+| map_id | string | 選填。舊首頁站點 id；新站不要填。daily `web.json` 不得帶此欄（F-6）；DESIGN／stations.json 才可保留 |
 
 ## shop 欄位
 | 欄位 | 說明 |
@@ -39,8 +39,8 @@
 - 查不到一律 `null`，不編造、不寫「未取得」。
 - 事實以實發貼文為準（#1–#7 取自 f1-evidence 實發全文，其餘取自當日 ig.txt / threads.txt / data.json）。
 - 價格與營業時間可能變動，網站請顯示「出發前再確認」。
-- 新增一站：GTM 寫 `savvy-ready/<日期>/web.json`；同時把該站附加到 `stations.json`（以 `n` 為鍵，重複就覆蓋，不要新增第二筆）。
-- 新站必須帶 `map`（向 DESIGN 要位置），否則首頁地圖 build 會失敗。
+- 新增一站：GTM 把日期包上傳到 `gtm/inbox/<YYYY-MM-DD>/`（見 `docs/GTM-INBOX.md`）；站點基底仍以 `stations.json` 的 `n` 為鍵（重複就覆蓋，不要新增第二筆）。
+- 新站座標只採用 DESIGN（`content/metro/design-stations.json`）核准的位置；daily `web.json` 不得帶 `map`／`map_id`，缺 DESIGN 條目時 build 會失敗。
 
 `map.labelOffset` 可選，格式 `[dx, dy]`（兩個有限數字，CSS px），用來在 `label` 預設位置上再微調站名；目前小巨蛋 `[-14, 0]`、雙連 `[0, 12]`，格式錯誤時 build 會失敗（`map.labelOffset must be [dx, dy]`）。只影響互動地圖時用這個欄位。
 
@@ -49,3 +49,8 @@
 站名使用 `label` 對應的預設位置；古亭使用 `"label": "left"`。所有站點的 `at` 與線上吸附點距離須在 2 個 viewBox 單位以內。
 
 首頁照片圖釘、店家數和卡片內容由同一份文章的 `shops` 與 `images.photos` 自動產生。只需更新 stations.json 或 daily web.json 與照片，不用另改 data/metro.json。店名／配圖缺漏或 key 重複會讓建置失敗。
+
+## GTM inbox（2026-11-05）
+- 上傳入口改為 git 分支 `gtm/inbox`／`<YYYY-MM-DD>/`（見 `docs/GTM-INBOX.md`），不再依賴本機 `/workspace/shared/gtm/savvy-ready`。
+- 地圖座標的唯一核准來源：`content/metro/design-stations.json`（DESIGN）。daily `web.json` 不得帶 `map`／`map_id`；build 會套用 DESIGN 並在缺條目時失敗。
+- 內容 auto-merge 只允許 `content/metro/daily/**/web.json` 與 `content/metro/images/<NN-slug>/{photos,slides}/*`。

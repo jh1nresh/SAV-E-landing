@@ -1,0 +1,222 @@
+[
+  {
+    "n": 1,
+    "slug": "xiaojudan",
+    "station": "小巨蛋",
+    "map": {
+      "line": "L_green",
+      "at": [
+        440,
+        142
+      ],
+      "labelOffset": [
+        -14,
+        0
+      ]
+    },
+    "map_id": "arena"
+  },
+  {
+    "n": 2,
+    "slug": "raohe-songshan",
+    "station": "饒河/松山",
+    "map": {
+      "line": "L_green",
+      "at": [
+        598,
+        86
+      ]
+    },
+    "map_id": "songshan"
+  },
+  {
+    "n": 3,
+    "slug": "shuanglian",
+    "station": "雙連",
+    "map": {
+      "line": "L_red",
+      "at": [
+        128,
+        116
+      ],
+      "label": "left",
+      "labelOffset": [
+        0,
+        12
+      ]
+    },
+    "map_id": "shuanglian"
+  },
+  {
+    "n": 4,
+    "slug": "dongmen",
+    "station": "東門",
+    "map": {
+      "line": "L_red",
+      "at": [
+        300,
+        302
+      ]
+    },
+    "map_id": "dongmen"
+  },
+  {
+    "n": 5,
+    "slug": "houshanpi",
+    "station": "後山埤",
+    "map": {
+      "line": "L_blue",
+      "at": [
+        500,
+        268
+      ]
+    },
+    "map_id": "houshanpi"
+  },
+  {
+    "n": 6,
+    "slug": "shilin",
+    "station": "士林",
+    "map": {
+      "line": "L_red",
+      "at": [
+        16,
+        -59
+      ],
+      "label": "right",
+      "posterLabelOffset": [
+        20,
+        0
+      ]
+    }
+  },
+  {
+    "n": 7,
+    "slug": "gongguan",
+    "station": "公館",
+    "map": {
+      "line": "L_green",
+      "at": [
+        196,
+        440
+      ]
+    },
+    "map_id": "gongguan"
+  },
+  {
+    "n": 8,
+    "slug": "nanjing-fuxing",
+    "station": "南京復興",
+    "map": {
+      "line": "L_green",
+      "at": [
+        372,
+        166
+      ],
+      "label": "left",
+      "posterLabelOffset": [
+        -22,
+        0
+      ]
+    }
+  },
+  {
+    "n": 9,
+    "slug": "zhongxiao-fuxing",
+    "station": "忠孝復興",
+    "map": {
+      "line": "L_blue",
+      "at": [
+        372,
+        234
+      ],
+      "label": "right",
+      "posterLabelOffset": [
+        0,
+        12
+      ]
+    }
+  },
+  {
+    "n": 10,
+    "slug": "ximen",
+    "station": "西門",
+    "map": {
+      "line": "L_blue",
+      "at": [
+        -40,
+        199
+      ]
+    }
+  },
+  {
+    "n": 11,
+    "slug": "daan",
+    "station": "大安",
+    "map": {
+      "line": "L_red",
+      "at": [
+        351,
+        363
+      ]
+    }
+  },
+  {
+    "n": 12,
+    "slug": "guting",
+    "station": "古亭",
+    "map": {
+      "line": "L_green",
+      "at": [
+        221,
+        310
+      ],
+      "label": "left",
+      "posterLabelOffset": [
+        -22,
+        0
+      ]
+    }
+  },
+  {
+    "n": 13,
+    "slug": "zhongshan",
+    "station": "中山",
+    "map": {
+      "line": "L_red",
+      "at": [
+        157,
+        157
+      ]
+    }
+  },
+  {
+    "n": 14,
+    "slug": "daqiaotou",
+    "station": "大橋頭",
+    "map": {
+      "line": "L_orange",
+      "at": [
+        8,
+        30
+      ]
+    }
+  },
+  {
+    "n": 15,
+    "slug": "chiang-kai-shek-memorial-hall",
+    "station": "中正紀念堂",
+    "map": {
+      "line": "L_red",
+      "at": [
+        246,
+        268
+      ],
+      "label": "left",
+      "posterLabelOffset": [
+        -40,
+        2
+      ]
+    }
+  }
+]

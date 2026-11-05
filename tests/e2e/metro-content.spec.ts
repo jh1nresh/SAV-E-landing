@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { mergeFoodStations } from '../../scripts/metro-content.mjs';
+import { mergeFoodStations, loadDesignStations } from '../../scripts/metro-content.mjs';
 
 type Shop = {
   name?: string | null;
@@ -38,8 +38,9 @@ const dailyStations = existsSync(dailyDir)
         return existsSync(path) ? [JSON.parse(readFileSync(path, 'utf8')) as Station] : [];
       })
   : [];
-// Same merge the site serves: stations.json, then each daily file merges fields into the station with the same n.
-const stations = mergeFoodStations(baseStations, dailyStations) as Station[];
+// Same merge the site serves: stations.json + daily + DESIGN (daily packages omit map per F-6).
+const designCatalog = loadDesignStations('content/metro');
+const stations = mergeFoodStations(baseStations, dailyStations, designCatalog) as Station[];
 const disclaimer = '營業時間、價格可能調整，出發前再確認';
 
 test('food list shows source disclaimer and every station', async ({ page }) => {
