@@ -8,33 +8,42 @@ const paths = [root, ...guides.map(({ slug }) => `${root}/${slug}`)];
 
 for (const width of [390, 1280]) {
   test(`guides remain readable without JavaScript at ${width}px`, async ({ browser }, testInfo) => {
+    // WebKit + no-JS + fullPage at 390px can exceed the default 60s under CI load
+    // (chromium same test ~2s; webkit 1280 ~7s; webkit 390 timed out once on #45).
+    test.setTimeout(120_000);
     const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width, height: 844 }, baseURL: "http://127.0.0.1:3000" });
     try {
       const page = await context.newPage();
       for (const [index, path] of paths.entries()) {
-        const response = await page.goto(path);
-        expect(response?.status()).toBe(200);
-        await expect(page.locator("main")).toHaveAttribute("lang", "zh-Hant");
-        await expect(page.locator("h1")).toHaveCount(1);
-        await expect(page.locator("h1")).toBeVisible();
-        await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `${origin}${path}`);
-        await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /.+/);
-        await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
-        const overflow = await page.evaluate(() => ({ page: document.documentElement.scrollWidth > innerWidth, elements: [...document.querySelectorAll("main *")].filter(el => {
-          const r = el.getBoundingClientRect(); return r.width > 0 && (r.left < -1 || r.right > innerWidth + 1);
-        }).map(el => el.tagName) }));
-        expect(overflow).toEqual({ page: false, elements: [] });
-        if (index) {
-          const guide = guides[index - 1];
-          await expect(page).toHaveTitle(guide.title);
-          for (const section of guide.sections) await expect(page.getByRole("heading", { name: section.heading, exact: true })).toBeVisible();
-          await expect(page.getByRole("link", { name: "查看 Savvy TestFlight 測試版 ↗" })).toHaveAttribute("href", process.env.NEXT_PUBLIC_TESTFLIGHT_URL || "https://testflight.apple.com/join/aSVm9hRJ");
-          await expect(page.locator("article")).toContainText("測試版操作參考");
-          await expect(page.locator("article")).toContainText("Map Stamp");
-          for (const entry of guides.filter(g => g.slug !== guide.slug)) await expect(page.locator(`a[href="${root}/${entry.slug}"]`)).toBeVisible();
-        }
-        await mkdir("guide-screenshots", { recursive: true });
-        await page.screenshot({ path: `guide-screenshots/${testInfo.project.name}-${index}-${width}.png`, fullPage: true });
+        await test.step(path, async () => {
+          const response = await page.goto(path);
+          expect(response?.status()).toBe(200);
+          await expect(page.locator("main")).toHaveAttribute("lang", "zh-Hant");
+          await expect(page.locator("h1")).toHaveCount(1);
+          await expect(page.locator("h1")).toBeVisible();
+          await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `${origin}${path}`);
+          await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /.+/);
+          await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
+          const overflow = await page.evaluate(() => ({ page: document.documentElement.scrollWidth > innerWidth, elements: [...document.querySelectorAll("main *")].filter(el => {
+            const r = el.getBoundingClientRect(); return r.width > 0 && (r.left < -1 || r.right > innerWidth + 1);
+          }).map(el => el.tagName) }));
+          expect(overflow).toEqual({ page: false, elements: [] });
+          if (index) {
+            const guide = guides[index - 1];
+            await expect(page).toHaveTitle(guide.title);
+            for (const section of guide.sections) await expect(page.getByRole("heading", { name: section.heading, exact: true })).toBeVisible();
+            await expect(page.getByRole("link", { name: "查看 Savvy TestFlight 測試版 ↗" })).toHaveAttribute("href", process.env.NEXT_PUBLIC_TESTFLIGHT_URL || "https://testflight.apple.com/join/aSVm9hRJ");
+            await expect(page.locator("article")).toContainText("測試版操作參考");
+            await expect(page.locator("article")).toContainText("Map Stamp");
+            for (const entry of guides.filter(g => g.slug !== guide.slug)) await expect(page.locator(`a[href="${root}/${entry.slug}"]`)).toBeVisible();
+          }
+          await mkdir("guide-screenshots", { recursive: true });
+          // fullPage on WebKit+no-JS at 390 hung once under CI; viewport still captures the readable top.
+          await page.screenshot({
+            path: `guide-screenshots/${testInfo.project.name}-${index}-${width}.png`,
+            fullPage: testInfo.project.name !== "webkit",
+          });
+        });
       }
     } finally { await context.close(); }
   });
