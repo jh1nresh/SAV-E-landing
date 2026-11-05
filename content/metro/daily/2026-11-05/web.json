@@ -1,0 +1,144 @@
+{
+  "n": 16,
+  "date": "2026-11-05",
+  "station": "市政府",
+  "slug": "taipei-city-hall",
+  "tagline": "米粉湯、烏龍麵到魯肉飯，5 間先收",
+  "shops": [
+    {
+      "key": "hutao",
+      "name": "胡饕米粉湯",
+      "dish": "痛風蛤蠣米粉湯",
+      "price": "$135",
+      "price_source": "WalkerLand 2025/07",
+      "address": "信義區永吉路30巷158弄3號",
+      "exit_walk": "4號出口步行約4分鐘",
+      "hours": "11:00–22:00",
+      "sources": [
+        "https://wanteatfood.com/67251",
+        "https://whitneyblog.com/hutao-taipei-city-hall/",
+        "https://www.walkerland.com.tw/article/view/414539",
+        "https://rankedfood.com/restaurant/胡饕米粉湯-台北市府店/",
+        "https://www.google.com/maps/search/?api=1&query=胡饕米粉湯+台北市府店"
+      ]
+    },
+    {
+      "key": "komugis",
+      "name": "小小麥（永吉店）",
+      "dish": "麻奶明太子鮮貝烏龍麵",
+      "price": "$199",
+      "price_source": "pattieeat 2026/10",
+      "address": "信義區永吉路30巷158弄16號",
+      "exit_walk": "4號出口步行約3分鐘",
+      "hours": "12:00–14:00、17:30–00:00",
+      "sources": [
+        "https://pattieeat.com/taipei-komugi-tpe3/",
+        "https://komugis.tw/store/",
+        "https://maps.app.goo.gl/afr3uM2SYWiDcHzL7",
+        "https://www.google.com/maps/place/小小麥台北永吉店/@25.0422158,121.5681074,17z/data=!4m6!3m5!1s0x3442ab4483adc58d:0xee9dbedd4a85db62"
+      ]
+    },
+    {
+      "key": "xinniangzi",
+      "name": "新娘子麵館（忠孝店）",
+      "dish": "皮蛋乾麵",
+      "price": "$80",
+      "price_source": "marsfood 2026/06",
+      "address": "信義區忠孝東路五段41號",
+      "exit_walk": "1號出口步行約1分鐘",
+      "hours": "11:00–21:30",
+      "sources": [
+        "https://marsfood.tw/xinniangzi-noodle-shop/",
+        "https://wanteatfood.com/31875",
+        "https://www.google.com/maps/place/新娘子麵館（忠孝店）/@25.0414549,121.5661612,17z/data=!4m6!3m5!1s0x3442ab4b1ca66dfb:0xc8bae2577322b64e"
+      ]
+    },
+    {
+      "key": "weijia",
+      "name": "味家魯肉飯",
+      "dish": "魯肉飯",
+      "price": "$35",
+      "price_source": "米寶麻 2026/07",
+      "address": "信義區忠孝東路四段559巷18之1號",
+      "exit_walk": "1號出口步行約5分鐘",
+      "hours": "11:00–20:30",
+      "sources": [
+        "https://mibaoma.tw/wei-jia/",
+        "https://wanteatfood.com/72377",
+        "https://pekoblog.tw/weijia/",
+        "https://www.google.com/maps/place/味家魯肉飯/@25.0423579,121.5637543,17z/data=!4m6!3m5!1s0x3442abbeccb28a91:0x3cf6069832427055"
+      ]
+    },
+    {
+      "key": "wuding",
+      "name": "武鼎越豐越南麵食館",
+      "dish": "月亮蝦餅",
+      "price": "$300",
+      "price_source": "wisely 2026/05",
+      "address": "信義區永吉路30巷167弄2號",
+      "exit_walk": "4號出口步行約3分鐘",
+      "hours": "11:00–14:30、17:00–20:30（週一休）",
+      "sources": [
+        "https://wisely.tw/read-34807.html",
+        "https://jayhellola.com/quan-pho-viet-nam/",
+        "https://metrobites.app/taipei/taipei-city-hall/food/武鼎越豐",
+        "https://rankedfood.com/restaurant/武鼎越豐/",
+        "https://maps.app.goo.gl/LdupT8RrHnBdTrRu9",
+        "https://www.google.com/maps/place/武鼎越豐/@25.0418211,121.5688422,17z/data=!4m6!3m5!1s0x3442abbc8861d52d:0xc3d77c1dbab65d64"
+      ]
+    }
+  ],
+  "images": {
+    "photos": [
+      "photos/hutao.jpg",
+      "photos/komugis.jpg",
+      "photos/xinniangzi.jpg",
+      "photos/weijia.jpg",
+      "photos/wuding.jpg"
+    ],
+    "slides": [
+      "slides/01-cover.png",
+      "slides/02-hutao.png",
+      "slides/03-komugis.png",
+      "slides/04-xinniangzi.png",
+      "slides/05-weijia.png",
+      "slides/06-wuding.png",
+      "slides/07-summary.png",
+      "slides/08-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": "https://www.instagram.com/p/DfW5e6elhOk/",
+    "threads": "https://www.threads.com/@savvysave_/post/DfW6OeLlWK6",
+    "xiaohongshu": null
+  },
+  "sources": [
+    "https://wanteatfood.com/67251",
+    "https://whitneyblog.com/hutao-taipei-city-hall/",
+    "https://www.walkerland.com.tw/article/view/414539",
+    "https://rankedfood.com/restaurant/胡饕米粉湯-台北市府店/",
+    "https://www.google.com/maps/search/?api=1&query=胡饕米粉湯+台北市府店",
+    "https://pattieeat.com/taipei-komugi-tpe3/",
+    "https://komugis.tw/store/",
+    "https://maps.app.goo.gl/afr3uM2SYWiDcHzL7",
+    "https://www.google.com/maps/place/小小麥台北永吉店/@25.0422158,121.5681074,17z/data=!4m6!3m5!1s0x3442ab4483adc58d:0xee9dbedd4a85db62",
+    "https://marsfood.tw/xinniangzi-noodle-shop/",
+    "https://wanteatfood.com/31875",
+    "https://www.google.com/maps/place/新娘子麵館（忠孝店）/@25.0414549,121.5661612,17z/data=!4m6!3m5!1s0x3442ab4b1ca66dfb:0xc8bae2577322b64e",
+    "https://mibaoma.tw/wei-jia/",
+    "https://wanteatfood.com/72377",
+    "https://pekoblog.tw/weijia/",
+    "https://www.google.com/maps/place/味家魯肉飯/@25.0423579,121.5637543,17z/data=!4m6!3m5!1s0x3442abbeccb28a91:0x3cf6069832427055",
+    "https://wisely.tw/read-34807.html",
+    "https://jayhellola.com/quan-pho-viet-nam/",
+    "https://metrobites.app/taipei/taipei-city-hall/food/武鼎越豐",
+    "https://rankedfood.com/restaurant/武鼎越豐/",
+    "https://maps.app.goo.gl/LdupT8RrHnBdTrRu9",
+    "https://www.google.com/maps/place/武鼎越豐/@25.0418211,121.5688422,17z/data=!4m6!3m5!1s0x3442abbc8861d52d:0xc3d77c1dbab65d64"
+  ],
+  "_source_files": {
+    "data": "savvy-ready/2026-11-05/data.json",
+    "threads": "savvy-ready/2026-11-05/threads.txt",
+    "ig": "savvy-ready/2026-11-05/ig.txt"
+  }
+}

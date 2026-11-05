@@ -7,11 +7,13 @@ const root = "/zh-tw/guides";
 const paths = [root, ...guides.map(({ slug }) => `${root}/${slug}`)];
 
 for (const width of [390, 1280]) {
-  test(`guides remain readable without JavaScript at ${width}px`, async ({ browser }, testInfo) => {
-    const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width, height: 844 }, baseURL: "http://127.0.0.1:3000" });
-    try {
-      const page = await context.newPage();
-      for (const [index, path] of paths.entries()) {
+  test.describe(`guides without JavaScript at ${width}px`, () => {
+    test.use({ javaScriptEnabled: false, viewport: { width, height: 844 } });
+
+    // Each route gets a fresh page/context and its own timeout. Reusing a no-JS
+    // WebKit page across guide navigations stalled in Linux CI at page.goto().
+    for (const [index, path] of paths.entries()) {
+      test(`${path} remains readable`, async ({ page }, testInfo) => {
         const response = await page.goto(path);
         expect(response?.status()).toBe(200);
         await expect(page.locator("main")).toHaveAttribute("lang", "zh-Hant");
@@ -34,9 +36,12 @@ for (const width of [390, 1280]) {
           for (const entry of guides.filter(g => g.slug !== guide.slug)) await expect(page.locator(`a[href="${root}/${entry.slug}"]`)).toBeVisible();
         }
         await mkdir("guide-screenshots", { recursive: true });
-        await page.screenshot({ path: `guide-screenshots/${testInfo.project.name}-${index}-${width}.png`, fullPage: true });
-      }
-    } finally { await context.close(); }
+        await page.screenshot({
+          path: `guide-screenshots/${testInfo.project.name}-${index}-${width}.png`,
+          fullPage: true,
+        });
+      });
+    }
   });
 }
 

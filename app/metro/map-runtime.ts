@@ -653,7 +653,9 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         card.style.transformOrigin = `${ox}px ${oy}px`;
         card.style.transform = `translate3d(0,${dy}px,0) scale(${scale.toFixed(4)},${scaleY.toFixed(4)})`;
       } else {
-        const left = Math.min(W - cw - 11, Math.max(11, pn.sx - cw / 2));
+        // Keep the card clear of the 全圖 HUD (top-right) while it is shown.
+        const hud = resetBtn.classList.contains("on") ? resetBtn.offsetWidth + 11 : 0;
+        const left = Math.min(W - cw - 11 - hud, Math.max(11, pn.sx - cw / 2));
         const top = Math.max(11, Math.min(H - ch - 11, pn.sy - ch - 10));
         const tx = pn.sx - left;
         card.style.setProperty("--tx", `${tx}px`);

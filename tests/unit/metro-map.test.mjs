@@ -73,7 +73,7 @@ test('interactive map labelOffset stays at the DESIGN r13 values; poster offsets
   const offsets = Object.fromEntries(base.filter(s => s.map.labelOffset).map(s => [s.station, s.map.labelOffset]));
   assert.deepEqual(offsets, { 小巨蛋: [-14, 0], 雙連: [0, 12] });
   const poster = Object.fromEntries(base.filter(s => s.map.posterLabelOffset).map(s => [s.station, s.map.posterLabelOffset]));
-  assert.deepEqual(poster, { 士林: [20, 0], 南京復興: [-22, 0], 忠孝復興: [0, 12], 古亭: [-22, 0], 中正紀念堂: [-40, 2] });
+  assert.deepEqual(poster, { 士林: [20, 0], 南京復興: [-22, 0], 忠孝復興: [-56, 40], 市政府: [0, 12], 古亭: [-22, 0], 中正紀念堂: [-40, 2] });
 });
 
 

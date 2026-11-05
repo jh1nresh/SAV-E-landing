@@ -19,7 +19,7 @@ export const MAP_SVG = `<svg id="mapsvg" viewBox="-150 -170 1000 940" xmlns="htt
 </g>
 <g filter="url(#wobS)">
 <use href="#tree" x="372" y="226"/><use href="#tree" x="588" y="236"/><use href="#tree" x="112" y="356"/><use href="#tree" x="470" y="338"/><use href="#tree" x="236" y="140"/>
-<use href="#house" x="396" y="280"/><use href="#house" x="600" y="334"/><use href="#house" x="330" y="108"/><use href="#house" x="250" y="170"/>
+<use href="#house" x="540" y="316"/><use href="#house" x="600" y="334"/><use href="#house" x="330" y="108"/><use href="#house" x="250" y="170"/>
 <use href="#tree" x="690" y="150"/><use href="#tree" x="770" y="260"/><use href="#tree" x="640" y="430"/><use href="#tree" x="420" y="520"/><use href="#tree" x="130" y="500"/><use href="#tree" x="560" y="-60"/><use href="#tree" x="120" y="-40"/><use href="#tree" x="250" y="-80"/>
 <use href="#house" x="720" y="210"/><use href="#house" x="480" y="470"/><use href="#house" x="260" y="500"/><use href="#house" x="90" y="420"/><use href="#house" x="640" y="-30"/><use href="#house" x="60" y="-70"/>
 </g>
