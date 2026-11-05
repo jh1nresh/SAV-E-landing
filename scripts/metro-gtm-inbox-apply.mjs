@@ -71,7 +71,7 @@ function extractDeliveryKeys(body, keys) {
   }
 }
 
-/** Collect delivery keys from every open/closed PR body (paginated; closed includes merged). */
+/** Collect delivery keys from open PRs and merged PRs only (paginated). Closed-unmerged must not count as landed. */
 function knownDeliveryKeys() {
   const keys = new Set();
   for (const state of ['open', 'closed']) {
@@ -80,6 +80,10 @@ function knownDeliveryKeys() {
       `repos/${repo}/pulls?state=${state}&per_page=100`,
     ]));
     for (const pr of pages.flat()) {
+      if (state === 'closed' && !pr.merged_at) continue;
+      // Same-repo only: fork PR bodies must not poison the replay guard.
+      const headRepo = pr.head?.repo?.full_name;
+      if (!headRepo || headRepo !== repo) continue;
       extractDeliveryKeys(pr.body || '', keys);
     }
   }
@@ -100,8 +104,10 @@ function ensureContentPr(existing, entry) {
 }
 
 const landedDeliveries = knownDeliveryKeys();
+const failures = [];
 
 for (const entry of plan.packages || []) {
+  try {
   if (entry.action === 'skip') {
     console.log(`skip ${entry.packageDir}: ${entry.reason}`);
     continue;
@@ -186,4 +192,13 @@ for (const entry of plan.packages || []) {
 
   ensureContentPr(existing, entry);
   if (entry.deliveryKey) landedDeliveries.add(entry.deliveryKey);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`Failed ${entry.packageDir || entry.branch || entry.action}: ${msg}`);
+    failures.push({ packageDir: entry.packageDir, branch: entry.branch, error: msg });
+  }
+}
+
+if (failures.length) {
+  throw new Error(`metro-gtm-inbox-apply failed ${failures.length} package(s): ${failures.map(f => f.packageDir || f.branch).join(', ')}`);
 }

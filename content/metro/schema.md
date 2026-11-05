@@ -19,7 +19,7 @@
 | posts.instagram / threads / xiaohongshu | string \| null | 已發貼文網址 |
 | sources | string[] \| null | 本站全部查證連結 |
 | _source_files | object | 內部欄位：抽取來源檔。**`_` 開頭的鍵網站要忽略** |
-| map | object | **網站建置後必填**（由 `content/metro/design-stations.json` 套用）。daily `web.json` **不得**帶 `map`／`map_id`（見 F-6）。座標唯一來源是 DESIGN：`{"line": "L_red"|"L_blue"|"L_green"|"L_orange", "at": [x, y], "label"?: "left"|"right"}`。`at` 是示意圖 viewBox 單位。缺 DESIGN 條目時 build 失敗 |
+| map | object | **網站建置後必填**（由 `content/metro/design-stations.json` 套用）。daily `web.json` **不得**帶 `map`／`map_id`（見 F-6）。座標唯一來源是 DESIGN：`{"line": "L_red"\|"L_blue"\|"L_green"\|"L_orange", "at": [x, y], "label"?: "left"\|"right"}`。`at` 是示意圖 viewBox 單位。缺 DESIGN 條目時 build 失敗 |
 | map_id | string | 選填。舊首頁站點 id；新站不要填。daily `web.json` 不得帶此欄（F-6）；DESIGN／stations.json 才可保留 |
 
 ## shop 欄位
