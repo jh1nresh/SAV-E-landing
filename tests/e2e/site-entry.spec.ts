@@ -47,21 +47,24 @@ for (const width of [375, 1280]) {
       await expect(page.locator(".download-note")).toHaveCount(2);
       const ids = await page.locator(".download-note").evaluateAll(notes => notes.map(note => note.id));
       expect(new Set(ids).size).toBe(2);
-      await expect(page.locator(".download-entry")).toHaveCount(2);
+      await expect(page.locator("a.download-entry")).toHaveCount(2);
       await expect(page.locator(".hero .sub:visible")).toHaveCount(1);
       for (const entry of await page.locator(".download-entry").all()) {
         await expect(entry.locator(".download-note")).toBeVisible();
         await expect(entry.locator(".download-note")).toHaveText(description);
-        await expect(entry.locator(".badge")).toHaveAccessibleDescription(description);
-        await expect(entry.locator(".badge")).toHaveAttribute("href", process.env.NEXT_PUBLIC_TESTFLIGHT_URL || "https://testflight.apple.com/join/aSVm9hRJ");
-        await expect(entry.locator(".badge")).toHaveAttribute("rel", "noopener noreferrer");
+        await expect(entry).toHaveAccessibleName(language === "en" ? "Download on the App Store" : "在 App Store 下載");
+        await expect(entry).toHaveAccessibleDescription(description);
+        await expect(entry).toHaveAttribute("href", process.env.NEXT_PUBLIC_TESTFLIGHT_URL || "https://testflight.apple.com/join/aSVm9hRJ");
+        await expect(entry).toHaveAttribute("rel", "noopener noreferrer");
       }
       const badge = (await page.locator('[data-testid="hero-appstore"] .badge').boundingBox())!;
       expect(badge.y).toBeGreaterThanOrEqual(0);
       expect(badge.y + badge.height).toBeLessThanOrEqual(height);
       const note = (await page.locator('[data-testid="hero-appstore"] .download-note').boundingBox())!;
       expect(note.y + note.height).toBeLessThanOrEqual(height);
-      expect(note.y).toBeGreaterThanOrEqual(badge.y + badge.height);
+      const artwork = (await page.locator('[data-testid="hero-appstore"] .badge img:visible').boundingBox())!;
+      expect(note.y).toBeGreaterThanOrEqual(artwork.y + artwork.height);
+      expect(note.y + note.height).toBeLessThanOrEqual(badge.y + badge.height + 1);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       const contrast = await page.locator('nav .chip[aria-pressed="true"], .hero .sub:visible, .download-note').evaluateAll(contrastRatios);
       expect(contrast).toHaveLength(4);
@@ -71,15 +74,30 @@ for (const width of [375, 1280]) {
   });
 }
 
-test("TestFlight status and accessible descriptions also work without JavaScript", async ({ browser }) => {
+test("qualified downloads retain the URL and native activation without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 375, height: 667 } });
   try {
+    const destination = process.env.NEXT_PUBLIC_TESTFLIGHT_URL || "https://testflight.apple.com/join/aSVm9hRJ";
     const page = await context.newPage();
     await page.goto("/");
-    await expect(page.locator(".download-entry")).toHaveCount(2);
+    await expect(page.locator("a.download-entry")).toHaveCount(2);
     for (const entry of await page.locator(".download-entry").all()) {
       await expect(entry.locator(".download-note")).toBeVisible();
-      await expect(entry.locator(".badge")).toHaveAccessibleDescription("iOS 測試版 · 透過 TestFlight 安裝");
+      await expect(entry).toHaveAccessibleDescription("iOS 測試版 · 透過 TestFlight 安裝");
+      await expect(entry).toHaveAttribute("href", destination);
+      await expect(entry).toHaveAttribute("target", "_blank");
+      await expect(entry).toHaveAttribute("rel", "noopener noreferrer");
     }
+    // Keep the real URL contract above. Isolate native link activation from
+    // TestFlight-specific browser/OS handling; this is not an installation test.
+    const fixture = new URL("/__download-navigation-fixture", page.url()).href;
+    await context.route(fixture, route => route.fulfill({ status: 200, contentType: "text/html", body: "<title>Beta invitation fixture</title>" }));
+    await page.locator('[data-testid="hero-appstore"] .download-entry').evaluate((link, href) => link.setAttribute("href", href), fixture);
+    const popupPromise = page.waitForEvent("popup");
+    await page.locator('[data-testid="hero-appstore"] .download-note').click();
+    const popup = await popupPromise;
+    await expect(popup).toHaveURL(fixture);
+    await expect(popup).toHaveTitle("Beta invitation fixture");
+    await popup.close();
   } finally { await context.close(); }
 });
