@@ -7,9 +7,11 @@ import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations
 import { contentOnly, contentOnlyFromNameStatus, isAllowedMetroContentPath } from '../../scripts/metro-content-gate.mjs';
 import { foodShopRows, FOOD_DISCLAIMER } from '../../lib/metro-logic.mjs';
 const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
+const designCatalog = loadDesignStations(resolve('content/metro'));
 const daily = readdirSync('content/metro/daily').filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort()
   .map(d => `content/metro/daily/${d}/web.json`).filter(existsSync).map(p => JSON.parse(readFileSync(p, 'utf8')));
-const expected = mergeFoodStations(base, daily);
+// Pass DESIGN so a daily-only new station (map omitted per F-6) can initialize tests the same way production builds.
+const expected = mergeFoodStations(base, daily, designCatalog);
 test('all content stations preserve source display fields; served image paths exist', () => {
   const stations = buildFoodStations(resolve('.'));
   assert.equal(stations.length, expected.length);

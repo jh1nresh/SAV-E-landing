@@ -109,9 +109,11 @@ for (const entry of plan.packages || []) {
 
   rmSync(workRoot, { recursive: true, force: true });
   const cloneUrl = `https://x-access-token:${token}@github.com/${repo}.git`;
-  // Corrections must extend the open content PR branch; recreating from main cannot fast-forward.
-  // Also merge current main so content CI is not stuck on an outdated head after main moved.
-  if (existing) {
+  // Prefer an existing remote content branch (open PR, or retained after squash-merge).
+  // Recreating from main alone cannot fast-forward a retained tip and aborts the whole sync.
+  const remoteTips = run('git', ['ls-remote', '--heads', cloneUrl, entry.branch]);
+  const retainedRemote = Boolean(remoteTips);
+  if (existing || retainedRemote) {
     run('git', ['clone', '--branch', entry.branch, cloneUrl, workRoot]);
   } else {
     run('git', ['clone', '--depth', '1', '--branch', 'main', cloneUrl, workRoot]);
@@ -122,7 +124,7 @@ for (const entry of plan.packages || []) {
   run('git', ['-C', workRoot, 'config', 'user.email', 'metro-inbox[bot]@users.noreply.github.com']);
 
   let mergedMain = false;
-  if (existing) {
+  if (existing || retainedRemote) {
     run('git', ['-C', workRoot, 'fetch', 'origin', 'main']);
     const before = run('git', ['-C', workRoot, 'rev-parse', 'HEAD']);
     run('git', ['-C', workRoot, 'merge', '--no-edit', 'origin/main']);
@@ -138,8 +140,8 @@ for (const entry of plan.packages || []) {
   run('git', ['-C', workRoot, 'add', '--', ...entry.files.map(f => f.dest)]);
   const porcelain = run('git', ['-C', workRoot, 'status', '--porcelain']);
   if (!porcelain) {
-    // Merge-only correction: still push so the open PR's CI tracks current main.
-    if (existing && mergedMain) {
+    // Merge-only: still push so an open/retained branch tracks current main.
+    if ((existing || retainedRemote) && mergedMain) {
       run('git', ['-C', workRoot, 'push', '-u', 'origin', `HEAD:${entry.branch}`]);
       console.log(`Pushed main-merge (no delivery file changes) for ${entry.branch}`);
       if (existing) {
