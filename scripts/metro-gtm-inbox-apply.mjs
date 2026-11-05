@@ -39,16 +39,14 @@ if (!repo || !token) throw new Error('GH_REPO and GH_TOKEN required');
 const plan = JSON.parse(readFileSync(planPath, 'utf8'));
 
 function upsertIssue(title, body) {
-  // Paginate so a blocked issue beyond the first page is updated, not duplicated.
-  const hits = [];
-  for (let page = 1; page <= 20; page += 1) {
-    const batch = JSON.parse(gh([
-      'issue', 'list', '--state', 'open', '--limit', '100',
-      '--page', String(page), '--json', 'number,title',
-    ]));
-    hits.push(...batch.filter(i => i.title === title));
-    if (batch.length < 100) break;
-  }
+  // Paginate via REST so a blocked issue beyond the first page is updated, not duplicated.
+  // `gh issue list` has no --page; `gh api --paginate --slurp` returns every page.
+  const pages = JSON.parse(gh([
+    'api', '--paginate', '--slurp',
+    `repos/${repo}/issues?state=open&per_page=100`,
+  ]));
+  const issues = pages.flat().filter(i => !i.pull_request);
+  const hits = issues.filter(i => i.title === title);
   if (hits[0]) {
     gh(['issue', 'edit', String(hits[0].number), '--body', body]);
     console.log(`Updated issue #${hits[0].number}`);
@@ -64,6 +62,29 @@ function findOpenContentPr(branch) {
   return JSON.parse(json)[0] || null;
 }
 
+/** Collect delivery keys already present on open or merged PR bodies (replay guard). */
+function knownDeliveryKeys() {
+  const keys = new Set();
+  for (const state of ['open', 'merged']) {
+    const prs = JSON.parse(gh([
+      'pr', 'list', '--state', state, '--limit', '100', '--json', 'body',
+    ]));
+    for (const pr of prs) {
+      const body = pr.body || '';
+      for (const m of body.matchAll(/<!-- metro-inbox-delivery:\s*([^\s]+)\s*-->/g)) {
+        keys.add(m[1]);
+      }
+      // Also match bare deliveryKey lines from older bodies.
+      for (const m of body.matchAll(/\| Dedupe key \| `([^`]+)` \|/g)) {
+        keys.add(m[1]);
+      }
+    }
+  }
+  return keys;
+}
+
+const landedDeliveries = knownDeliveryKeys();
+
 for (const entry of plan.packages || []) {
   if (entry.action === 'skip') {
     console.log(`skip ${entry.packageDir}: ${entry.reason}`);
@@ -74,6 +95,11 @@ for (const entry of plan.packages || []) {
     continue;
   }
   if (entry.action !== 'content_pr') continue;
+
+  if (entry.deliveryKey && landedDeliveries.has(entry.deliveryKey)) {
+    console.log(`Delivery ${entry.deliveryKey} already landed (open or merged PR); skip`);
+    continue;
+  }
 
   const existing = findOpenContentPr(entry.branch);
   if (existing?.body?.includes(entry.deliveryKey)) {
@@ -87,14 +113,22 @@ for (const entry of plan.packages || []) {
   // Also merge current main so content CI is not stuck on an outdated head after main moved.
   if (existing) {
     run('git', ['clone', '--branch', entry.branch, cloneUrl, workRoot]);
-    run('git', ['-C', workRoot, 'fetch', 'origin', 'main']);
-    run('git', ['-C', workRoot, 'merge', '--no-edit', 'origin/main']);
   } else {
     run('git', ['clone', '--depth', '1', '--branch', 'main', cloneUrl, workRoot]);
     run('git', ['-C', workRoot, 'checkout', '-B', entry.branch]);
   }
+  // Identity must be set before any merge/commit that creates a commit object.
   run('git', ['-C', workRoot, 'config', 'user.name', 'savvy-landing-metro-inbox']);
   run('git', ['-C', workRoot, 'config', 'user.email', 'metro-inbox[bot]@users.noreply.github.com']);
+
+  let mergedMain = false;
+  if (existing) {
+    run('git', ['-C', workRoot, 'fetch', 'origin', 'main']);
+    const before = run('git', ['-C', workRoot, 'rev-parse', 'HEAD']);
+    run('git', ['-C', workRoot, 'merge', '--no-edit', 'origin/main']);
+    const after = run('git', ['-C', workRoot, 'rev-parse', 'HEAD']);
+    mergedMain = before !== after;
+  }
 
   for (const file of entry.files) {
     const dest = resolve(workRoot, file.dest);
@@ -104,7 +138,17 @@ for (const entry of plan.packages || []) {
   run('git', ['-C', workRoot, 'add', '--', ...entry.files.map(f => f.dest)]);
   const porcelain = run('git', ['-C', workRoot, 'status', '--porcelain']);
   if (!porcelain) {
-    console.log(`No file changes for ${entry.branch}`);
+    // Merge-only correction: still push so the open PR's CI tracks current main.
+    if (existing && mergedMain) {
+      run('git', ['-C', workRoot, 'push', '-u', 'origin', `HEAD:${entry.branch}`]);
+      console.log(`Pushed main-merge (no delivery file changes) for ${entry.branch}`);
+      if (existing) {
+        gh(['pr', 'edit', String(existing.number), '--title', entry.title, '--body', entry.body]);
+        console.log(`Updated PR #${existing.number} ${existing.url}`);
+      }
+    } else {
+      console.log(`No file changes for ${entry.branch}`);
+    }
     continue;
   }
   const staged = run('git', ['-C', workRoot, 'diff', '--cached', '--name-only'])
@@ -125,4 +169,5 @@ for (const entry of plan.packages || []) {
     ]);
     console.log(`Opened PR ${url}`);
   }
+  if (entry.deliveryKey) landedDeliveries.add(entry.deliveryKey);
 }

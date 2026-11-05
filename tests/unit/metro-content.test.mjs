@@ -89,9 +89,14 @@ test('changed-file gate allows only daily JSON and station images', () => {
 
 test('DESIGN catalog is required and overrides package coordinates', () => {
   const design = loadDesignStations(resolve('content/metro'));
-  assert.equal(design.length, base.length);
+  // DESIGN may ship ahead of stations.json (next-station coords); every live station must still match.
+  assert.ok(design.length >= base.length, 'DESIGN catalog must cover every live station');
+  for (const station of base) {
+    assert.ok(design.some(d => d.n === station.n), `missing DESIGN map for station n=${station.n}`);
+  }
   const applied = mergeFoodStations(base, [{ n: base[0].n, slug: base[0].slug, station: base[0].station, date: base[0].date, tagline: 'y' }], design);
-  assert.deepEqual(applied[0].map, design[0].map);
+  const designForFirst = design.find(d => d.n === base[0].n);
+  assert.deepEqual(applied[0].map, designForFirst.map);
   assert.equal(applied[0].tagline, 'y');
   assert.throws(() => applyDesignMaps([{ ...base[0], n: 999, slug: 'missing-design' }], design), /no DESIGN-approved map/);
 });
