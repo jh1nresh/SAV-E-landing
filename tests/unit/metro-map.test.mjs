@@ -14,7 +14,8 @@ const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
 test('every content station has a hero marker snapped within two units of its position', () => {
   const food = buildFoodStations(root);
   const hero = buildPublicMetro(raw, food).stations;
-  assert.equal(food.length, base.length);
+  // food may include daily-only stations beyond stations.json (DESIGN-approved onboarding).
+  assert.ok(food.length >= base.length);
   assert.equal(hero.length, food.length);
   for (const station of food) {
     const marker = hero.find(s => s.id === (station.map_id ?? station.slug));

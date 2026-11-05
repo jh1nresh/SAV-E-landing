@@ -62,25 +62,41 @@ function findOpenContentPr(branch) {
   return JSON.parse(json)[0] || null;
 }
 
-/** Collect delivery keys already present on open or merged PR bodies (replay guard). */
+function extractDeliveryKeys(body, keys) {
+  for (const m of (body || '').matchAll(/<!-- metro-inbox-delivery:\s*([^\s]+)\s*-->/g)) {
+    keys.add(m[1]);
+  }
+  for (const m of (body || '').matchAll(/\| Dedupe key \| `([^`]+)` \|/g)) {
+    keys.add(m[1]);
+  }
+}
+
+/** Collect delivery keys from every open/closed PR body (paginated; closed includes merged). */
 function knownDeliveryKeys() {
   const keys = new Set();
-  for (const state of ['open', 'merged']) {
-    const prs = JSON.parse(gh([
-      'pr', 'list', '--state', state, '--limit', '100', '--json', 'body',
+  for (const state of ['open', 'closed']) {
+    const pages = JSON.parse(gh([
+      'api', '--paginate', '--slurp',
+      `repos/${repo}/pulls?state=${state}&per_page=100`,
     ]));
-    for (const pr of prs) {
-      const body = pr.body || '';
-      for (const m of body.matchAll(/<!-- metro-inbox-delivery:\s*([^\s]+)\s*-->/g)) {
-        keys.add(m[1]);
-      }
-      // Also match bare deliveryKey lines from older bodies.
-      for (const m of body.matchAll(/\| Dedupe key \| `([^`]+)` \|/g)) {
-        keys.add(m[1]);
-      }
+    for (const pr of pages.flat()) {
+      extractDeliveryKeys(pr.body || '', keys);
     }
   }
   return keys;
+}
+
+function ensureContentPr(existing, entry) {
+  if (existing) {
+    gh(['pr', 'edit', String(existing.number), '--title', entry.title, '--body', entry.body]);
+    console.log(`Updated PR #${existing.number} ${existing.url}`);
+    return;
+  }
+  const url = gh([
+    'pr', 'create', '--base', 'main', '--head', entry.branch,
+    '--title', entry.title, '--body', entry.body,
+  ]);
+  console.log(`Opened PR ${url}`);
 }
 
 const landedDeliveries = knownDeliveryKeys();
@@ -144,13 +160,20 @@ for (const entry of plan.packages || []) {
     if ((existing || retainedRemote) && mergedMain) {
       run('git', ['-C', workRoot, 'push', '-u', 'origin', `HEAD:${entry.branch}`]);
       console.log(`Pushed main-merge (no delivery file changes) for ${entry.branch}`);
-      if (existing) {
-        gh(['pr', 'edit', String(existing.number), '--title', entry.title, '--body', entry.body]);
-        console.log(`Updated PR #${existing.number} ${existing.url}`);
+      ensureContentPr(existing, entry);
+    } else if (!existing && retainedRemote) {
+      // Push succeeded earlier but PR create failed/interrupted: recover the missing PR.
+      run('git', ['-C', workRoot, 'fetch', 'origin', 'main']);
+      const ahead = Number(run('git', ['-C', workRoot, 'rev-list', '--count', 'origin/main..HEAD']) || '0');
+      if (ahead > 0) {
+        ensureContentPr(null, entry);
+      } else {
+        console.log(`No file changes for ${entry.branch}`);
       }
     } else {
       console.log(`No file changes for ${entry.branch}`);
     }
+    if (entry.deliveryKey) landedDeliveries.add(entry.deliveryKey);
     continue;
   }
   const staged = run('git', ['-C', workRoot, 'diff', '--cached', '--name-only'])
@@ -161,15 +184,6 @@ for (const entry of plan.packages || []) {
   run('git', ['-C', workRoot, 'commit', '-m', entry.title]);
   run('git', ['-C', workRoot, 'push', '-u', 'origin', `HEAD:${entry.branch}`]);
 
-  if (existing) {
-    gh(['pr', 'edit', String(existing.number), '--title', entry.title, '--body', entry.body]);
-    console.log(`Updated PR #${existing.number} ${existing.url}`);
-  } else {
-    const url = gh([
-      'pr', 'create', '--base', 'main', '--head', entry.branch,
-      '--title', entry.title, '--body', entry.body,
-    ]);
-    console.log(`Opened PR ${url}`);
-  }
+  ensureContentPr(existing, entry);
   if (entry.deliveryKey) landedDeliveries.add(entry.deliveryKey);
 }
