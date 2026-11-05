@@ -902,8 +902,7 @@ body.still .pin.new .gr {
 
 .card .cbody {
   min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: visible;
   position: relative;
   padding: 11px 13px 9px;
   z-index: 1;
@@ -948,9 +947,7 @@ body.still .pin.new .gr {
 }
 
 .ph-head {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+  min-height: 36px;
   background: var(--paper-tex);
   display: flex;
   align-items: center;
@@ -1005,6 +1002,8 @@ body.still .pin.new .gr {
 
 .card .fc h4 {
   font-size: 19px;
+  font-family: ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  overflow-wrap: anywhere;
 }
 
 .card .fc .dish {
@@ -1293,6 +1292,14 @@ body.rm .pin.new .gr {
   .hero .h.zh {
     font-size: 32px;
   }
+  .card .fc {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .card .fc .ph {
+    width: 64px;
+    height: 80px;
+  }
 }
 
 /* Keep the invitation beside the caption, including the static poster. */
@@ -1310,14 +1317,12 @@ body.rm .pin.new .gr {
   top: auto;
 }
 
-/* Article fields retain their source wording, including price ranges and exit times. */
-.article-details { margin: 6px 0 0; font: 12px/1.5 ui-rounded, -apple-system, "PingFang TC", sans-serif; }
+/* Compact map cards retain complete address and price wording without scrolling. */
+.article-details { margin: 8px 0 0; font: 13px/1.45 ui-rounded, -apple-system, "PingFang TC", sans-serif; }
 .article-details div + div { margin-top: 5px; }
 .article-details dt { color: var(--muted); font-size: 11px; }
 .article-details dd { margin: 0; overflow-wrap: anywhere; color: var(--ink); }
 .article-link { display: block; margin-top: 10px; color: var(--forest); font: 600 13px/1.5 ui-rounded, sans-serif; }
-
-.card .article-fc h4 { font-family: ui-rounded, -apple-system, "PingFang TC", sans-serif; }
 
 .pin-leader { position: absolute; width: 1px; height: 1px; overflow: visible; pointer-events: none; }
 .pin-leader line { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 2 3; opacity: .55; }

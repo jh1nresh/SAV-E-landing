@@ -23,7 +23,8 @@ for (const width of [390, 1280]) {
         { ...post, id:'test-fresh', name:'東門測試' },
         { ...post, id:'test-backfill', name:'補登測試', backfill:true },
         { ...post, id:'test-old', name:'舊文測試', sourcePosts:[{ platform:'threads', url:'https://www.threads.com/@savvysave_/post/TEST_ONLY', date:'2026-10-26' }] },
-        { ...base, id:'test-example', addedAt:'2026-10-30' },
+        { ...base, id:'test-example', kind:'example', priceNT:100, priceFrom:false, verified:true, priceCheckedAt:'2026-10-30', addedAt:'2026-10-30' },
+        { ...base, id:'test-pending-example', kind:'example', priceNT:undefined, pricePending:true, addedAt:'2026-10-30' },
         // Keep real-data freshness out of this one-station synthetic boundary case.
         ...data.stores.filter((s) => s.stationId !== 'dongmen').map((s) => ({ ...s, backfill: true })),
       ];
@@ -42,18 +43,20 @@ for (const width of [390, 1280]) {
       if (visible) await expect(pin).toHaveClass(/new/); else await expect(pin).not.toHaveClass(/new/);
       await expect(page.getByTestId('metro-tab-dongmen').locator('.newtag')).toHaveCount(visible ? 1 : 0);
       await openStation(page, 'dongmen');
-      await expect(page.locator('#card .ph-head .newtag')).toHaveCount(visible ? 1 : 0);
-      await expect(page.locator('#card .fc .newtag')).toHaveCount(visible ? 1 : 0);
+      await expect(page.locator('#card .ph-head .newtag')).toHaveCount(0);
+      await expect(page.locator('#card .fc .newtag')).toHaveCount(0);
       await expect(page.locator('#card .fc h4')).toHaveText('東門測試');
-      for (const i of [1,2,3]) {
+      await expect(page.locator('#card dd')).toHaveText(['地址待確認', '價格待查']);
+      for (const [i, expectedPrice] of [[1, '價格待查'], [2, '價格待查'], [3, 'NT$100（示意）'], [4, '價格待查（示意）']] as const) {
         await page.locator('#card .thumbs button').nth(i).click();
         await expect(page.locator('#card .fc .newtag')).toHaveCount(0);
+        await expect(page.locator('#card dd')).toHaveText(['地址待確認', expectedPrice]);
       }
       await page.locator('#card .thumbs button').nth(0).click();
       await expect(page.locator('#card .fc h4')).toHaveText('東門測試');
-      await expect(page.locator('#card .fc .newtag')).toHaveCount(visible ? 1 : 0);
+      await expect(page.locator('#card .fc .newtag')).toHaveCount(0);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
-      const overflow = await page.locator('#card .fc h4, #card .ph-head .upd').evaluateAll((els) => els.some((el) => el.scrollWidth > el.clientWidth + 1));
+      const overflow = await page.locator('#card .fc h4, #card dd').evaluateAll((els) => els.some((el) => el.scrollWidth > el.clientWidth + 1));
       expect(overflow).toBeFalsy();
       await page.screenshot({ path:testInfo.outputPath(`fresh-${width}-${clock}.png`), fullPage:true });
       await page.evaluate(() => window.__savvyMap!.closeCard({focus:false}));

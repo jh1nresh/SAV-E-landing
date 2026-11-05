@@ -1,13 +1,12 @@
 import { expect, test } from "@playwright/test";
 import { getPublicMetroData, getFoodStations } from "../../lib/metro";
-import { foodShopRows, FOOD_DISCLAIMER } from "../../lib/metro-logic.mjs";
 import { openStation, waitForMap } from "./helpers";
 
 const metro = getPublicMetroData();
 const articles = getFoodStations();
 for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
   for (const station of metro.stations) {
-    test(`article map ${station.id}: photos, count, all shops and guide at ${viewport.width}`, async ({ page }, testInfo) => {
+    test(`article map ${station.id}: compact cards preserve all shops without scrolling at ${viewport.width}`, async ({ page }, testInfo) => {
       await page.setViewportSize(viewport);
       const errors: string[] = [];
       page.on("pageerror", e => errors.push(e.message));
@@ -22,7 +21,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
       await expect(pin.locator('img')).toHaveAttribute('src', stores[0].image!);
       await expect.poll(() => pin.locator('img').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
       await openStation(page, station.id);
-      await expect(page.locator('#card .upd')).toContainText(`共 ${article.shops.length} 間`);
+      await expect(page.locator('#card .thumbs .more')).toContainText(`共 ${article.shops.length} 間`);
       await expect(page.locator('#card .thumbs button')).toHaveCount(article.shops.length);
       for (const [i, shop] of article.shops.entries()) {
         if (i) await page.locator('#card .thumbs button').nth(i).click();
@@ -31,13 +30,22 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
         const image = page.locator('#card .fc img');
         await expect(image).toHaveAttribute('src', stores[i].image!);
         await expect.poll(() => image.evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
-        for (const [label, value] of foodShopRows(shop)) {
-          await expect(page.locator('#card .article-details div').filter({ has: page.locator('dt', { hasText: new RegExp(`^${label}$`) }) }).locator('dd')).toHaveText(value);
-        }
-        await expect(page.locator('#card .cfoot')).toHaveText(FOOD_DISCLAIMER);
+        await expect(page.locator('#card dt')).toHaveText(['地址', '價格']);
+        await expect(page.locator('#card dd')).toHaveText([shop.address?.trim() || '地址待確認', shop.price?.trim() || '價格待確認']);
+        await expect(page.locator('#card .dish, #card .src, #card .cfoot, #card .article-link, #card .newtag, #card .upd')).toHaveCount(0);
+        const layout = await page.locator('#cbody').evaluate(el => {
+          const box = el.getBoundingClientRect();
+          return {
+            scrolls: el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1,
+            scrollContainer: ['auto', 'scroll'].includes(getComputedStyle(el).overflowY),
+            clipped: [...el.querySelectorAll('h4, dd, .thumbs button')].some(child => {
+              const r = child.getBoundingClientRect();
+              return r.left < box.left || r.right > box.right || r.top < box.top || r.bottom > box.bottom;
+            }),
+          };
+        });
+        expect(layout).toEqual({ scrolls: false, scrollContainer: false, clipped: false });
       }
-      const link = page.getByTestId(`metro-food-link-${station.id}`);
-      await expect(link).toHaveAttribute('href', `/metro/${station.slug}`);
       const response = await page.request.get(`/metro/${station.slug}`);
       expect(response.status()).toBe(200);
       if (['ximen', 'zhongxiao-fuxing'].includes(station.id)) {
