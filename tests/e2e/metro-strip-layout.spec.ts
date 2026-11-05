@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { waitForMap } from './helpers';
+import { readFileSync } from 'node:fs';
+
+const STATION_COUNT = (JSON.parse(readFileSync('content/metro/stations.json', 'utf8')) as unknown[]).length;
 
 for (const width of [1280, 1440]) {
   test(`desktop strip tabs clear the map and receive bottom-edge hits at ${width}`, async ({ page }) => {
@@ -9,7 +12,7 @@ for (const width of [1280, 1440]) {
     await page.evaluate(() => document.fonts.ready);
     const map = page.getByTestId('metro-map');
     const tabs = map.locator('.strip .tab');
-    await expect(tabs).toHaveCount(14);
+    await expect(tabs).toHaveCount(STATION_COUNT);
     const obstacles = map.locator('.mapcard, .mapcard .stamp, .mapcard .tape');
     await expect(obstacles).toHaveCount(3);
     for (const tab of await tabs.all()) {

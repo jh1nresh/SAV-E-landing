@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+
+const STATION_COUNT = (JSON.parse(readFileSync('content/metro/stations.json', 'utf8')) as unknown[]).length;
 
 type Box = { x: number; y: number; width: number; height: number };
 // WebKit's getBoundingClientRect for SVG <text> ignores x/y, so map getBBox through getScreenCTM in every engine.
@@ -20,8 +23,8 @@ for (const width of [390, 1280, 1440]) {
       await page.evaluate(() => document.fonts.ready);
       const labels = page.locator('[data-testid^="metro-poster-label-"]');
       const pins = page.locator('[data-testid^="metro-poster-pin-"]');
-      await expect(labels).toHaveCount(14);
-      await expect(pins).toHaveCount(14);
+      await expect(labels).toHaveCount(STATION_COUNT);
+      await expect(pins).toHaveCount(STATION_COUNT);
       const title = (await page.getByTestId('metro-poster-title').boundingBox())!;
       const r = (b: Box) => [b.x, b.y, b.x + b.width, b.y + b.height].map(v => v.toFixed(1)).join(',');
       const labelBoxes = await Promise.all((await labels.all()).map(async l => ({ name: await l.textContent(), box: await l.evaluate(svgBox) })));
