@@ -34,7 +34,8 @@ function run(cmd, args, opts = {}) {
   if (res.status !== 0) {
     throw new Error(`${cmd} ${args.join(' ')} failed: ${res.stderr || res.stdout}`);
   }
-  return res.stdout.trim();
+  // stdio: 'ignore' yields null stdout even on success (first-time gtm/inbox bootstrap).
+  return (res.stdout ?? '').trim();
 }
 
 const argv = process.argv.slice(2);

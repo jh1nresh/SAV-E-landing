@@ -78,10 +78,15 @@ for (const entry of plan.packages || []) {
 
   rmSync(workRoot, { recursive: true, force: true });
   const cloneUrl = `https://x-access-token:${token}@github.com/${repo}.git`;
-  run('git', ['clone', '--depth', '1', '--branch', 'main', cloneUrl, workRoot]);
+  // Corrections must extend the open content PR branch; recreating from main cannot fast-forward.
+  if (existing) {
+    run('git', ['clone', '--depth', '1', '--branch', entry.branch, cloneUrl, workRoot]);
+  } else {
+    run('git', ['clone', '--depth', '1', '--branch', 'main', cloneUrl, workRoot]);
+    run('git', ['-C', workRoot, 'checkout', '-B', entry.branch]);
+  }
   run('git', ['-C', workRoot, 'config', 'user.name', 'savvy-landing-metro-inbox']);
   run('git', ['-C', workRoot, 'config', 'user.email', 'metro-inbox[bot]@users.noreply.github.com']);
-  run('git', ['-C', workRoot, 'checkout', '-B', entry.branch]);
 
   for (const file of entry.files) {
     const dest = resolve(workRoot, file.dest);
