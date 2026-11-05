@@ -39,8 +39,8 @@
 - 查不到一律 `null`，不編造、不寫「未取得」。
 - 事實以實發貼文為準（#1–#7 取自 f1-evidence 實發全文，其餘取自當日 ig.txt / threads.txt / data.json）。
 - 價格與營業時間可能變動，網站請顯示「出發前再確認」。
-- 新增一站：GTM 寫 `savvy-ready/<日期>/web.json`；同時把該站附加到 `stations.json`（以 `n` 為鍵，重複就覆蓋，不要新增第二筆）。
-- 新站必須帶 `map`（向 DESIGN 要位置），否則首頁地圖 build 會失敗。
+- 新增一站：GTM 把日期包上傳到 `gtm/inbox/<YYYY-MM-DD>/`（見 `docs/GTM-INBOX.md`）；站點基底仍以 `stations.json` 的 `n` 為鍵（重複就覆蓋，不要新增第二筆）。
+- 新站座標只採用 DESIGN（`content/metro/design-stations.json`）核准的位置；daily `web.json` 不得帶 `map`／`map_id`，缺 DESIGN 條目時 build 會失敗。
 
 `map.labelOffset` 可選，格式 `[dx, dy]`（兩個有限數字，CSS px），用來在 `label` 預設位置上再微調站名；目前小巨蛋 `[-14, 0]`、雙連 `[0, 12]`，格式錯誤時 build 會失敗（`map.labelOffset must be [dx, dy]`）。只影響互動地圖時用這個欄位。
 

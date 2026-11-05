@@ -39,11 +39,16 @@ if (!repo || !token) throw new Error('GH_REPO and GH_TOKEN required');
 const plan = JSON.parse(readFileSync(planPath, 'utf8'));
 
 function upsertIssue(title, body) {
-  const existingRaw = gh([
-    'issue', 'list', '--state', 'open', '--limit', '50',
-    '--json', 'number,title',
-  ]);
-  const hits = JSON.parse(existingRaw).filter(i => i.title === title);
+  // Paginate so a blocked issue beyond the first page is updated, not duplicated.
+  const hits = [];
+  for (let page = 1; page <= 20; page += 1) {
+    const batch = JSON.parse(gh([
+      'issue', 'list', '--state', 'open', '--limit', '100',
+      '--page', String(page), '--json', 'number,title',
+    ]));
+    hits.push(...batch.filter(i => i.title === title));
+    if (batch.length < 100) break;
+  }
   if (hits[0]) {
     gh(['issue', 'edit', String(hits[0].number), '--body', body]);
     console.log(`Updated issue #${hits[0].number}`);
@@ -79,8 +84,11 @@ for (const entry of plan.packages || []) {
   rmSync(workRoot, { recursive: true, force: true });
   const cloneUrl = `https://x-access-token:${token}@github.com/${repo}.git`;
   // Corrections must extend the open content PR branch; recreating from main cannot fast-forward.
+  // Also merge current main so content CI is not stuck on an outdated head after main moved.
   if (existing) {
-    run('git', ['clone', '--depth', '1', '--branch', entry.branch, cloneUrl, workRoot]);
+    run('git', ['clone', '--branch', entry.branch, cloneUrl, workRoot]);
+    run('git', ['-C', workRoot, 'fetch', 'origin', 'main']);
+    run('git', ['-C', workRoot, 'merge', '--no-edit', 'origin/main']);
   } else {
     run('git', ['clone', '--depth', '1', '--branch', 'main', cloneUrl, workRoot]);
     run('git', ['-C', workRoot, 'checkout', '-B', entry.branch]);
