@@ -14,7 +14,7 @@ const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
 test('every content station has a hero marker snapped within two units of its position', () => {
   const food = buildFoodStations(root);
   const hero = buildPublicMetro(raw, food).stations;
-  assert.equal(food.length, 14);
+  assert.equal(food.length, base.length);
   assert.equal(hero.length, food.length);
   for (const station of food) {
     const marker = hero.find(s => s.id === (station.map_id ?? station.slug));
@@ -68,7 +68,7 @@ test('interactive map labelOffset stays at the DESIGN r13 values; poster offsets
   const offsets = Object.fromEntries(base.filter(s => s.map.labelOffset).map(s => [s.station, s.map.labelOffset]));
   assert.deepEqual(offsets, { 小巨蛋: [-14, 0], 雙連: [0, 12] });
   const poster = Object.fromEntries(base.filter(s => s.map.posterLabelOffset).map(s => [s.station, s.map.posterLabelOffset]));
-  assert.deepEqual(poster, { 士林: [20, 0], 南京復興: [-22, 0], 忠孝復興: [0, 12], 古亭: [-22, 0] });
+  assert.deepEqual(poster, { 士林: [20, 0], 南京復興: [-22, 0], 忠孝復興: [0, 12], 古亭: [-22, 0], 中正紀念堂: [-40, 2] });
 });
 
 
