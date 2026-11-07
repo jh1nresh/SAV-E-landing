@@ -28,6 +28,8 @@ section.hero {
 }
 
 .hero .sub {
+  color: var(--ink);
+  opacity: 1;
   margin: 18px 0 24px;
 }
 
