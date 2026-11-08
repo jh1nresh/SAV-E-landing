@@ -12,7 +12,7 @@ Public TestFlight invite (defaults to the public join URL if unset):
 NEXT_PUBLIC_TESTFLIGHT_URL="https://testflight.apple.com/join/aSVm9hRJ"
 ```
 
-App Store badges keep `data-swap="appstore-url"` so the href can be swapped at launch.
+App Store badges keep `data-swap="appstore-url"` so the href can be swapped at launch. The current TestFlight destination is identified by a visible localized beta note and the badge's accessible description; update that release-status copy with the destination at launch.
 
 ## Language
 

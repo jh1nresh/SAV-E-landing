@@ -118,21 +118,21 @@ nav.top {
 }
 
 .chip {
-  height: 32px;
+  min-height: 44px;
   min-width: 44px;
   padding: 0 14px;
-  border-radius: 16px;
+  border-radius: 22px;
   border: 1px solid var(--line);
   background: var(--paper);
   color: var(--ink);
-  font: 600 15px inherit;
+  font: 600 15px/1.2 ui-rounded, -apple-system, "PingFang TC", sans-serif;
   cursor: pointer;
 }
 
 .chip[aria-pressed="true"] {
   background: var(--coral);
   border-color: var(--coral);
-  color: #fff;
+  color: var(--ink);
 }
 
 section {
@@ -175,6 +175,29 @@ section {
   height: 56px;
   width: auto;
   display: block;
+}
+
+.download-entry {
+  display: inline-flex;
+  text-decoration: none;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.download-note {
+  margin: 8px 0 0;
+  padding: 4px 10px;
+  border: 1px solid var(--ink);
+  border-radius: 22px;
+  color: var(--ink);
+  background: var(--paper);
+  font: 600 12px/1.4 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  text-wrap: balance;
+}
+
+.s-cta .download-entry {
+  align-items: center;
 }
 
 .dev {
@@ -322,6 +345,10 @@ footer.site p a {
 
   nav.top {
     padding: 12px 20px;
+  }
+
+  .hero .download-entry {
+    align-items: center;
   }
 
   section {
