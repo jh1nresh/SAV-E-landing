@@ -7,6 +7,7 @@ import {
 import { resolve } from 'node:path';
 import { isCalendarDate } from '../lib/metro-logic.mjs';
 import { isAllowedMetroContentPath } from './metro-content-gate.mjs';
+import { loadDesignStations, resolveCity, stationKey } from './metro-content.mjs';
 
 const error = (message) => { throw new Error(`gtm-inbox: ${message}`); };
 
@@ -48,6 +49,26 @@ export function readManifest(packageDir) {
   return manifest;
 }
 
+const IMAGE_REL = /^(photos|slides|slides_zh|slides_en)\/[a-zA-Z0-9_-]+\.(webp|jpg|jpeg|png)$/;
+const IMAGE_FIELDS = ['photos', 'slides', 'slides_zh', 'slides_en'];
+
+export function manifestImageRels(files) {
+  if (!files || typeof files !== 'object') error('manifest.files required');
+  const rels = [];
+  for (const field of IMAGE_FIELDS) {
+    if (!Object.hasOwn(files, field) || files[field] == null) continue;
+    const list = files[field];
+    if (!Array.isArray(list)) error(`manifest.files.${field} must be an array or null`);
+    for (const rel of list) {
+      if (typeof rel !== 'string' || !IMAGE_REL.test(rel) || rel.includes('..') || rel.includes('\0')) {
+        error(`bad ${field} path: ${rel}`);
+      }
+      rels.push(rel);
+    }
+  }
+  return rels;
+}
+
 export function validateManifest(manifest) {
   if (!manifest || typeof manifest !== 'object') error('manifest must be an object');
   if (manifest.schema_version !== 1) error('manifest.schema_version must be 1');
@@ -59,23 +80,41 @@ export function validateManifest(manifest) {
   if (typeof manifest.slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(manifest.slug)) {
     error('manifest.slug invalid');
   }
+  if (manifest.city != null && manifest.city !== '' && manifest.city !== 'taipei' && manifest.city !== 'shanghai') {
+    error('manifest.city must be taipei | shanghai');
+  }
   if (typeof manifest.station !== 'string' || !manifest.station) error('manifest.station required');
   if (typeof manifest.ready_for_site !== 'boolean') error('manifest.ready_for_site must be boolean');
   if (!manifest.files || typeof manifest.files !== 'object') error('manifest.files required');
   if (manifest.files.web_json !== 'web.json') error('manifest.files.web_json must be "web.json"');
-  for (const kind of ['photos', 'slides']) {
-    const list = manifest.files[kind];
-    if (!Array.isArray(list) || list.length === 0) error(`manifest.files.${kind} must be a nonempty array`);
-    for (const rel of list) {
-      if (typeof rel !== 'string' || !rel.startsWith(`${kind}/`)) error(`bad ${kind} path: ${rel}`);
-      if (rel.includes('..') || rel.includes('\0')) error(`unsafe ${kind} path: ${rel}`);
-    }
-  }
+  manifestImageRels(manifest.files);
 }
 
 export function listInboxPackages(inboxRoot) {
   if (!existsSync(inboxRoot)) return [];
   return readdirSync(inboxRoot).filter(isCalendarDate).sort().map(date => resolve(inboxRoot, date));
+}
+
+export function resolvePackageCity(manifest, web, designIndex) {
+  const declared = (value, label) => (value == null || value === '' ? null : resolveCity(value, label));
+  const fromManifest = declared(manifest?.city, 'manifest.city');
+  const fromWeb = declared(web?.city, 'web.json city');
+  if (fromManifest && fromWeb && fromManifest !== fromWeb) error(`web.json city ${fromWeb} != manifest city ${fromManifest}`);
+  if (fromManifest || fromWeb) return fromManifest || fromWeb;
+  const cities = new Set();
+  if (designIndex && typeof designIndex.entries === 'function') {
+    for (const [key, entry] of designIndex) {
+      if (typeof key !== 'string' || !key.includes(':')) continue;
+      if (entry?.slug === manifest?.slug) cities.add(resolveCity(entry.city));
+    }
+  }
+  if (cities.size === 1) return [...cities][0];
+  return 'taipei';
+}
+
+export function lookupDesign(index, n, city) {
+  if (!index || typeof index.get !== 'function') return null;
+  return index.get(stationKey(city, n)) ?? null;
 }
 
 export function inspectPackage(packageDir, designByN, { requireReady = true } = {}) {
@@ -90,53 +129,51 @@ export function inspectPackage(packageDir, designByN, { requireReady = true } = 
   if (web.slug !== manifest.slug) error(`web.json slug mismatch`);
   if (web.date !== manifest.date) error(`web.json date mismatch`);
   if ('map' in web || 'map_id' in web) error('web.json must not include map/map_id; DESIGN owns coordinates');
+  const city = resolvePackageCity(manifest, web, designByN);
+  const tagged = { ...manifest, city };
 
-  const approved = designByN.get(manifest.station_n);
+  const approved = lookupDesign(designByN, manifest.station_n, city);
   if (!approved) {
     return {
       ok: false,
       reason: 'missing_design_coords',
-      message: `station ${manifest.station_n} (${manifest.slug}) has no DESIGN-approved entry in content/metro/design-stations.json`,
-      manifest,
+      message: `station ${city}:${manifest.station_n} (${manifest.slug}) has no DESIGN-approved entry in content/metro/design-stations.json`,
+      manifest: tagged,
     };
   }
   if (approved.slug !== manifest.slug) {
     return {
       ok: false,
       reason: 'design_slug_mismatch',
-      message: `DESIGN slug for n=${manifest.station_n} is ${approved.slug}, package has ${manifest.slug}`,
-      manifest,
+      message: `DESIGN slug for ${city}:${manifest.station_n} is ${approved.slug}, package has ${manifest.slug}`,
+      manifest: tagged,
     };
   }
 
-  const fileRels = ['web.json', 'manifest.json', ...manifest.files.photos, ...manifest.files.slides];
+  const imageRels = manifestImageRels(manifest.files);
+  const fileRels = ['web.json', 'manifest.json', ...imageRels];
   for (const rel of fileRels) {
     const abs = resolve(packageDir, rel);
     if (!existsSync(abs)) {
-      return { ok: false, reason: 'missing_file', message: `missing file ${rel}`, manifest };
+      return { ok: false, reason: 'missing_file', message: `missing file ${rel}`, manifest: tagged };
     }
     const st = lstatSync(abs);
     if (st.isSymbolicLink()) {
-      return { ok: false, reason: 'symlink', message: `symlink not allowed: ${rel}`, manifest };
+      return { ok: false, reason: 'symlink', message: `symlink not allowed: ${rel}`, manifest: tagged };
     }
     if (!st.isFile()) {
-      return { ok: false, reason: 'not_file', message: `not a regular file: ${rel}`, manifest };
+      return { ok: false, reason: 'not_file', message: `not a regular file: ${rel}`, manifest: tagged };
     }
   }
 
   const folder = folderForStation(manifest.station_n, manifest.slug);
-  for (const rel of [...manifest.files.photos, ...manifest.files.slides]) {
-    if (!/^(photos|slides)\/[a-zA-Z0-9_-]+\.(webp|jpg|jpeg|png)$/.test(rel)) {
-      return { ok: false, reason: 'bad_image_name', message: `unsafe image name: ${rel}`, manifest };
-    }
-  }
-
-  const hashed = [...new Set(['web.json', ...manifest.files.photos, ...manifest.files.slides])];
+  const hashed = [...new Set(['web.json', ...imageRels])];
   const digest = computePackageContentHash(packageDir, hashed);
 
   return {
     ok: true,
-    manifest,
+    manifest: tagged,
+    city,
     contentHash: digest,
     deliveryKey: `${manifest.delivery_version}::${digest}`,
     folder,
@@ -148,14 +185,18 @@ export function inspectPackage(packageDir, designByN, { requireReady = true } = 
 export function planContentFiles(inspection) {
   if (!inspection.ok) error('cannot plan from failed inspection');
   const { manifest, folder, packageDir } = inspection;
+  const city = inspection.city ?? resolveCity(manifest.city);
   const files = [];
   files.push({
-    dest: `content/metro/daily/${manifest.date}/web.json`,
+    dest: city === 'taipei'
+      ? `content/metro/daily/${manifest.date}/web.json`
+      : `content/metro/daily/${city}/${manifest.date}/web.json`,
     src: resolve(packageDir, 'web.json'),
   });
-  for (const rel of [...manifest.files.photos, ...manifest.files.slides]) {
+  const imageRoot = city === 'taipei' ? `content/metro/images/${folder}` : `content/metro/images/${city}/${folder}`;
+  for (const rel of manifestImageRels(manifest.files)) {
     files.push({
-      dest: `content/metro/images/${folder}/${rel}`,
+      dest: `${imageRoot}/${rel}`,
       src: resolve(packageDir, rel),
     });
   }
@@ -166,10 +207,13 @@ export function planContentFiles(inspection) {
 }
 
 export function loadDesignIndex(repoRoot) {
-  const path = resolve(repoRoot, 'content/metro/design-stations.json');
-  if (!existsSync(path)) error('missing design-stations.json on trusted main');
-  const design = JSON.parse(readFileSync(path, 'utf8'));
-  return new Map(design.map(entry => [entry.n, entry]));
+  const design = loadDesignStations(resolve(repoRoot, 'content/metro'));
+  const index = new Map();
+  for (const entry of design) {
+    index.set(stationKey(entry.city, entry.n), entry);
+    if (entry.city === 'taipei') index.set(entry.n, entry);
+  }
+  return index;
 }
 
 export function buildIssueBody({ manifest, reason, message, packageDir }) {
@@ -179,6 +223,7 @@ export function buildIssueBody({ manifest, reason, message, packageDir }) {
     `| Field | Value |`,
     `| --- | --- |`,
     `| Station | ${manifest?.station_n ?? '?'} ${manifest?.station ?? ''} |`,
+    `| City | ${manifest?.city ?? 'taipei'} |`,
     `| Slug | ${manifest?.slug ?? '?'} |`,
     `| Date | ${manifest?.date ?? '?'} |`,
     `| Delivery | ${manifest?.delivery_version ?? '?'} |`,
@@ -212,11 +257,13 @@ function fixHint(reason) {
 }
 
 export function issueTitle(manifest) {
-  return `${ISSUE_TITLE_PREFIX} station ${manifest.station_n} ${manifest.station}`;
+  const city = manifest?.city === 'shanghai' ? 'shanghai ' : '';
+  return `${ISSUE_TITLE_PREFIX} ${city}station ${manifest.station_n} ${manifest.station}`;
 }
 
 export function contentPrBranch(manifest) {
-  return `${CONTENT_PR_BRANCH_PREFIX}${manifest.date}-${manifest.slug}`;
+  const city = manifest?.city === 'shanghai' ? 'shanghai-' : '';
+  return `${CONTENT_PR_BRANCH_PREFIX}${city}${manifest.date}-${manifest.slug}`;
 }
 
 export function contentPrTitle(manifest) {
