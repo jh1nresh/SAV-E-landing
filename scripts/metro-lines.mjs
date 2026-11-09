@@ -1,4 +1,8 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 /** Hand-drawn schematic line geometry (view units, not geographic). */
+
 export const LINE_PATHS = {
   L_orange: "M52 22 C 38 24 22 27 4 31",
   L_red: "M-30 -150 C 0 -90 28 -40 52 22 C76 56 104 90 128 116 C150 144 168 174 186 200 C206 230 224 250 246 268 C268 288 284 296 300 302 C324 312 342 340 360 382 C 376 430 392 520 420 770",
@@ -7,6 +11,24 @@ export const LINE_PATHS = {
   L_green:
     "M860 22 C 800 46 700 72 598 86 C560 106 510 126 440 142 C380 156 316 192 278 238 C262 258 254 262 246 268 C228 286 214 318 202 382 C 196 440 188 540 176 770",
 };
+
+const shanghaiLines = JSON.parse(readFileSync(resolve(process.cwd(), "content/metro/shanghai-lines.json"), "utf8"));
+/** Shanghai schematic paths. Separate from LINE_PATHS so the Taipei map SVG stays unchanged. */
+export const SHANGHAI_LINE_PATHS = Object.fromEntries(Object.entries(shanghaiLines.lines).map(([id, line]) => [id, line.d]));
+export const SHANGHAI_VIEWBOX = shanghaiLines.viewBox;
+
+export function linePathsFor(city) {
+  switch (city) {
+    case "taipei":
+      return LINE_PATHS;
+    case "shanghai":
+      return SHANGHAI_LINE_PATHS;
+    default: {
+      const unexpected = city;
+      throw new Error(`Unknown metro city: ${unexpected}`);
+    }
+  }
+}
 
 function cubic(p0, p1, p2, p3, t) {
   const u = 1 - t;
@@ -59,7 +81,7 @@ export function samplePath(d, step = 0.01) {
 const CACHE = new Map();
 
 export function snapToLine(lineId, at) {
-  const d = LINE_PATHS[lineId];
+  const d = LINE_PATHS[lineId] ?? SHANGHAI_LINE_PATHS[lineId];
   if (!d) throw new Error(`Unknown metro line id: ${lineId}`);
   let curves = CACHE.get(lineId);
   if (!curves) {

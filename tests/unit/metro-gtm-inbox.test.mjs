@@ -125,6 +125,47 @@ test('not ready packages are skipped', () => {
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
+test('Shanghai n is matched inside the city and null slide lists are accepted', () => {
+  const root = mkdtempSync(join(tmpdir(), 'inbox-shanghai-'));
+  try {
+    mkdirSync(root, { recursive: true });
+    const photos = null;
+    const slides = null;
+    const slidesEn = ['slides_en/01-cover.webp'];
+    const slidesZh = ['slides_zh/01-cover.webp'];
+    const manifest = {
+      schema_version: 1, delivery_version: 'sh-1', date: '2026-11-07', station_n: 2,
+      slug: 'shanghai-yuyuan', station: '豫園', ready_for_site: true,
+      files: { web_json: 'web.json', photos, slides, slides_en: slidesEn, slides_zh: slidesZh },
+    };
+    writeFileSync(join(root, 'manifest.json'), JSON.stringify(manifest));
+    writeFileSync(join(root, 'web.json'), JSON.stringify({
+      n: 2, slug: 'shanghai-yuyuan', station: '豫園', date: '2026-11-07',
+      shops: [{ name: '店', price: null }], images: { photos, slides, slides_en: slidesEn, slides_zh: slidesZh }, posts: {},
+    }));
+    mkdirSync(join(root, 'slides_en'), { recursive: true });
+    mkdirSync(join(root, 'slides_zh'), { recursive: true });
+    writeFileSync(join(root, 'slides_en/01-cover.webp'), 'en');
+    writeFileSync(join(root, 'slides_zh/01-cover.webp'), 'zh');
+    const inspection = inspectPackage(root, designByN);
+    assert.equal(inspection.ok, true);
+    assert.equal(inspection.city, 'shanghai');
+    assert.notEqual(designByN.get(2).slug, 'shanghai-yuyuan');
+    const plan = planContentFiles(inspection);
+    assert.ok(plan.some(file => file.dest === 'content/metro/daily/shanghai/2026-11-07/web.json'));
+    assert.ok(plan.some(file => file.dest === 'content/metro/images/shanghai/02-shanghai-yuyuan/slides_en/01-cover.webp'));
+    assert.equal(plan.some(file => file.dest.includes('raohe')), false);
+    writeFileSync(join(root, 'manifest.json'), JSON.stringify({ ...manifest, city: 'shanghai', slug: 'raohe-songshan' }));
+    writeFileSync(join(root, 'web.json'), JSON.stringify({
+      n: 2, city: 'shanghai', slug: 'raohe-songshan', station: '饒河/松山', date: '2026-11-07', shops: [], images: { photos: null, slides: null }, posts: {},
+    }));
+    const mismatch = inspectPackage(root, designByN);
+    assert.equal(mismatch.ok, false);
+    assert.equal(mismatch.reason, 'design_slug_mismatch');
+    assert.match(mismatch.message, /shanghai-yuyuan/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
 test('listInboxPackages returns dated folders only', () => {
   const root = mkdtempSync(join(tmpdir(), 'inbox-list-'));
   try {

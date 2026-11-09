@@ -14,7 +14,23 @@
         0
       ]
     },
-    "map_id": "arena"
+    "map_id": "arena",
+    "id": "taipei-xiaojudan",
+    "city": "taipei",
+    "order": 1,
+    "name_en": null,
+    "name_zh": "小巨蛋",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 2,
@@ -27,7 +43,23 @@
         86
       ]
     },
-    "map_id": "songshan"
+    "map_id": "songshan",
+    "id": "taipei-raohe-songshan",
+    "city": "taipei",
+    "order": 2,
+    "name_en": null,
+    "name_zh": "饒河/松山",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 3,
@@ -45,7 +77,23 @@
         12
       ]
     },
-    "map_id": "shuanglian"
+    "map_id": "shuanglian",
+    "id": "taipei-shuanglian",
+    "city": "taipei",
+    "order": 3,
+    "name_en": null,
+    "name_zh": "雙連",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 4,
@@ -58,7 +106,23 @@
         302
       ]
     },
-    "map_id": "dongmen"
+    "map_id": "dongmen",
+    "id": "taipei-dongmen",
+    "city": "taipei",
+    "order": 4,
+    "name_en": null,
+    "name_zh": "東門",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 5,
@@ -71,7 +135,23 @@
         268
       ]
     },
-    "map_id": "houshanpi"
+    "map_id": "houshanpi",
+    "id": "taipei-houshanpi",
+    "city": "taipei",
+    "order": 5,
+    "name_en": null,
+    "name_zh": "後山埤",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 6,
@@ -88,7 +168,23 @@
         20,
         0
       ]
-    }
+    },
+    "id": "taipei-shilin",
+    "city": "taipei",
+    "order": 6,
+    "name_en": null,
+    "name_zh": "士林",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 7,
@@ -101,7 +197,23 @@
         440
       ]
     },
-    "map_id": "gongguan"
+    "map_id": "gongguan",
+    "id": "taipei-gongguan",
+    "city": "taipei",
+    "order": 7,
+    "name_en": null,
+    "name_zh": "公館",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 8,
@@ -118,7 +230,23 @@
         -22,
         0
       ]
-    }
+    },
+    "id": "taipei-nanjing-fuxing",
+    "city": "taipei",
+    "order": 8,
+    "name_en": null,
+    "name_zh": "南京復興",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 9,
@@ -135,7 +263,23 @@
         -56,
         40
       ]
-    }
+    },
+    "id": "taipei-zhongxiao-fuxing",
+    "city": "taipei",
+    "order": 9,
+    "name_en": null,
+    "name_zh": "忠孝復興",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 10,
@@ -147,7 +291,23 @@
         -40,
         199
       ]
-    }
+    },
+    "id": "taipei-ximen",
+    "city": "taipei",
+    "order": 10,
+    "name_en": null,
+    "name_zh": "西門",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 11,
@@ -159,7 +319,23 @@
         351,
         363
       ]
-    }
+    },
+    "id": "taipei-daan",
+    "city": "taipei",
+    "order": 11,
+    "name_en": null,
+    "name_zh": "大安",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 12,
@@ -176,7 +352,23 @@
         -22,
         0
       ]
-    }
+    },
+    "id": "taipei-guting",
+    "city": "taipei",
+    "order": 12,
+    "name_en": null,
+    "name_zh": "古亭",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 13,
@@ -188,7 +380,23 @@
         157,
         157
       ]
-    }
+    },
+    "id": "taipei-zhongshan",
+    "city": "taipei",
+    "order": 13,
+    "name_en": null,
+    "name_zh": "中山",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 14,
@@ -200,7 +408,23 @@
         8,
         30
       ]
-    }
+    },
+    "id": "taipei-daqiaotou",
+    "city": "taipei",
+    "order": 14,
+    "name_en": null,
+    "name_zh": "大橋頭",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 15,
@@ -217,7 +441,23 @@
         -40,
         2
       ]
-    }
+    },
+    "id": "taipei-chiang-kai-shek-memorial-hall",
+    "city": "taipei",
+    "order": 15,
+    "name_en": null,
+    "name_zh": "中正紀念堂",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
   },
   {
     "n": 16,
@@ -233,7 +473,181 @@
         0,
         12
       ]
-    }
+    },
+    "id": "taipei-city-hall",
+    "city": "taipei",
+    "order": 16,
+    "name_en": null,
+    "name_zh": "市政府",
+    "lines": null,
+    "lat": null,
+    "lng": null,
+    "coord_system": null,
+    "source": "jh1nresh/SAV-E-landing content/metro/design-stations.json (local clone ad6d578, md5 1a1006b3); map.at = DESIGN-approved schematic view units",
+    "verified": {
+      "map_at": true,
+      "geo": false
+    },
+    "notes": "Copied unchanged from repo. name_en/lines/lat/lng not in existing data; not invented.",
+    "datum": null
+  },
+  {
+    "n": 1,
+    "slug": "shanghai-nanjing-east",
+    "station": "南京東路",
+    "map": {
+      "line": "SH_2",
+      "at": [
+        740,
+        220
+      ]
+    },
+    "id": "shanghai-nanjing-east",
+    "city": "shanghai",
+    "order": 1,
+    "name_en": "East Nanjing Rd",
+    "name_zh": "南京東路",
+    "lines": [
+      "2",
+      "10"
+    ],
+    "lines_gtm": [
+      "2",
+      "10"
+    ],
+    "lat": 31.2391239,
+    "lng": 121.4792291,
+    "coord_system": "WGS-84",
+    "source": "/workspace/shared/gtm/2026-11-09-metro-coords.md (OSM node 468916502, railway=station 南京东路, GTM Nominatim check 2026-11-09 21:01)",
+    "verified": {
+      "map_at": true,
+      "geo": true,
+      "lines": true,
+      "slug": false,
+      "geo_basis": "GTM: OSM node 468916502, station-level, not surveyed"
+    },
+    "notes": "r3 2026-11-09 21:03: lat/lng replaced with GTM OSM value; geo verified. map.at [740,220] is schematic and unchanged, still on SH_2 and SH_10 (snap 0).",
+    "slug_source": "DESIGN proposal: GTM pack (2026-11-07-nanjing-east) has data.json n=1 but no slug/web.json",
+    "geo_precision_gtm": "station",
+    "datum": "WGS-84"
+  },
+  {
+    "n": 2,
+    "slug": "shanghai-yuyuan",
+    "station": "豫園",
+    "map": {
+      "line": "SH_14",
+      "at": [
+        760,
+        400
+      ]
+    },
+    "id": "shanghai-yuyuan",
+    "city": "shanghai",
+    "order": 2,
+    "name_en": "Yuyuan",
+    "name_zh": "豫園",
+    "lines": [
+      "10",
+      "14"
+    ],
+    "lines_gtm": [
+      "10",
+      "14"
+    ],
+    "lat": 31.229784,
+    "lng": 121.48263,
+    "coord_system": "WGS-84",
+    "source": "/workspace/shared/gtm/savvy-ready/2026-11-07/web.json station_geo (Wikidata Q685103 P625)",
+    "verified": {
+      "map_at": true,
+      "geo": true,
+      "lines": true,
+      "geo_basis": "GTM: Wikidata P625, station-level, not surveyed"
+    },
+    "notes": "r2 2026-11-09 20:57: lat/lng from GTM. map.at unchanged (snap 0 on shanghai-lines.json).",
+    "geo_precision_gtm": "station",
+    "datum": "WGS-84"
+  },
+  {
+    "n": 3,
+    "slug": "shanghai-jingan-temple",
+    "station": "靜安寺",
+    "map": {
+      "line": "SH_14",
+      "at": [
+        220,
+        420
+      ]
+    },
+    "id": "shanghai-jingan-temple",
+    "city": "shanghai",
+    "order": 3,
+    "name_en": "Jing'an Temple",
+    "name_zh": "靜安寺",
+    "lines": [
+      "2",
+      "7",
+      "14"
+    ],
+    "lines_gtm": [
+      "2",
+      "7",
+      "14"
+    ],
+    "lat": 31.225,
+    "lng": 121.442,
+    "coord_system": "WGS-84",
+    "source": "/workspace/shared/gtm/savvy-ready/2026-11-08/web.json station_geo (Wikidata Q1073404 P625)",
+    "verified": {
+      "map_at": true,
+      "geo": true,
+      "lines": true,
+      "geo_basis": "GTM: Wikidata P625, station-level, not surveyed"
+    },
+    "notes": "r2 2026-11-09 20:57: lat/lng from GTM. map.at unchanged (snap 0 on shanghai-lines.json). 454 m from en.wikipedia (>300 m) but 35 m from OSM node 4241260093 and matches zh.wikipedia 31.22500,121.44167 → en.wikipedia is the outlier. Wikidata value has only 3 decimals (~100 m precision).",
+    "geo_precision_gtm": "station",
+    "datum": "WGS-84"
+  },
+  {
+    "n": 4,
+    "slug": "shanghai-south-huangpi-road",
+    "station": "黃陂南路",
+    "map": {
+      "line": "SH_14",
+      "at": [
+        520,
+        430
+      ]
+    },
+    "id": "shanghai-south-huangpi-road",
+    "city": "shanghai",
+    "order": 4,
+    "name_en": "South Huangpi Rd",
+    "name_zh": "黃陂南路",
+    "lines": [
+      "1",
+      "14"
+    ],
+    "lines_gtm": [
+      "1",
+      "14"
+    ],
+    "lat": 31.2246,
+    "lng": 121.4687,
+    "coord_system": "WGS-84",
+    "source": "/workspace/shared/gtm/savvy-ready/2026-11-09/web.json station_geo (Wikidata Q2383478 P625)",
+    "verified": {
+      "map_at": true,
+      "geo": true,
+      "lines": true,
+      "geo_basis": "GTM: Wikidata P625, station-level, not surveyed"
+    },
+    "notes": "r2 2026-11-09 20:57: lat/lng from GTM. map.at unchanged (snap 0 on shanghai-lines.json). GTM added Line 14 to web.json 2026-11-09; published IG/Threads captions still say Line 1 only.",
+    "name_en_official": "Site of the First CPC National Congress · South Huangpi Road",
+    "name_zh_official": "一大會址·黃陂南路",
+    "geo_precision_gtm": "station",
+    "datum": "WGS-84"
   },
   {
     "n": 17,
@@ -245,6 +659,7 @@
         620,
         287
       ]
-    }
+    },
+    "city": "taipei"
   }
 ]
