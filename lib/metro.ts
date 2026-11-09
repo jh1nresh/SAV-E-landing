@@ -152,9 +152,21 @@ export type FoodShop = {
   address?: string | null;
   exit_walk?: string | null;
   hours?: string | null;
+  lat?: number | null;
+  lng?: number | null;
+  /** Present only when the package supplied a coordinate field. `WGS-84` is the only stored datum. */
+  datum?: "WGS-84" | null;
+  geoStatus?: "pending" | "wgs84";
 };
 export type FoodStation = {
+  city: "taipei" | "shanghai";
   n: number; date: string; station: string; slug: string; tagline?: string | null;
+  /** Official line numbers for this city, such as Shanghai `["1","14"]`. */
+  metro_lines?: string[];
+  lat?: number | null;
+  lng?: number | null;
+  datum?: "WGS-84" | null;
+  geoStatus?: "pending" | "wgs84";
   shops: FoodShop[];
   images: { photos: string[]; slides: string[] };
   posts: { instagram?: string | null; threads?: string | null; xiaohongshu?: string | null };

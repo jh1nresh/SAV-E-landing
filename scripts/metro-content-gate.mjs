@@ -1,10 +1,10 @@
 import { readFileSync, appendFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-/** Daily content JSON only: content/metro/daily/YYYY-MM-DD/web.json */
-export const DAILY_WEB_JSON = /^content\/metro\/daily\/\d{4}-\d{2}-\d{2}\/web\.json$/;
-/** Station images only under images/<NN-slug>/{photos|slides}/<file>.(webp|jpg|jpeg|png) */
-export const METRO_IMAGE = /^content\/metro\/images\/\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*\/(?:photos|slides)\/[a-zA-Z0-9_-]+\.(?:webp|jpg|jpeg|png)$/;
+/** Daily content JSON: legacy Taipei path, or content/metro/daily/<city>/YYYY-MM-DD/web.json */
+export const DAILY_WEB_JSON = /^content\/metro\/daily\/(?:(?:taipei|shanghai)\/)?\d{4}-\d{2}-\d{2}\/web\.json$/;
+/** Station images under images/[<city>/]<NN-slug>/{photos|slides|slides_zh|slides_en}/ */
+export const METRO_IMAGE = /^content\/metro\/images\/(?:(?:taipei|shanghai)\/)?\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*\/(?:photos|slides|slides_zh|slides_en)\/[a-zA-Z0-9_-]+\.(?:webp|jpg|jpeg|png)$/;
 
 export function isAllowedMetroContentPath(path) {
   if (typeof path !== 'string' || !path || path.includes('\0')) return false;

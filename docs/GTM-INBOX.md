@@ -35,7 +35,10 @@
 規則：
 
 - `ready_for_site` 必須是 `true` 才會被排程處理；草稿可先上傳但請設 `false`。
-- `web.json` **禁止**帶 `map` / `map_id`。座標只存在 main 上的 `content/metro/design-stations.json`（DESIGN 審過）。
+- `web.json` **禁止**帶 `map` / `map_id`。示意地圖座標只存在 main 上的 `content/metro/design-stations.json`，並以 `(city, n)` 對應。
+- 省略 `city` 時，若 slug 只屬於一座城市（例如 `shanghai-yuyuan`），inbox 用那一座；否則視為 `taipei`。不要把上海的 `n` 對到台北同一號。
+- `files.photos`、`files.slides`、`files.slides_zh`、`files.slides_en` 可以是陣列或 `null`。路徑前綴分別是 `photos/`、`slides/`、`slides_zh/`、`slides_en/`。
+- 地理座標與價格只採用包內欄位。`lat`／`lng`／`price` 為 `null` 就保持 `null`，不要另找參考座標或補價。
 - 圖片檔名僅英數、`-`、`_`；副檔名 `webp`（建議）或 `jpg`/`jpeg`/`png`。
 - 同一站內容有改，請提高 `delivery_version`；排程用 `delivery_version + content hash` 去重。
 
@@ -53,7 +56,9 @@ node scripts/gtm-inbox-upload.mjs --dir /path/to/2026-11-05 --dry-run
 
 ## DESIGN 座標
 
-新站上線前，必須先有一筆人工 PR 把該站寫進 `content/metro/design-stations.json`（`n` / `slug` / `station` / `map`）。缺座標時排程會停這包、**不改官網**，並開／更新同一則 issue。
+新站上線前，必須先有一筆人工 PR 把該站寫進 `content/metro/design-stations.json`（`city` / `n` / `slug` / `station` / `map`）。示意 `map` 缺該城該站時，排程會停這包、**不改官網**，並開／更新同一則 issue。`lat`／`lng` 為空只表示地理座標 pending，不會拿別的數來填，也不會因此擋掉已有示意 `map` 的包。
+
+上海內容 PR 的路徑是 `content/metro/daily/shanghai/<date>/web.json` 與 `content/metro/images/shanghai/<NN-slug>/...`，和台北一樣只含每日 JSON 與圖片時可自動合併。台北仍走原來的 `content/metro/daily/<date>/web.json`。
 
 ## 手動重跑
 

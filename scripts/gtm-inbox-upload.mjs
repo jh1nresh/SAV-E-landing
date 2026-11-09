@@ -75,11 +75,12 @@ console.log(`Preparing upload to ${repo}@${INBOX_BRANCH}:${destPrefix}/`);
 if (dryRun) {
   console.log('Dry run OK. Would upload:', {
     date: manifest.date,
+    city: manifest.city ?? 'taipei',
     station_n: manifest.station_n,
     slug: manifest.slug,
     delivery_version: manifest.delivery_version,
-    photos: manifest.files.photos.length,
-    slides: manifest.files.slides.length,
+    photos: Array.isArray(manifest.files.photos) ? manifest.files.photos.length : 0,
+    slides: ['slides', 'slides_zh', 'slides_en'].reduce((count, key) => count + (Array.isArray(manifest.files[key]) ? manifest.files[key].length : 0), 0),
   });
   process.exit(0);
 }
