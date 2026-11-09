@@ -153,7 +153,12 @@ const TAIPEI_1_16 = [
 
 test('Taipei stations 1-16 keep their identity and schematic points', () => {
   const stations = buildFoodStations(resolve('.'));
-  assert.deepEqual(stations.map(s => [s.n, s.slug, s.station, s.map.at]), TAIPEI_1_16);
+  assert.deepEqual(stations.slice(0, 16).map(s => [s.n, s.slug, s.station, s.map.at]), TAIPEI_1_16);
+  assert.deepEqual(
+    [stations[16].n, stations[16].slug, stations[16].station, stations[16].map.at, stations[16].city],
+    [17, 'nangang', '南港', [620, 287], 'taipei'],
+  );
+  assert.equal(stations.length, 17);
   assert.ok(stations.every(s => s.city === 'taipei'));
   assert.equal(JSON.stringify(stations).includes('31.2303'), false);
 });
@@ -162,8 +167,11 @@ test('stations are keyed by city and n, and missing geo coordinates stay pending
   const catalog = readFileSync('content/metro/design-stations.json', 'utf8');
   assert.equal(catalog.includes('31.2303'), false);
   assert.equal(catalog.includes('public_reference'), false);
-  assert.equal(designCatalog.some(entry => entry.slug === 'nangang'), false);
-  assert.equal(designCatalog.filter(entry => entry.city === 'taipei').length, 16);
+  const nangang = designCatalog.find(entry => entry.slug === 'nangang');
+  assert.equal(nangang?.city, 'taipei');
+  assert.equal(nangang?.n, 17);
+  assert.deepEqual(nangang?.map, { line: 'L_blue', at: [620, 287] });
+  assert.equal(designCatalog.filter(entry => entry.city === 'taipei').length, 17);
   const shanghai = designCatalog.filter(entry => entry.city === 'shanghai');
   assert.deepEqual(shanghai.map(entry => [entry.n, entry.slug, entry.datum, entry.geoPin, entry.map.at]), [
     [1, 'shanghai-nanjing-east', 'WGS-84', true, [740, 220]],

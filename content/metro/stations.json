@@ -2175,5 +2175,192 @@
         12
       ]
     }
+  },
+  {
+    "n": 17,
+    "date": "2026-11-06",
+    "station": "南港",
+    "slug": "nangang",
+    "tagline": "水餃、涼麵到煙燻牛胸，5 間先收",
+    "shops": [
+      {
+        "key": "neverland",
+        "name": "Neverland Noodle Bar",
+        "dish": "紅燒牛腩麵",
+        "price": "$260",
+        "price_source": "Nash 2026/01",
+        "address": "南港區南港路一段271號",
+        "exit_walk": "2號出口步行約4分鐘",
+        "hours": "11:00–20:30（平日14:30–17:30休息）",
+        "sources": [
+          "https://nash.tw/neverland-noodle-bar2026/",
+          "https://evavin.com/shop/neverland-noodle-bar-nangang",
+          "https://busy.tw/neverland-noodle-bar/",
+          "https://metrobites.app/taipei/nangang/food/Neverland-Noodle-Bar"
+        ],
+        "lat": 25.0545744,
+        "lng": 121.6087509,
+        "coord_datum": "WGS-84",
+        "coord_source": "Nominatim house 271號 南港路一段",
+        "coord_precision": "address_housenumber",
+        "coord_note": "門牌 geocode；OSM 無 Neverland Noodle Bar 店名 POI（附近有 Neverland LITE 烘焙勿混淆）"
+      },
+      {
+        "key": "bogarts",
+        "name": "Bogart's Smokehouse",
+        "dish": "牛胸肉漢堡套餐",
+        "price": "$320",
+        "price_source": "icecreamcat 2026/04",
+        "address": "南港區南港路一段255號",
+        "exit_walk": "2號出口步行約6分鐘",
+        "hours": "11:30–19:00（週日到16:00，週一休）",
+        "sources": [
+          "https://bogartsbbq.com/contact-us/",
+          "https://icecreamcat.tw/bogartsbbq/",
+          "https://ryokousharoody.blogspot.com/2026/05/bogarts-smokehouse.html",
+          "https://metrobites.app/taipei/nangang/food/Bogart's-Smokehouse"
+        ],
+        "lat": 25.0547021,
+        "lng": 121.610093,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap restaurant Bogart's Smokehouse Taipei via Photon; Nominatim house 255號 25.054826,121.610097",
+        "coord_precision": "exact_poi",
+        "coord_note": "OSM restaurant POI；門牌255號 geocode 幾乎重合"
+      },
+      {
+        "key": "beidahuang",
+        "name": "北大荒水餃店",
+        "dish": "巨無霸水餃",
+        "price": "$9.5/顆",
+        "price_source": "蘋果樹 2026/01",
+        "address": "南港區南港路一段201號",
+        "exit_walk": "2號出口步行約7分鐘",
+        "hours": "11:00–21:30",
+        "sources": [
+          "https://appletrees.tw/blog/post/beidahuang",
+          "https://nash.tw/beidahuanggg2026o/",
+          "https://ifunny.blog/beidahuang-dumplings/",
+          "https://girlsplan.com/badahuusqd/",
+          "https://metrobites.app/taipei/nangang/food/北大荒水餃店"
+        ],
+        "lat": 25.0550864,
+        "lng": 121.6117002,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap restaurant 北大荒水餃店 via Photon; Nominatim house 201號 25.0551047,121.6117050",
+        "coord_precision": "exact_poi",
+        "coord_note": "OSM restaurant POI + 門牌201吻合"
+      },
+      {
+        "key": "laojuancun",
+        "name": "老眷村煎餅",
+        "dish": "蘿蔔絲餅",
+        "price": "$45",
+        "price_source": "想吃美食 2026/10",
+        "address": "南港區興中路56巷27號",
+        "exit_walk": "1號出口步行約8分鐘",
+        "hours": "12:30–19:00（週日休）",
+        "sources": [
+          "https://wanteatfood.com/05399",
+          "https://evavin.com/shop/lao-juan-cun-nangang",
+          "https://www.walkerland.com.tw/article/view/421561",
+          "https://ifunny.blog/military-dependents-village/"
+        ],
+        "lat": 25.0564008,
+        "lng": 121.6059079,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap restaurant 老眷村煎餅 via Photon; Nominatim house 27號 興中路56巷 25.0563573,121.6059438",
+        "coord_precision": "exact_poi",
+        "coord_note": "OSM restaurant POI + 門牌吻合"
+      },
+      {
+        "key": "kanji",
+        "name": "闞記涼麵",
+        "dish": "招牌涼麵（大）",
+        "price": "$55",
+        "price_source": "icecreamcat 2026/09",
+        "address": "南港區興華路108號",
+        "exit_walk": "2A出口步行約10分鐘",
+        "hours": "07:00–20:30（週日休）",
+        "sources": [
+          "https://icecreamcat.tw/kan-ji/",
+          "https://wisely.tw/read-34779.html",
+          "https://www.walkerland.com.tw/article/view/417730",
+          "https://tpe.twagoda.com/entry/100878289.html"
+        ],
+        "lat": 25.0565385,
+        "lng": 121.6055867,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap restaurant 闞記涼麵 via Photon; Nominatim house 108號 興華路 25.0565202,121.6055835",
+        "coord_precision": "exact_poi",
+        "coord_note": "OSM restaurant POI + 門牌吻合"
+      }
+    ],
+    "images": {
+      "photos": [
+        "photos/neverland.jpg",
+        "photos/bogarts.jpg",
+        "photos/beidahuang.jpg",
+        "photos/laojuancun.jpg",
+        "photos/kanji.jpg"
+      ],
+      "slides": [
+        "slides/01-cover.png",
+        "slides/02-neverland.png",
+        "slides/03-bogarts.png",
+        "slides/04-beidahuang.png",
+        "slides/05-laojuancun.png",
+        "slides/06-kanji.png",
+        "slides/07-summary.png",
+        "slides/08-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": null,
+      "threads": null,
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://nash.tw/neverland-noodle-bar2026/",
+      "https://evavin.com/shop/neverland-noodle-bar-nangang",
+      "https://busy.tw/neverland-noodle-bar/",
+      "https://metrobites.app/taipei/nangang/food/Neverland-Noodle-Bar",
+      "https://bogartsbbq.com/contact-us/",
+      "https://icecreamcat.tw/bogartsbbq/",
+      "https://ryokousharoody.blogspot.com/2026/05/bogarts-smokehouse.html",
+      "https://metrobites.app/taipei/nangang/food/Bogart's-Smokehouse",
+      "https://appletrees.tw/blog/post/beidahuang",
+      "https://nash.tw/beidahuanggg2026o/",
+      "https://ifunny.blog/beidahuang-dumplings/",
+      "https://girlsplan.com/badahuusqd/",
+      "https://metrobites.app/taipei/nangang/food/北大荒水餃店",
+      "https://wanteatfood.com/05399",
+      "https://evavin.com/shop/lao-juan-cun-nangang",
+      "https://www.walkerland.com.tw/article/view/421561",
+      "https://ifunny.blog/military-dependents-village/",
+      "https://icecreamcat.tw/kan-ji/",
+      "https://wisely.tw/read-34779.html",
+      "https://www.walkerland.com.tw/article/view/417730",
+      "https://tpe.twagoda.com/entry/100878289.html"
+    ],
+    "city": "taipei",
+    "country": "Taiwan",
+    "metro_lines": [
+      "BL"
+    ],
+    "station_geo": {
+      "lat": 25.052222222222,
+      "lng": 121.60638888889,
+      "datum": "WGS-84",
+      "source": "Wikidata Q698337 P625 (南港車站／捷運共構)",
+      "precision": "station_complex",
+      "note": "EN Wikipedia Nangang (TRA/THSR block) 25.0529, 121.6070; MRT exits near Zhongxiao E Rd Sec 7. Taiwan uses WGS-84."
+    },
+    "map": {
+      "line": "L_blue",
+      "at": [
+        620,
+        287
+      ]
+    }
   }
 ]
