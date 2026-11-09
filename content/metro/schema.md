@@ -1,7 +1,7 @@
 # Savvy 官網捷運美食清單：內容檔格式（v1，2026-11-01）
 
 ## 檔案
-- `stations.json`：陣列，一站一筆，依 `n` 排序。現有 #1–#12。
+- `stations.json`：陣列，一站一筆，依 `(city, n)` 排序（省略 `city` 視為 `taipei`）。台北目前是該城 #1–#16；每一城的站數以該城資料筆數為準，不把某個數字當全域站數。
 - 每日新站：GTM 上傳到 git 分支 `gtm/inbox/<YYYY-MM-DD>/web.json`（見 `docs/GTM-INBOX.md`），內容是**單一站物件**（格式同 stations.json 的一筆）。Actions 會同步進 `content/metro/daily/<YYYY-MM-DD>/web.json`。
 - 圖片：`images/<NN>-<slug>/photos/*.jpg`（各店底圖）、`images/<NN>-<slug>/slides/*.png`（輪播 1080×1350）。web.json 內的圖片路徑相對於該日資料夾（`photos/…`、`slides/…`）。
 - `gaps.json`：每站缺漏欄位（給人看，網站不需讀）。
@@ -41,7 +41,7 @@
 - 查不到一律 `null`，不編造、不寫「未取得」。
 - 事實以實發貼文為準（#1–#7 取自 f1-evidence 實發全文，其餘取自當日 ig.txt / threads.txt / data.json）。
 - 價格與營業時間可能變動，網站請顯示「出發前再確認」。
-- 新增一站：GTM 把日期包上傳到 `gtm/inbox/<YYYY-MM-DD>/`（見 `docs/GTM-INBOX.md`）；站點基底仍以 `stations.json` 的 `n` 為鍵（重複就覆蓋，不要新增第二筆）。
+- 新增一站：GTM 把日期包上傳到 `gtm/inbox/<YYYY-MM-DD>/`（見 `docs/GTM-INBOX.md`）。合併鍵是 `(city, n)`；省略 `city` 視為 `taipei`。同一城市的同一個 `n` 以後到的資料覆蓋該城那一站，不另開第二筆，也不覆蓋另一個城市的同號站。
 - 新站座標只採用 DESIGN（`content/metro/design-stations.json`）核准的位置；daily `web.json` 不得帶 `map`／`map_id`，缺 DESIGN 條目時 build 會失敗。
 
 `map.labelOffset` 可選，格式 `[dx, dy]`（兩個有限數字，CSS px），用來在 `label` 預設位置上再微調站名；目前小巨蛋 `[-14, 0]`、雙連 `[0, 12]`，格式錯誤時 build 會失敗（`map.labelOffset must be [dx, dy]`）。只影響互動地圖時用這個欄位。
