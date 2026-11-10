@@ -1,0 +1,81 @@
+.city-pick {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.city-pick .h {
+  font-family: Iansui, "PingFang TC", ui-rounded, sans-serif;
+}
+
+.city-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: stretch;
+  margin: 8px 0 36px;
+}
+
+.city-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  min-height: 220px;
+  padding: 36px 28px 28px;
+  background: var(--paper);
+  color: var(--ink);
+  text-decoration: none;
+  border: 2.5px solid var(--ink);
+  border-radius: 18px 14px 22px 12px;
+  box-shadow: 4px 6px 0 #2f2e23;
+}
+
+.city-card:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.city-tape {
+  position: absolute;
+  top: -12px;
+  left: 36px;
+  width: 84px;
+  height: 22px;
+  background: rgba(234, 221, 198, 0.92);
+  border: 1px solid rgba(98, 89, 79, 0.25);
+  transform: rotate(-3deg);
+}
+
+.city-zh {
+  font-family: Iansui, "PingFang TC", ui-rounded, sans-serif;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1.1;
+}
+
+.city-en {
+  font-family: Caveat, cursive;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--muted);
+}
+
+.city-count {
+  margin-top: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .city-grid {
+    gap: 16px;
+  }
+
+  .city-card {
+    min-height: 168px;
+    padding: 28px 16px 18px;
+  }
+
+  .city-en {
+    font-size: 26px;
+  }
+}

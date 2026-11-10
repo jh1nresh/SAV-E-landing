@@ -1,0 +1,76 @@
+{
+  "n": 2,
+  "city": "shanghai",
+  "date": "2026-11-07",
+  "station": "豫園",
+  "slug": "shanghai-yuyuan",
+  "metro_lines": ["10", "14"],
+  "station_geo": { "lat": 31.229784, "lng": 121.48263, "datum": "WGS-84" },
+  "tagline": null,
+  "shops": [
+    {
+      "key": "nanxiang",
+      "name": "南翔饅頭店（豫園店）",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "豫園路87號",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2285341,
+      "lng": 121.4871017,
+      "datum": "WGS-84"
+    },
+    {
+      "key": "ningbo",
+      "name": "寧波湯團店",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "豫春路9–11號",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2282736,
+      "lng": 121.4873455,
+      "datum": "WGS-84"
+    },
+    {
+      "key": "songhelou",
+      "name": "松鶴樓麵館",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "百翎路5號",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "laofandian",
+      "name": "上海老飯店",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "福佑路242號",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2294579,
+      "lng": 121.4864045,
+      "datum": "WGS-84"
+    },
+    {
+      "key": "lvbolang",
+      "name": "綠波廊",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "豫園路115號",
+      "exit_walk": null,
+      "hours": null
+    }
+  ],
+  "images": { "photos": null, "slides": null, "slides_zh": null, "slides_en": null },
+  "posts": { "instagram": null, "threads": null, "xiaohongshu": null },
+  "_source_files": {
+    "text": "GTM published pack savvy-ready/2026-11-07/web.json. Shop names and addresses are the rows in GTM 2026-11-09 metro-coords §3.2. Prices and image files were not in that report; they stay null."
+  }
+}

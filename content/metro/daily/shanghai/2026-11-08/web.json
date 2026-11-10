@@ -1,0 +1,76 @@
+{
+  "n": 3,
+  "city": "shanghai",
+  "date": "2026-11-08",
+  "station": "靜安寺",
+  "slug": "shanghai-jingan-temple",
+  "metro_lines": ["2", "7", "14"],
+  "station_geo": { "lat": 31.225, "lng": 121.442, "datum": "WGS-84" },
+  "tagline": null,
+  "shops": [
+    {
+      "key": "dushe",
+      "name": "毒蛇麵館",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "愚園路140號",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "dongji",
+      "name": "董記廬春麵館",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "北京西路1806號底層",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "huangayi",
+      "name": "黃阿姨鍋貼大王",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "萬航渡路174號",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2269307,
+      "lng": 121.4366121,
+      "datum": "WGS-84"
+    },
+    {
+      "key": "jiajia",
+      "name": "佳家湯包（晶品）",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "愚園路68號晶品 B2",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2272133,
+      "lng": 121.4416405,
+      "datum": "WGS-84"
+    },
+    {
+      "key": "huxi",
+      "name": "滬西老弄堂（靜安寺店）",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "北京西路1738號",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2269684,
+      "lng": 121.438461,
+      "datum": "WGS-84"
+    }
+  ],
+  "images": { "photos": null, "slides": null, "slides_zh": null, "slides_en": null },
+  "posts": { "instagram": null, "threads": null, "xiaohongshu": null },
+  "_source_files": {
+    "text": "GTM published pack savvy-ready/2026-11-08/web.json. Shop names and addresses are the rows in GTM 2026-11-09 metro-coords §3.3. Prices and image files were not in that report; they stay null."
+  }
+}

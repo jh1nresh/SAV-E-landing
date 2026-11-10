@@ -65,7 +65,7 @@ test("guide links, keyboard navigation and sitemap use only public canonical pag
   const urls = [...(await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]).sort();
   const metroUrls = urls.filter(url => url === `${origin}/metro` || url.startsWith(`${origin}/metro/`));
   expect(metroUrls).toContain(`${origin}/metro`);
-  expect(urls.filter(url => !metroUrls.includes(url))).toEqual([`${origin}/`, ...["about", "contact", "privacy", "support", "docs"].map(path => `${origin}/${path}`), ...paths.map(path => origin + path)].sort());
+  expect(urls.filter(url => !metroUrls.includes(url))).toEqual([`${origin}/`, `${origin}/taipei`, `${origin}/shanghai`, ...["about", "contact", "privacy", "support", "docs"].map(path => `${origin}/${path}`), ...paths.map(path => origin + path)].sort());
   expect(urls.some(url => /\?|token|\/p\/|\/trip\/|\/list|\/r\/|\/u\/|\/my\//.test(url))).toBe(false);
   const robots = await request.get("/robots.txt");
   expect(await robots.text()).toContain(`Sitemap: ${origin}/sitemap.xml`);

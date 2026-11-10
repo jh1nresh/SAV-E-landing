@@ -224,9 +224,11 @@ export function buildPublicMetro(raw, foodStations = buildFoodStations(root)) {
 function main() {
   try {
     const raw = JSON.parse(readFileSync(srcPath, "utf8"));
-    const foodStations = buildFoodStations(root);
+    const foodStations = buildFoodStations(root, { city: "taipei" });
+    const shanghaiFoodStations = buildFoodStations(root, { city: "shanghai" });
     const publicData = buildPublicMetro(raw, foodStations);
     publicData.foodStations = foodStations;
+    publicData.shanghaiFoodStations = shanghaiFoodStations;
     publicData.mapStores = articleMapStores(foodStations);
     mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, `${JSON.stringify(publicData, null, 2)}\n`, "utf8");

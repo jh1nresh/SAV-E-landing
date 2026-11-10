@@ -1,0 +1,77 @@
+{
+  "n": 4,
+  "city": "shanghai",
+  "date": "2026-11-09",
+  "station": "黃陂南路",
+  "slug": "shanghai-south-huangpi-road",
+  "metro_lines": ["1", "14"],
+  "station_geo": { "lat": 31.2246, "lng": 121.4687, "datum": "WGS-84" },
+  "tagline": null,
+  "shops": [
+    {
+      "key": "weixiangzhai",
+      "name": "味香齋",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "雁蕩路14號",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2229246,
+      "lng": 121.4653806,
+      "datum": "WGS-84"
+    },
+    {
+      "key": "chunyuan",
+      "name": "春園·四如春",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "重慶南路183號",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "laorenhe",
+      "name": "老人和",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "淮海中路558號",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "jieerjing",
+      "name": "潔而精川菜館",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "雁蕩路82號",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "guangming",
+      "name": "光明邨",
+      "dish": null,
+      "price": null,
+      "price_source": null,
+      "address": "淮海中路588號",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2223979,
+      "lng": 121.463163,
+      "datum": "WGS-84"
+    }
+  ],
+  "images": { "photos": null, "slides": null, "slides_zh": null, "slides_en": null },
+  "posts": {
+    "instagram": "https://www.instagram.com/p/DfhKbw_G6WX/",
+    "threads": "https://www.threads.com/@savvysave_/post/DfhK4TFGwQT",
+    "xiaohongshu": null
+  },
+  "_source_files": {
+    "text": "GTM published pack savvy-ready/2026-11-09/web.json (v2). Shop names and addresses are the rows in GTM 2026-11-09 metro-coords §3.4. Post URLs are the published IG and Threads links in §2. Prices and image files were not in that report; they stay null. metro_lines follows the updated web.json [1, 14]."
+  }
+}

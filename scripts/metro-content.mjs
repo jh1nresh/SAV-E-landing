@@ -29,10 +29,11 @@ export function stationKey(city, n) {
   return `${resolveCity(city)}:${n}`;
 }
 
+/** Both city pages are Chinese-first. English is a secondary label, not a second content build. */
 export function localeForCity(city) {
   switch (resolveCity(city)) {
     case 'taipei': return 'zh';
-    case 'shanghai': return 'en';
+    case 'shanghai': return 'zh';
     default: {
       const unexpected = city;
       error(`unexpected city ${unexpected}`);
@@ -329,7 +330,8 @@ function publishStation(root, content, station, locale) {
   const geoFields = ['lat', 'lng', 'datum', 'geoStatus'];
   const published = {
     city: resolveCity(station.city), n: station.n, date: station.date, station: station.station, slug: station.slug,
-    map: station.map, ...(station.map_id != null ? { map_id: station.map_id } : {}),
+    map: { ...station.map, snapped: snapToLine(station.map.line, station.map.at) },
+    ...(station.map_id != null ? { map_id: station.map_id } : {}),
     ...(station.metro_lines ? { metro_lines: station.metro_lines } : {}),
     ...(station.geoStatus ? { lat: station.lat ?? null, lng: station.lng ?? null, datum: station.datum ?? null, geoStatus: station.geoStatus } : {}),
     tagline: station.tagline ?? null,
