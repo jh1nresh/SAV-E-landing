@@ -343,6 +343,9 @@ test('published Shanghai stations stay inside the city and do not invent prices'
   assert.equal(shanghai.find(station => station.slug === 'shanghai-yuyuan').posts.instagram, null);
   assert.equal(shanghai.find(station => station.slug === 'shanghai-yuyuan').shops.find(shop => shop.name === '松鶴樓麵館').lat ?? null, null);
   assert.equal(shanghai.find(station => station.slug === 'shanghai-yuyuan').shops.find(shop => shop.name === '南翔饅頭店（豫園店）').address, '豫園路87號');
+  assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd']);
+  assert.equal(JSON.stringify(shanghai).includes('"notes"'), false);
+  assert.equal(JSON.stringify(taipei).includes('"notes"'), false);
 });
 
 test('F-6: daily web.json carrying map or map_id fails validation instead of being stripped', () => {

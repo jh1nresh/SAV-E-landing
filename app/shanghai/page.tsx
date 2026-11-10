@@ -1,7 +1,7 @@
 import { getShanghaiFoodStations } from "../../lib/metro";
 import { FOOD_DISCLAIMER } from "../../lib/metro-logic.mjs";
+import { LangHref } from "../LangHref";
 import { guideMetadata } from "../zh-tw/guides/content";
-import designStations from "../../content/metro/design-stations.json";
 import "../zh-tw/guides/guides.css";
 import "../metro/food.css";
 import "../city.css";
@@ -17,16 +17,11 @@ export const metadata = guideMetadata(
   "/shanghai",
 );
 
-function englishName(slug: string) {
-  const entry = designStations.find((station) => station.city === "shanghai" && station.slug === slug);
-  return entry?.name_en ?? null;
-}
-
 export default function ShanghaiPage() {
   const stations = getShanghaiFoodStations();
   return (
     <main className="guide-shell metro-food sh-page" lang="zh-Hant">
-      <a className="guide-back" href="/">← 選城市</a>
+      <LangHref className="guide-back" href="/">← 選城市</LangHref>
       <header className="guide-header">
         <p className="guide-eyebrow">SAVVY · SHANGHAI</p>
         <h1 className="guide-title zh">上海地鐵，一站一站吃</h1>
@@ -43,7 +38,7 @@ export default function ShanghaiPage() {
           <section id={station.slug} key={station.slug}>
             <p className="guide-eyebrow">第 {station.n} 站 · {station.date}{station.metro_lines?.length ? ` · ${station.metro_lines.join("、")} 號線` : ""}</p>
             <h2>{station.station}</h2>
-            {englishName(station.slug) && <p className="sh-en-name">{englishName(station.slug)}</p>}
+            {station.name_en && <p className="sh-en-name">{station.name_en}</p>}
             <div className="guide-grid food-shops">
               {station.shops.map((shop) => (
                 <article className="guide-card zh-address" lang="zh-Hant" key={shop.key ?? shop.name}>

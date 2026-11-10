@@ -30,8 +30,8 @@ test("homepage shows Taipei and Shanghai side by side and does not pick a city",
     await expect(page.getByRole("heading", { name: "Pick a city" })).toBeVisible();
     const taipei = page.getByTestId("city-card-taipei");
     const shanghai = page.getByTestId("city-card-shanghai");
-    await expect(taipei).toHaveAttribute("href", "/taipei");
-    await expect(shanghai).toHaveAttribute("href", "/shanghai");
+    await expect(taipei).toHaveAttribute("href", "/taipei?lang=en");
+    await expect(shanghai).toHaveAttribute("href", "/shanghai?lang=en");
     await expect(taipei).toContainText("台北");
     await expect(shanghai).toContainText("上海");
     const taipeiBox = (await taipei.boundingBox())!;

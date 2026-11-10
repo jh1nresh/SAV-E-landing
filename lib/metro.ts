@@ -161,6 +161,8 @@ export type FoodShop = {
 export type FoodStation = {
   city: "taipei" | "shanghai";
   n: number; date: string; station: string; slug: string; tagline?: string | null;
+  /** English station name from the public projection. Absent when DESIGN did not publish one. */
+  name_en?: string;
   map: {
     line: string;
     at: [number, number];

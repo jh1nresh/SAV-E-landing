@@ -1,4 +1,5 @@
 import { getFoodStations, getShanghaiFoodStations } from "../lib/metro";
+import { LangHref } from "./LangHref";
 import { AppStoreBadge } from "./SiteChrome";
 import { GUIDE_ROOT, guidePath, guides } from "./zh-tw/guides/content";
 import "./zh-tw/guides/guides.css";
@@ -24,12 +25,12 @@ export default function CitySelect() {
           <p className="sub en">Taipei and Shanghai, side by side.</p>
           <div className="city-grid">
             {CITIES.map((city) => (
-              <a className="city-card" data-testid={`city-card-${city.id}`} href={city.href} key={city.id}>
+              <LangHref className="city-card" testId={`city-card-${city.id}`} href={city.href} key={city.id}>
                 <span className="city-tape" aria-hidden="true" />
                 <span className="city-zh">{city.zh}</span>
                 <span className="city-en">{city.en}</span>
                 <span className="city-count">{city.count()} 站</span>
-              </a>
+              </LangHref>
             ))}
           </div>
           <div data-testid="hero-appstore">

@@ -201,6 +201,11 @@ export function applyDesignMaps(stations, design) {
     const next = { ...station, city, map: structuredClone(approved.map) };
     if (approved.map_id != null) next.map_id = approved.map_id;
     else delete next.map_id;
+    // Public pages may show the English name. The rest of the DESIGN record
+    // (notes, sources, verification) stays in the catalog and out of the site payload.
+    if (typeof approved.name_en === 'string' && approved.name_en) next.name_en = approved.name_en;
+    else delete next.name_en;
+    delete next.notes;
     // Geographic coordinates come only from the content package. A null or missing
     // pair stays pending; DESIGN schematic map.at is not a lat/lng fallback.
     delete next.public_reference;
@@ -335,6 +340,7 @@ function publishStation(root, content, station, locale) {
     ...(station.metro_lines ? { metro_lines: station.metro_lines } : {}),
     ...(station.geoStatus ? { lat: station.lat ?? null, lng: station.lng ?? null, datum: station.datum ?? null, geoStatus: station.geoStatus } : {}),
     tagline: station.tagline ?? null,
+    ...(typeof station.name_en === 'string' && station.name_en ? { name_en: station.name_en } : {}),
     shops: (station.shops ?? []).map(shop => {
       const row = Object.fromEntries(fields.map(key => [key, shop[key] ?? null]));
       if (shop.geoStatus) for (const key of geoFields) row[key] = shop[key] ?? null;
