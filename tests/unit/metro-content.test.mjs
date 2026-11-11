@@ -13,16 +13,22 @@ const daily = readdirSync('content/metro/daily').filter(d => /^\d{4}-\d{2}-\d{2}
 // Pass DESIGN so a daily-only new station (map omitted per F-6) can initialize tests the same way production builds.
 const expected = mergeFoodStations(base, daily, designCatalog);
 test('all content stations preserve source display fields; served image paths exist', () => {
-  const stations = buildFoodStations(resolve('.'));
-  assert.equal(stations.length, expected.length);
-  for (let n = 1; n <= expected.length; n++) assert.ok(stations.some(s => s.n === n));
-  for (const s of stations) {
-    const raw = expected.find(b => b.n === s.n);
-    for (const key of ['n', 'date', 'station', 'slug', 'tagline', 'posts']) assert.deepEqual(s[key], raw[key]);
-    for (const [i, shop] of s.shops.entries()) {
-      for (const key of Object.keys(shop)) assert.deepEqual(shop[key], raw.shops[i][key] ?? null);
+  const cities = [...new Set(expected.map(station => station.city ?? 'taipei'))];
+  for (const city of cities) {
+    const rawStations = expected.filter(station => (station.city ?? 'taipei') === city);
+    const stations = buildFoodStations(resolve('.'), { city });
+    assert.equal(stations.length, rawStations.length, city);
+    if (city === 'taipei') {
+      for (let n = 1; n <= rawStations.length; n++) assert.ok(stations.some(s => s.n === n));
     }
-    for (const image of [...s.images.photos, ...s.images.slides]) assert.ok(existsSync(`public${image}`), image);
+    for (const s of stations) {
+      const raw = rawStations.find(b => b.n === s.n);
+      for (const key of ['n', 'date', 'station', 'slug', 'tagline', 'posts']) assert.deepEqual(s[key], raw[key]);
+      for (const [i, shop] of s.shops.entries()) {
+        for (const key of Object.keys(shop)) assert.deepEqual(shop[key], raw.shops[i][key] ?? null);
+      }
+      for (const image of [...s.images.photos, ...s.images.slides]) assert.ok(existsSync(`public${image}`), image);
+    }
   }
 });
 test('null, missing and empty fields hide the entire row independently', () => {
@@ -52,7 +58,8 @@ test('daily files add stations automatically and later daily replaces duplicate 
       writeFileSync(join(dir, 'web.json'), JSON.stringify({ ...daily, tagline }));
     }
     const result = buildFoodStations(root);
-    assert.equal(result.length, expected.length + 1);
+    const taipeiCount = expected.filter(station => (station.city ?? 'taipei') === 'taipei').length;
+    assert.equal(result.length, taipeiCount + 1);
     assert.equal(result.filter(s => s.n === fixtureN).length, 1);
     assert.equal(result.at(-1).tagline, 'later');
   } finally { rmSync(root, { recursive: true, force: true }); }
@@ -102,8 +109,8 @@ test('DESIGN catalog is required and overrides package coordinates', () => {
   // DESIGN may ship ahead of stations.json (next-station coords); every live station must still match.
   assert.ok(design.length >= base.length, 'DESIGN catalog must cover every live station');
   for (const station of base) {
-    assert.ok(design.some(d => d.n === station.n), `missing DESIGN map for station n=${station.n}`);
-    assert.ok(design.some(d => (d.city ?? 'taipei') === 'taipei' && d.n === station.n && d.slug === station.slug), `missing Taipei DESIGN map for n=${station.n}`);
+    const city = station.city ?? 'taipei';
+    assert.ok(design.some(d => (d.city ?? 'taipei') === city && d.n === station.n && d.slug === station.slug), `missing DESIGN map for ${city} n=${station.n}`);
   }
   const applied = mergeFoodStations(base, [{ n: base[0].n, slug: base[0].slug, station: base[0].station, date: base[0].date, tagline: 'y' }], design);
   const designForFirst = design.find(d => d.n === base[0].n && (d.city ?? 'taipei') === 'taipei');
@@ -161,6 +168,16 @@ test('Taipei stations 1-16 keep their identity and schematic points', () => {
   assert.equal(stations.length, 17);
   assert.ok(stations.every(s => s.city === 'taipei'));
   assert.equal(JSON.stringify(stations).includes('31.2303'), false);
+});
+
+test('published Shanghai stations use their DESIGN maps and leave station coordinates pending', () => {
+  const shanghai = buildFoodStations(resolve('.'), { city: 'shanghai' });
+  assert.deepEqual(shanghai.map(station => [station.n, station.slug, station.station, station.map.line, station.map.at, station.geoStatus, station.lat]), [
+    [2, 'shanghai-yuyuan', '豫園', 'SH_14', [760, 400], 'pending', null],
+    [3, 'shanghai-jingan-temple', '靜安寺', 'SH_14', [220, 420], 'pending', null],
+    [4, 'shanghai-south-huangpi-road', '黃陂南路', 'SH_14', [520, 430], 'pending', null],
+  ]);
+  assert.equal(shanghai.some(station => station.n === 5 || station.n === 6 || station.station === '人民廣場'), false);
 });
 
 test('stations are keyed by city and n, and missing geo coordinates stay pending', () => {
