@@ -173,9 +173,15 @@ test('Taipei stations 1-16 keep their identity and schematic points', () => {
 test('published Shanghai stations use their DESIGN maps and leave station coordinates pending', () => {
   const shanghai = buildFoodStations(resolve('.'), { city: 'shanghai' });
   assert.deepEqual(shanghai.map(station => [station.n, station.slug, station.station, station.map.line, station.map.at, station.geoStatus, station.lat]), [
+    [2, 'shanghai-yuyuan', '豫園', 'SH_14', [760, 400], 'pending', null],
+    [3, 'shanghai-jingan-temple', '靜安寺', 'SH_14', [220, 420], 'pending', null],
+    [4, 'shanghai-south-huangpi-road', '黃陂南路', 'SH_14', [520, 430], 'pending', null],
     [6, 'shanghai-jiaotong-university', '交通大學', 'SH_10', [140, 600], 'pending', null],
   ]);
-  assert.equal(shanghai.some(station => [2, 3, 4, 5].includes(station.n) || station.station === '人民廣場'), false);
+  assert.equal(shanghai.some(station => station.n === 5 || station.station === '人民廣場'), false);
+  const huangpi = shanghai.find(station => station.n === 4);
+  assert.equal(huangpi.shops.find(shop => shop.key === 'guangmingcun').name, '光明邨大酒家');
+  assert.equal(huangpi.shops.find(shop => shop.key === 'weixiang').address, '上海市黃浦區雁蕩路14號（近淮海中路）');
 });
 
 test('stations are keyed by city and n, and missing geo coordinates stay pending', () => {
