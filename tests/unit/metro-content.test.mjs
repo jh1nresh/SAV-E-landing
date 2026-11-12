@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync, mkdtempSync, mkdirSync, writeFileSync, cpSync, rmSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin } from '../../scripts/metro-content.mjs';
+import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin, localeForCity } from '../../scripts/metro-content.mjs';
 import { contentOnly, contentOnlyFromNameStatus, isAllowedMetroContentPath } from '../../scripts/metro-content-gate.mjs';
 import { foodShopRows, FOOD_DISCLAIMER } from '../../lib/metro-logic.mjs';
 const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
@@ -78,6 +78,8 @@ test('changed-file gate allows only daily JSON and station images', () => {
     'content/metro/daily/shanghai/2026-11-07/web.json',
     'content/metro/images/shanghai/02-shanghai-yuyuan/slides_zh/01-cover.webp',
     'content/metro/images/shanghai/02-shanghai-yuyuan/slides_en/01-cover.webp',
+    'content/metro/daily/taipei/2026-11-07/web.json',
+    'content/metro/images/taipei/17-nangang/photos/shop.webp',
   ]), true);
   assert.equal(isAllowedMetroContentPath('content/metro/stations.json'), false);
   assert.equal(isAllowedMetroContentPath('content/metro/design-stations.json'), false);
@@ -95,13 +97,31 @@ test('changed-file gate allows only daily JSON and station images', () => {
     ['content/metro/schema.md'],
     ['scripts/metro-content.mjs'],
     ['.github/workflows/ci.yml'],
+    ['content/metro/daily/shanghai/2026-11-07/web.json', 'app/page.tsx'],
+    ['content/metro/shanghai-lines.json'],
+    ['content/metro/build.py'],
+    ['docs/GTM-INBOX.md'],
+    ['content/metro/daily/shanghai/web.json'],
+    ['content/metro/images/shanghai/02-shanghai-yuyuan/notes.md'],
   ]) assert.equal(contentOnly(files), false);
   assert.equal(contentOnlyFromNameStatus([
     { status: 'A', path: 'content/metro/daily/2026-11-02/web.json' },
   ]), true);
   assert.equal(contentOnlyFromNameStatus([
+    { status: 'A', path: 'content/metro/daily/shanghai/2026-11-07/web.json' },
+    { status: 'M', path: 'content/metro/images/shanghai/02-shanghai-yuyuan/photos/nanxiang.webp' },
+  ]), true);
+  assert.equal(contentOnlyFromNameStatus([
     { status: 'D', path: 'content/metro/daily/2026-11-02/web.json' },
   ]), false);
+  assert.equal(contentOnlyFromNameStatus([
+    { status: 'R', path: 'content/metro/daily/shanghai/2026-11-07/web.json' },
+  ]), false);
+  assert.equal(contentOnlyFromNameStatus([
+    { status: 'T', path: 'content/metro/images/taipei/17-nangang/photos/shop.webp' },
+  ]), false);
+  assert.equal(isAllowedMetroContentPath('content/metro/design-stations.json'), false);
+  assert.equal(isAllowedMetroContentPath('content/metro/schema.md'), false);
 });
 
 test('DESIGN catalog is required and overrides package coordinates', () => {
@@ -315,6 +335,49 @@ test('slides_zh and slides_en are chosen by locale, and null image fields are em
     const empty = buildFoodStations(root);
     assert.deepEqual(empty[0].images, { photos: [], slides: [] });
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('published Shanghai stations stay inside the city and do not invent prices', () => {
+  assert.equal(localeForCity('taipei'), 'zh');
+  assert.equal(localeForCity('shanghai'), 'zh');
+  const taipei = buildFoodStations(resolve('.'));
+  const shanghai = buildFoodStations(resolve('.'), { city: 'shanghai' });
+  assert.ok(taipei.every(station => station.city === 'taipei'));
+  assert.equal(taipei.some(station => station.slug.startsWith('shanghai-')), false);
+  assert.deepEqual(shanghai.map(station => [station.n, station.slug, station.station, station.metro_lines]), [
+    [2, 'shanghai-yuyuan', '豫園', ['10', '14']],
+    [3, 'shanghai-jingan-temple', '靜安寺', ['2', '7', '14']],
+    [4, 'shanghai-south-huangpi-road', '黃陂南路', ['1', '14']],
+  ]);
+  assert.equal(shanghai.some(station => station.slug === 'shanghai-nanjing-east'), false);
+  for (const station of shanghai) {
+    assert.equal(JSON.parse(readFileSync(`content/metro/daily/shanghai/${station.date}/web.json`, 'utf8')).map, undefined);
+    assert.ok(station.shops.length > 0);
+    for (const shop of station.shops) {
+      assert.equal(typeof shop.address, 'string');
+      assert.ok(shop.address.length > 0);
+    }
+  }
+  const yuyuan = shanghai.find(station => station.slug === 'shanghai-yuyuan');
+  const jingan = shanghai.find(station => station.slug === 'shanghai-jingan-temple');
+  const huangpi = shanghai.find(station => station.slug === 'shanghai-south-huangpi-road');
+  assert.equal(yuyuan.posts.instagram, 'https://www.instagram.com/savvysave_/p/DfcC2GKm22A/');
+  assert.equal(yuyuan.posts.threads, 'https://www.threads.com/@savvysave_/post/DfcDLq7mzW7');
+  assert.equal(jingan.posts.instagram, 'https://www.instagram.com/savvysave_/p/Dfenktfm82b/');
+  assert.equal(jingan.posts.threads, 'https://www.threads.com/@savvysave_/post/Dfen6ILGzjh');
+  assert.equal(huangpi.posts.instagram, 'https://www.instagram.com/p/DfhKbw_G6WX/');
+  assert.equal(huangpi.posts.threads, 'https://www.threads.com/@savvysave_/post/DfhK4TFGwQT');
+  assert.equal(huangpi.shops.find(shop => shop.name === '味香齋（雁蕩路店）').price, '14元人民幣／碗');
+  assert.equal(huangpi.shops.find(shop => shop.name === '春園·四如春（復興公園店）').price, '5元人民幣／只');
+  assert.equal(huangpi.shops.find(shop => shop.name === '光明邨大酒家').address, '上海市黃浦區淮海中路588號');
+  assert.equal(huangpi.shops.find(shop => shop.name === '味香齋（雁蕩路店）').address, '上海市黃浦區雁蕩路14號（近淮海中路）');
+  assert.equal(yuyuan.shops.find(shop => shop.name === '松鶴樓麵館（豫園店）').lat ?? null, null);
+  assert.equal(yuyuan.shops.find(shop => shop.name === '南翔饅頭店（豫園店）').address, '豫園路87號');
+  assert.equal(jingan.shops.find(shop => shop.name === '毒蛇麵館（靜安寺店）').address, '上海市靜安區愚園路140號');
+  assert.ok(shanghai.flatMap(station => station.shops).filter(shop => shop.price == null).length > 0);
+  assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd']);
+  assert.equal(JSON.stringify(shanghai).includes('"notes"'), false);
+  assert.equal(JSON.stringify(taipei).includes('"notes"'), false);
 });
 
 test('F-6: daily web.json carrying map or map_id fails validation instead of being stripped', () => {

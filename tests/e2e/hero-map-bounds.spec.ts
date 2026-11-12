@@ -28,7 +28,7 @@ for (const [width, height] of sizes) {
       window.cancelIdleCallback = () => {};
       window.IntersectionObserver = class { observe() {} unobserve() {} disconnect() {} } as any;
     });
-    await page.goto("/?lang=en");
+    await page.goto("/taipei?lang=en");
     const poster = page.getByTestId("metro-map-slot");
     await expect(poster).toHaveAttribute("role", "img");
     await expect(poster).toHaveAttribute("aria-label", "Taipei MRT food map");
@@ -45,7 +45,7 @@ for (const [width, height] of sizes) {
 
   test(`N1 ${width}: real automatic triggers need no interaction`, async ({ page }) => {
     await page.setViewportSize({ width, height });
-    await page.goto("/");
+    await page.goto("/taipei");
     await page.waitForFunction(() => !!window.__savvyMap);
     await expect(page.locator("#mapsvg")).toBeVisible();
     await expect(page.getByTestId("metro-map-slot")).toHaveCount(0);
@@ -53,7 +53,7 @@ for (const [width, height] of sizes) {
 
   test(`N2 ${width}: every shop stays inside the frame`, async ({ page }) => {
     await page.setViewportSize({ width, height });
-    await page.goto("/?reduce=1&clock=2026-10-26");
+    await page.goto("/taipei?reduce=1&clock=2026-10-26");
     await page.waitForFunction(() => !!window.__savvyMap);
     for (const station of metro.stations) {
       await page.evaluate(id => window.__savvyMap!.select(id), station.id);

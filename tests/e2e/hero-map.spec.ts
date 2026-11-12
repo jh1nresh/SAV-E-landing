@@ -12,7 +12,7 @@ const metroSource = JSON.parse(readFileSync("app/metro/metro.public.json", "utf8
 test.describe("hero map interactions", () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto("/");
+    await page.goto("/taipei");
     await waitForMap(page);
   });
 
@@ -61,7 +61,7 @@ test.describe("hero map interactions", () => {
 
   test("D-2 swipe down closes; short swipe springs back", async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/taipei");
     await waitForMap(page);
     await openStation(page, "houshanpi");
     if (testInfo.project.name === "webkit") {
@@ -147,7 +147,7 @@ test.describe("hero map interactions", () => {
 
   test("C-4 orientation-style width change does not blank the map", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/taipei");
     await waitForMap(page);
     await openStation(page, "dongmen");
     await page.setViewportSize({ width: 844, height: 390 });
@@ -172,7 +172,7 @@ test.describe("hero map interactions", () => {
 
   test("D-6 card stays usable when food images fail", async ({ page }) => {
     await page.route("**/metro/images/**", (route) => route.abort());
-    await page.goto("/");
+    await page.goto("/taipei");
     await waitForMap(page);
     await openStation(page, "houshanpi");
     await expect(page.locator("#cardTitle")).toContainText("後山埤");
@@ -183,7 +183,7 @@ test.describe("hero map interactions", () => {
 
   test("D-6 no-photo pin uses the coral fill", async ({ page }) => {
     await page.route("**/metro/images/**", (route) => route.abort());
-    await page.goto("/");
+    await page.goto("/taipei");
     await waitForMap(page);
     const pin = page.locator("[data-testid=metro-pin-houshanpi]");
     await expect(pin).toHaveClass(/nophoto/, { timeout: 8_000 });

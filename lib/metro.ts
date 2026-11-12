@@ -161,6 +161,16 @@ export type FoodShop = {
 export type FoodStation = {
   city: "taipei" | "shanghai";
   n: number; date: string; station: string; slug: string; tagline?: string | null;
+  /** English station name from the public projection. Absent when DESIGN did not publish one. */
+  name_en?: string;
+  map: {
+    line: string;
+    at: [number, number];
+    snapped?: [number, number];
+    label?: "left" | "right";
+    labelOffset?: [number, number];
+    posterLabelOffset?: [number, number];
+  };
   /** Official line numbers for this city, such as Shanghai `["1","14"]`. */
   metro_lines?: string[];
   lat?: number | null;
@@ -173,4 +183,8 @@ export type FoodStation = {
 };
 export function getFoodStations(): FoodStation[] {
   return (publicMetro as unknown as { foodStations: FoodStation[] }).foodStations;
+}
+
+export function getShanghaiFoodStations(): FoodStation[] {
+  return (publicMetro as unknown as { shanghaiFoodStations?: FoodStation[] }).shanghaiFoodStations ?? [];
 }

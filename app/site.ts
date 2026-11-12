@@ -7,20 +7,20 @@ export const SUPPORT_EMAIL = "support@sav-e.app";
 export const SITE_TITLE_EN = "Savvy: Turn links into pins";
 export const SITE_TITLE_ZH = "Savvy：把連結存成地圖上的點";
 export const SITE_DESCRIPTION_EN =
-  "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei MRT food guides.";
+  "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei and Shanghai metro food.";
 export const SITE_DESCRIPTION_ZH =
-  "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北捷運美食指南。";
+  "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北與上海捷運美食。";
 
 export const HERO_EN = [
   "Place memory for links you care about.",
   "Save a link → confirm the place → pin it on your map.",
-  "Also: Taipei MRT food guides, one station at a time.",
+  "Also: Taipei and Shanghai metro food, one station at a time.",
 ] as const;
 
 export const HERO_ZH = [
   "把想去的店存成地圖上的記憶。",
   "存連結 → 確認地點 → 地圖章。",
-  "另有台北捷運美食指南，每天一站。",
+  "另有台北與上海捷運美食，每天一站。",
 ] as const;
 
 export type SiteLang = "zh-Hant" | "en";
