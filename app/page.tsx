@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import SavvyLanding from "./SavvyLanding";
+import CitySelect from "./CitySelect";
 import {
-  SITE_DESCRIPTION_EN,
-  SITE_DESCRIPTION_ZH,
-  SITE_TITLE_EN,
-  SITE_TITLE_ZH,
   parseSiteLang,
 } from "./site";
 import { PRODUCT_TERMS, SCHEMA_DESCRIPTION, SITE_ORIGIN } from "../lib/site-content";
+
+const TITLE_ZH = "先選城市｜Savvy";
+const TITLE_EN = "Pick a city｜Savvy";
+const DESCRIPTION_ZH = "台北與上海並列。先選一座城市，再看這一站的捷運美食。";
+const DESCRIPTION_EN = "Taipei and Shanghai, side by side. Pick a city, then eat one metro stop at a time.";
 
 export async function generateMetadata({
   searchParams,
@@ -16,12 +17,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await searchParams;
   const en = parseSiteLang(lang) === "en";
-  const title = en ? SITE_TITLE_EN : SITE_TITLE_ZH;
-  const description = en ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION_ZH;
+  const title = en ? TITLE_EN : TITLE_ZH;
+  const description = en ? DESCRIPTION_EN : DESCRIPTION_ZH;
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_ORIGIN}/` },
+    alternates: { canonical: `${SITE_ORIGIN}/`, types: { "text/markdown": `${SITE_ORIGIN}/index.md` } },
     openGraph: {
       title,
       description,
@@ -46,6 +47,6 @@ export default function Home() {
   return <>
     <link rel="alternate" type="text/markdown" href={`${SITE_ORIGIN}/index.md`} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(identity).replace(/</g, "\\u003c") }} />
-    <SavvyLanding />
+    <CitySelect />
   </>;
 }

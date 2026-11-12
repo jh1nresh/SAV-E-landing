@@ -1,0 +1,74 @@
+.sh-page .guide-title {
+  font-family: Iansui, "PingFang TC", ui-rounded, sans-serif;
+}
+
+.sh-page .guide-header {
+  margin-bottom: 16px;
+}
+
+.sh-page .guide-lead {
+  margin: 8px 0;
+}
+
+.sh-mapcard {
+  position: relative;
+  margin: 12px 0 40px;
+  padding: 28px 16px 12px;
+  background: var(--paper);
+  border: 2.5px solid var(--ink);
+  border-radius: 18px 14px 22px 12px;
+  box-shadow: 4px 6px 0 var(--kraft);
+}
+
+.sh-map {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sh-caption {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.sh-stations section {
+  margin: 36px 0;
+}
+
+.sh-stations h2 {
+  margin: 0;
+  font-family: Iansui, "PingFang TC", ui-rounded, sans-serif;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 400;
+  color: var(--forest);
+}
+
+.sh-en-name {
+  margin: 0 0 16px;
+  font-family: Caveat, cursive;
+  font-size: 28px;
+  color: var(--muted);
+}
+
+.zh-address h3 {
+  margin: 0 0 12px;
+  font-size: 22px;
+}
+
+.addr-label {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.addr-value {
+  margin: 4px 0 0;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.addr-price {
+  margin: 12px 0 0;
+  font-weight: 700;
+}

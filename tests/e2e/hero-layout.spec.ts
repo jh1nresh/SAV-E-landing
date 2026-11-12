@@ -7,7 +7,7 @@ test.describe("hero layout", () => {
   for (const width of WIDTHS) {
     test(`C-2 no horizontal overflow at ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 844 });
-      await page.goto("/");
+      await page.goto("/taipei");
       await waitForMap(page);
       await noHorizontalOverflow(page);
     });
@@ -15,7 +15,7 @@ test.describe("hero layout", () => {
 
   test("C-1 App Store badge is in the first screen at 1280x800", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto("/");
+    await page.goto("/taipei");
     const box = await heroBadgeBox(page);
     expect(box).toBeTruthy();
     expect(box!.y).toBeGreaterThanOrEqual(0);
@@ -24,7 +24,7 @@ test.describe("hero layout", () => {
 
   test("C-1 App Store badge is in the first screen at 390x844", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/taipei");
     const box = await heroBadgeBox(page);
     expect(box).toBeTruthy();
     expect(box!.y).toBeGreaterThanOrEqual(0);
@@ -33,7 +33,7 @@ test.describe("hero layout", () => {
 
   test("C-3 measure App Store badge at 375x667", async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto("/");
+    await page.goto("/taipei");
     await noHorizontalOverflow(page);
     const box = await heroBadgeBox(page);
     expect(box).toBeTruthy();
@@ -47,7 +47,7 @@ test.describe("hero layout", () => {
 
   test("G-1 EN toggle does not break the hero", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto("/");
+    await page.goto("/taipei");
     await waitForMap(page);
     await page.getByRole("button", { name: "EN" }).click();
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
@@ -58,7 +58,7 @@ test.describe("hero layout", () => {
   });
 
   test("C-5 only five official stickers in the hero", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/taipei");
     const srcs = await page.locator(".hero-stk img").evaluateAll((imgs) =>
       imgs.map((img) => (img as HTMLImageElement).getAttribute("src")),
     );

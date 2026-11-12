@@ -1,0 +1,84 @@
+{
+  "n": 4,
+  "city": "shanghai",
+  "date": "2026-11-09",
+  "station": "黃陂南路",
+  "slug": "shanghai-south-huangpi-road",
+  "metro_lines": [
+    "1",
+    "14"
+  ],
+  "tagline": "麻醬麵、糟雞到麻婆豆腐",
+  "shops": [
+    {
+      "key": "weixiang",
+      "name": "味香齋（雁蕩路店）",
+      "dish": "麻醬麵",
+      "price": "14元人民幣／碗",
+      "price_source": "https://www.shobserver.cn/sgh/detail?id=4027519",
+      "address": "上海市黃浦區雁蕩路14號（近淮海中路）",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2229246,
+      "lng": 121.4653806,
+      "datum": "WGS-84"
+    },
+    {
+      "key": "chunyuan",
+      "name": "春園·四如春（復興公園店）",
+      "dish": "牛肉煎包",
+      "price": "5元人民幣／只",
+      "price_source": "https://m.thepaper.cn/newsDetail_forward_32399528",
+      "address": "上海市黃浦區重慶南路183號（復興公園對面）",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "laorenhe",
+      "name": "老人和（淮海中路店）",
+      "dish": "糟雞",
+      "price": null,
+      "price_source": null,
+      "address": "上海市黃浦區淮海中路558號",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "jieerjing",
+      "name": "潔而精川菜館（雁蕩路店）",
+      "dish": "麻婆豆腐",
+      "price": null,
+      "price_source": null,
+      "address": "上海市黃浦區雁蕩路82號（近南昌路）",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "guangmingcun",
+      "name": "光明邨大酒家",
+      "dish": "鮮肉月餅",
+      "price": null,
+      "price_source": null,
+      "address": "上海市黃浦區淮海中路588號",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2223979,
+      "lng": 121.463163,
+      "datum": "WGS-84"
+    }
+  ],
+  "images": {
+    "photos": null,
+    "slides": null,
+    "slides_zh": null,
+    "slides_en": null
+  },
+  "posts": {
+    "instagram": "https://www.instagram.com/p/DfhKbw_G6WX/",
+    "threads": "https://www.threads.com/@savvysave_/post/DfhK4TFGwQT",
+    "xiaohongshu": null
+  },
+  "_source_files": {
+    "text": "GTM published pack savvy-ready/2026-11-09/web.json. Display fields copied verbatim. Image files were not moved in this change, so images stay null."
+  }
+}

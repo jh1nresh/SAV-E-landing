@@ -19,7 +19,7 @@ test.describe("hero content and motion", () => {
 
     for (const clock of clocks) {
       const weekCount = weekNewCount(metro.stores, clock);
-      await page.goto(`/?clock=${clock}`);
+      await page.goto(`/taipei?clock=${clock}`);
       await waitForMap(page);
       expect(await page.evaluate(() => window.__savvyMap!.state().weekCount), `weekCount @${clock}`).toBe(weekCount);
       if (weekCount > 0) await expect(page.locator("#stampA")).toContainText(`本週新增 ${weekCount} 家`);
@@ -40,7 +40,7 @@ test.describe("hero content and motion", () => {
 
   test("P-0 labels follow each entry's kind: example entries are labelled, post entries are not", async ({ page }) => {
     // Exercise both kinds present in the shipped data; synthetic edge cases stay in unit tests.
-    await page.goto("/?reduce=1");
+    await page.goto("/taipei?reduce=1");
     await waitForMap(page);
     // Map-level stamp follows the data (P0-10): all example = full stamp, mixed = smaller 部分為範例, all post = none.
     const level = stampLevel(metro.stores);
@@ -97,7 +97,7 @@ test.describe("hero content and motion", () => {
   });
 
   test("F-2 / (d) forbidden strings are absent", async ({ page }) => {
-    const res = await page.goto("/");
+    const res = await page.goto("/taipei");
     const html = (await res?.text()) ?? "";
     expect(html).not.toContain("本機互動原型");
     expect(html).not.toContain("10/25 預定");
@@ -115,7 +115,7 @@ test.describe("hero content and motion", () => {
         /* ignore */
       }
     });
-    await page.goto("/");
+    await page.goto("/taipei");
     await waitForMap(page);
     const banned = hosts.filter((h) => /googleapis|gstatic|maps\.google/.test(h));
     expect(banned).toEqual([]);
@@ -131,7 +131,7 @@ test.describe("hero content and motion", () => {
         /* ignore */
       }
     });
-    const response = await page.goto("/");
+    const response = await page.goto("/taipei");
     await page.waitForLoadState("domcontentloaded");
     const html = (await response?.text()) ?? "";
     expect(Buffer.byteLength(html, "utf8")).toBeLessThan(500 * 1024);
@@ -147,7 +147,7 @@ test.describe("hero content and motion", () => {
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/taipei");
     await page.waitForLoadState("domcontentloaded");
     await page.waitForTimeout(1500);
     const lcp = await page.evaluate(() => {
@@ -193,7 +193,7 @@ test.describe("hero content and motion", () => {
 
   test("D-5 reduced-motion via media query fades without flying", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
+    await page.goto("/taipei");
     await waitForMap(page);
     await clickPin(page, "houshanpi");
     const state = await page.evaluate(() => window.__savvyMap!.state());
@@ -203,7 +203,7 @@ test.describe("hero content and motion", () => {
   });
 
   test("D-5 ?reduce also disables fly/morph", async ({ page }) => {
-    await page.goto("/?reduce=1");
+    await page.goto("/taipei?reduce=1");
     await waitForMap(page);
     const state = await page.evaluate(() => window.__savvyMap!.state());
     expect(state.reduced).toBeTruthy();
@@ -213,22 +213,22 @@ test.describe("hero content and motion", () => {
   });
 
   test("F-1 metadata includes title description and OG image", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/taipei");
     await expect(page).toHaveTitle("Savvy：把連結存成地圖上的點");
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       "content",
-      "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北捷運美食指南。",
+      "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北與上海捷運美食。",
     );
     await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", "Savvy：把連結存成地圖上的點");
     await expect(page.locator(".hero .sub.zh")).toContainText("存連結 → 確認地點 → 地圖章。");
     const og = await page.locator('meta[property="og:image"]').getAttribute("content");
     expect(og).toMatch(/og\.png/);
 
-    await page.goto("/?lang=en");
+    await page.goto("/taipei?lang=en");
     await expect(page).toHaveTitle("Savvy: Turn links into pins");
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       "content",
-      "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei MRT food guides.",
+      "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei and Shanghai metro food.",
     );
     await expect(page.locator(".hero .sub.en")).toContainText("Save a link → confirm the place → pin it on your map.");
   });

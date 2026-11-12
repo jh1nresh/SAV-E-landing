@@ -1,0 +1,88 @@
+{
+  "n": 3,
+  "city": "shanghai",
+  "date": "2026-11-08",
+  "station": "靜安寺",
+  "slug": "shanghai-jingan-temple",
+  "metro_lines": [
+    "2",
+    "7",
+    "14"
+  ],
+  "tagline": "鱔絲麵、豬肝麵、鍋貼到湯包",
+  "shops": [
+    {
+      "key": "dusche",
+      "name": "毒蛇麵館（靜安寺店）",
+      "dish": "響油鱔絲拌麵",
+      "price": null,
+      "price_source": null,
+      "address": "上海市靜安區愚園路140號",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "dongji",
+      "name": "董記廬春麵館",
+      "dish": "醬爆豬肝麵",
+      "price": null,
+      "price_source": null,
+      "address": "上海市靜安區北京西路1806號底層",
+      "exit_walk": null,
+      "hours": null
+    },
+    {
+      "key": "huangayi",
+      "name": "黃阿姨鍋貼大王（萬航渡路店）",
+      "dish": "鍋貼",
+      "price": null,
+      "price_source": null,
+      "address": "上海市萬航渡路174號",
+      "exit_walk": null,
+      "hours": "05:00–20:30",
+      "lat": 31.2269307,
+      "lng": 121.4366121,
+      "datum": "WGS-84"
+    },
+    {
+      "key": "jiajia",
+      "name": "佳家湯包（晶品店）",
+      "dish": "蟹黃湯包",
+      "price": null,
+      "price_source": null,
+      "address": "上海市靜安區愚園路68號晶品B2／LG2",
+      "exit_walk": null,
+      "hours": "10:00–21:30",
+      "lat": 31.2272133,
+      "lng": 121.4416405,
+      "datum": "WGS-84"
+    },
+    {
+      "key": "huxi",
+      "name": "滬西老弄堂麵館（靜安寺店）",
+      "dish": "蔥油拌麵",
+      "price": null,
+      "price_source": null,
+      "address": "上海市靜安區北京西路1738號",
+      "exit_walk": null,
+      "hours": null,
+      "lat": 31.2269684,
+      "lng": 121.438461,
+      "datum": "WGS-84"
+    }
+  ],
+  "images": {
+    "photos": null,
+    "slides": null,
+    "slides_zh": null,
+    "slides_en": null
+  },
+  "posts": {
+    "instagram": "https://www.instagram.com/savvysave_/p/Dfenktfm82b/",
+    "threads": "https://www.threads.com/@savvysave_/post/Dfen6ILGzjh",
+    "xiaohongshu": null
+  },
+  "_source_files": {
+    "text": "GTM published pack savvy-ready/2026-11-08/web.json. Display fields copied verbatim. Image files were not moved in this change, so images stay null."
+  }
+}
