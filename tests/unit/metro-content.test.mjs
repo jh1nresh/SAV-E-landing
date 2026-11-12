@@ -1,15 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, existsSync, mkdtempSync, mkdirSync, writeFileSync, cpSync, rmSync } from 'node:fs';
+import { readFileSync, existsSync, mkdtempSync, mkdirSync, writeFileSync, cpSync, rmSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin, localeForCity } from '../../scripts/metro-content.mjs';
+import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, loadDailyStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin, localeForCity } from '../../scripts/metro-content.mjs';
 import { contentOnly, contentOnlyFromNameStatus, isAllowedMetroContentPath } from '../../scripts/metro-content-gate.mjs';
 import { foodShopRows, FOOD_DISCLAIMER } from '../../lib/metro-logic.mjs';
 const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
 const designCatalog = loadDesignStations(resolve('content/metro'));
-const daily = readdirSync('content/metro/daily').filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort()
-  .map(d => `content/metro/daily/${d}/web.json`).filter(existsSync).map(p => JSON.parse(readFileSync(p, 'utf8')));
+const daily = loadDailyStations(resolve('content/metro'), resolve('.'));
 // Pass DESIGN so a daily-only new station (map omitted per F-6) can initialize tests the same way production builds.
 const expected = mergeFoodStations(base, daily, designCatalog);
 test('all content stations preserve source display fields; served image paths exist', () => {
@@ -348,10 +347,14 @@ test('published Shanghai stations stay inside the city and do not invent prices'
     [2, 'shanghai-yuyuan', '豫園', ['10', '14']],
     [3, 'shanghai-jingan-temple', '靜安寺', ['2', '7', '14']],
     [4, 'shanghai-south-huangpi-road', '黃陂南路', ['1', '14']],
+    [6, 'shanghai-jiaotong-university', '交通大學', ['10', '11']],
   ]);
   assert.equal(shanghai.some(station => station.slug === 'shanghai-nanjing-east'), false);
   for (const station of shanghai) {
-    assert.equal(JSON.parse(readFileSync(`content/metro/daily/shanghai/${station.date}/web.json`, 'utf8')).map, undefined);
+    const scoped = `content/metro/daily/shanghai/${station.date}/web.json`;
+    const legacy = `content/metro/daily/${station.date}/web.json`;
+    const dailyPath = existsSync(scoped) ? scoped : legacy;
+    assert.equal(JSON.parse(readFileSync(dailyPath, 'utf8')).map, undefined);
     assert.ok(station.shops.length > 0);
     for (const shop of station.shops) {
       assert.equal(typeof shop.address, 'string');
@@ -375,7 +378,7 @@ test('published Shanghai stations stay inside the city and do not invent prices'
   assert.equal(yuyuan.shops.find(shop => shop.name === '南翔饅頭店（豫園店）').address, '豫園路87號');
   assert.equal(jingan.shops.find(shop => shop.name === '毒蛇麵館（靜安寺店）').address, '上海市靜安區愚園路140號');
   assert.ok(shanghai.flatMap(station => station.shops).filter(shop => shop.price == null).length > 0);
-  assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd']);
+  assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd', 'Jiaotong University']);
   assert.equal(JSON.stringify(shanghai).includes('"notes"'), false);
   assert.equal(JSON.stringify(taipei).includes('"notes"'), false);
 });

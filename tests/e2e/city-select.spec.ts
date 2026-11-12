@@ -98,6 +98,7 @@ test("Shanghai is Chinese-first, with published addresses and no invented prices
     "shanghai-yuyuan",
     "shanghai-jingan-temple",
     "shanghai-south-huangpi-road",
+    "shanghai-jiaotong-university",
   ]);
   await page.setViewportSize({ width: 390, height: 844 });
   const response = await page.goto("/shanghai");
@@ -107,6 +108,7 @@ test("Shanghai is Chinese-first, with published addresses and no invented prices
   await expect(page.getByTestId("shanghai-pin-shanghai-yuyuan")).toHaveCount(1);
   await expect(page.getByTestId("shanghai-pin-shanghai-jingan-temple")).toHaveCount(1);
   await expect(page.getByTestId("shanghai-pin-shanghai-south-huangpi-road")).toHaveCount(1);
+  await expect(page.getByTestId("shanghai-pin-shanghai-jiaotong-university")).toHaveCount(1);
   await expect(page.locator("[data-testid^=shanghai-pin-]")).toHaveCount(stations.length);
   await expect(page.locator(".zh-address")).toHaveCount(stations.reduce((sum, station) => sum + station.shops.length, 0));
   await expect(page.getByText("豫園路87號", { exact: true })).toBeVisible();
@@ -115,7 +117,7 @@ test("Shanghai is Chinese-first, with published addresses and no invented prices
   await expect(page.getByText("光明邨大酒家", { exact: true })).toBeVisible();
   await expect(page.getByText("14元人民幣／碗", { exact: true })).toBeVisible();
   await expect(page.getByText("5元人民幣／只", { exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Instagram ↗" })).toHaveCount(3);
+  await expect(page.getByRole("link", { name: "Instagram ↗" })).toHaveCount(4);
   await expect(page.getByText("人民幣（¥）")).toBeVisible();
   await expect(page.getByText("南京東路")).toHaveCount(0);
   await expect(page.getByText("價格待確認")).toHaveCount(0);
