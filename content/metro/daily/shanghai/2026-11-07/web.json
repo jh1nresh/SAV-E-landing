@@ -4,14 +4,16 @@
   "date": "2026-11-07",
   "station": "豫園",
   "slug": "shanghai-yuyuan",
-  "metro_lines": ["10", "14"],
-  "station_geo": { "lat": 31.229784, "lng": 121.48263, "datum": "WGS-84" },
-  "tagline": null,
+  "metro_lines": [
+    "10",
+    "14"
+  ],
+  "tagline": "小籠、甜湯、湯麵到熱炒，5 種選擇",
   "shops": [
     {
       "key": "nanxiang",
       "name": "南翔饅頭店（豫園店）",
-      "dish": null,
+      "dish": "鮮肉小籠",
       "price": null,
       "price_source": null,
       "address": "豫園路87號",
@@ -23,8 +25,8 @@
     },
     {
       "key": "ningbo",
-      "name": "寧波湯團店",
-      "dish": null,
+      "name": "寧波湯團店（豫園店）",
+      "dish": "黑芝麻湯團",
       "price": null,
       "price_source": null,
       "address": "豫春路9–11號",
@@ -36,8 +38,8 @@
     },
     {
       "key": "songhelou",
-      "name": "松鶴樓麵館",
-      "dish": null,
+      "name": "松鶴樓麵館（豫園店）",
+      "dish": "蘇式紅湯麵",
       "price": null,
       "price_source": null,
       "address": "百翎路5號",
@@ -47,7 +49,7 @@
     {
       "key": "laofandian",
       "name": "上海老飯店",
-      "dish": null,
+      "dish": "八寶鴨",
       "price": null,
       "price_source": null,
       "address": "福佑路242號",
@@ -58,9 +60,9 @@
       "datum": "WGS-84"
     },
     {
-      "key": "lvbolang",
+      "key": "lubolang",
       "name": "綠波廊",
-      "dish": null,
+      "dish": "清炒手剝河蝦仁",
       "price": null,
       "price_source": null,
       "address": "豫園路115號",
@@ -68,9 +70,18 @@
       "hours": null
     }
   ],
-  "images": { "photos": null, "slides": null, "slides_zh": null, "slides_en": null },
-  "posts": { "instagram": null, "threads": null, "xiaohongshu": null },
+  "images": {
+    "photos": null,
+    "slides": null,
+    "slides_zh": null,
+    "slides_en": null
+  },
+  "posts": {
+    "instagram": "https://www.instagram.com/savvysave_/p/DfcC2GKm22A/",
+    "threads": "https://www.threads.com/@savvysave_/post/DfcDLq7mzW7",
+    "xiaohongshu": null
+  },
   "_source_files": {
-    "text": "GTM published pack savvy-ready/2026-11-07/web.json. Shop names and addresses are the rows in GTM 2026-11-09 metro-coords §3.2. Prices and image files were not in that report; they stay null."
+    "text": "GTM published pack savvy-ready/2026-11-07/web.json. Display fields copied verbatim. Image files were not moved in this change, so images stay null."
   }
 }

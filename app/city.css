@@ -36,6 +36,13 @@
   outline-offset: 4px;
 }
 
+@media (hover: hover) {
+  .city-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 12px 0 #2f2e23;
+  }
+}
+
 .city-tape {
   position: absolute;
   top: -12px;

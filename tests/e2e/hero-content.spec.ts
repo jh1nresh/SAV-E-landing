@@ -217,7 +217,7 @@ test.describe("hero content and motion", () => {
     await expect(page).toHaveTitle("Savvy：把連結存成地圖上的點");
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       "content",
-      "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北捷運美食指南。",
+      "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北與上海捷運美食。",
     );
     await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", "Savvy：把連結存成地圖上的點");
     await expect(page.locator(".hero .sub.zh")).toContainText("存連結 → 確認地點 → 地圖章。");
@@ -228,7 +228,7 @@ test.describe("hero content and motion", () => {
     await expect(page).toHaveTitle("Savvy: Turn links into pins");
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       "content",
-      "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei MRT food guides.",
+      "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei and Shanghai metro food.",
     );
     await expect(page.locator(".hero .sub.en")).toContainText("Save a link → confirm the place → pin it on your map.");
   });

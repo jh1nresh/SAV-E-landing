@@ -39,13 +39,14 @@ export default function ShanghaiPage() {
             <p className="guide-eyebrow">第 {station.n} 站 · {station.date}{station.metro_lines?.length ? ` · ${station.metro_lines.join("、")} 號線` : ""}</p>
             <h2>{station.station}</h2>
             {station.name_en && <p className="sh-en-name">{station.name_en}</p>}
+            {station.tagline && <p className="guide-lead">{station.tagline}</p>}
             <div className="guide-grid food-shops">
               {station.shops.map((shop) => (
                 <article className="guide-card zh-address" lang="zh-Hant" key={shop.key ?? shop.name}>
                   {shop.name && <h3>{shop.name}</h3>}
                   <p className="addr-label">中文地址</p>
                   <p className="addr-value">{shop.address}</p>
-                  {shop.price ? <p className="addr-price">¥ {shop.price}</p> : null}
+                  {shop.price ? <p className="addr-price">{shop.price}</p> : null}
                 </article>
               ))}
             </div>

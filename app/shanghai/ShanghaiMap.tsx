@@ -3,6 +3,22 @@ import shanghaiLines from "../../content/metro/shanghai-lines.json";
 
 type ShanghaiLine = { name_en: string; color: string; d: string };
 
+/** Crop the schematic to the published pins so they sit in the first screen. */
+function pinViewBox(x: number, y: number, width: number, height: number, stations: FoodStation[]) {
+  const points = stations.map((station) => station.map.snapped ?? station.map.at);
+  const xs = points.map((point) => point[0]);
+  const ys = points.map((point) => point[1]);
+  const minX = Math.min(...xs) - 120;
+  const maxX = Math.max(...xs) + 120;
+  const minY = Math.min(...ys) - 70;
+  const maxY = Math.max(...ys) + 50;
+  const left = Math.max(x, minX);
+  const top = Math.max(y, minY);
+  const right = Math.min(x + width, maxX);
+  const bottom = Math.min(y + height, maxY);
+  return `${left} ${top} ${right - left} ${bottom - top}`;
+}
+
 export function ShanghaiMap({ stations }: { stations: FoodStation[] }) {
   const [x, y, width, height] = shanghaiLines.viewBox;
   const lines = shanghaiLines.lines as Record<string, ShanghaiLine>;
@@ -11,7 +27,7 @@ export function ShanghaiMap({ stations }: { stations: FoodStation[] }) {
       <span className="city-tape" aria-hidden="true" />
       <svg
         className="sh-map"
-        viewBox={`${x} ${y} ${width} ${height}`}
+        viewBox={pinViewBox(x, y, width, height, stations)}
         role="img"
         aria-label="上海地鐵手繪示意地圖。位置為示意，不是精確地理座標。"
       >

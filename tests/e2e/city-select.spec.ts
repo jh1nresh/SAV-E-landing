@@ -109,15 +109,24 @@ test("Shanghai is Chinese-first, with published addresses and no invented prices
   await expect(page.getByTestId("shanghai-pin-shanghai-south-huangpi-road")).toHaveCount(1);
   await expect(page.locator("[data-testid^=shanghai-pin-]")).toHaveCount(stations.length);
   await expect(page.locator(".zh-address")).toHaveCount(stations.reduce((sum, station) => sum + station.shops.length, 0));
-  await expect(page.getByText("豫園路87號")).toBeVisible();
-  await expect(page.getByText("愚園路140號")).toBeVisible();
-  await expect(page.getByText("雁蕩路14號")).toBeVisible();
+  await expect(page.getByText("豫園路87號", { exact: true })).toBeVisible();
+  await expect(page.getByText("上海市靜安區愚園路140號", { exact: true })).toBeVisible();
+  await expect(page.getByText("上海市黃浦區雁蕩路14號（近淮海中路）", { exact: true })).toBeVisible();
+  await expect(page.getByText("光明邨大酒家", { exact: true })).toBeVisible();
+  await expect(page.getByText("14元人民幣／碗", { exact: true })).toBeVisible();
+  await expect(page.getByText("5元人民幣／只", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Instagram ↗" })).toHaveCount(3);
   await expect(page.getByText("人民幣（¥）")).toBeVisible();
   await expect(page.getByText("南京東路")).toHaveCount(0);
   await expect(page.getByText("價格待確認")).toHaveCount(0);
-  const text = await page.locator("main").innerText();
-  expect(text).not.toMatch(/¥\s*\d/);
   await noHorizontalOverflow(page);
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await noHorizontalOverflow(page);
+  for (const [width, height] of [[1280, 800], [1440, 900]] as const) {
+    await page.setViewportSize({ width, height });
+    await noHorizontalOverflow(page);
+    for (const slug of ["shanghai-yuyuan", "shanghai-jingan-temple", "shanghai-south-huangpi-road"]) {
+      const box = (await page.getByTestId(`shanghai-pin-${slug}`).boundingBox())!;
+      expect(box.y, slug).toBeGreaterThanOrEqual(0);
+      expect(box.y + box.height, slug).toBeLessThanOrEqual(height);
+    }
+  }
 });

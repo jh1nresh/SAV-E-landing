@@ -2,6 +2,14 @@
   font-family: Iansui, "PingFang TC", ui-rounded, sans-serif;
 }
 
+.sh-page .guide-header {
+  margin-bottom: 16px;
+}
+
+.sh-page .guide-lead {
+  margin: 8px 0;
+}
+
 .sh-mapcard {
   position: relative;
   margin: 12px 0 40px;

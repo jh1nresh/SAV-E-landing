@@ -332,17 +332,27 @@ test('published Shanghai stations stay inside the city and do not invent prices'
     assert.equal(JSON.parse(readFileSync(`content/metro/daily/shanghai/${station.date}/web.json`, 'utf8')).map, undefined);
     assert.ok(station.shops.length > 0);
     for (const shop of station.shops) {
-      assert.equal(shop.price, null);
       assert.equal(typeof shop.address, 'string');
       assert.ok(shop.address.length > 0);
     }
   }
+  const yuyuan = shanghai.find(station => station.slug === 'shanghai-yuyuan');
+  const jingan = shanghai.find(station => station.slug === 'shanghai-jingan-temple');
   const huangpi = shanghai.find(station => station.slug === 'shanghai-south-huangpi-road');
+  assert.equal(yuyuan.posts.instagram, 'https://www.instagram.com/savvysave_/p/DfcC2GKm22A/');
+  assert.equal(yuyuan.posts.threads, 'https://www.threads.com/@savvysave_/post/DfcDLq7mzW7');
+  assert.equal(jingan.posts.instagram, 'https://www.instagram.com/savvysave_/p/Dfenktfm82b/');
+  assert.equal(jingan.posts.threads, 'https://www.threads.com/@savvysave_/post/Dfen6ILGzjh');
   assert.equal(huangpi.posts.instagram, 'https://www.instagram.com/p/DfhKbw_G6WX/');
   assert.equal(huangpi.posts.threads, 'https://www.threads.com/@savvysave_/post/DfhK4TFGwQT');
-  assert.equal(shanghai.find(station => station.slug === 'shanghai-yuyuan').posts.instagram, null);
-  assert.equal(shanghai.find(station => station.slug === 'shanghai-yuyuan').shops.find(shop => shop.name === '松鶴樓麵館').lat ?? null, null);
-  assert.equal(shanghai.find(station => station.slug === 'shanghai-yuyuan').shops.find(shop => shop.name === '南翔饅頭店（豫園店）').address, '豫園路87號');
+  assert.equal(huangpi.shops.find(shop => shop.name === '味香齋（雁蕩路店）').price, '14元人民幣／碗');
+  assert.equal(huangpi.shops.find(shop => shop.name === '春園·四如春（復興公園店）').price, '5元人民幣／只');
+  assert.equal(huangpi.shops.find(shop => shop.name === '光明邨大酒家').address, '上海市黃浦區淮海中路588號');
+  assert.equal(huangpi.shops.find(shop => shop.name === '味香齋（雁蕩路店）').address, '上海市黃浦區雁蕩路14號（近淮海中路）');
+  assert.equal(yuyuan.shops.find(shop => shop.name === '松鶴樓麵館（豫園店）').lat ?? null, null);
+  assert.equal(yuyuan.shops.find(shop => shop.name === '南翔饅頭店（豫園店）').address, '豫園路87號');
+  assert.equal(jingan.shops.find(shop => shop.name === '毒蛇麵館（靜安寺店）').address, '上海市靜安區愚園路140號');
+  assert.ok(shanghai.flatMap(station => station.shops).filter(shop => shop.price == null).length > 0);
   assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd']);
   assert.equal(JSON.stringify(shanghai).includes('"notes"'), false);
   assert.equal(JSON.stringify(taipei).includes('"notes"'), false);
