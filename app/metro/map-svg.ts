@@ -36,7 +36,6 @@ export const MAP_SVG = `<svg id="mapsvg" viewBox="-150 -170 1000 940" xmlns="htt
 <path id="L_green" stroke="#3f9b6b" stroke-width="8" d="M860 22 C 800 46 700 72 598 86 C560 106 510 126 440 142 C380 156 316 192 278 238 C262 258 254 262 246 268 C228 286 214 318 202 382 C 196 440 188 540 176 770"/>
 </g>
 <g filter="url(#wobS)" fill="#fff9eb" stroke="#2f2e23" stroke-width="2.6"><circle cx="186" cy="200" r="8"/><circle cx="246" cy="268" r="8"/></g>
-<g font-family="Iansui" font-size="14" fill="#62594f" stroke="#fff9eb" stroke-width="4" paint-order="stroke" stroke-linejoin="round"><text x="100" y="226">台北車站</text></g>
 <g font-family="Iansui" font-size="14" fill="#2f2e23" stroke="#fff9eb" stroke-width="4" paint-order="stroke" stroke-linejoin="round">
 <circle cx="46" cy="160" r="5.5" fill="#b4443a" stroke="#2f2e23" stroke-width="1.5"/><text x="56" y="165">淡水信義線</text>
 <circle cx="36" cy="184" r="5.5" fill="#3f6fb0" stroke="#2f2e23" stroke-width="1.5"/><text x="46" y="189">板南線</text>
