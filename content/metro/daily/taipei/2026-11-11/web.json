@@ -1,0 +1,124 @@
+{
+  "n": 22,
+  "date": "2026-11-11",
+  "station": "象山",
+  "slug": "xiangshan",
+  "tagline": "拉麵、牛肉麵到涼麵，5 間先收",
+  "shops": [
+    {
+      "key": "shizheng",
+      "name": "実正拉麵",
+      "dish": "雞豚白湯拉麵",
+      "price": null,
+      "price_source": null,
+      "address": "台北市信義區信義路五段150巷14弄2-2號",
+      "exit_walk": "2號出口步行約3分鐘",
+      "hours": "11:45–14:15、17:30起，週一、二公休",
+      "sources": [
+        "https://pekoblog.tw/shizheng/",
+        "https://ramenradar.tw/shop/branch-gqknbg"
+      ]
+    },
+    {
+      "key": "nola",
+      "name": "紐澳良小廚 信義象山店",
+      "dish": "楓糖鬆餅炸雞",
+      "price": null,
+      "price_source": null,
+      "address": "台北市信義區信義路五段150巷14弄16號",
+      "exit_walk": "同一條弄",
+      "hours": "週一至五 11:30–20:30，週六日 10:00–20:30",
+      "sources": [
+        "https://shop.ichefpos.com/store/oTwmuibO/ordering",
+        "https://shop.ichefpos.com/store/oTwmuibO/information",
+        "https://elsa819.com/nola-kitchen-tpe/"
+      ]
+    },
+    {
+      "key": "laoqiu",
+      "name": "老邱原汁牛肉麵",
+      "dish": "招牌牛肉麵小碗",
+      "price": "$155",
+      "price_source": "陳凱莉 2025/10 菜單照",
+      "address": "台北市信義區松仁路217號",
+      "exit_walk": "松仁路與莊敬路口",
+      "hours": "11:00–21:00",
+      "sources": [
+        "https://kyliechen.tw/%e3%80%8c%e6%8d%b7%e9%81%8b%ef%bc%9a%e8%b1%a1%e5%b1%b1%e7%ab%99%e3%80%8d%e8%80%81%e9%82%b1%e5%8e%9f%e6%b1%81%e7%89%9b%e8%82%89%e9%ba%b5/"
+      ]
+    },
+    {
+      "key": "zhoujia",
+      "name": "周家四川涼麵",
+      "dish": "四川涼麵小碗",
+      "price": "$50",
+      "price_source": "ME4Child 2026/10",
+      "address": "台北市信義區松仁路219號1樓",
+      "exit_walk": "韭菜盒隔壁",
+      "hours": "06:30–14:00",
+      "sources": [
+        "https://www.me4child.com/blog/post/%E5%8F%B0%E5%8C%97%E4%BF%A1%E7%BE%A9%E5%BF%85%E5%90%83%EF%BC%81%E6%9D%BE%E4%BB%81%E8%B7%AF%E8%8E%8A%E6%95%AC%E8%B7%AF%E5%8F%A3%E9%8A%85%E6%9D%BF%E7%BE%8E%E9%A3%9F%EF%BC%8C%E8%B1%A1%E5%B1%B1%E9%9F%AD",
+        "https://food.gotoformosa.com/uXGam2"
+      ]
+    },
+    {
+      "key": "jiucai",
+      "name": "象山韭菜盒子",
+      "dish": "韭菜盒",
+      "price": null,
+      "price_source": null,
+      "address": "台北市信義區松仁路219號",
+      "exit_walk": "近步道口",
+      "hours": "10:00–17:30，週二公休",
+      "sources": [
+        "https://www.me4child.com/blog/post/%E5%8F%B0%E5%8C%97%E4%BF%A1%E7%BE%A9%E5%BF%85%E5%90%83%EF%BC%81%E6%9D%BE%E4%BB%81%E8%B7%AF%E8%8E%8A%E6%95%AC%E8%B7%AF%E5%8F%A3%E9%8A%85%E6%9D%BF%E7%BE%8E%E9%A3%9F%EF%BC%8C%E8%B1%A1%E5%B1%B1%E9%9F%AD",
+        "https://pekoblog.tw/sj219f/"
+      ]
+    }
+  ],
+  "images": {
+    "photos": [
+      "photos/shizheng.jpg",
+      "photos/nola.jpg",
+      "photos/laoqiu.jpg",
+      "photos/zhoujia.jpg",
+      "photos/jiucai.jpg"
+    ],
+    "slides": [
+      "slides/01-cover.png",
+      "slides/02-shizheng.png",
+      "slides/03-nola.png",
+      "slides/04-laoqiu.png",
+      "slides/05-zhoujia.png",
+      "slides/06-jiucai.png",
+      "slides/07-summary.png",
+      "slides/08-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": null,
+    "threads": null,
+    "xiaohongshu": null
+  },
+  "sources": [
+    "https://pekoblog.tw/shizheng/",
+    "https://ramenradar.tw/shop/branch-gqknbg",
+    "https://shop.ichefpos.com/store/oTwmuibO/ordering",
+    "https://shop.ichefpos.com/store/oTwmuibO/information",
+    "https://elsa819.com/nola-kitchen-tpe/",
+    "https://kyliechen.tw/%e3%80%8c%e6%8d%b7%e9%81%8b%ef%bc%9a%e8%b1%a1%e5%b1%b1%e7%ab%99%e3%80%8d%e8%80%81%e9%82%b1%e5%8e%9f%e6%b1%81%e7%89%9b%e8%82%89%e9%ba%b5/",
+    "https://www.me4child.com/blog/post/%E5%8F%B0%E5%8C%97%E4%BF%A1%E7%BE%A9%E5%BF%85%E5%90%83%EF%BC%81%E6%9D%BE%E4%BB%81%E8%B7%AF%E8%8E%8A%E6%95%AC%E8%B7%AF%E5%8F%A3%E9%8A%85%E6%9D%BF%E7%BE%8E%E9%A3%9F%EF%BC%8C%E8%B1%A1%E5%B1%B1%E9%9F%AD",
+    "https://food.gotoformosa.com/uXGam2",
+    "https://pekoblog.tw/sj219f/"
+  ],
+  "_source_files": {
+    "xhs_body": "savvy-ready/2026-11-11/xhs/body.txt",
+    "xhs_sources": "savvy-ready/2026-11-11/xhs/sources.md",
+    "xhs_report": "savvy-ready/2026-11-11/xhs-report.md"
+  },
+  "city": "taipei",
+  "country": "Taiwan",
+  "metro_lines": [
+    "R"
+  ]
+}
