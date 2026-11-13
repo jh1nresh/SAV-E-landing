@@ -1,7 +1,6 @@
 import { getShanghaiFoodStations } from "../../lib/metro";
 import { FOOD_DISCLAIMER } from "../../lib/metro-logic.mjs";
 import { buildSearchIndex } from "../../lib/station-search.mjs";
-import { LangHref } from "../LangHref";
 import { ShanghaiStationSearch } from "../station-search/StationSearch";
 import { guideMetadata } from "../zh-tw/guides/content";
 import "../zh-tw/guides/guides.css";
@@ -23,7 +22,6 @@ export default function ShanghaiPage() {
   const stations = getShanghaiFoodStations();
   return (
     <main className="guide-shell metro-food sh-page" lang="zh-Hant">
-      <LangHref className="guide-back" href="/">← 選城市</LangHref>
       <header className="guide-header">
         <p className="guide-eyebrow">SAVVY · SHANGHAI</p>
         <h1 className="guide-title zh">上海地鐵，一站一站吃</h1>

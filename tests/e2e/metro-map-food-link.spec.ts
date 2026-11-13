@@ -10,7 +10,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
       await page.setViewportSize(viewport);
       const errors: string[] = [];
       page.on("pageerror", e => errors.push(e.message));
-      await page.goto('/taipei?reduce=1');
+      await page.goto('/?reduce=1');
       await waitForMap(page);
       const article = articles.find(s => s.slug === station.slug)!;
       const stores = metro.stores.filter(s => s.stationId === station.id);
@@ -67,7 +67,7 @@ for (const viewport of [{ width: 390, height: 844 }, { width: 1280, height: 800 
     const context = await browser.newContext({ javaScriptEnabled: false, viewport });
     try {
       const page = await context.newPage();
-      await page.goto('/taipei');
+      await page.goto('/');
       for (const station of metro.stations) {
         const image = metro.stores.find(s => s.stationId === station.id)!.image;
         await expect(page.getByTestId(`metro-poster-marker-${station.id}`).locator('image')).toHaveAttribute('href', image!);

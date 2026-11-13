@@ -28,7 +28,7 @@ for (const width of [375, 1280]) {
   test(`download status and language controls remain clear at ${width}px`, async ({ page }, testInfo) => {
     const height = width === 375 ? 667 : 800;
     await page.setViewportSize({ width, height });
-    await page.goto("/taipei");
+    await page.goto("/");
     for (const [label, language, description] of [
       ["中文", "zh-Hant", "iOS 測試版 · 透過 TestFlight 安裝"],
       ["EN", "en", "iOS beta · Install with TestFlight"],
@@ -79,7 +79,7 @@ test("qualified downloads retain the URL and native activation without JavaScrip
   try {
     const destination = process.env.NEXT_PUBLIC_TESTFLIGHT_URL || "https://testflight.apple.com/join/aSVm9hRJ";
     const page = await context.newPage();
-    await page.goto("/taipei");
+    await page.goto("/");
     await expect(page.locator("a.download-entry")).toHaveCount(2);
     for (const entry of await page.locator(".download-entry").all()) {
       await expect(entry.locator(".download-note")).toBeVisible();

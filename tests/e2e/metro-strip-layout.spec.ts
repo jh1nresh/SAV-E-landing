@@ -7,7 +7,7 @@ const STATION_COUNT = buildFoodStations('.').length;
 for (const width of [1280, 1440]) {
   test(`desktop strip tabs clear the map and receive bottom-edge hits at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto('/taipei');
+    await page.goto('/');
     await waitForMap(page);
     await page.evaluate(() => document.fonts.ready);
     const map = page.getByTestId('metro-map');

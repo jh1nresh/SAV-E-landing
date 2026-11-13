@@ -31,25 +31,21 @@ async function search(page: Page) {
   return input;
 }
 
-test("search follows the Taipei view and stays off a city-picker homepage", async ({ page }) => {
+test("homepage search is the Taipei station list", async ({ page }) => {
   for (const width of WIDTHS) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.getByTestId("city-card-taipei")).toHaveCount(0);
+    await expect(page.getByText("先選城市")).toHaveCount(0);
     await expect(page.locator("[data-slot=segmented-control]")).toHaveCount(0);
-    const cityCard = page.getByTestId("city-card-taipei");
-    if (await cityCard.count()) {
-      await expect(page.getByRole("heading", { name: "先選城市" })).toBeVisible();
-      await expect(page.getByTestId("station-search")).toHaveCount(0);
-      await expect(page.getByRole("combobox")).toHaveCount(0);
-      await expect(page.getByText("全部路線")).toHaveCount(0);
-    } else {
-      const input = await search(page);
-      await expect(page.getByRole("button", { name: "只看這條線" })).toHaveCount(0);
-      await input.fill("豫園");
-      await expect(page.getByTestId("station-search-empty")).toHaveText("這個篩選下沒有符合的站，換個字試試。");
-      await input.fill("小巨蛋");
-      await expect(page.locator("[data-slot=combobox-item]:not([hidden])")).toContainText("小巨蛋");
-    }
+    await expect(page.getByRole("button", { name: "只看這條線" })).toHaveCount(0);
+    await expect(page.locator("nav.top").getByTestId("city-switch-taipei")).toHaveAttribute("aria-current", "page");
+    const input = await search(page);
+    await input.fill("豫園");
+    await expect(page.getByTestId("station-search-empty")).toHaveText("這個篩選下沒有符合的站，換個字試試。");
+    await input.fill("小巨蛋");
+    await expect(page.locator("[data-slot=combobox-item]:not([hidden])")).toContainText("小巨蛋");
   }
 });
 
@@ -65,13 +61,10 @@ test("station search is in the server HTML", async ({ request }) => {
   expect(shanghai).toContain("搜站名或菜色");
   const home = await (await request.get("/")).text();
   expect(home).not.toContain("data-slot=\"segmented-control\"");
-  if (home.includes("先選城市")) {
-    expect(home).not.toContain("搜站名或菜色");
-  } else {
-    expect(home).toContain("找一站");
-    expect(home).toContain("搜站名或菜色");
-    expect(home).not.toContain("全部路線");
-  }
+  expect(home).not.toContain("先選城市");
+  expect(home).toContain("找一站");
+  expect(home).toContain("搜站名或菜色");
+  expect(home).not.toContain("全部路線");
 });
 
 for (const width of WIDTHS) {
@@ -82,7 +75,7 @@ for (const width of WIDTHS) {
       if (msg.type() === "error") errors.push(msg.text());
     });
     await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
-    await page.goto("/taipei");
+    await page.goto("/");
     const input = await search(page);
     const font = await input.evaluate((el) => getComputedStyle(el).fontFamily);
     expect(font.toLowerCase()).not.toContain("iansui");
