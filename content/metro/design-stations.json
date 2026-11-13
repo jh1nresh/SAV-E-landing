@@ -725,5 +725,73 @@
         200
       ]
     }
+  },
+  {
+    "n": 20,
+    "slug": "longshan-temple",
+    "station": "龍山寺",
+    "city": "taipei",
+    "map": {
+      "line": "L_blue",
+      "at": [
+        -85,
+        197
+      ],
+      "label": "right",
+      "labelOffset": [
+        0,
+        -22
+      ]
+    }
+  },
+  {
+    "n": 21,
+    "slug": "sun-yat-sen-memorial-hall",
+    "station": "國父紀念館",
+    "city": "taipei",
+    "map": {
+      "line": "L_blue",
+      "at": [
+        397,
+        240
+      ],
+      "label": "left",
+      "labelOffset": [
+        0,
+        18
+      ],
+      "posterLabelOffset": [
+        20,
+        64
+      ]
+    }
+  },
+  {
+    "n": 22,
+    "slug": "xiangshan",
+    "station": "象山",
+    "city": "taipei",
+    "map": {
+      "line": "L_red",
+      "at": [
+        379,
+        461
+      ],
+      "label": "right"
+    }
+  },
+  {
+    "n": 23,
+    "slug": "tamsui",
+    "station": "淡水",
+    "city": "taipei",
+    "map": {
+      "line": "L_red",
+      "at": [
+        -30,
+        -150
+      ],
+      "label": "right"
+    }
   }
 ]

@@ -177,9 +177,13 @@ const TAIPEI_1_16 = [
   [16, 'taipei-city-hall', '市政府', [420, 247]],
 ];
 
-const TAIPEI_18_19 = [
+const TAIPEI_18_23 = [
   [18, 'taipei-101-world-trade-center', '台北101／世貿', [373, 430], 'taipei'],
   [19, 'taipei-main-station', '台北車站', [186, 200], 'taipei'],
+  [20, 'longshan-temple', '龍山寺', [-85, 197], 'taipei'],
+  [21, 'sun-yat-sen-memorial-hall', '國父紀念館', [397, 240], 'taipei'],
+  [22, 'xiangshan', '象山', [379, 461], 'taipei'],
+  [23, 'tamsui', '淡水', [-30, -150], 'taipei'],
 ];
 
 test('Taipei stations 1-16 keep their identity and schematic points', () => {
@@ -191,8 +195,9 @@ test('Taipei stations 1-16 keep their identity and schematic points', () => {
   );
   const taipeiPublished = expected.filter(station => (station.city ?? 'taipei') === 'taipei');
   assert.equal(stations.length, taipeiPublished.length);
-  assert.equal(taipeiPublished.length, 19);
-  assert.deepEqual(stations.filter(station => station.n >= 18).map(station => [station.n, station.slug, station.station, station.map.at, station.city]), TAIPEI_18_19);
+  assert.equal(taipeiPublished.length, TAIPEI_1_16.length + 1 + TAIPEI_18_23.length);
+  assert.equal(taipeiPublished.length, 23);
+  assert.deepEqual(stations.filter(station => station.n >= 18).map(station => [station.n, station.slug, station.station, station.map.at, station.city]), TAIPEI_18_23);
   const zhongxiao = stations.find(station => station.slug === 'zhongxiao-fuxing');
   assert.equal(zhongxiao.map.labelOffset, undefined);
   assert.deepEqual(zhongxiao.map.posterLabelOffset, [-56, 40]);
@@ -225,10 +230,15 @@ test('stations are keyed by city and n, and missing geo coordinates stay pending
   const taipeiDesign = designCatalog.filter(entry => entry.city === 'taipei');
   const publishedTaipei = expected.filter(station => (station.city ?? 'taipei') === 'taipei');
   assert.equal(taipeiDesign.length, publishedTaipei.length);
-  assert.equal(publishedTaipei.length, 19);
+  assert.equal(publishedTaipei.length, TAIPEI_1_16.length + 1 + TAIPEI_18_23.length);
+  assert.equal(publishedTaipei.length, 23);
   assert.deepEqual(taipeiDesign.filter(entry => entry.n >= 18).map(entry => [entry.n, entry.slug, entry.station, entry.map]), [
     [18, 'taipei-101-world-trade-center', '台北101／世貿', { line: 'L_red', at: [373, 430], label: 'right' }],
     [19, 'taipei-main-station', '台北車站', { line: 'L_red', at: [186, 200] }],
+    [20, 'longshan-temple', '龍山寺', { line: 'L_blue', at: [-85, 197], label: 'right', labelOffset: [0, -22] }],
+    [21, 'sun-yat-sen-memorial-hall', '國父紀念館', { line: 'L_blue', at: [397, 240], label: 'left', labelOffset: [0, 18], posterLabelOffset: [20, 64] }],
+    [22, 'xiangshan', '象山', { line: 'L_red', at: [379, 461], label: 'right' }],
+    [23, 'tamsui', '淡水', { line: 'L_red', at: [-30, -150], label: 'right' }],
   ]);
   assert.equal(taipeiDesign.find(entry => entry.slug === 'zhongxiao-fuxing').map.labelOffset, undefined);
   assert.deepEqual(taipeiDesign.find(entry => entry.slug === 'zhongxiao-fuxing').map.posterLabelOffset, [-56, 40]);
