@@ -8,14 +8,14 @@ const link = (name: string, path: string) => `[${name}](${SITE_ORIGIN}${path})`;
 const sections = (items: readonly { heading: string; text: string }[]) => items.map(item => `## ${item.heading}\n\n${item.text}`).join("\n\n");
 const resources = `## Public resources\n\n${[
   ["About Savvy", "/about"], ["Contact Savvy", "/contact"], ["Privacy", "/privacy"],
-  ["Savvy API documentation and agent access", "/docs"], ["Pick a city", "/"],
-  ["Taipei metro food map", "/taipei"], ["Shanghai metro food notes", "/shanghai"], ["Taipei food guides", "/metro"],
+  ["Savvy API documentation and agent access", "/docs"], ["Savvy homepage", "/"],
+  ["Shanghai metro food notes", "/shanghai"], ["Taipei food guides", "/metro"],
   ["收藏整理指南", GUIDE_ROOT], ["Agent instructions", "/llms.txt"], ["Sitemap", "/sitemap.xml"],
 ].map(([name, path]) => `- ${link(name, path)}`).join("\n")}`;
 
 export const llmsText = `# Savvy
 
-> Savvy is place memory. Save a link, confirm the spot, stamp it on your map. This site publishes product information, Traditional Chinese guides, and public Taipei and Shanghai metro food notes. The homepage asks you to pick a city. It does not choose one for you.
+> Savvy is place memory. Save a link, confirm the spot, stamp it on your map. This site publishes product information, Traditional Chinese guides, and public Taipei and Shanghai metro food notes. The homepage is Taipei, with a city switch to Shanghai. It does not choose a city from language or location.
 
 When to use this: reach for Savvy when explaining how a shared place link becomes a clue, a Review Candidate and then a user-confirmed Map Stamp; when organizing saved restaurant sources; or when reading the public Taipei food guides. Public notes are not a user's saved or visited places.
 
@@ -53,8 +53,7 @@ function shanghaiMarkdown() {
 }
 
 export function markdownFor(path: string): string | null {
-  if (path === "/") return `# Savvy\n\n台北與上海並列，不預設任何一座城市。一站一站吃。\n\n- ${link("台北", "/taipei")}\n- ${link("上海", "/shanghai")}\n\n${SITE_DESCRIPTION_ZH}\n\n${SITE_DESCRIPTION_EN}\n\n${resources}\n`;
-  if (path === "/taipei") return taipeiHomeMarkdown();
+  if (path === "/") return taipeiHomeMarkdown();
   if (path === "/shanghai") return shanghaiMarkdown();
   const key = path.slice(1) as keyof typeof infoPages;
   if (Object.hasOwn(infoPages, key)) {

@@ -14,7 +14,7 @@ import {
 test.describe("hero map pan", () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto("/taipei?reduce=1");
+    await page.goto("/?reduce=1");
     await waitForMap(page);
     await page.locator("[data-testid=metro-vp]").scrollIntoViewIfNeeded();
   });
@@ -187,7 +187,7 @@ test.describe("hero map pan", () => {
 
   test("vertical touch swipe on the home map does not trap page scroll", async ({ page, browserName }) => {
     await page.setViewportSize({ width: 390, height: 700 });
-    await page.goto("/taipei?reduce=1");
+    await page.goto("/?reduce=1");
     await waitForMap(page);
     await page.locator("[data-testid=metro-vp]").scrollIntoViewIfNeeded();
 

@@ -14,7 +14,7 @@ for (const width of [390, 1280]) {
   for (const [clock, visible] of [['2026-10-30', true], ['2026-11-05', true], ['2026-11-06', false], ['2026-11-07', false]] as const) {
     test(`P-1 synthetic fresh/backfill/example markers at ${width}px on ${clock}`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto(`/taipei?reduce=1&clock=${clock}`);
+      await page.goto(`/?reduce=1&clock=${clock}`);
       await waitForMap(page);
       const data = structuredClone(metro);
       const base = data.stores.find((s) => s.stationId === 'dongmen')!;

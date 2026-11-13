@@ -6,7 +6,6 @@ import { GUIDE_ROOT, SITE_ORIGIN, guidePath, guides } from "./zh-tw/guides/conte
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE_ORIGIN}/` },
-    { url: `${SITE_ORIGIN}/taipei` },
     { url: `${SITE_ORIGIN}/shanghai` },
     ...["about", "contact", "privacy", "support", "docs"].map(path => ({ url: `${SITE_ORIGIN}/${path}` })),
     { url: `${SITE_ORIGIN}/metro` },

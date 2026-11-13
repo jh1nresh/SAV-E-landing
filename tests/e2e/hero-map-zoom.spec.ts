@@ -4,7 +4,7 @@ import { dragMap, waitForMap } from "./helpers";
 for (const width of [390, 1280]) {
   test(`zoom buttons, bounds and reset at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto('/taipei?reduce=1');
+    await page.goto('/?reduce=1');
     await waitForMap(page);
     const plus = page.getByRole('button', { name: '放大地圖', exact: true });
     const minus = page.getByRole('button', { name: '縮小地圖', exact: true });
@@ -40,7 +40,7 @@ const mapState = (page: Page) => page.evaluate(() => ({ ...window.__savvyMap!.st
 
 async function hoverMap(page: Page, fx = .5, fy = .5) {
   await page.setViewportSize({ width: 1350, height: 940 });
-  await page.goto('/taipei?reduce=1');
+  await page.goto('/?reduce=1');
   await waitForMap(page);
   // Park the map in the viewport with page left to scroll in both directions.
   await page.evaluate(() => { const r = document.getElementById('vp')!.getBoundingClientRect(); window.scrollTo(0, Math.max(0, scrollY + r.top - 200)); });
@@ -147,7 +147,7 @@ test.describe('two-finger zoom', () => {
   for (const mode of ['', 'reduce=1']) {
     test(`pinch out and in keeps page scale and suppresses pin taps (${mode || 'animated'})`, async ({ page, browserName }) => {
       await page.setViewportSize({ width: 390, height: 844 });
-      await page.goto(`/taipei?${mode}`);
+      await page.goto(`/?${mode}`);
       await waitForMap(page);
       await page.locator('#vp').scrollIntoViewIfNeeded();
       const box = (await page.locator('#vp').boundingBox())!;
@@ -189,7 +189,7 @@ test.describe('two-finger zoom', () => {
 
 
 test('ending both tracked fingers unlocks gestures while an outside touch remains', async ({ page }) => {
-  await page.goto('/taipei?reduce=1');
+  await page.goto('/?reduce=1');
   await waitForMap(page);
   await page.locator('#vp').scrollIntoViewIfNeeded();
   await page.evaluate(() => {
