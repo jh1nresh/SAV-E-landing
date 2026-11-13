@@ -2,17 +2,8 @@
   font-family: Iansui, "PingFang TC", ui-rounded, sans-serif;
 }
 
-.sh-page.guide-shell {
-  padding-top: 16px;
-}
-
 .sh-page .guide-header {
-  margin-top: 0;
-  margin-bottom: 8px;
-}
-
-.sh-page .sd-dock {
-  margin-bottom: 0;
+  margin-bottom: 16px;
 }
 
 .sh-page .guide-lead {
@@ -21,8 +12,8 @@
 
 .sh-mapcard {
   position: relative;
-  margin: 0 0 40px;
-  padding: 0 16px 12px;
+  margin: 12px 0 40px;
+  padding: 28px 16px 12px;
   background: var(--paper);
   border: 2.5px solid var(--ink);
   border-radius: 18px 14px 22px 12px;
