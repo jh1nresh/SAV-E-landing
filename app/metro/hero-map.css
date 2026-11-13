@@ -16,7 +16,7 @@ section.hero {
 .hero .wrap {
   grid-template-columns: minmax(0, 1fr) minmax(0, 572px);
   gap: 56px;
-  align-items: center;
+  align-items: start;
 }
 
 .hero .txt {
@@ -1110,7 +1110,7 @@ body.rm .pin.new .gr {
   .map-stage {
     display: grid;
     height: auto;
-    min-height: 566px;
+    min-height: 0;
   }
 
   .map-stage > .mapwrap-slot,
@@ -1166,12 +1166,12 @@ body.rm .pin.new .gr {
   }
 
   .map-stage {
-    height: 545px;
+    height: 468px;
     margin-top: 0;
   }
 
   .mapwrap {
-    height: 545px;
+    height: 468px;
     text-align: left;
   }
 
@@ -1342,3 +1342,15 @@ body.rm .pin.new .gr {
 /* A current-date badge must not change tab wrapping after the no-JS poster hydrates. */
 .tab { position: relative; }
 .tab .newtag { position: absolute; right: 3px; top: -6px; margin: 0; padding: 1px 4px; font-size: 9px; line-height: 1.2; }
+
+/* Weekly stamp lives in the picker label row. The element stays inside #mapcard. */
+#mapcard > #stamp {
+  top: -128px;
+  right: 2px;
+}
+
+@media (min-width: 801px) {
+  #mapcard > #stamp {
+    top: -140px;
+  }
+}

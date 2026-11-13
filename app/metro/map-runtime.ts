@@ -15,6 +15,7 @@ import {
   type MetroStation,
   type MetroStore,
 } from "../../lib/metro";
+import { TEST_QUERY_HOOKS } from "../../lib/test-hooks.mjs";
 
 export const MOTION = {
   badge: [0.46, 0.61] as const,
@@ -147,7 +148,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const still = q.has("still");
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
   let reduce = mq.matches || q.has("reduce");
-  let clock = resolveClock(q);
+  let clock = TEST_QUERY_HOOKS ? resolveClock(q) : resolveClock(undefined);
   document.body.classList.toggle("rm", reduce);
   document.body.classList.toggle("still", still);
 
@@ -188,7 +189,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const zoomOut = root.querySelector<HTMLButtonElement>("#zoomOut")!;
   const stampA = root.querySelector<HTMLElement>("#stampA")!;
   const stampB = root.querySelector<HTMLElement>("#stampB")!;
-  const strip = root.querySelector<HTMLElement>("#strip")!;
+  const strip = root.querySelector<HTMLElement>("#strip");
   const stdots = root.querySelector<SVGElement>("#stdots");
 
   world.style.width = `${WB.w * R}px`;
@@ -435,6 +436,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }
     render();
     syncTabs();
+    document.dispatchEvent(new CustomEvent("savvy-station", { detail: { id } }));
     if (!still)
       window.setTimeout(() => {
         try {
@@ -692,6 +694,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   }
 
   function renderStrip() {
+    if (!strip) return;
     const order = stations.slice().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
     strip.replaceChildren(...order.map((s) => {
       const soon = s.status === "coming_soon";
@@ -719,7 +722,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   }
 
   function syncTabs() {
-    strip.querySelectorAll<HTMLButtonElement>(".tab").forEach((b) =>
+    strip?.querySelectorAll<HTMLButtonElement>(".tab").forEach((b) =>
       b.setAttribute("aria-selected", String(b.dataset.id === openId)),
     );
   }

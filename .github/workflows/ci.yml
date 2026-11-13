@@ -38,6 +38,8 @@ jobs:
       - name: Build production site
         env:
           NEXT_PUBLIC_TESTFLIGHT_URL: https://testflight.apple.com/join/ci-placeholder
+          # Playwright freezes NEW and grows the station list. Vercel does not set this, so production ignores ?clock= and ?pickerFixture=.
+          NEXT_PUBLIC_SAVVY_TEST_HOOKS: "1"
         run: npm run build
 
       - name: Verify Next.js build artifact

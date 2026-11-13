@@ -51,7 +51,7 @@ for (const mode of ["", "reduce=1"]) {
 test("future posts do not contribute NEW badges or weekly count", async ({ page }) => {
   await page.goto("/?clock=2026-10-20");
   await page.waitForFunction(() => !!window.__savvyMap);
-  await expect(page.locator(".strip .newtag")).toHaveCount(0);
+  await expect(page.getByTestId("station-search").locator(".newtag")).toHaveCount(0);
   await expect(page.locator("#stampA")).toBeEmpty();
   expect(await page.evaluate(() => window.__savvyMap!.state().weekCount)).toBe(0);
 });

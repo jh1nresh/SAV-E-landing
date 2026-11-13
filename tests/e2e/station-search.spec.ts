@@ -1,35 +1,23 @@
-import { expect, test, type Locator, type Page } from "@playwright/test";
-import { getShanghaiFoodStations } from "../../lib/metro";
+import { expect, test, type Page } from "@playwright/test";
+import { getFoodStations, getPublicMetroData, getShanghaiFoodStations } from "../../lib/metro";
 import { buildSearchIndex, filterStations, resultCountText } from "../../lib/station-search.mjs";
+import { buildPickerStations, compareNewest, TAIPEI_LINE_COLOR, type PickerStation } from "../../lib/station-picker.mjs";
 import { waitForCardOpen } from "./helpers";
+
+const taipeiNoodle = filterStations(
+  buildPickerStations(getFoodStations(), getPublicMetroData().stations, TAIPEI_LINE_COLOR).sort(compareNewest),
+  { query: "麵" },
+) as PickerStation[];
 
 const WIDTHS = [390, 1280] as const;
 
-type Box = { x: number; y: number; width: number; height: number };
-
-// The phone capsule row is overflow-x: auto. WebKit leaves that scroller's
-// content quads empty for a frame after it is shown, so boundingBox() is null
-// while getBoundingClientRect already has the row. Wait for that layout box.
-async function layoutBox(locator: Locator): Promise<Box> {
-  const found: { box: Box | null } = { box: null };
-  await expect(locator).toBeVisible();
-  await expect.poll(async () => {
-    found.box = await locator.evaluate((el): Box | null => {
-      const rect = el.getBoundingClientRect();
-      if (getComputedStyle(el).visibility === "hidden" || rect.height <= 0) return null;
-      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
-    }).catch(() => null);
-    return found.box?.height ?? 0;
-  }).toBeGreaterThan(0);
-  const box = found.box;
-  if (!box) throw new Error("visible capsule row has no layout box");
-  return box;
-}
-
 async function search(page: Page) {
+  const trigger = page.getByTestId("station-picker-trigger");
+  await expect(trigger).toBeVisible();
+  await expect.poll(() => trigger.evaluate((el) => Object.keys(el).some((key) => key.startsWith("__react")))).toBe(true);
+  if ((await trigger.getAttribute("aria-expanded")) !== "true") await trigger.click();
   const input = page.getByRole("combobox");
   await expect(input).toBeVisible();
-  await expect.poll(() => input.evaluate((el) => Object.keys(el).some((key) => key.startsWith("__react")))).toBe(true);
   return input;
 }
 
@@ -85,18 +73,15 @@ for (const width of WIDTHS) {
     await expect(page.locator("[data-slot=segmented-control]")).toHaveCount(0);
 
     const searchBox = (await page.getByTestId("station-search").boundingBox())!;
-    const sortLabel = (await page.locator(".strip-label", { hasText: "依最新更新排序" }).boundingBox())!;
+    const stageBox = (await page.locator(".map-stage").boundingBox())!;
     if (width < 800) {
       const stickers = (await page.locator(".hero-stk").boundingBox())!;
-      const capsules = await layoutBox(
-        page.locator(".map-stage .strip").filter({ has: page.locator(".tab"), visible: true }).first(),
-      );
       expect(stickers.y + stickers.height).toBeLessThanOrEqual(searchBox.y + 1);
-      expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(capsules.y + 1);
+      expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(stageBox.y + 1);
     } else {
       const heading = (await page.getByRole("heading", { name: "看到喜歡的存下" }).boundingBox())!;
       expect(searchBox.x).toBeGreaterThan(heading.x + heading.width / 2);
-      expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(sortLabel.y + 2);
+      expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(stageBox.y + 1);
     }
 
     const stage = page.locator(".map-stage");
@@ -117,7 +102,8 @@ for (const width of WIDTHS) {
     const count = await shown.count();
     expect(count).toBeGreaterThan(4);
     await expect(page.getByTestId("station-search-count")).toHaveText(`${count} 站符合「麵」 · 往下捲看更多`);
-    await expect(shown.first()).toContainText("松山新店線");
+    await expect(shown.first()).toContainText(taipeiNoodle[0].station);
+    await expect(shown.first()).toContainText(taipeiNoodle[0].lineName);
 
     await input.fill("沒有這家zzzz");
     const empty = page.getByTestId("station-search-empty");
@@ -126,8 +112,9 @@ for (const width of WIDTHS) {
     await input.fill("豫園");
     await expect(empty).toHaveText("這個篩選下沒有符合的站，換個字試試。");
     await input.press("Escape");
-    await expect(input).toHaveAttribute("aria-expanded", "false");
+    await expect(page.getByTestId("station-picker-trigger")).toHaveAttribute("aria-expanded", "false");
 
+    await page.getByTestId("station-picker-trigger").click();
     await input.fill("小巨蛋");
     await expect(page.locator("[data-slot=combobox-item]:not([hidden])")).toContainText("第 1 站 · 松山新店線");
     await input.press("Enter");
@@ -187,8 +174,9 @@ for (const width of WIDTHS) {
     await input.fill("沒有這家zzzz");
     await expect(page.getByTestId("station-search-empty")).toHaveText("這個篩選下沒有符合的站，換個字試試。");
     await input.press("Escape");
-    await expect(input).toHaveAttribute("aria-expanded", "false");
+    await expect(page.getByTestId("station-picker-trigger")).toHaveAttribute("aria-expanded", "false");
 
+    await page.getByTestId("station-picker-trigger").click();
     await menu.click();
     await page.getByRole("menuitemradio", { name: "1 號線", exact: true }).click();
     await input.fill("麵");
@@ -196,6 +184,7 @@ for (const width of WIDTHS) {
     await expect(page.locator("[data-slot=combobox-item]:not([hidden])")).toContainText("黃陂南路");
     await input.fill("");
     await input.press("Escape");
+    await page.getByTestId("station-picker-trigger").click();
     await page.getByRole("button", { name: "只看這條線" }).click();
     await page.getByRole("menuitemradio", { name: "全部路線", exact: true }).click();
 

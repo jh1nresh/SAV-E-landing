@@ -35,28 +35,40 @@ export function useSiteLang() {
   return useContext(LangContext);
 }
 
+function applyHomeMeta(lang: SiteLang) {
+  if (window.location.pathname !== "/") return;
+  const title = lang === "en" ? SITE_TITLE_EN : SITE_TITLE_ZH;
+  const description = lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION_ZH;
+  if (document.title !== title) document.title = title;
+  const metas = [...document.querySelectorAll('meta[name="description"]')];
+  const [first, ...rest] = metas;
+  if (first && first.getAttribute("content") !== description) first.setAttribute("content", description);
+  for (const extra of rest) extra.remove();
+}
+
 function persistLang(lang: SiteLang) {
   document.documentElement.lang = lang;
   const url = new URL(window.location.href);
   if (lang === "en") url.searchParams.set("lang", "en");
   else url.searchParams.delete("lang");
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-  if (url.pathname === "/") {
-    document.title = lang === "en" ? SITE_TITLE_EN : SITE_TITLE_ZH;
-    document.querySelector('meta[name="description"]')?.setAttribute(
-      "content",
-      lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION_ZH,
-    );
-  }
+  applyHomeMeta(lang);
 }
 
 export function SiteChrome({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<SiteLang>("zh-Hant");
 
   useEffect(() => {
-    const next = parseSiteLang(new URLSearchParams(window.location.search).get("lang"));
+    const read = () => parseSiteLang(new URLSearchParams(window.location.search).get("lang"));
+    const next = read();
     setLangState(next);
     document.documentElement.lang = next;
+    applyHomeMeta(next);
+    // Next applies the prerendered Chinese metadata after this effect. Keep the
+    // title and description on the language the URL already chose.
+    const observer = new MutationObserver(() => applyHomeMeta(read()));
+    observer.observe(document.head, { subtree: true, childList: true, attributes: true, characterData: true });
+    return () => observer.disconnect();
   }, []);
 
   const setLang = useCallback((next: SiteLang) => {

@@ -28,7 +28,7 @@ test.describe("hero map interactions", () => {
   test("B-1 page lists stations from content", async ({ page }) => {
     expect(metroSource.stations.length).toBeGreaterThan(0);
     for (const station of metroSource.stations) {
-      await expect(page.locator("#strip")).toContainText(station.name);
+      await expect(page.getByTestId("station-search")).toContainText(station.name);
     }
   });
 
@@ -41,7 +41,8 @@ test.describe("hero map interactions", () => {
     await page.locator("[data-testid=metro-reset]").click();
     await waitForCardClosed(page);
     await page.waitForFunction((was) => window.__savvyMap!.state().camS < was, zoomed);
-    await page.locator("[data-testid=metro-tab-dongmen]").click();
+    await page.getByTestId("station-picker-trigger").click();
+    await page.getByTestId("station-option-dongmen").click();
     await waitForCardOpen(page);
     await expect(page.locator("#cardTitle")).toContainText("東門");
   });

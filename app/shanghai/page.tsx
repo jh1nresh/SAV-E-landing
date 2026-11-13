@@ -1,7 +1,8 @@
+import shanghaiLines from "../../content/metro/shanghai-lines.json";
 import { getShanghaiFoodStations } from "../../lib/metro";
 import { FOOD_DISCLAIMER } from "../../lib/metro-logic.mjs";
-import { buildSearchIndex } from "../../lib/station-search.mjs";
-import { ShanghaiStationSearch } from "../station-search/StationSearch";
+import { buildPickerStations } from "../../lib/station-picker.mjs";
+import { StationPicker } from "../station-search/StationPicker";
 import { guideMetadata } from "../zh-tw/guides/content";
 import "../zh-tw/guides/guides.css";
 import "../metro/food.css";
@@ -20,6 +21,8 @@ export const metadata = guideMetadata(
 
 export default function ShanghaiPage() {
   const stations = getShanghaiFoodStations();
+  const colors = Object.fromEntries(Object.entries(shanghaiLines.lines).map(([id, line]) => [id, line.color]));
+  const pickerStations = buildPickerStations(stations, [], colors);
   return (
     <main className="guide-shell metro-food sh-page" lang="zh-Hant">
       <header className="guide-header">
@@ -32,7 +35,7 @@ export default function ShanghaiPage() {
         <p className="guide-small zh">{PRICE_NOTE_ZH}</p>
         <p className="guide-small en">{PRICE_NOTE_EN}</p>
       </header>
-      <ShanghaiStationSearch stations={buildSearchIndex(stations)} />
+      <StationPicker stations={pickerStations} city="shanghai" freshIds={[]} showLineMenu />
       <ShanghaiMap stations={stations} />
       <div className="sh-stations">
         {stations.map((station) => (
