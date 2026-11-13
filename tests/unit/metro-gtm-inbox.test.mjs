@@ -58,7 +58,7 @@ test('inspect accepts ready package with DESIGN coords and plans gate-safe paths
     assert.equal(inspection.ok, true);
     assert.ok(inspection.contentHash);
     const plan = planContentFiles(inspection);
-    assert.ok(plan.some(f => f.dest === 'content/metro/daily/2026-11-03/web.json'));
+    assert.ok(plan.some(f => f.dest === 'content/metro/daily/taipei/2026-11-03/web.json'));
     assert.ok(plan.every(f => f.dest.startsWith('content/metro/')));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
