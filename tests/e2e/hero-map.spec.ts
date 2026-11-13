@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { FOOD_DISCLAIMER, PRICE_PENDING } from "../../lib/metro-logic.mjs";
 import { getFoodStations } from "../../lib/metro";
 import { clickPin, dispatchSwipe, dispatchTouchSwipe, openStation, waitForCardOpen, waitForMap } from "./helpers";
@@ -8,15 +8,6 @@ import { clickPin, dispatchSwipe, dispatchTouchSwipe, openStation, waitForCardOp
 const metroSource = JSON.parse(readFileSync("app/metro/metro.public.json", "utf8")) as {
   stations: { id: string; name: string; slug?: string }[];
 };
-
-async function waitForCardClosed(page: Page) {
-  // Close latency is frame-bound on slow WebKit CI. D-1 already waits this long.
-  await page.waitForFunction(() => {
-    const state = window.__savvyMap!.state();
-    return state.showing === null && !state.closing;
-  }, null, { timeout: 45_000 });
-  await expect(page.locator("#card")).toBeHidden();
-}
 
 test.describe("hero map interactions", () => {
   test.beforeEach(async ({ page }) => {
@@ -39,7 +30,9 @@ test.describe("hero map interactions", () => {
     const zoomed = await page.evaluate(() => window.__savvyMap!.state().camS);
     await expect(page.locator("[data-testid=metro-reset]")).toHaveClass(/on/);
     await page.locator("[data-testid=metro-reset]").click();
-    await waitForCardClosed(page);
+    // Close latency is frame-bound (slow WebKit CI); wait for it on its own budget.
+    await page.waitForFunction(() => { const s = window.__savvyMap!.state(); return s.showing === null && !s.closing; }, null, { timeout: 45_000 });
+    await expect(page.locator("#card")).toBeHidden();
     await page.waitForFunction((was) => window.__savvyMap!.state().camS < was, zoomed);
     await page.locator("[data-testid=metro-tab-dongmen]").click();
     await waitForCardOpen(page);
@@ -49,13 +42,13 @@ test.describe("hero map interactions", () => {
   test("D-2 close via X", async ({ page }) => {
     await openStation(page, "houshanpi");
     await page.locator("[data-testid=metro-close]").click();
-    await waitForCardClosed(page);
+    await expect(page.locator("#card")).toBeHidden();
   });
 
   test("D-2 close via Escape", async ({ page }) => {
     await openStation(page, "houshanpi");
     await page.keyboard.press("Escape");
-    await waitForCardClosed(page);
+    await expect(page.locator("#card")).toBeHidden();
   });
 
   test("D-2 close via empty map tap", async ({ page }) => {
@@ -63,7 +56,7 @@ test.describe("hero map interactions", () => {
     await page.evaluate(() => {
       document.getElementById("vp")?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-    await waitForCardClosed(page);
+    await expect(page.locator("#card")).toBeHidden();
   });
 
   test("D-2 swipe down closes; short swipe springs back", async ({ page }, testInfo) => {
@@ -80,7 +73,7 @@ test.describe("hero map interactions", () => {
     await expect(page.locator("#card")).toBeVisible();
     if (testInfo.project.name === "webkit") await dispatchSwipe(page, 140);
     else await dispatchTouchSwipe(page, 140);
-    await waitForCardClosed(page);
+    await expect(page.locator("#card")).toBeHidden();
   });
 
   test("D-3 keyboard opens and focus returns to the pin", async ({ page }) => {
@@ -90,7 +83,7 @@ test.describe("hero map interactions", () => {
     await page.keyboard.press("Enter");
     await waitForCardOpen(page);
     await page.keyboard.press("Escape");
-    await waitForCardClosed(page);
+    await expect(page.locator("#card")).toBeHidden();
     await expect(pin).toBeFocused();
   });
 

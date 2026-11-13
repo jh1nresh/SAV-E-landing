@@ -1,7 +1,7 @@
 # Savvy 官網捷運美食清單：內容檔格式（v1，2026-11-01）
 
 ## 檔案
-- `stations.json`：陣列，一站一筆，依 `(city, n)` 排序（省略 `city` 視為 `taipei`）。台北目前是該城 #1–#23（#1–#17 在 `stations.json`，#18–#23 由 daily 併入）；每一城的站數以該城資料筆數為準，不把某個數字當全域站數。
+- `stations.json`：陣列，一站一筆，依 `(city, n)` 排序（省略 `city` 視為 `taipei`）。台北目前是該城 #1–#19（#1–#17 在 `stations.json`，#18–#19 由 daily 併入）；每一城的站數以該城資料筆數為準，不把某個數字當全域站數。
 - 每日新站：GTM 上傳到 git 分支 `gtm/inbox/<YYYY-MM-DD>/web.json`（見 `docs/GTM-INBOX.md`），內容是**單一站物件**（格式同 stations.json 的一筆）。Actions 會同步進 `content/metro/daily/<city>/<YYYY-MM-DD>/web.json`（`taipei` 或 `shanghai`）。更早的台北檔 `content/metro/daily/<YYYY-MM-DD>/web.json` 仍會被建置讀取。2026-11-07 起的台北每日檔放在 `daily/taipei/`。
 - 圖片：`images/<NN>-<slug>/photos/*.jpg`（各店底圖）、`images/<NN>-<slug>/slides/*.png`（輪播 1080×1350）。web.json 內的圖片路徑相對於該日資料夾（`photos/…`、`slides/…`）。
 - `gaps.json`：每站缺漏欄位（給人看，網站不需讀）。

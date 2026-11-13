@@ -67,7 +67,7 @@ export function layoutPhotoPins(points: PhotoPoint[], labels: Box[], width: numb
       chosen = { x, y, box };
       break;
     }
-    // Edge stations (淡水, 象山) have no fully interior slot. Keep the hit
+    // Edge stations have no fully interior slot. Keep the hit
     // centre on the map and take the nearest clear or least-overlapping box
     // so a missed search cannot sit on a label and hide from later pins.
     if (!chosen) {
