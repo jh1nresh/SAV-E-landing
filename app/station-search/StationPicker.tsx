@@ -10,7 +10,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from "@ui-sdk/react/menu";
-import { formatMd } from "../../lib/metro-logic.mjs";
+import { formatMd, stationIsNew } from "../../lib/metro-logic.mjs";
 import {
   EMPTY_RESULTS,
   filterStations,
@@ -22,8 +22,10 @@ import {
   compareNewest,
   groupByMonth,
   latestStation,
+  withFixtureCount,
   type PickerStation,
 } from "../../lib/station-picker.mjs";
+import { TEST_QUERY_HOOKS, type FreshSource } from "../../lib/test-hooks.mjs";
 import "./station-search.css";
 import "./station-picker.css";
 
@@ -132,6 +134,7 @@ export function StationPicker({
   stations,
   city,
   freshIds,
+  freshSources,
   note,
   partial,
   showLineMenu,
@@ -139,6 +142,7 @@ export function StationPicker({
   stations: PickerStation[];
   city: City;
   freshIds: readonly string[];
+  freshSources?: readonly FreshSource[];
   note?: string;
   partial?: boolean;
   showLineMenu?: boolean;
@@ -147,24 +151,42 @@ export function StationPicker({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dockRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const latest = latestStation(stations);
+  const [rows, setRows] = useState(stations);
+  const [freshList, setFreshList] = useState(freshIds);
+  const latest = latestStation(rows);
   const [live, setLive] = useState(false);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [line, setLine] = useState("all");
   const [selectedId, setSelectedId] = useState(latest?.selectId ?? "");
   const [active, setActive] = useState(0);
-  const options = useMemo(() => lineOptions(stations as SearchStation[]), [stations]);
-  const ordered = useMemo(() => stations.slice().sort(compareNewest), [stations]);
+  const options = useMemo(() => lineOptions(rows as SearchStation[]), [rows]);
+  const ordered = useMemo(() => rows.slice().sort(compareNewest), [rows]);
   const visible = useMemo(
     () => filterStations(filterStations(ordered, { line }), { query }) as PickerStation[],
     [ordered, line, query],
   );
   const groups = useMemo(() => groupByMonth(visible), [visible]);
-  const selected = stations.find((station) => station.selectId === selectedId) ?? latest;
-  const fresh = new Set(freshIds);
+  const selected = rows.find((station) => station.selectId === selectedId) ?? latest;
+  const fresh = new Set(freshList);
 
   useEffect(() => { setLive(true); }, []);
+
+  useEffect(() => {
+    if (!TEST_QUERY_HOOKS) return;
+    const params = new URLSearchParams(window.location.search);
+    const fixture = Number(params.get("pickerFixture"));
+    const next = Number.isFinite(fixture) && fixture > stations.length ? withFixtureCount(stations, fixture) : stations;
+    setRows(next);
+    const clock = params.get("clock");
+    if (clock && /^\d{4}-\d{2}-\d{2}$/.test(clock) && freshSources) {
+      setFreshList(freshSources.filter((source) => stationIsNew(source.stores, clock)).map((source) => source.id));
+    }
+    if (next !== stations && !window.location.hash) {
+      const newest = latestStation(next);
+      if (newest) setSelectedId(newest.selectId);
+    }
+  }, [stations, freshSources]);
 
   useEffect(() => {
     if (!open) return;
@@ -172,7 +194,7 @@ export function StationPicker({
   }, [open]);
 
   useEffect(() => {
-    const station = stations.find((item) => item.selectId === selectedId);
+    const station = rows.find((item) => item.selectId === selectedId);
     if (!station) return;
     let cancelled = false;
     const tick = (left: number) => {
@@ -188,28 +210,28 @@ export function StationPicker({
     };
     tick(80);
     return () => { cancelled = true; };
-  }, [selectedId, stations]);
+  }, [selectedId, rows]);
 
   useEffect(() => {
     const slug = decodeURIComponent(window.location.hash.replace(/^#/, ""));
     if (!slug) return;
-    const station = stations.find((item) => item.slug === slug);
+    const station = rows.find((item) => item.slug === slug);
     if (!station) return;
     setSelectedId(station.selectId);
     if (station.city === "shanghai") openShanghaiStation(station.slug);
     else openTaipeiStation(station.selectId);
-  }, [stations]);
+  }, [rows]);
 
   useEffect(() => {
     const onPick = (event: Event) => {
       const id = (event as CustomEvent<{ id?: string }>).detail?.id;
       if (!id) return;
-      const station = stations.find((item) => item.selectId === id);
+      const station = rows.find((item) => item.selectId === id);
       if (station) setSelectedId(station.selectId);
     };
     document.addEventListener("savvy-station", onPick);
     return () => document.removeEventListener("savvy-station", onPick);
-  }, [stations]);
+  }, [rows]);
 
   useEffect(() => {
     if (!open) return;

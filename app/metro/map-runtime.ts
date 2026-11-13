@@ -15,6 +15,7 @@ import {
   type MetroStation,
   type MetroStore,
 } from "../../lib/metro";
+import { TEST_QUERY_HOOKS } from "../../lib/test-hooks.mjs";
 
 export const MOTION = {
   badge: [0.46, 0.61] as const,
@@ -147,7 +148,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   const still = q.has("still");
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
   let reduce = mq.matches || q.has("reduce");
-  let clock = resolveClock(q);
+  let clock = TEST_QUERY_HOOKS ? resolveClock(q) : resolveClock(undefined);
   document.body.classList.toggle("rm", reduce);
   document.body.classList.toggle("still", still);
 

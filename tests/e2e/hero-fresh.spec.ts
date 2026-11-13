@@ -6,7 +6,7 @@ import { waitForMap, openStation } from './helpers';
 
 // Exercise the actual runtime with synthetic posts, without shipping a fixture endpoint/data.
 const logic = readFileSync('lib/metro-logic.mjs', 'utf8');
-const source = readFileSync('app/metro/map-runtime.ts', 'utf8').replace(/^import[\s\S]*?from "\.\.\/\.\.\/lib\/metro";\s*/, '').replace(/^import[^;]+from "\.\/map-label";\s*/m, '');
+const source = readFileSync('app/metro/map-runtime.ts', 'utf8').replace(/^import[\s\S]*?from "\.\.\/\.\.\/lib\/metro";\s*/, '').replace(/^import[^;]+from "\.\/map-label";\s*/m, '').replace(/^import[^;]+from "\.\.\/\.\.\/lib\/test-hooks\.mjs";\s*/m, '');
 const labelSource = readFileSync('app/metro/map-label.ts', 'utf8').replace(/^import[^;]+;\s*/, '');
 const runtime = ts.transpileModule(labelSource + '\n' + source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 } }).outputText;
 
@@ -28,7 +28,7 @@ for (const width of [390, 1280]) {
         // Keep real-data freshness out of this one-station synthetic boundary case.
         ...data.stores.filter((s) => s.stationId !== 'dongmen').map((s) => ({ ...s, backfill: true })),
       ];
-      await page.addScriptTag({ type:'module', content: logic+'\n'+runtime+'\nwindow.__testBoot = bootMetroMap;' });
+      await page.addScriptTag({ type:'module', content: logic+'\nconst TEST_QUERY_HOOKS = true;\n'+runtime+'\nwindow.__testBoot = bootMetroMap;' });
       await page.waitForFunction(() => Boolean((window as any).__testBoot));
       await page.evaluate((fixture) => {
         window.__savvyMap!.destroy();

@@ -1,6 +1,7 @@
 import { AppStoreBadge } from "./SiteChrome";
 import { getFoodStations, getPublicMetroData, stampLevel, stampNote, stationIsNew } from "../lib/metro";
-import { buildPickerStations, TAIPEI_LINE_COLOR, withFixtureCount } from "../lib/station-picker.mjs";
+import { buildPickerStations, TAIPEI_LINE_COLOR } from "../lib/station-picker.mjs";
+import { TEST_QUERY_HOOKS, type FreshSource } from "../lib/test-hooks.mjs";
 import { HeroMapLazy } from "./metro/HeroMapLazy";
 import { StationPicker } from "./station-search/StationPicker";
 import "./metro/hero-map.css";
@@ -17,13 +18,23 @@ const STICKERS = [
   { src: "/assets/st-lantern.png", alt: "燈籠" },
 ] as const;
 
-export default function SavvyLanding({ clock, pickerFixture }: { clock: string; pickerFixture?: number }) {
+export default function SavvyLanding({ clock }: { clock: string }) {
   const metro = getPublicMetroData();
-  const built = buildPickerStations(getFoodStations(), metro.stations, TAIPEI_LINE_COLOR);
-  const stations = pickerFixture ? withFixtureCount(built, pickerFixture) : built;
+  const stations = buildPickerStations(getFoodStations(), metro.stations, TAIPEI_LINE_COLOR);
   const freshIds = metro.stations
     .filter((station) => stationIsNew(metro.stores.filter((store) => store.stationId === station.id), clock))
     .map((station) => station.id);
+  const freshSources: FreshSource[] | undefined = TEST_QUERY_HOOKS
+    ? metro.stations.map((station) => ({
+        id: station.id,
+        stores: metro.stores.filter((store) => store.stationId === station.id).map((store) => ({
+          kind: store.kind,
+          backfill: store.backfill,
+          addedAt: store.addedAt,
+          sourcePosts: store.sourcePosts,
+        })),
+      }))
+    : undefined;
   const note = stampNote(metro.stores);
   const partial = stampLevel(metro.stores) === "partial";
 
@@ -66,7 +77,7 @@ export default function SavvyLanding({ clock, pickerFixture }: { clock: string; 
             </div>
           </div>
           <div className="hero-search-col">
-            <StationPicker stations={stations} city="taipei" freshIds={freshIds} note={note} partial={partial} />
+            <StationPicker stations={stations} city="taipei" freshIds={freshIds} freshSources={freshSources} note={note} partial={partial} />
             <HeroMapLazy data={metro} />
           </div>
         </div>

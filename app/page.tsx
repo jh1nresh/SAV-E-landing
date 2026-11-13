@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { resolveClock } from "../lib/metro";
+import { taipeiDate } from "../lib/metro-logic.mjs";
 import SavvyLanding from "./SavvyLanding";
 import {
   SITE_DESCRIPTION_EN,
@@ -36,14 +36,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ clock?: string; pickerFixture?: string }>;
-}) {
-  const params = await searchParams;
-  const fixture = Number(params.pickerFixture);
-  const clock = resolveClock(params.clock);
+export default function Home() {
+  // Today's date is fixed when this static page is built. The live map recomputes NEW in the browser.
+  // ?clock= and ?pickerFixture= are not read here; a dynamic read would opt the homepage out of static rendering.
+  const clock = taipeiDate();
   const identity = {
     "@context": "https://schema.org",
     "@graph": [
@@ -54,6 +50,6 @@ export default async function Home({
   return <>
     <link rel="alternate" type="text/markdown" href={`${SITE_ORIGIN}/index.md`} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(identity).replace(/</g, "\\u003c") }} />
-    <SavvyLanding clock={clock} pickerFixture={Number.isFinite(fixture) && fixture > 0 ? fixture : undefined} />
+    <SavvyLanding clock={clock} />
   </>;
 }
