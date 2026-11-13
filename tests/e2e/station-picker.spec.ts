@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { getFoodStations, getPublicMetroData, getShanghaiFoodStations } from "../../lib/metro";
 import { buildPickerStations, compareNewest, latestStation, TAIPEI_LINE_COLOR, withFixtureCount } from "../../lib/station-picker.mjs";
+import { buildSearchIndex, filterStations } from "../../lib/station-search.mjs";
 import { waitForCardOpen, waitForMap } from "./helpers";
 
 const taipei = buildPickerStations(getFoodStations(), getPublicMetroData().stations, TAIPEI_LINE_COLOR).sort(compareNewest);
@@ -227,6 +228,64 @@ test("every Shanghai pin is on the first screen at 1280x800", async ({ page }) =
     expect(box.y, id).toBeGreaterThanOrEqual(0);
     expect(box.y + box.height, id).toBeLessThanOrEqual(800);
   }
+  const labels = await page.evaluate(() => [...document.querySelectorAll(".sh-map text")].map((el) => {
+    const rect = el.getBoundingClientRect();
+    return { name: el.textContent ?? "", top: rect.top, bottom: rect.bottom };
+  }));
+  expect(labels.map((label) => label.name)).toEqual(expect.arrayContaining(shanghai.map((station) => station.station)));
+  expect(labels).toHaveLength(shanghai.length);
+  for (const label of labels) {
+    expect(label.top, label.name).toBeGreaterThanOrEqual(0);
+    expect(label.bottom, label.name).toBeLessThanOrEqual(800);
+  }
+});
+
+test("shanghai dropdown lists the five published stations with 打浦橋 selected", async ({ page }) => {
+  expect(shanghai).toHaveLength(5);
+  expect(latestStation(shanghai)?.station).toBe("打浦橋");
+  expect(shanghai.some((station) => station.station.includes("人民廣場"))).toBe(false);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/shanghai");
+  expect(await page.content()).not.toContain("人民廣場");
+  const trigger = page.getByTestId("station-picker-trigger");
+  await expect(trigger).toContainText("第 7 站");
+  await expect(trigger).toContainText("打浦橋");
+  await trigger.click();
+  const optionNames = page.getByRole("option").locator("[data-slot=combobox-item-text]");
+  await expect(optionNames).toHaveCount(5);
+  expect((await optionNames.allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim())).toEqual(shanghai.map((station) => station.station));
+
+  const index = buildSearchIndex(getShanghaiFoodStations());
+  const input = page.getByRole("combobox");
+  await input.fill("麵");
+  const shown = page.locator("[data-slot=combobox-item]:not([hidden]) [data-slot=combobox-item-text]");
+  const shownNames = (await shown.allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim());
+  expect(new Set(shownNames)).toEqual(new Set(filterStations(index, { query: "麵" }).map((station) => station.station)));
+
+  await input.fill("");
+  await page.getByRole("button", { name: "只看這條線" }).click();
+  await page.getByRole("menuitemradio", { name: "1 號線", exact: true }).click();
+  const lined = filterStations(index, { line: "1 號線" }).map((station) => station.station);
+  await expect(page.getByRole("option")).toHaveCount(lined.length);
+  const linedNames = (await page.getByRole("option").locator("[data-slot=combobox-item-text]").allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim());
+  expect(new Set(linedNames)).toEqual(new Set(lined));
+  expect(linedNames).not.toContain("人民廣場");
+});
+
+test.describe("shanghai no-JS station list", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("lists the five stations as links and omits 人民廣場", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/shanghai");
+    const links = page.getByTestId("station-fallback").locator("a");
+    await expect(links).toHaveCount(shanghai.length);
+    expect(await links.allInnerTexts()).toEqual(shanghai.map((station) => station.station));
+    for (const station of shanghai) {
+      await expect(links.filter({ hasText: station.station })).toHaveAttribute("href", `#${station.slug}`);
+    }
+    expect(await page.content()).not.toContain("人民廣場");
+  });
 });
 
 test("a 45-station fixture keeps the closed control height and the panel cap", async ({ page }) => {
