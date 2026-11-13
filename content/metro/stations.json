@@ -3322,5 +3322,230 @@
         600
       ]
     }
+  },
+  {
+    "n": 7,
+    "station": "打浦橋",
+    "tagline": "蟹粉、紅燒肉到犛牛肉火鍋",
+    "date": "2026-11-12",
+    "city": "shanghai",
+    "country": "China",
+    "slug": "shanghai-dapuqiao",
+    "language": "zh-Hant",
+    "station_en": "Dapuqiao",
+    "station_official": "打浦橋",
+    "metro_lines": [
+      "9"
+    ],
+    "station_geo": {
+      "lat": 31.2075,
+      "lng": 121.46388889,
+      "datum": "WGS-84",
+      "source": "Wikidata Q5936524 P625"
+    },
+    "tagline_en": "Crab, braised pork & yak hotpot",
+    "shops": [
+      {
+        "key": "shanghai12",
+        "name": "上海12弄·新派上海菜（日月光店）",
+        "name_en": "Shanghai 12 Nong (Rihui Plaza)",
+        "dish": "清蒸鱸魚",
+        "dish_en": "Steamed perch",
+        "address": "上海市黃浦區徐家匯路618號日月光中心2樓",
+        "address_en": "2F, Rihui Plaza, 618 Xujiahui Rd, Huangpu District, Shanghai",
+        "sources": [
+          "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-148509736/"
+        ],
+        "image_reference": "refs/REF-shanghai12.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "shanghainese",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      },
+      {
+        "key": "mamajia",
+        "name": "媽媽家·本幫菜",
+        "name_en": "Mama Jia Shanghainese Kitchen",
+        "dish": "紅燒肉",
+        "dish_en": "Red-braised pork",
+        "address": "上海市黃浦區徐家匯路548號",
+        "address_en": "548 Xujiahui Rd, Huangpu District, Shanghai",
+        "sources": [
+          "https://hk.trip.com/restaurant/china/shanghai/detail/mama-jia-20775417/",
+          "https://foodnwine.ifeng.com/c/8T6ESB6zy58",
+          "https://you.ctrip.com/food/2/11389652.html",
+          "https://www.zaoseo.com/place/1654845",
+          "https://www.sina.cn/gc/article/nitrwqm6578496.html"
+        ],
+        "image_reference": "refs/REF-mamajia.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "benbang",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      },
+      {
+        "key": "yangchun",
+        "name": "陽春三記（田子坊店）",
+        "name_en": "Yangchun Sanji (Tianzifang)",
+        "dish": "手拆蟹粉麵",
+        "dish_en": "Hand-picked crab noodles",
+        "address": "上海市黃浦區徐家匯路679號",
+        "address_en": "679 Xujiahui Rd, Huangpu District, Shanghai",
+        "sources": [
+          "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-153999556/",
+          "https://tw.trip.com/moments/detail/shanghai-2-143010113/"
+        ],
+        "image_reference": "refs/REF-yangchun.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "noodles",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      },
+      {
+        "key": "duojie",
+        "name": "多傑拉姆藏餐吧（田子坊店）",
+        "name_en": "Duojie Lamu Tibetan Restaurant (Tianzifang)",
+        "dish": "犛牛肉火鍋",
+        "dish_en": "Yak hotpot",
+        "address": "上海市黃浦區泰康路248弄30號後門",
+        "address_en": "Back door, No. 30, Lane 248 Taikang Rd, Huangpu District, Shanghai",
+        "sources": [
+          "https://www.163.com/dy/article/KPS3C72B0514IGIT.html",
+          "https://gotravellingworld.com/tianzifang/",
+          "https://www.dianping.com/shop/69235986/photos?pg=2"
+        ],
+        "image_reference": "refs/REF-duojie.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "tibetan",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      },
+      {
+        "key": "renheguan",
+        "name": "人和館·上海菜（肇嘉浜路店）",
+        "name_en": "Ren He Guan (Zhaojiabang Rd)",
+        "dish": "蟹粉撈飯",
+        "dish_en": "Crab-roe rice",
+        "address": "上海市徐匯區肇嘉浜路407號",
+        "address_en": "407 Zhaojiabang Rd, Xuhui District, Shanghai",
+        "sources": [
+          "https://hk.trip.com/restaurant/china/shanghai/detail/ren-he-guanshanghai-cuisine-28576182/",
+          "https://hk.trip.com/moments/detail/shanghai-2-142348446/"
+        ],
+        "image_reference": "refs/REF-renheguan.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "shanghainese",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      }
+    ],
+    "images": {
+      "photos": [
+        "photos/shanghai12.jpg",
+        "photos/mamajia.jpg",
+        "photos/yangchun.jpg",
+        "photos/duojie.jpg",
+        "photos/renheguan.jpg"
+      ],
+      "slides": [
+        "slides_zh/01-cover.png",
+        "slides_zh/02-shanghai12.png",
+        "slides_zh/03-mamajia.png",
+        "slides_zh/04-yangchun.png",
+        "slides_zh/05-duojie.png",
+        "slides_zh/06-renheguan.png",
+        "slides_zh/07-summary.png",
+        "slides_zh/08-cta.png"
+      ],
+      "slides_zh": [
+        "slides_zh/01-cover.png",
+        "slides_zh/02-shanghai12.png",
+        "slides_zh/03-mamajia.png",
+        "slides_zh/04-yangchun.png",
+        "slides_zh/05-duojie.png",
+        "slides_zh/06-renheguan.png",
+        "slides_zh/07-summary.png",
+        "slides_zh/08-cta.png"
+      ],
+      "slides_en": null
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/savvysave_/p/Dfo61SiG2v1/",
+      "threads": "https://www.threads.com/@savvysave_/post/Dfo7AEEm_8z",
+      "xiaohongshu": null
+    },
+    "ig_status": "published",
+    "threads_status": "published",
+    "posted_at": null,
+    "sources": [
+      "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-148509736/",
+      "https://hk.trip.com/restaurant/china/shanghai/detail/mama-jia-20775417/",
+      "https://foodnwine.ifeng.com/c/8T6ESB6zy58",
+      "https://you.ctrip.com/food/2/11389652.html",
+      "https://www.zaoseo.com/place/1654845",
+      "https://www.sina.cn/gc/article/nitrwqm6578496.html",
+      "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-153999556/",
+      "https://tw.trip.com/moments/detail/shanghai-2-143010113/",
+      "https://www.163.com/dy/article/KPS3C72B0514IGIT.html",
+      "https://gotravellingworld.com/tianzifang/",
+      "https://www.dianping.com/shop/69235986/photos?pg=2",
+      "https://hk.trip.com/restaurant/china/shanghai/detail/ren-he-guanshanghai-cuisine-28576182/",
+      "https://hk.trip.com/moments/detail/shanghai-2-142348446/",
+      "https://news.qq.com/rain/a/20250804A01XBP00",
+      "https://www.wikidata.org/wiki/Q5936524"
+    ],
+    "_source_files": {
+      "captions": [
+        "ig.txt",
+        "threads.txt"
+      ],
+      "data": [
+        "data.json",
+        "data-en.json"
+      ],
+      "sources": "sources.md"
+    },
+    "map": {
+      "line": "SH_9",
+      "at": [
+        470,
+        570
+      ]
+    }
   }
 ]

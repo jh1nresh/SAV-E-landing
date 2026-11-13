@@ -212,6 +212,7 @@ test('published Shanghai stations use their DESIGN maps and leave station coordi
     [3, 'shanghai-jingan-temple', '靜安寺', 'SH_14', [220, 420], 'pending', null],
     [4, 'shanghai-south-huangpi-road', '黃陂南路', 'SH_14', [520, 430], 'pending', null],
     [6, 'shanghai-jiaotong-university', '交通大學', 'SH_10', [140, 600], 'pending', null],
+    [7, 'shanghai-dapuqiao', '打浦橋', 'SH_9', [470, 570], 'wgs84', 31.2075],
   ]);
   assert.equal(shanghai.some(station => station.n === 5 || station.station === '人民廣場'), false);
   const huangpi = shanghai.find(station => station.n === 4);
@@ -249,6 +250,7 @@ test('stations are keyed by city and n, and missing geo coordinates stay pending
     [3, 'shanghai-jingan-temple', 'WGS-84', true, [220, 420]],
     [4, 'shanghai-south-huangpi-road', 'WGS-84', true, [520, 430]],
     [6, 'shanghai-jiaotong-university', 'WGS-84', true, [140, 600]],
+    [7, 'shanghai-dapuqiao', 'WGS-84', true, [470, 570]],
   ]);
   assert.deepEqual(stationGeoPin(shanghai[0]), { lat: 31.2391239, lng: 121.4792291, datum: 'WGS-84' });
   assert.equal(shanghai[0].geoStatus, 'wgs84');
@@ -378,6 +380,7 @@ test('published Shanghai stations stay inside the city and do not invent prices'
     [3, 'shanghai-jingan-temple', '靜安寺', ['2', '7', '14']],
     [4, 'shanghai-south-huangpi-road', '黃陂南路', ['1', '14']],
     [6, 'shanghai-jiaotong-university', '交通大學', ['10', '11']],
+    [7, 'shanghai-dapuqiao', '打浦橋', ['9']],
   ]);
   assert.equal(shanghai.some(station => station.slug === 'shanghai-nanjing-east'), false);
   for (const station of shanghai) {
@@ -398,6 +401,11 @@ test('published Shanghai stations stay inside the city and do not invent prices'
   assert.equal(yuyuan.posts.threads, 'https://www.threads.com/@savvysave_/post/DfcDLq7mzW7');
   assert.equal(jingan.posts.instagram, 'https://www.instagram.com/savvysave_/p/Dfenktfm82b/');
   assert.equal(jingan.posts.threads, 'https://www.threads.com/@savvysave_/post/Dfen6ILGzjh');
+  const dapuqiao = shanghai.find(station => station.slug === 'shanghai-dapuqiao');
+  assert.equal(dapuqiao.posts.instagram, 'https://www.instagram.com/savvysave_/p/Dfo61SiG2v1/');
+  assert.equal(dapuqiao.posts.threads, 'https://www.threads.com/@savvysave_/post/Dfo7AEEm_8z');
+  assert.equal(dapuqiao.posts.xiaohongshu ?? null, null);
+  assert.equal(dapuqiao.shops.every(shop => shop.price == null), true);
   assert.equal(huangpi.posts.instagram, 'https://www.instagram.com/p/DfhKbw_G6WX/');
   assert.equal(huangpi.posts.threads, 'https://www.threads.com/@savvysave_/post/DfhK4TFGwQT');
   assert.equal(huangpi.shops.find(shop => shop.name === '味香齋（雁蕩路店）').price, '14元人民幣／碗');
@@ -408,7 +416,7 @@ test('published Shanghai stations stay inside the city and do not invent prices'
   assert.equal(yuyuan.shops.find(shop => shop.name === '南翔饅頭店（豫園店）').address, '豫園路87號');
   assert.equal(jingan.shops.find(shop => shop.name === '毒蛇麵館（靜安寺店）').address, '上海市靜安區愚園路140號');
   assert.ok(shanghai.flatMap(station => station.shops).filter(shop => shop.price == null).length > 0);
-  assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd', 'Jiaotong University']);
+  assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd', 'Jiaotong University', 'Dapuqiao']);
   assert.equal(JSON.stringify(shanghai).includes('"notes"'), false);
   assert.equal(JSON.stringify(taipei).includes('"notes"'), false);
 });
