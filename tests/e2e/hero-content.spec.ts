@@ -39,6 +39,8 @@ test.describe("hero content and motion", () => {
   });
 
   test("P-0 labels follow each entry's kind: example entries are labelled, post entries are not", async ({ page }) => {
+    // WebKit walked every live station and hit the 60s default on CI run 43427323912.
+    test.setTimeout(120_000);
     // Exercise both kinds present in the shipped data; synthetic edge cases stay in unit tests.
     await page.goto("/?reduce=1");
     await waitForMap(page);
