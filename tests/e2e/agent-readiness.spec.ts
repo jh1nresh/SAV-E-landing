@@ -124,10 +124,11 @@ test("no-JS homepage and trust pages expose meaningful content, metadata and hon
       content.querySelectorAll("script,style,svg").forEach(element => element.remove());
       return content.textContent!.replace(/\s+/g, " ").trim().length;
     });
-    // The homepage is a map plus short place-memory copy. The inline map SVG
-    // dominates byte size, so a prose-wall ratio is the wrong bar.
+    // The page is a map plus short place-memory copy. The inline map SVG
+    // dominates byte size, and the station search adds field markup, so a
+    // prose-wall ratio is the wrong bar.
     expect(textCharacters).toBeGreaterThan(800);
-    expect(textCharacters / raw.length).toBeGreaterThan(0.01);
+    expect(textCharacters / raw.length).toBeGreaterThan(0.008);
     const schema = JSON.parse(await page.locator('script[type="application/ld+json"]').innerText());
     const app = schema["@graph"].find((item: { "@type": string }) => item["@type"] === "SoftwareApplication");
     expect(app).toMatchObject({ name: "Savvy", url: origin, operatingSystem: "iOS" });

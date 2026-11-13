@@ -34,6 +34,7 @@
 
 .sh-stations section {
   margin: 36px 0;
+  scroll-margin-top: 24px;
 }
 
 .sh-stations h2 {
