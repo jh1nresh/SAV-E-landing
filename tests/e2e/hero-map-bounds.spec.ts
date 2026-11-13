@@ -52,6 +52,8 @@ for (const [width, height] of sizes) {
   });
 
   test(`N2 ${width}: every shop stays inside the frame`, async ({ page }) => {
+    // WebKit N2 1280 used the whole 60s on CI run 43427323912. 1440 finished at 58.3s.
+    test.setTimeout(120_000);
     await page.setViewportSize({ width, height });
     await page.goto("/?reduce=1&clock=2026-10-26");
     await page.waitForFunction(() => !!window.__savvyMap);
