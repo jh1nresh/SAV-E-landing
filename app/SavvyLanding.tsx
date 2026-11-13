@@ -1,6 +1,8 @@
 import { AppStoreBadge } from "./SiteChrome";
-import { getPublicMetroData } from "../lib/metro";
+import { getFoodStations, getPublicMetroData } from "../lib/metro";
+import { buildSearchIndex } from "../lib/station-search.mjs";
 import { HeroMapLazy } from "./metro/HeroMapLazy";
+import { TaipeiStationSearch } from "./station-search/StationSearch";
 import "./metro/hero-map.css";
 
 import { GUIDE_ROOT, guidePath, guides } from "./zh-tw/guides/content";
@@ -17,6 +19,7 @@ const STICKERS = [
 
 export default function SavvyLanding() {
   const metro = getPublicMetroData();
+  const searchStations = buildSearchIndex(getFoodStations(), metro.stations);
 
   return (
     <main>
@@ -56,7 +59,10 @@ export default function SavvyLanding() {
               ))}
             </div>
           </div>
-          <HeroMapLazy data={metro} />
+          <div className="hero-search-col">
+            <TaipeiStationSearch stations={searchStations} />
+            <HeroMapLazy data={metro} />
+          </div>
         </div>
       </section>
 
