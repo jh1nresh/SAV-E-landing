@@ -40,22 +40,24 @@ test('two-checkout sync reads main/ and plans taipei and shanghai daily paths', 
   try {
     symlinkSync(repoRoot, mainLink);
     // Poison the workflow cwd. A resolver that forgets the main/ prefix either
-    // dies on the missing line file or accepts this fake taipei:18 catalog.
+    // dies on the missing line file or accepts this fake catalog. Taipei 18 is
+    // now a real DESIGN station, so the fixture uses 99, which the trusted
+    // catalog does not contain.
     mkdirSync(join(workspace, 'content/metro/daily/taipei/2026-11-07'), { recursive: true });
     mkdirSync(join(workspace, 'content/metro/daily/shanghai/2026-11-08'), { recursive: true });
     writeFileSync(join(workspace, 'content/metro/daily/taipei/2026-11-07/web.json'), '{}');
     writeFileSync(join(workspace, 'content/metro/daily/shanghai/2026-11-08/web.json'), '{}');
     writeFileSync(join(workspace, 'content/metro/design-stations.json'), JSON.stringify([
       {
-        n: 18, city: 'taipei', slug: 'taipei-101-world-trade-center', station: '台北101／世貿',
+        n: 99, city: 'taipei', slug: 'taipei-not-in-design', station: '未收錄站',
         map: { line: 'L_red', at: [246, 268] },
       },
     ]));
     writeFileSync(join(workspace, 'content/metro/shanghai-lines.json'), '{');
 
     writePackage(join(workspace, 'inbox/2026-11-07'), {
-      date: '2026-11-07', n: 18, city: 'taipei',
-      slug: 'taipei-101-world-trade-center', station: '台北101／世貿',
+      date: '2026-11-07', n: 99, city: 'taipei',
+      slug: 'taipei-not-in-design', station: '未收錄站',
     });
     writePackage(join(workspace, 'inbox/2026-11-08'), {
       date: '2026-11-08', n: 2, city: 'shanghai',
@@ -82,7 +84,7 @@ test('two-checkout sync reads main/ and plans taipei and shanghai daily paths', 
     const blocked = byDate['2026-11-07'];
     assert.equal(blocked.action, 'issue');
     assert.equal(blocked.reason, 'missing_design_coords');
-    assert.match(blocked.message, /taipei:18/);
+    assert.match(blocked.message, /taipei:99/);
 
     const shanghai = byDate['2026-11-08'];
     assert.equal(shanghai.action, 'content_pr');

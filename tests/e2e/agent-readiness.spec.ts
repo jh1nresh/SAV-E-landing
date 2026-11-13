@@ -124,7 +124,7 @@ test("no-JS homepage and trust pages expose meaningful content, metadata and hon
       content.querySelectorAll("script,style,svg").forEach(element => element.remove());
       return content.textContent!.replace(/\s+/g, " ").trim().length;
     });
-    // The page is a map plus short place-memory copy. The inline map SVG
+    // The homepage is a map plus short place-memory copy. The inline map SVG
     // dominates byte size, and the station search adds field markup, so a
     // prose-wall ratio is the wrong bar.
     expect(textCharacters).toBeGreaterThan(800);

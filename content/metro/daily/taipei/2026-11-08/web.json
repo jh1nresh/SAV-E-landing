@@ -1,0 +1,126 @@
+{
+  "n": 19,
+  "date": "2026-11-08",
+  "station": "台北車站",
+  "slug": "taipei-main-station",
+  "tagline": "牛肉麵、飯糰到魯肉飯，5 間先收",
+  "shops": [
+    {
+      "key": "liushandong",
+      "name": "劉山東小吃店",
+      "dish": "紅燒牛肉麵",
+      "price": "$240",
+      "price_source": "梅格 2026/05 店內價目表",
+      "address": "台北市中正區開封街一段14巷2號",
+      "exit_walk": "地下街Z6出口走路不到5分鐘",
+      "hours": "週一至週六自 08:00，週日休",
+      "sources": [
+        "https://angelababy0822.com/liu-beef-noodles/",
+        "https://appletrees.tw/blog/post/liushandong"
+      ]
+    },
+    {
+      "key": "fantuanba",
+      "name": "飯糰霸",
+      "dish": "招牌總匯飯糰",
+      "price": "$60",
+      "price_source": "呂萱萱 2026/07（價目表拍攝 2026/06）",
+      "address": "台北市中正區許昌街2號",
+      "exit_walk": "M8出口",
+      "hours": "06:00–14:00、14:30–19:00，週日休",
+      "sources": [
+        "https://evanchiny.com/20260711eat/",
+        "https://icecreamcat.tw/fantuan-ba2025/"
+      ]
+    },
+    {
+      "key": "itouya",
+      "name": "伊藤屋",
+      "dish": "厚切豬排飯",
+      "price": "$130",
+      "price_source": "周花花 2026/06",
+      "address": "台北市中正區懷寧街6號1樓",
+      "exit_walk": "地下街出口步行約2分鐘",
+      "hours": "11:00–13:30、16:00–18:30，週六日及假日休",
+      "sources": [
+        "https://tenjo.tw/itoya-bento/",
+        "https://pattieeat.com/itouya-bento/"
+      ]
+    },
+    {
+      "key": "laotaike",
+      "name": "老台客食麵",
+      "dish": "特製椒麻拌麵",
+      "price": "$100",
+      "price_source": "米寶嘛 2026/02",
+      "address": "台北市中正區懷寧街42號",
+      "exit_walk": "步行約5分鐘",
+      "hours": "11:00–21:00",
+      "sources": [
+        "https://mibaoma.tw/ltkco/",
+        "https://evavin.com/shop/laotaike-noodles-taipei-main-station"
+      ]
+    },
+    {
+      "key": "beibeiche",
+      "name": "北北車魯肉飯",
+      "dish": "魯肉飯（小）",
+      "price": "$35",
+      "price_source": "icecreamcat 2026/08",
+      "address": "台北市中正區公園路20巷21號",
+      "exit_walk": "步行約5分鐘",
+      "hours": "11:30–20:30",
+      "sources": [
+        "https://icecreamcat.tw/beibeiche/",
+        "https://blake.com.tw/blog/post/bei-bei-che"
+      ]
+    }
+  ],
+  "images": {
+    "photos": [
+      "photos/liushandong.jpg",
+      "photos/fantuanba.jpg",
+      "photos/itouya.jpg",
+      "photos/laotaike.jpg",
+      "photos/beibeiche.jpg"
+    ],
+    "slides": [
+      "slides/01-cover.png",
+      "slides/02-liushandong.png",
+      "slides/03-fantuanba.png",
+      "slides/04-itouya.png",
+      "slides/05-laotaike.png",
+      "slides/06-beibeiche.png",
+      "slides/07-summary.png",
+      "slides/08-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": null,
+    "threads": null,
+    "xiaohongshu": "https://www.xiaohongshu.com/explore/6af05391000000000500bd5c"
+  },
+  "sources": [
+    "https://angelababy0822.com/liu-beef-noodles/",
+    "https://appletrees.tw/blog/post/liushandong",
+    "https://evanchiny.com/20260711eat/",
+    "https://icecreamcat.tw/fantuan-ba2025/",
+    "https://tenjo.tw/itoya-bento/",
+    "https://pattieeat.com/itouya-bento/",
+    "https://mibaoma.tw/ltkco/",
+    "https://evavin.com/shop/laotaike-noodles-taipei-main-station",
+    "https://icecreamcat.tw/beibeiche/",
+    "https://blake.com.tw/blog/post/bei-bei-che"
+  ],
+  "_source_files": {
+    "xhs_body": "savvy-ready/2026-11-08/xhs/body.txt",
+    "xhs_sources": "savvy-ready/2026-11-08/xhs/sources.md",
+    "xhs_report": "savvy-ready/2026-11-08/xhs-report.md"
+  },
+  "city": "taipei",
+  "country": "Taiwan",
+  "metro_lines": [
+    "BL",
+    "R"
+  ]
+}

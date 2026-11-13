@@ -1321,6 +1321,14 @@ body.rm .pin.new .gr {
   top: auto;
 }
 
+/* Desktop poster: 淡水's photo sits on the top-left caption. Park the caption on the open top-right. */
+@media (min-width: 801px) {
+  .poster-vp .map-caption-group {
+    left: auto;
+    right: 10px;
+  }
+}
+
 /* Compact map cards retain complete address and price wording without scrolling. */
 .article-details { margin: 8px 0 0; font: 13px/1.45 ui-rounded, -apple-system, "PingFang TC", sans-serif; }
 .article-details div + div { margin-top: 5px; }

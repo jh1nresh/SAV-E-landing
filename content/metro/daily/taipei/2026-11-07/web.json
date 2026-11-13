@@ -1,0 +1,119 @@
+{
+  "n": 18,
+  "date": "2026-11-07",
+  "station": "台北101／世貿",
+  "slug": "taipei-101-world-trade-center",
+  "tagline": "炒麵、雞肉飯到煲仔飯，5 間先收",
+  "shops": [
+    {
+      "key": "xiaokaiyue",
+      "name": "小凱悅南村小吃店",
+      "dish": "炒麵",
+      "price": "$110",
+      "price_source": "老K嘴一下 2026/07",
+      "address": "台北市信義區莊敬路178巷14號",
+      "exit_walk": "2號出口步行約5分鐘",
+      "hours": "11:20–14:00、17:20–20:30，週日休",
+      "sources": [
+        "https://kkmurmur.com/siao-kai-yueh-sister/",
+        "https://anita.tw/xinyi-xiaokaiyue/"
+      ]
+    },
+    {
+      "key": "chaji",
+      "name": "查記麵館",
+      "dish": "紅油皮蛋麵",
+      "price": "$70",
+      "price_source": "kkmurmur 2025/10",
+      "address": "台北市信義區吳興街37號",
+      "exit_walk": "2號出口步行約6–7分鐘",
+      "hours": "週六、週日休",
+      "sources": [
+        "https://kkmurmur.com/chuckys-restaurant/",
+        "https://supertaste.tvbs.com.tw/food/346301"
+      ]
+    },
+    {
+      "key": "fuchun",
+      "name": "富春雞肉",
+      "dish": "百斬雞肉飯",
+      "price": "$90",
+      "price_source": "瑋瑋 2026/06",
+      "address": "台北市信義區吳興街69號",
+      "exit_walk": "步行約5分鐘",
+      "hours": "週一至六 11:00–14:00、16:30–19:30，週日休",
+      "sources": [
+        "https://vivawei.tw/fuchunjirou-202606/"
+      ]
+    },
+    {
+      "key": "chenji",
+      "name": "陳記米糕",
+      "dish": "筒仔米糕、佛跳牆",
+      "price": "$40／$130",
+      "price_source": "ifunny 2026/02",
+      "address": "台北市信義區吳興街150號",
+      "exit_walk": "步行約7分鐘",
+      "hours": "10:30–22:30，週六休",
+      "sources": [
+        "https://ifunny.blog/chenji-ricecake/"
+      ]
+    },
+    {
+      "key": "hejia",
+      "name": "賀加小吃店",
+      "dish": "臘味煲仔飯",
+      "price": "$160",
+      "price_source": "阿朱的日常 2026/03",
+      "address": "台北市信義區莊敬路325巷10號",
+      "exit_walk": null,
+      "hours": "平日 12:00–14:00、17:00–24:00，週日休",
+      "sources": [
+        "https://achu.tw/her-jia/"
+      ]
+    }
+  ],
+  "images": {
+    "photos": [
+      "photos/xiaokaiyue.jpg",
+      "photos/chaji.jpg",
+      "photos/fuchun.jpg",
+      "photos/chenji.jpg",
+      "photos/hejia.jpg"
+    ],
+    "slides": [
+      "slides/01-cover.png",
+      "slides/02-xiaokaiyue.png",
+      "slides/03-chaji.png",
+      "slides/04-fuchun.png",
+      "slides/05-chenji.png",
+      "slides/06-hejia.png",
+      "slides/07-summary.png",
+      "slides/08-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": null,
+    "threads": null,
+    "xiaohongshu": null
+  },
+  "sources": [
+    "https://kkmurmur.com/siao-kai-yueh-sister/",
+    "https://anita.tw/xinyi-xiaokaiyue/",
+    "https://kkmurmur.com/chuckys-restaurant/",
+    "https://supertaste.tvbs.com.tw/food/346301",
+    "https://vivawei.tw/fuchunjirou-202606/",
+    "https://ifunny.blog/chenji-ricecake/",
+    "https://achu.tw/her-jia/"
+  ],
+  "_source_files": {
+    "xhs_body": "savvy-ready/2026-11-07/xhs/body.txt",
+    "xhs_sources": "savvy-ready/2026-11-07/xhs/sources.md",
+    "xhs_report": "savvy-ready/2026-11-07/xhs-report.md"
+  },
+  "city": "taipei",
+  "country": "Taiwan",
+  "metro_lines": [
+    "R"
+  ]
+}
