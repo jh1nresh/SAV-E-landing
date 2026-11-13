@@ -41,8 +41,10 @@ export function ShanghaiMap({ stations }: { stations: FoodStation[] }) {
         </g>
         {stations.map((station) => {
           const [px, py] = station.map.snapped ?? station.map.at;
+          const [dx, dy] = station.map.labelOffset ?? [0, 0];
           return (
             <a key={station.slug} href={`#${station.slug}`}>
+              <circle className="sh-pick-ring" cx={px} cy={py} r="16" fill="none" stroke="#0e4a33" strokeWidth="3" />
               <circle
                 data-testid={`shanghai-pin-${station.slug}`}
                 cx={px}
@@ -53,8 +55,8 @@ export function ShanghaiMap({ stations }: { stations: FoodStation[] }) {
                 strokeWidth="2.6"
               />
               <text
-                x={px}
-                y={py - 18}
+                x={px + dx}
+                y={py - 18 + dy}
                 textAnchor="middle"
                 fontFamily="PingFang TC, ui-rounded, sans-serif"
                 fontSize="22"

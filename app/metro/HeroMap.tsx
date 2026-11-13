@@ -23,10 +23,6 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
   return (
     <div className="mapwrap" lang="zh-Hant" ref={rootRef} data-testid="metro-map">
       <div dangerouslySetInnerHTML={{ __html: SVG_DEFS }} />
-      <div className="strip-wrap">
-        <div className="strip-label">依最新更新排序</div>
-        <div className="strip" id="strip" role="tablist" aria-label="捷運站" />
-      </div>
       <div className="mapcard" id="mapcard">
         <MapPaper id="live-map-paper" />
         <span className="tape a" />

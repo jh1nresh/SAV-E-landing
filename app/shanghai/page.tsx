@@ -1,7 +1,8 @@
+import shanghaiLines from "../../content/metro/shanghai-lines.json";
 import { getShanghaiFoodStations } from "../../lib/metro";
 import { FOOD_DISCLAIMER } from "../../lib/metro-logic.mjs";
-import { buildSearchIndex } from "../../lib/station-search.mjs";
-import { ShanghaiStationSearch } from "../station-search/StationSearch";
+import { buildPickerStations, withFixtureCount } from "../../lib/station-picker.mjs";
+import { StationPicker } from "../station-search/StationPicker";
 import { guideMetadata } from "../zh-tw/guides/content";
 import "../zh-tw/guides/guides.css";
 import "../metro/food.css";
@@ -18,8 +19,17 @@ export const metadata = guideMetadata(
   "/shanghai",
 );
 
-export default function ShanghaiPage() {
+export default async function ShanghaiPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ clock?: string; pickerFixture?: string }>;
+}) {
+  const params = await searchParams;
   const stations = getShanghaiFoodStations();
+  const colors = Object.fromEntries(Object.entries(shanghaiLines.lines).map(([id, line]) => [id, line.color]));
+  const built = buildPickerStations(stations, [], colors);
+  const fixture = Number(params.pickerFixture);
+  const pickerStations = Number.isFinite(fixture) && fixture > 0 ? withFixtureCount(built, fixture) : built;
   return (
     <main className="guide-shell metro-food sh-page" lang="zh-Hant">
       <header className="guide-header">
@@ -32,7 +42,7 @@ export default function ShanghaiPage() {
         <p className="guide-small zh">{PRICE_NOTE_ZH}</p>
         <p className="guide-small en">{PRICE_NOTE_EN}</p>
       </header>
-      <ShanghaiStationSearch stations={buildSearchIndex(stations)} />
+      <StationPicker stations={pickerStations} city="shanghai" freshIds={[]} showLineMenu />
       <ShanghaiMap stations={stations} />
       <div className="sh-stations">
         {stations.map((station) => (

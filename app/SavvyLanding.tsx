@@ -1,8 +1,8 @@
 import { AppStoreBadge } from "./SiteChrome";
-import { getFoodStations, getPublicMetroData } from "../lib/metro";
-import { buildSearchIndex } from "../lib/station-search.mjs";
+import { getFoodStations, getPublicMetroData, stampLevel, stampNote, stationIsNew } from "../lib/metro";
+import { buildPickerStations, TAIPEI_LINE_COLOR, withFixtureCount } from "../lib/station-picker.mjs";
 import { HeroMapLazy } from "./metro/HeroMapLazy";
-import { TaipeiStationSearch } from "./station-search/StationSearch";
+import { StationPicker } from "./station-search/StationPicker";
 import "./metro/hero-map.css";
 
 import { GUIDE_ROOT, guidePath, guides } from "./zh-tw/guides/content";
@@ -17,9 +17,15 @@ const STICKERS = [
   { src: "/assets/st-lantern.png", alt: "燈籠" },
 ] as const;
 
-export default function SavvyLanding() {
+export default function SavvyLanding({ clock, pickerFixture }: { clock: string; pickerFixture?: number }) {
   const metro = getPublicMetroData();
-  const searchStations = buildSearchIndex(getFoodStations(), metro.stations);
+  const built = buildPickerStations(getFoodStations(), metro.stations, TAIPEI_LINE_COLOR);
+  const stations = pickerFixture ? withFixtureCount(built, pickerFixture) : built;
+  const freshIds = metro.stations
+    .filter((station) => stationIsNew(metro.stores.filter((store) => store.stationId === station.id), clock))
+    .map((station) => station.id);
+  const note = stampNote(metro.stores);
+  const partial = stampLevel(metro.stores) === "partial";
 
   return (
     <main>
@@ -60,7 +66,7 @@ export default function SavvyLanding() {
             </div>
           </div>
           <div className="hero-search-col">
-            <TaipeiStationSearch stations={searchStations} />
+            <StationPicker stations={stations} city="taipei" freshIds={freshIds} note={note} partial={partial} />
             <HeroMapLazy data={metro} />
           </div>
         </div>

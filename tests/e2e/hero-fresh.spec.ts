@@ -41,7 +41,6 @@ for (const width of [390, 1280]) {
       await expect(page.locator('#stampA')).toHaveText(visible ? '本週新增 1 家' : '');
       const pin = page.getByTestId('metro-pin-dongmen');
       if (visible) await expect(pin).toHaveClass(/new/); else await expect(pin).not.toHaveClass(/new/);
-      await expect(page.getByTestId('metro-tab-dongmen').locator('.newtag')).toHaveCount(visible ? 1 : 0);
       await openStation(page, 'dongmen');
       await expect(page.locator('#card .ph-head .newtag')).toHaveCount(0);
       await expect(page.locator('#card .fc .newtag')).toHaveCount(0);

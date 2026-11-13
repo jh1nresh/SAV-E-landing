@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { resolveClock } from "../lib/metro";
 import SavvyLanding from "./SavvyLanding";
 import {
   SITE_DESCRIPTION_EN,
@@ -35,7 +36,14 @@ export async function generateMetadata({
   };
 }
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ clock?: string; pickerFixture?: string }>;
+}) {
+  const params = await searchParams;
+  const fixture = Number(params.pickerFixture);
+  const clock = resolveClock(params.clock);
   const identity = {
     "@context": "https://schema.org",
     "@graph": [
@@ -46,6 +54,6 @@ export default function Home() {
   return <>
     <link rel="alternate" type="text/markdown" href={`${SITE_ORIGIN}/index.md`} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(identity).replace(/</g, "\\u003c") }} />
-    <SavvyLanding />
+    <SavvyLanding clock={clock} pickerFixture={Number.isFinite(fixture) && fixture > 0 ? fixture : undefined} />
   </>;
 }
