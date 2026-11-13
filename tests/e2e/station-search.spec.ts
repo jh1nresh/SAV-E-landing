@@ -1,7 +1,28 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import { waitForCardOpen } from "./helpers";
 
 const WIDTHS = [390, 1280] as const;
+
+type Box = { x: number; y: number; width: number; height: number };
+
+// The phone capsule row is overflow-x: auto. WebKit leaves that scroller's
+// content quads empty for a frame after it is shown, so boundingBox() is null
+// while getBoundingClientRect already has the row. Wait for that layout box.
+async function layoutBox(locator: Locator): Promise<Box> {
+  const found: { box: Box | null } = { box: null };
+  await expect(locator).toBeVisible();
+  await expect.poll(async () => {
+    found.box = await locator.evaluate((el): Box | null => {
+      const rect = el.getBoundingClientRect();
+      if (getComputedStyle(el).visibility === "hidden" || rect.height <= 0) return null;
+      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+    }).catch(() => null);
+    return found.box?.height ?? 0;
+  }).toBeGreaterThan(0);
+  const box = found.box;
+  if (!box) throw new Error("visible capsule row has no layout box");
+  return box;
+}
 
 async function search(page: Page) {
   const input = page.getByRole("combobox");
@@ -72,7 +93,9 @@ for (const width of WIDTHS) {
     const sortLabel = (await page.locator(".strip-label", { hasText: "依最新更新排序" }).boundingBox())!;
     if (width < 800) {
       const stickers = (await page.locator(".hero-stk").boundingBox())!;
-      const capsules = (await page.locator(".map-stage .strip").filter({ visible: true }).first().boundingBox())!;
+      const capsules = await layoutBox(
+        page.locator(".map-stage .strip").filter({ has: page.locator(".tab"), visible: true }).first(),
+      );
       expect(stickers.y + stickers.height).toBeLessThanOrEqual(searchBox.y + 1);
       expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(capsules.y + 1);
     } else {
