@@ -155,36 +155,38 @@ function intersects(
 }
 
 test("every Taipei pin and name is on the first screen at 1280x800", async ({ page }) => {
+  expect(taipei, "published Taipei stations").toHaveLength(23);
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
   await waitForMap(page);
   const pins = page.locator("[data-testid^=metro-pin-]");
-  await expect(pins).toHaveCount(taipei.length);
-  for (const pin of await pins.all()) {
-    const id = (await pin.getAttribute("data-testid")) ?? "metro-pin";
-    await expect.poll(() => pin.locator(".ph").evaluate((el) => el.getBoundingClientRect().height)).toBeGreaterThan(10);
-    const box = await pin.locator(".ph").evaluate((el) => {
+  await expect(pins).toHaveCount(23);
+  for (const station of taipei) {
+    const pin = page.locator(`[data-testid="metro-pin-${station.selectId}"] .ph`);
+    await expect(pin, station.station).toHaveCount(1);
+    await expect.poll(() => pin.evaluate((el) => el.getBoundingClientRect().height), { timeout: 15_000 }).toBeGreaterThan(10);
+    const box = await pin.evaluate((el) => {
       const rect = el.getBoundingClientRect();
       return { top: rect.top, bottom: rect.bottom };
     });
-    expect(box.top, id).toBeGreaterThanOrEqual(0);
-    expect(box.bottom, id).toBeLessThanOrEqual(800);
+    expect(box.top, station.station).toBeGreaterThanOrEqual(0);
+    expect(box.bottom, station.station).toBeLessThanOrEqual(800);
   }
   const labels = await page.evaluate(() => [...document.querySelectorAll("#stdots text")].map((el) => {
     const rect = el.getBoundingClientRect();
     return { name: el.textContent ?? "", top: rect.top, bottom: rect.bottom };
   }));
-  expect(labels).toHaveLength(taipei.length);
-  for (const label of labels) {
-    expect(label.top, label.name).toBeGreaterThanOrEqual(0);
-    expect(label.bottom, label.name).toBeLessThanOrEqual(800);
-  }
-  // 101 was ~121px below the fold, and 象山 ~139px, when six date-tab rows sat under the map.
-  for (const name of ["台北101", "象山"]) {
-    expect(labels.some((label) => label.name.includes(name)), `${name} is on the map`).toBe(taipei.some((station) => station.station.includes(name)));
-    const label = labels.find((item) => item.name.includes(name));
-    if (!label) continue;
-    expect(label.bottom, name).toBeLessThanOrEqual(800);
+  // The map paints the metro station name. A few differ from the food title, such as 松山 for 饒河/松山.
+  const mapNames = getPublicMetroData().stations
+    .filter((station) => taipei.some((food) => food.slug === station.slug))
+    .map((station) => station.name);
+  expect(mapNames).toHaveLength(23);
+  expect(labels).toHaveLength(23);
+  for (const name of mapNames) {
+    const label = labels.find((item) => item.name === name);
+    expect(label, name).toBeTruthy();
+    expect(label!.top, name).toBeGreaterThanOrEqual(0);
+    expect(label!.bottom, name).toBeLessThanOrEqual(800);
   }
 });
 
@@ -192,10 +194,9 @@ test("the weekly stamp does not cover 國父紀念館 at 390", async ({ page }) 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/?clock=2026-11-13");
   await waitForMap(page);
+  expect(taipei.some((station) => station.station === "國父紀念館")).toBe(true);
   const stamp = (await page.locator("#stamp").boundingBox())!;
-  const stampText = (await page.locator("#stampA").textContent()) ?? "";
-  const memorialOnMap = taipei.some((station) => station.station.includes("國父紀念館"));
-  if (memorialOnMap) expect(stampText).toBe("本週新增 30 家");
+  await expect(page.locator("#stampA")).toHaveText("本週新增 30 家");
   const hits = await page.evaluate(() => {
     const stampRect = document.querySelector("#stamp")!.getBoundingClientRect();
     const overlaps = (rect: DOMRect) => stampRect.left < rect.right && stampRect.right > rect.left
@@ -206,16 +207,14 @@ test("the weekly stamp does not cover 國父紀念館 at 390", async ({ page }) 
     });
   });
   expect(hits, "stamp covers a station name").toEqual([]);
-  if (memorialOnMap) {
-    const memorial = await page.evaluate(() => {
-      const el = [...document.querySelectorAll("#stdots text")].find((node) => node.textContent?.includes("國父紀念館"));
-      if (!el) return null;
-      const rect = el.getBoundingClientRect();
-      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
-    });
-    expect(memorial).not.toBeNull();
-    expect(intersects(stamp, memorial!)).toBe(false);
-  }
+  const memorial = await page.evaluate(() => {
+    const el = [...document.querySelectorAll("#stdots text")].find((node) => node.textContent === "國父紀念館");
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+  });
+  expect(memorial).not.toBeNull();
+  expect(intersects(stamp, memorial!)).toBe(false);
 });
 
 test("every Shanghai pin is on the first screen at 1280x800", async ({ page }) => {
