@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  // Playwright loads the dev server at 127.0.0.1. Next only allows localhost
+  // unless this is set, and a blocked origin never hydrates client components.
   allowedDevOrigins: ["127.0.0.1"],
   // Next's built-in slash redirect is a priority 308 from /taipei/ to /taipei.
   // Skip it so the Taipei rule below can 301 /taipei and /taipei/ straight to /.

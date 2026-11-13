@@ -188,9 +188,7 @@ export function planContentFiles(inspection) {
   const city = inspection.city ?? resolveCity(manifest.city);
   const files = [];
   files.push({
-    dest: city === 'taipei'
-      ? `content/metro/daily/${manifest.date}/web.json`
-      : `content/metro/daily/${city}/${manifest.date}/web.json`,
+    dest: `content/metro/daily/${city}/${manifest.date}/web.json`,
     src: resolve(packageDir, 'web.json'),
   });
   const imageRoot = city === 'taipei' ? `content/metro/images/${folder}` : `content/metro/images/${city}/${folder}`;

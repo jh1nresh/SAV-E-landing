@@ -1,0 +1,388 @@
+/* 「找一站」 — landing tokens on UI SDK slots. No new palette. */
+
+.ss-hero {
+  position: relative;
+  margin: 0 0 18px;
+  color: var(--ink);
+  text-align: left;
+}
+
+.ss-hero-label.strip-label {
+  margin: 0 2px 8px;
+}
+
+.hero-search-col {
+  min-width: 0;
+}
+
+.ss-sh {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: 12px;
+  margin: 8px 0 22px;
+  color: var(--ink);
+}
+
+.ss-sh-label {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 2px 8px;
+  font: 600 13px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.ss-sh-label::after {
+  content: "";
+  flex: 1;
+  height: 0;
+  border-top: 2px dotted rgba(47, 46, 35, 0.55);
+}
+
+.ss-input-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 2px 4px 2px 14px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 14px 12px 16px 11px;
+  box-shadow: 3px 4px 0 var(--kraft);
+}
+
+.ss-anchor-taipei {
+  box-shadow: 3px 4px 0 var(--ink);
+  border-width: 1.8px;
+}
+
+.ss-sh .ss-input-row {
+  grid-column: 1;
+}
+
+.ss-input-row:focus-within {
+  outline: 3px solid var(--forest);
+  outline-offset: 3px;
+}
+
+.ss-glass {
+  display: grid;
+  place-items: center;
+  margin-right: 6px;
+  color: var(--muted);
+  flex: none;
+}
+
+.ss-input-row [data-slot="combobox-input"] {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: 18px/1.4 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  outline: none;
+  text-align: left;
+}
+
+.ss-input-row [data-slot="combobox-input"]::placeholder {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+[data-slot="combobox-clear"],
+[data-slot="combobox-trigger"] {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  color: var(--muted);
+  font: 18px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  cursor: pointer;
+}
+
+[data-slot="combobox-clear"]:hover,
+[data-slot="combobox-trigger"]:hover {
+  background: var(--kraft);
+  color: var(--ink);
+}
+
+[data-slot="combobox-trigger"][data-open] {
+  color: var(--coral);
+}
+
+:where([data-slot="menu-trigger"], [data-slot="combobox-trigger"], [data-slot="combobox-clear"]):focus-visible {
+  outline: 3px solid var(--forest);
+  outline-offset: 3px;
+}
+
+.chip.ss-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  grid-column: 2;
+  min-height: 54px;
+  border: 1.8px solid var(--ink);
+  border-radius: 27px;
+  white-space: nowrap;
+}
+
+.ss-menu-trigger[data-open] {
+  background: var(--kraft);
+}
+
+.ss-caret {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+[data-slot="combobox-content"] {
+  --list-height: var(--available-height);
+  --ss-list-max: 380px;
+  width: var(--anchor-width);
+  max-height: var(--available-height);
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 8px;
+  color: var(--ink);
+  text-align: left;
+  background: var(--paper) url("/assets/paper-grain.png") 0 0 / 256px;
+  border: 2px solid var(--ink);
+  border-radius: 18px 12px 20px 11px;
+  box-shadow: 4px 6px 0 var(--ink);
+  font: 17px/1.5 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  transition: opacity 0.15s, translate 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ss-hero [data-slot="combobox-content"] {
+  --ss-list-max: 420px;
+}
+
+[data-slot="combobox-content"]:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+  translate: 0 -6px;
+}
+
+[data-slot="combobox-list"] {
+  max-height: min(var(--ss-list-max, 380px), calc(var(--list-height, 420px) - 48px));
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+[data-slot="combobox-separator"] {
+  height: 1px;
+  margin: 8px 4px;
+  background: var(--line);
+}
+
+[data-slot="combobox-group-label"],
+[data-slot="menu-group-label"] {
+  padding: 8px 12px 4px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+[data-slot="combobox-item"] {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  min-height: 52px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+[data-slot="combobox-item"][data-highlighted] {
+  background: var(--kraft);
+  box-shadow: inset 0 0 0 2px var(--forest);
+}
+
+[data-slot="combobox-item"][data-selected] {
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.ss-item-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  min-width: 0;
+}
+
+[data-slot="combobox-item-text"] {
+  font-size: 19px;
+  font-family: ui-rounded, -apple-system, "PingFang TC", sans-serif;
+}
+
+[data-slot="combobox-item-text"] mark {
+  background: var(--honey);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+.ss-item-meta {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.ss-item-hit {
+  grid-column: 1;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.ss-item-hit::before {
+  content: "↳ ";
+  color: var(--coral);
+}
+
+[data-slot="combobox-item-indicator"] {
+  grid-column: 2;
+  grid-row: 1;
+  color: var(--coral);
+  font-weight: 700;
+}
+
+[data-slot="combobox-empty"] {
+  color: var(--muted);
+  font-size: 15px;
+  font-family: ui-rounded, -apple-system, "PingFang TC", sans-serif;
+}
+
+[data-slot="combobox-empty"][data-empty] {
+  padding: 14px 12px;
+}
+
+[data-slot="combobox-empty"]:not([data-empty]) {
+  display: none;
+}
+
+.ss-count {
+  margin: 6px 4px 0;
+  padding: 8px 8px 2px;
+  border-top: 1px dashed var(--line);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+[data-slot="menu-content"] {
+  min-width: max(180px, var(--anchor-width));
+  max-height: var(--available-height);
+  overflow: auto;
+  margin: 0;
+  padding: 8px;
+  color: var(--ink);
+  background: var(--paper) url("/assets/paper-grain.png") 0 0 / 256px;
+  border: 2px solid var(--ink);
+  border-radius: 18px 12px 20px 11px;
+  box-shadow: 3px 4px 0 var(--kraft);
+  transform-origin: var(--transform-origin);
+  font: 17px/1.5 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  transition: opacity 0.15s, scale 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-slot="menu-content"]:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+  scale: 0.97;
+}
+
+[data-slot="menu-radio-item"] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
+}
+
+[data-slot="menu-radio-item"][data-highlighted] {
+  background: var(--kraft);
+}
+
+[data-slot="menu-radio-item"][data-checked] {
+  font-weight: 700;
+  color: var(--forest);
+}
+
+[data-slot="menu-item-indicator"] {
+  width: 12px;
+  font-size: 10px;
+  color: var(--coral);
+}
+
+[data-slot="menu-radio-item"]:not([data-checked])::before {
+  content: "";
+  width: 12px;
+}
+
+/* Our display rules must not resurrect elements the SDK hides. */
+[data-slot][hidden] {
+  display: none !important;
+}
+
+[data-slot="combobox-form-input"] {
+  display: none !important;
+}
+
+@media (max-width: 800px) {
+  .hero-search-col {
+    margin-top: 8px;
+  }
+
+  .hero-search-col .map-stage {
+    margin-top: 0;
+  }
+
+  .ss-hero {
+    margin-bottom: 4px;
+  }
+
+  .ss-hero-label.strip-label {
+    margin-bottom: 4px;
+  }
+
+  .ss-input-row [data-slot="combobox-input"] {
+    min-height: 44px;
+  }
+
+  .ss-hero [data-slot="combobox-content"] {
+    --ss-list-max: 360px;
+  }
+
+  .ss-sh {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+
+  .ss-sh .ss-menu-trigger {
+    grid-column: 1;
+    justify-self: start;
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="menu-content"],
+  [data-slot="combobox-content"] {
+    transition: none;
+  }
+}

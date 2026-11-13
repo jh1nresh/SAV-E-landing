@@ -17,7 +17,9 @@ jobs:
       - name: Checkout trusted main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: main
+          # Schedule always reads main. workflow_dispatch reads the selected ref
+          # so a branch can be verified before merge. Scripts never come from gtm/inbox.
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.ref || 'main' }}
           path: main
           persist-credentials: false
 
@@ -44,9 +46,12 @@ jobs:
       - name: Build sync plan from trusted main scripts
         id: plan
         run: |
-          if test ! -d inbox/.git && test ! -f inbox/README.md && test -z "$(find inbox -mindepth 1 -maxdepth 1 -type d -name '20*' 2>/dev/null)"; then
+          # A failed checkout still leaves inbox/.git, so a filesystem "empty" test
+          # would fall through and import the sync script. Key off the checkout outcome.
+          if [ "${{ steps.inbox.outcome }}" != "success" ]; then
             echo 'plan=empty-plan.json' >> "$GITHUB_OUTPUT"
             printf '%s\n' '{"generated_at":"","packages":[]}' > empty-plan.json
+            echo 'Inbox checkout did not succeed; writing an empty plan.'
             exit 0
           fi
           node main/scripts/metro-gtm-inbox-sync.mjs --repo-root main --inbox-root inbox --out inbox-sync-plan.json

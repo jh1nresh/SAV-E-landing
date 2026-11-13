@@ -23,6 +23,10 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
       await openStation(page, station.id);
       await expect(page.locator('#card .thumbs .more')).toContainText(`共 ${article.shops.length} 間`);
       await expect(page.locator('#card .thumbs button')).toHaveCount(article.shops.length);
+      // The station search sits above the map on a phone, so the opened card
+      // can start just below the first screen. Bring the card up, then require
+      // the shop name to be visible. The card itself still must not scroll.
+      await page.locator("#card").scrollIntoViewIfNeeded();
       for (const [i, shop] of article.shops.entries()) {
         if (i) await page.locator('#card .thumbs button').nth(i).click();
         await expect(page.locator('#card .fc h4')).toHaveText(shop.name!);
