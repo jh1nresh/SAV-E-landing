@@ -661,5 +661,42 @@
       ]
     },
     "city": "taipei"
+  },
+  {
+    "n": 6,
+    "slug": "shanghai-jiaotong-university",
+    "station": "交通大學",
+    "map": {
+      "line": "SH_10",
+      "at": [
+        140,
+        600
+      ]
+    },
+    "id": "shanghai-jiaotong-university",
+    "city": "shanghai",
+    "order": 6,
+    "name_en": "Jiaotong University",
+    "name_zh": "交通大學",
+    "lines": [
+      "10",
+      "11"
+    ],
+    "lines_gtm": [
+      "10",
+      "11"
+    ],
+    "lat": 31.2039,
+    "lng": 121.43,
+    "coord_system": "WGS-84",
+    "source": "/workspace/shared/gtm/savvy-ready/2026-11-11/web.json station_geo (Wikidata Q985988 P625; P81 Line 10 Q528209 + Line 11 Q2636308)",
+    "verified": {
+      "map_at": true,
+      "geo": true,
+      "lines": true,
+      "geo_basis": "GTM: Wikidata P625, station-level, not surveyed (4 decimals, ~10 m)"
+    },
+    "notes": "r1 2026-11-11 DESIGN: map.at [140,600] is an exact segment endpoint on SH_10 and SH_11 (snap 0). SH_10 now enters from the left edge through this station instead of rising from the bottom edge (real Line 10 runs west from Xintiandi to Jiaotong Univ and Hongqiao); SH_10 between 豫園 [760,400] and the top edge is unchanged, so 豫園 and 南京東路 keep snap 0. SH_11 is new (#871C2B, en.wikipedia Module:Adjacent_stations/Shanghai_Metro). Schematic, not geographic.",
+    "geo_precision_gtm": "station"
   }
 ]

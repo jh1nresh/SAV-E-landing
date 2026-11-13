@@ -68,10 +68,34 @@
     }
   ],
   "images": {
-    "photos": null,
+    "photos": [
+      "photos/weixiang.jpg",
+      "photos/chunyuan.jpg",
+      "photos/laorenhe.jpg",
+      "photos/jieerjing.jpg",
+      "photos/guangmingcun.jpg"
+    ],
     "slides": null,
-    "slides_zh": null,
-    "slides_en": null
+    "slides_zh": [
+      "slides_zh/01-cover.png",
+      "slides_zh/02-weixiang.png",
+      "slides_zh/03-chunyuan.png",
+      "slides_zh/04-laorenhe.png",
+      "slides_zh/05-jieerjing.png",
+      "slides_zh/06-guangmingcun.png",
+      "slides_zh/07-summary.png",
+      "slides_zh/08-cta.png"
+    ],
+    "slides_en": [
+      "slides_en/01-cover.png",
+      "slides_en/02-weixiang.png",
+      "slides_en/03-chunyuan.png",
+      "slides_en/04-laorenhe.png",
+      "slides_en/05-jieerjing.png",
+      "slides_en/06-guangmingcun.png",
+      "slides_en/07-summary.png",
+      "slides_en/08-cta.png"
+    ]
   },
   "posts": {
     "instagram": "https://www.instagram.com/p/DfhKbw_G6WX/",

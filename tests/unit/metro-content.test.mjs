@@ -1,28 +1,33 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, existsSync, mkdtempSync, mkdirSync, writeFileSync, cpSync, rmSync } from 'node:fs';
+import { readFileSync, existsSync, mkdtempSync, mkdirSync, writeFileSync, cpSync, rmSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin, localeForCity } from '../../scripts/metro-content.mjs';
+import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, loadDailyStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin, localeForCity } from '../../scripts/metro-content.mjs';
 import { contentOnly, contentOnlyFromNameStatus, isAllowedMetroContentPath } from '../../scripts/metro-content-gate.mjs';
 import { foodShopRows, FOOD_DISCLAIMER } from '../../lib/metro-logic.mjs';
 const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
 const designCatalog = loadDesignStations(resolve('content/metro'));
-const daily = readdirSync('content/metro/daily').filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort()
-  .map(d => `content/metro/daily/${d}/web.json`).filter(existsSync).map(p => JSON.parse(readFileSync(p, 'utf8')));
+const daily = loadDailyStations(resolve('content/metro'), resolve('.'));
 // Pass DESIGN so a daily-only new station (map omitted per F-6) can initialize tests the same way production builds.
 const expected = mergeFoodStations(base, daily, designCatalog);
 test('all content stations preserve source display fields; served image paths exist', () => {
-  const stations = buildFoodStations(resolve('.'));
-  assert.equal(stations.length, expected.length);
-  for (let n = 1; n <= expected.length; n++) assert.ok(stations.some(s => s.n === n));
-  for (const s of stations) {
-    const raw = expected.find(b => b.n === s.n);
-    for (const key of ['n', 'date', 'station', 'slug', 'tagline', 'posts']) assert.deepEqual(s[key], raw[key]);
-    for (const [i, shop] of s.shops.entries()) {
-      for (const key of Object.keys(shop)) assert.deepEqual(shop[key], raw.shops[i][key] ?? null);
+  const cities = [...new Set(expected.map(station => station.city ?? 'taipei'))];
+  for (const city of cities) {
+    const rawStations = expected.filter(station => (station.city ?? 'taipei') === city);
+    const stations = buildFoodStations(resolve('.'), { city });
+    assert.equal(stations.length, rawStations.length, city);
+    if (city === 'taipei') {
+      for (let n = 1; n <= rawStations.length; n++) assert.ok(stations.some(s => s.n === n));
     }
-    for (const image of [...s.images.photos, ...s.images.slides]) assert.ok(existsSync(`public${image}`), image);
+    for (const s of stations) {
+      const raw = rawStations.find(b => b.n === s.n);
+      for (const key of ['n', 'date', 'station', 'slug', 'tagline', 'posts']) assert.deepEqual(s[key], raw[key]);
+      for (const [i, shop] of s.shops.entries()) {
+        for (const key of Object.keys(shop)) assert.deepEqual(shop[key], raw.shops[i][key] ?? null);
+      }
+      for (const image of [...s.images.photos, ...s.images.slides]) assert.ok(existsSync(`public${image}`), image);
+    }
   }
 });
 test('null, missing and empty fields hide the entire row independently', () => {
@@ -52,7 +57,8 @@ test('daily files add stations automatically and later daily replaces duplicate 
       writeFileSync(join(dir, 'web.json'), JSON.stringify({ ...daily, tagline }));
     }
     const result = buildFoodStations(root);
-    assert.equal(result.length, expected.length + 1);
+    const taipeiCount = expected.filter(station => (station.city ?? 'taipei') === 'taipei').length;
+    assert.equal(result.length, taipeiCount + 1);
     assert.equal(result.filter(s => s.n === fixtureN).length, 1);
     assert.equal(result.at(-1).tagline, 'later');
   } finally { rmSync(root, { recursive: true, force: true }); }
@@ -122,8 +128,8 @@ test('DESIGN catalog is required and overrides package coordinates', () => {
   // DESIGN may ship ahead of stations.json (next-station coords); every live station must still match.
   assert.ok(design.length >= base.length, 'DESIGN catalog must cover every live station');
   for (const station of base) {
-    assert.ok(design.some(d => d.n === station.n), `missing DESIGN map for station n=${station.n}`);
-    assert.ok(design.some(d => (d.city ?? 'taipei') === 'taipei' && d.n === station.n && d.slug === station.slug), `missing Taipei DESIGN map for n=${station.n}`);
+    const city = station.city ?? 'taipei';
+    assert.ok(design.some(d => (d.city ?? 'taipei') === city && d.n === station.n && d.slug === station.slug), `missing DESIGN map for ${city} n=${station.n}`);
   }
   const applied = mergeFoodStations(base, [{ n: base[0].n, slug: base[0].slug, station: base[0].station, date: base[0].date, tagline: 'y' }], design);
   const designForFirst = design.find(d => d.n === base[0].n && (d.city ?? 'taipei') === 'taipei');
@@ -183,6 +189,20 @@ test('Taipei stations 1-16 keep their identity and schematic points', () => {
   assert.equal(JSON.stringify(stations).includes('31.2303'), false);
 });
 
+test('published Shanghai stations use their DESIGN maps and leave station coordinates pending', () => {
+  const shanghai = buildFoodStations(resolve('.'), { city: 'shanghai' });
+  assert.deepEqual(shanghai.map(station => [station.n, station.slug, station.station, station.map.line, station.map.at, station.geoStatus, station.lat]), [
+    [2, 'shanghai-yuyuan', '豫園', 'SH_14', [760, 400], 'pending', null],
+    [3, 'shanghai-jingan-temple', '靜安寺', 'SH_14', [220, 420], 'pending', null],
+    [4, 'shanghai-south-huangpi-road', '黃陂南路', 'SH_14', [520, 430], 'pending', null],
+    [6, 'shanghai-jiaotong-university', '交通大學', 'SH_10', [140, 600], 'pending', null],
+  ]);
+  assert.equal(shanghai.some(station => station.n === 5 || station.station === '人民廣場'), false);
+  const huangpi = shanghai.find(station => station.n === 4);
+  assert.equal(huangpi.shops.find(shop => shop.key === 'guangmingcun').name, '光明邨大酒家');
+  assert.equal(huangpi.shops.find(shop => shop.key === 'weixiang').address, '上海市黃浦區雁蕩路14號（近淮海中路）');
+});
+
 test('stations are keyed by city and n, and missing geo coordinates stay pending', () => {
   const catalog = readFileSync('content/metro/design-stations.json', 'utf8');
   assert.equal(catalog.includes('31.2303'), false);
@@ -198,6 +218,7 @@ test('stations are keyed by city and n, and missing geo coordinates stay pending
     [2, 'shanghai-yuyuan', 'WGS-84', true, [760, 400]],
     [3, 'shanghai-jingan-temple', 'WGS-84', true, [220, 420]],
     [4, 'shanghai-south-huangpi-road', 'WGS-84', true, [520, 430]],
+    [6, 'shanghai-jiaotong-university', 'WGS-84', true, [140, 600]],
   ]);
   assert.deepEqual(stationGeoPin(shanghai[0]), { lat: 31.2391239, lng: 121.4792291, datum: 'WGS-84' });
   assert.equal(shanghai[0].geoStatus, 'wgs84');
@@ -326,10 +347,14 @@ test('published Shanghai stations stay inside the city and do not invent prices'
     [2, 'shanghai-yuyuan', '豫園', ['10', '14']],
     [3, 'shanghai-jingan-temple', '靜安寺', ['2', '7', '14']],
     [4, 'shanghai-south-huangpi-road', '黃陂南路', ['1', '14']],
+    [6, 'shanghai-jiaotong-university', '交通大學', ['10', '11']],
   ]);
   assert.equal(shanghai.some(station => station.slug === 'shanghai-nanjing-east'), false);
   for (const station of shanghai) {
-    assert.equal(JSON.parse(readFileSync(`content/metro/daily/shanghai/${station.date}/web.json`, 'utf8')).map, undefined);
+    const scoped = `content/metro/daily/shanghai/${station.date}/web.json`;
+    const legacy = `content/metro/daily/${station.date}/web.json`;
+    const dailyPath = existsSync(scoped) ? scoped : legacy;
+    assert.equal(JSON.parse(readFileSync(dailyPath, 'utf8')).map, undefined);
     assert.ok(station.shops.length > 0);
     for (const shop of station.shops) {
       assert.equal(typeof shop.address, 'string');
@@ -353,7 +378,7 @@ test('published Shanghai stations stay inside the city and do not invent prices'
   assert.equal(yuyuan.shops.find(shop => shop.name === '南翔饅頭店（豫園店）').address, '豫園路87號');
   assert.equal(jingan.shops.find(shop => shop.name === '毒蛇麵館（靜安寺店）').address, '上海市靜安區愚園路140號');
   assert.ok(shanghai.flatMap(station => station.shops).filter(shop => shop.price == null).length > 0);
-  assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd']);
+  assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd', 'Jiaotong University']);
   assert.equal(JSON.stringify(shanghai).includes('"notes"'), false);
   assert.equal(JSON.stringify(taipei).includes('"notes"'), false);
 });

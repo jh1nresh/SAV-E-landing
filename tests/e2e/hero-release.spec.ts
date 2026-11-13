@@ -69,8 +69,10 @@ test("Escape cancels selection in the reduced-motion gap after the old card clos
   await openStation(page, "arena");
   // Freeze before scheduling the switch: RPC latency must not consume the
   // 9ms gap between the 250ms close and the 260ms pending selection.
+  // The clock keeps running until pauseAt. A 1s target is already in the past
+  // after a slow WebKit install round trip.
   await page.clock.install({ time: new Date("2026-10-27T00:00:00Z") });
-  await page.clock.pauseAt(new Date("2026-10-27T00:00:01Z"));
+  await page.clock.pauseAt(new Date("2026-10-27T00:10:00Z"));
   await page.evaluate(() => window.__savvyMap!.select("dongmen"));
   await page.clock.runFor(251);
   expect(await page.evaluate(() => window.__savvyMap!.state().showing)).toBeNull();
