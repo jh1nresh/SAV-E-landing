@@ -1155,7 +1155,9 @@ body.rm .pin.new .gr {
   .hero-stk {
     justify-content: center;
     gap: 8px;
-    margin-top: 20px;
+    /* Header city switch adds a row. Keep this gap small so an opened
+       station title still intersects the 844px first screen. */
+    margin-top: 4px;
   }
 
   .hero-stk img {
@@ -1164,18 +1166,18 @@ body.rm .pin.new .gr {
   }
 
   .map-stage {
-    height: 559px;
-    margin-top: 32px;
+    height: 545px;
+    margin-top: 0;
   }
 
   .mapwrap {
-    height: 559px;
+    height: 545px;
     text-align: left;
   }
 
   .strip-wrap {
     height: 73px;
-    margin-bottom: 26px;
+    margin-bottom: 12px;
   }
 
   .strip {

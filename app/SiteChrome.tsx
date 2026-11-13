@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import {
   createContext,
   useCallback,
@@ -9,6 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import CitySwitch from "./CitySwitch";
 import {
   SITE_DESCRIPTION_EN,
   SITE_DESCRIPTION_ZH,
@@ -73,13 +75,16 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 
 function SiteNav() {
   const { lang, setLang } = useSiteLang();
+  const pathname = usePathname();
+  const city = pathname === "/shanghai" ? "shanghai" : pathname === "/" ? "taipei" : null;
 
   return (
-    <nav className="top">
+    <nav className={city ? "top has-city" : "top"}>
       <a className="brand" href={hrefWithLang("/", lang)}>
         <img src="/assets/icon.png" alt="" width={44} height={44} />
         Savvy
       </a>
+      {city ? <CitySwitch active={city} lang={lang} /> : null}
       <div className="chips" role="group" aria-label="Language">
         <button
           type="button"

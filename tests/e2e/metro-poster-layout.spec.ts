@@ -18,7 +18,7 @@ for (const width of [390, 1280, 1440]) {
     const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width, height: 844 } });
     try {
       const page = await context.newPage();
-      await page.goto('/taipei');
+      await page.goto('/');
       await page.locator('.poster-vp').scrollIntoViewIfNeeded();
       await page.evaluate(() => document.fonts.ready);
       const labels = page.locator('[data-testid^="metro-poster-label-"]');

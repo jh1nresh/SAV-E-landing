@@ -79,7 +79,7 @@ function checkLabelCharacters({ width, height, names, movePhoto = false }: { wid
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
   test(`station labels do not overlap at ${viewport.width}x${viewport.height}`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    await page.goto("/taipei?reduce=1");
+    await page.goto("/?reduce=1");
     await waitForMap(page);
     await page.locator("#vp").scrollIntoViewIfNeeded();
     await page.evaluate(() => document.fonts.ready);
@@ -164,7 +164,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
   test(`character check detects a photo moved over 小巨蛋 at ${viewport.width}`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    await page.goto("/taipei?reduce=1");
+    await page.goto("/?reduce=1");
     await waitForMap(page);
     await page.locator("#vp").scrollIntoViewIfNeeded();
     await page.evaluate(() => document.fonts.ready);
@@ -190,7 +190,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
   test(`every station owns its hit center at ${viewport.width}`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    await page.goto('/taipei?reduce=1');
+    await page.goto('/?reduce=1');
     await waitForMap(page);
     await page.locator('#vp').scrollIntoViewIfNeeded();
     await page.evaluate(() => document.fonts.ready);
@@ -221,7 +221,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
   test(`zhongshan upper hit edge selects its own station at ${viewport.width}`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    await page.goto('/taipei?reduce=1');
+    await page.goto('/?reduce=1');
     await waitForMap(page);
     const marker = page.getByTestId('metro-pin-zhongshan');
     await marker.scrollIntoViewIfNeeded();
