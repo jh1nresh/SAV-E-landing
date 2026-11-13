@@ -1,5 +1,5 @@
 {
-  "_note": "DESIGN 2026-11-09. View units (viewBox 0 0 1000 720), NOT geographic. Paths are M/C only for scripts/metro-lines.mjs. Colors: en.wikipedia Module:Adjacent_stations/Shanghai_Metro.",
+  "_note": "DESIGN 2026-11-09, r2 2026-11-11 (SH_10 west end rerouted to Jiaotong University; SH_11 added). View units (viewBox 0 0 1000 720), NOT geographic. Paths are M/C only for scripts/metro-lines.mjs. Colors: en.wikipedia Module:Adjacent_stations/Shanghai_Metro.",
   "viewBox": [
     0,
     0,
@@ -25,7 +25,12 @@
     "SH_10": {
       "name_en": "Line 10",
       "color": "#C6AFD4",
-      "d": "M480 720 C 520 640 556 570 590 520 C 620 500 655 498 690 500 C 720 470 745 435 760 400 C 768 340 760 280 740 220 C 732 180 725 140 720 100 C 716 60 712 30 708 0"
+      "d": "M0 640 C 50 625 95 612 140 600 C 320 560 560 530 650 500 C 700 482 754 445 760 400 C 768 340 760 280 740 220 C 732 180 725 140 720 100 C 716 60 712 30 708 0"
+    },
+    "SH_11": {
+      "name_en": "Line 11",
+      "color": "#871C2B",
+      "d": "M0 330 C 60 420 115 520 140 600 C 165 680 250 690 330 676 C 400 664 450 690 500 720"
     },
     "SH_14": {
       "name_en": "Line 14",

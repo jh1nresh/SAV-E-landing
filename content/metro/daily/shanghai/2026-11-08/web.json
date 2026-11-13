@@ -72,10 +72,34 @@
     }
   ],
   "images": {
-    "photos": null,
+    "photos": [
+      "photos/dusche.jpg",
+      "photos/dongji.jpg",
+      "photos/huangayi.jpg",
+      "photos/jiajia.jpg",
+      "photos/huxi.jpg"
+    ],
     "slides": null,
-    "slides_zh": null,
-    "slides_en": null
+    "slides_zh": [
+      "slides_zh/01-cover.png",
+      "slides_zh/02-dusche.png",
+      "slides_zh/03-dongji.png",
+      "slides_zh/04-huangayi.png",
+      "slides_zh/05-jiajia.png",
+      "slides_zh/06-huxi.png",
+      "slides_zh/07-summary.png",
+      "slides_zh/08-cta.png"
+    ],
+    "slides_en": [
+      "slides_en/01-cover.png",
+      "slides_en/02-dusche.png",
+      "slides_en/03-dongji.png",
+      "slides_en/04-huangayi.png",
+      "slides_en/05-jiajia.png",
+      "slides_en/06-huxi.png",
+      "slides_en/07-summary.png",
+      "slides_en/08-cta.png"
+    ]
   },
   "posts": {
     "instagram": "https://www.instagram.com/savvysave_/p/Dfenktfm82b/",

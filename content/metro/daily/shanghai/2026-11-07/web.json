@@ -71,10 +71,34 @@
     }
   ],
   "images": {
-    "photos": null,
+    "photos": [
+      "photos/nanxiang.jpg",
+      "photos/ningbo.jpg",
+      "photos/songhelou.jpg",
+      "photos/laofandian.jpg",
+      "photos/lubolang.jpg"
+    ],
     "slides": null,
-    "slides_zh": null,
-    "slides_en": null
+    "slides_zh": [
+      "slides_zh/01-cover.png",
+      "slides_zh/02-nanxiang.png",
+      "slides_zh/03-ningbo.png",
+      "slides_zh/04-songhelou.png",
+      "slides_zh/05-laofandian.png",
+      "slides_zh/06-lubolang.png",
+      "slides_zh/07-summary.png",
+      "slides_zh/08-cta.png"
+    ],
+    "slides_en": [
+      "slides_en/01-cover.png",
+      "slides_en/02-nanxiang.png",
+      "slides_en/03-ningbo.png",
+      "slides_en/04-songhelou.png",
+      "slides_en/05-laofandian.png",
+      "slides_en/06-lubolang.png",
+      "slides_en/07-summary.png",
+      "slides_en/08-cta.png"
+    ]
   },
   "posts": {
     "instagram": "https://www.instagram.com/savvysave_/p/DfcC2GKm22A/",

@@ -2362,5 +2362,965 @@
         287
       ]
     }
+  },
+  {
+    "n": 2,
+    "station": "豫園",
+    "tagline": "小籠、甜湯、湯麵到熱炒，5 種選擇",
+    "date": "2026-11-07",
+    "city": "shanghai",
+    "country": "China",
+    "slug": "shanghai-yuyuan",
+    "language": "zh-Hant",
+    "station_en": "Yuyuan",
+    "metro_lines": [
+      "10",
+      "14"
+    ],
+    "shops": [
+      {
+        "key": "nanxiang",
+        "name": "南翔饅頭店（豫園店）",
+        "name_en": "Nanxiang (Yuyuan)",
+        "dish": "鮮肉小籠",
+        "dish_en": "Pork soup dumplings",
+        "address": "豫園路87號",
+        "address_en": "87 Yuyuan Rd",
+        "sources": [
+          "https://you.ctrip.com/food/shanghai2/4926728.html",
+          "https://www.yuyuantm.com.cn/brand/cater.html"
+        ],
+        "image_reference": "refs/nanxiang-4.jpg",
+        "image_kind": "ai_generated",
+        "image_note": "依同店菜圖生成之示意，非實拍／非親吃。",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "savory_snack",
+        "lat": 31.2285341,
+        "lng": 121.4871017,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap node/2485006011 via Photon",
+        "coord_precision": "named_poi_address_tag_suspect",
+        "coord_note": "OSM name 南翔馒头店；座標在豫園商城一帶（與包內豫園路87相符），但 OSM addr 誤標愚园路85／靜安——僅採用座標＋店名"
+      },
+      {
+        "key": "ningbo",
+        "name": "寧波湯團店（豫園店）",
+        "name_en": "Ningbo Tangtuan",
+        "dish": "黑芝麻湯團",
+        "dish_en": "Black-sesame tangyuan",
+        "address": "豫春路9–11號",
+        "address_en": "9–11 Yuchun Rd",
+        "sources": [
+          "https://www.yuyuantm.com.cn/brand/cater.html",
+          "https://paper.xinmin.cn/html/xmwb/2024-01-20/4/177587.html",
+          "https://www.jfdaily.com/wx/detail.do?id=705972",
+          "https://m.gmw.cn/2024-02/20/content_1303665983.htm",
+          "https://www.bjnews.com.cn/detail/1772436068129883.html"
+        ],
+        "image_reference": "refs/ningbo-new-2.jpg",
+        "image_kind": "ai_generated",
+        "image_note": "依同店菜圖生成之示意，非實拍／非親吃。",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "sweet_tangyuan",
+        "lat": 31.2282736,
+        "lng": 121.4873455,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap node/5346226595 via Photon",
+        "coord_precision": "named_poi_no_housenumber",
+        "coord_note": "OSM name 宁波汤团店；street 九曲桥广场（豫園內）"
+      },
+      {
+        "key": "songhelou",
+        "name": "松鶴樓麵館（豫園店）",
+        "name_en": "Song He Lou (Yuyuan)",
+        "dish": "蘇式紅湯麵",
+        "dish_en": "Red-broth noodle soup",
+        "address": "百翎路5號",
+        "address_en": "5 Bailing Rd",
+        "sources": [
+          "https://www.yuyuantm.com.cn/brand/cater.html",
+          "https://you.ctrip.com/food/2/24569067.html",
+          "https://www.shanghai.gov.cn/lnshflqjzc/20250512/086d8ee9eac74ebda52e3a6fc55eb586.html",
+          "https://static.zhoudaosh.com/files/cnews/2019/20190314/1C91169A0C5F3DB6D97272BAEA738CEDAFD194EABA7BD655C35741351DE5997E/2.html"
+        ],
+        "image_reference": "revision-v2/songhelou-editorial-8.jpg",
+        "image_kind": "ai_generated",
+        "image_note": "依同店菜圖生成之示意，非實拍／非親吃。",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "noodle_soup",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": "未取得",
+        "coord_note": "百翎路5号；僅有街名 Bailing Road 中心點，無門牌／店名 POI"
+      },
+      {
+        "key": "laofandian",
+        "name": "上海老飯店",
+        "name_en": "Shanghai Lao Fandian",
+        "dish": "八寶鴨",
+        "dish_en": "Eight-treasure stuffed duck",
+        "address": "福佑路242號",
+        "address_en": "242 Fuyou Rd",
+        "sources": [
+          "https://www.yuyuantm.com.cn/brand/cater.html",
+          "https://zhuanti.mct.gov.cn/fymstslvxlzs/xl_detail/9680.html",
+          "https://www.thepaper.cn/newsDetail_forward_9058816"
+        ],
+        "image_reference": "refs/paper-3.jpg",
+        "image_kind": "ai_generated",
+        "image_note": "依同店菜圖生成之示意，非實拍／非親吃。",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "poultry_main",
+        "lat": 31.2294579,
+        "lng": 121.4864045,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap way/428202603 via Photon",
+        "coord_precision": "named_poi_no_housenumber",
+        "coord_note": "OSM name 上海老饭店 near Yuyuan；無福佑路242門牌"
+      },
+      {
+        "key": "lubolang",
+        "name": "綠波廊",
+        "name_en": "Lu Bo Lang",
+        "dish": "清炒手剝河蝦仁",
+        "dish_en": "Stir-fried river shrimp",
+        "address": "豫園路115號",
+        "address_en": "115 Yuyuan Rd",
+        "sources": [
+          "https://www.meet-in-shanghai.net/cn/food/green-wave-corridor-yuyuan-garden-road-589622/",
+          "https://you.ctrip.com/food/shanghai2/418669-dianping5245759.html",
+          "https://zhuanti.mct.gov.cn/fymstslvxlzs/xl_detail/9680.html"
+        ],
+        "image_reference": "revision-v2/lubolang-ctrip-20.jpg",
+        "image_kind": "ai_generated",
+        "image_note": "依同店菜圖生成之示意，非實拍／非親吃。",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "seafood_stir_fry",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": "未取得",
+        "coord_note": "豫园路115号；無可信 OSM POI"
+      }
+    ],
+    "images": {
+      "photos": [
+        "photos/nanxiang.jpg",
+        "photos/ningbo.jpg",
+        "photos/songhelou.jpg",
+        "photos/laofandian.jpg",
+        "photos/lubolang.jpg"
+      ],
+      "slides_en": [
+        "slides_en/01-cover.png",
+        "slides_en/02-nanxiang.png",
+        "slides_en/03-ningbo.png",
+        "slides_en/04-songhelou.png",
+        "slides_en/05-laofandian.png",
+        "slides_en/06-lubolang.png",
+        "slides_en/07-summary.png",
+        "slides_en/08-cta.png"
+      ],
+      "slides_zh": [
+        "slides_zh/01-cover.png",
+        "slides_zh/02-nanxiang.png",
+        "slides_zh/03-ningbo.png",
+        "slides_zh/04-songhelou.png",
+        "slides_zh/05-laofandian.png",
+        "slides_zh/06-lubolang.png",
+        "slides_zh/07-summary.png",
+        "slides_zh/08-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/savvysave_/p/DfcC2GKm22A/",
+      "threads": "https://www.threads.com/@savvysave_/post/DfcDLq7mzW7"
+    },
+    "sources": [
+      "https://you.ctrip.com/food/shanghai2/4926728.html",
+      "https://www.yuyuantm.com.cn/brand/cater.html",
+      "https://paper.xinmin.cn/html/xmwb/2024-01-20/4/177587.html",
+      "https://www.jfdaily.com/wx/detail.do?id=705972",
+      "https://m.gmw.cn/2024-02/20/content_1303665983.htm",
+      "https://www.bjnews.com.cn/detail/1772436068129883.html",
+      "https://you.ctrip.com/food/2/24569067.html",
+      "https://www.shanghai.gov.cn/lnshflqjzc/20250512/086d8ee9eac74ebda52e3a6fc55eb586.html",
+      "https://static.zhoudaosh.com/files/cnews/2019/20190314/1C91169A0C5F3DB6D97272BAEA738CEDAFD194EABA7BD655C35741351DE5997E/2.html",
+      "https://zhuanti.mct.gov.cn/fymstslvxlzs/xl_detail/9680.html",
+      "https://www.thepaper.cn/newsDetail_forward_9058816",
+      "https://www.meet-in-shanghai.net/cn/food/green-wave-corridor-yuyuan-garden-road-589622/",
+      "https://you.ctrip.com/food/shanghai2/418669-dianping5245759.html"
+    ],
+    "_source_files": {
+      "data": "data.json",
+      "data_en": "data-en.json",
+      "threads": "threads.txt",
+      "ig": "ig.txt",
+      "schema": "web.schema.json",
+      "evidence": "sources.md"
+    },
+    "content_version": "v2-variety-2026-11-07-evening",
+    "verification": {
+      "date": "2026-11-07",
+      "timezone": "Asia/Shanghai",
+      "method": "public_web_sources",
+      "live_open_status_checked": false,
+      "price_hours_omitted": true,
+      "source_schema_reference": "/workspace/shared/gtm/savvy-ready/2026-11-05/web.json",
+      "website_import_tested": false,
+      "coords_added": "2026-11-09"
+    },
+    "content_mix": {
+      "dumpling_or_sweet_stops": 2,
+      "noodle_soup_stops": 1,
+      "savory_main_stops": 2,
+      "note": "Noodles are a separate category explicitly requested by the user, not claimed non-starch."
+    },
+    "ig_url": "https://www.instagram.com/savvysave_/p/DfcC2GKm22A/",
+    "threads_url": "https://www.threads.com/@savvysave_/post/DfcDLq7mzW7",
+    "ig_status": "published",
+    "threads_status": "published",
+    "posted_at": "2026-11-07T19:14:00+08:00",
+    "station_geo": {
+      "lat": null,
+      "lng": null
+    },
+    "map": {
+      "line": "SH_14",
+      "at": [
+        760,
+        400
+      ]
+    }
+  },
+  {
+    "n": 3,
+    "station": "靜安寺",
+    "tagline": "鱔絲麵、豬肝麵、鍋貼到湯包",
+    "date": "2026-11-08",
+    "city": "shanghai",
+    "country": "China",
+    "slug": "shanghai-jingan-temple",
+    "language": "zh-Hant",
+    "station_en": "Jing'an Temple",
+    "metro_lines": [
+      "2",
+      "7",
+      "14"
+    ],
+    "shops": [
+      {
+        "key": "dusche",
+        "name": "毒蛇麵館（靜安寺店）",
+        "name_en": "Dushe Noodle House (Jing'an Temple)",
+        "dish": "響油鱔絲拌麵",
+        "dish_en": "Sizzling-oil shredded eel noodles",
+        "address": "上海市靜安區愚園路140號",
+        "address_en": "140 Yuyuan Rd, Jing'an District, Shanghai",
+        "sources": [
+          "https://sghexport.shobserver.com/html/baijiahao/2024/03/26/1282713.html",
+          "https://news.qq.com/rain/a/20240326A00PWL00",
+          "https://www.ctdsb.net/c1716_202502/2368384.html"
+        ],
+        "image_reference": "refs/dusche-eel-shobserver-2024.jpg",
+        "image_kind": null,
+        "image_note": "Reference collected; GenerateImage remake not run in this session.",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "noodle_mixed",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": "未取得",
+        "coord_note": "愚园路140号；僅街段 geocode，無店名 POI"
+      },
+      {
+        "key": "dongji",
+        "name": "董記廬春麵館",
+        "name_en": "Dongji Luchun Noodle House",
+        "dish": "醬爆豬肝麵",
+        "dish_en": "Stir-fried pork-liver noodles",
+        "address": "上海市靜安區北京西路1806號底層",
+        "address_en": "Ground floor, 1806 Beijing West Rd, Jing'an District, Shanghai",
+        "sources": [
+          "https://sghexport.shobserver.com/html/baijiahao/2024/03/26/1282713.html",
+          "https://news.qq.com/rain/a/20240326A00PWL00"
+        ],
+        "image_reference": "refs/dongji-liver-shobserver-2024.jpg",
+        "image_kind": null,
+        "image_note": "Reference collected; GenerateImage remake not run in this session.",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "noodle_mixed",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": "未取得",
+        "coord_note": "北京西路1806号底層；Photon 命中他店／他址，不採用"
+      },
+      {
+        "key": "huangayi",
+        "name": "黃阿姨鍋貼大王（萬航渡路店）",
+        "name_en": "Auntie Huang Guotie (Wanhangdu Rd)",
+        "dish": "鍋貼",
+        "dish_en": "Pan-fried potstickers",
+        "address": "上海市萬航渡路174號",
+        "address_en": "174 Wanhangdu Rd, Shanghai",
+        "sources": [
+          "https://rachelgouk.com/listings/auntie-huang-guotie/",
+          "https://tw.trip.com/restaurant/china/shanghai/detail/shafuxiaochishengjianguotiedawang-11143708/"
+        ],
+        "image_reference": "refs/huangayi-guotie.jpg",
+        "image_kind": null,
+        "image_note": "Reference collected; GenerateImage remake not run in this session.",
+        "price": null,
+        "price_source": null,
+        "hours": "05:00–20:30",
+        "exit_walk": null,
+        "category": "potsticker",
+        "lat": 31.2269307,
+        "lng": 121.4366121,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap node/13383081601 via Photon/Nominatim",
+        "coord_precision": "named_poi_no_housenumber",
+        "coord_note": "OSM name 黄阿姨锅贴大王 on 万航渡路；無門牌174"
+      },
+      {
+        "key": "jiajia",
+        "name": "佳家湯包（晶品店）",
+        "name_en": "Jiajia Tangbao (Crystal Galleria)",
+        "dish": "蟹黃湯包",
+        "dish_en": "Crab-roe soup dumplings",
+        "address": "上海市靜安區愚園路68號晶品B2／LG2",
+        "address_en": "Crystal Galleria B2/LG2, 68 Yuyuan Rd, Jing'an District, Shanghai",
+        "sources": [
+          "https://hk.trip.com/moments/poi-city-33329369/",
+          "https://you.ctrip.com/food/2/16548886.html",
+          "https://nicklee.tw/2580/jiajia-tangbao/"
+        ],
+        "image_reference": "refs/jiajia-steamer.jpg",
+        "image_kind": null,
+        "image_note": "Reference collected; GenerateImage remake not run in this session.",
+        "price": null,
+        "price_source": null,
+        "hours": "10:00–21:30",
+        "exit_walk": null,
+        "category": "soup_dumpling",
+        "lat": 31.2272133,
+        "lng": 121.4416405,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap node/4572824590 via Photon",
+        "coord_precision": "named_poi_address_mismatch",
+        "coord_note": "OSM name 佳家汤包；標 愚园路118/B2，包內為愚园路68晶品B2。座標在靜安寺／愚园路一帶，門牌不一致，僅作近似 POI"
+      },
+      {
+        "key": "huxi",
+        "name": "滬西老弄堂麵館（靜安寺店）",
+        "name_en": "Huxi Laonongtang Noodle House (Jing'an Temple)",
+        "dish": "蔥油拌麵",
+        "dish_en": "Scallion-oil noodles",
+        "address": "上海市靜安區北京西路1738號",
+        "address_en": "1738 Beijing West Rd, Jing'an District, Shanghai",
+        "sources": [
+          "https://sghexport.shobserver.com/html/baijiahao/2024/03/26/1282713.html",
+          "https://news.qq.com/rain/a/20240326A00PWL00"
+        ],
+        "image_reference": "refs/huxi-congyou-ref1.jpg",
+        "image_kind": null,
+        "image_note": "Reference collected; GenerateImage remake not run in this session. Last-resort fifth shop.",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "noodle_mixed",
+        "lat": 31.2269684,
+        "lng": 121.438461,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap node/12566949648 via Photon/Nominatim",
+        "coord_precision": "exact_poi",
+        "coord_note": "OSM name 沪西老弄堂面馆 + 1738 北京西路"
+      }
+    ],
+    "images": {
+      "photos": [
+        "photos/dusche.jpg",
+        "photos/dongji.jpg",
+        "photos/huangayi.jpg",
+        "photos/jiajia.jpg",
+        "photos/huxi.jpg"
+      ],
+      "slides_en": [
+        "slides_en/01-cover.png",
+        "slides_en/02-dusche.png",
+        "slides_en/03-dongji.png",
+        "slides_en/04-huangayi.png",
+        "slides_en/05-jiajia.png",
+        "slides_en/06-huxi.png",
+        "slides_en/07-summary.png",
+        "slides_en/08-cta.png"
+      ],
+      "slides_zh": [
+        "slides_zh/01-cover.png",
+        "slides_zh/02-dusche.png",
+        "slides_zh/03-dongji.png",
+        "slides_zh/04-huangayi.png",
+        "slides_zh/05-jiajia.png",
+        "slides_zh/06-huxi.png",
+        "slides_zh/07-summary.png",
+        "slides_zh/08-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/savvysave_/p/Dfenktfm82b/",
+      "threads": "https://www.threads.com/@savvysave_/post/Dfen6ILGzjh",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://sghexport.shobserver.com/html/baijiahao/2024/03/26/1282713.html",
+      "https://news.qq.com/rain/a/20240326A00PWL00",
+      "https://www.ctdsb.net/c1716_202502/2368384.html",
+      "https://m.ly.com/trip/detail/2457519",
+      "https://www.wingontravel.com/discovery/restaurant-143190727",
+      "https://rachelgouk.com/listings/auntie-huang-guotie/",
+      "https://rachelgouk.com/where-to-eat-guotie-shengjian-bao-in-shanghai/",
+      "https://tw.trip.com/restaurant/china/shanghai/detail/shafuxiaochishengjianguotiedawang-11143708/",
+      "https://unlistedchina.com/shanghai/spot/huang-ayi-potstickers",
+      "https://hk.trip.com/moments/poi-city-33329369/",
+      "https://you.ctrip.com/food/2/16548886.html",
+      "https://shanghai-zine.com/listings/16653/",
+      "https://nicklee.tw/2580/jiajia-tangbao/",
+      "https://www.amap.com/place/B0FFHOCSCB"
+    ],
+    "_source_files": {
+      "data": "data.json",
+      "data_en": "data-en.json",
+      "threads": "threads.txt",
+      "ig": "ig.txt",
+      "evidence": "sources.md"
+    },
+    "content_version": "jingan-temple-2026-11-08-draft",
+    "verification": {
+      "date": "2026-11-08",
+      "timezone": "Asia/Shanghai",
+      "method": "public_web_sources",
+      "live_open_status_checked": false,
+      "price_hours_omitted": false,
+      "price_omitted": true,
+      "hours_included": [
+        "huangayi 05:00-20:30",
+        "jiajia 10:00-21:30"
+      ],
+      "website_import_tested": false,
+      "coords_added": "2026-11-09",
+      "line14_already_present": true
+    },
+    "station_geo": {
+      "lat": null,
+      "lng": null
+    },
+    "map": {
+      "line": "SH_14",
+      "at": [
+        220,
+        420
+      ]
+    }
+  },
+  {
+    "n": 4,
+    "station": "黃陂南路",
+    "tagline": "麻醬麵、糟雞到麻婆豆腐",
+    "date": "2026-11-09",
+    "city": "shanghai",
+    "country": "China",
+    "slug": "shanghai-south-huangpi-road",
+    "language": "zh-Hant",
+    "station_en": "South Huangpi Rd",
+    "station_official": "一大會址·黃陂南路",
+    "metro_lines": [
+      "1",
+      "14"
+    ],
+    "shops": [
+      {
+        "key": "weixiang",
+        "name": "味香齋（雁蕩路店）",
+        "name_en": "Weixiangzhai (Yandang Rd)",
+        "dish": "麻醬麵",
+        "dish_en": "Sesame-paste noodles",
+        "address": "上海市黃浦區雁蕩路14號（近淮海中路）",
+        "address_en": "14 Yandang Rd (near Huaihai Middle Rd), Huangpu District, Shanghai",
+        "sources": [
+          "https://www.163.com/dy/article/KF6NV6650514IGIT.html",
+          "https://www.cnpp100.com/shop/18292.html",
+          "https://www.thepaper.cn/newsDetail_forward_22658379"
+        ],
+        "image_reference": "refs/REF-weixiang.jpg",
+        "image_kind": "generated_remake",
+        "price": "14元人民幣／碗",
+        "price_source": "https://www.shobserver.cn/sgh/detail?id=4027519",
+        "hours": null,
+        "exit_walk": null,
+        "category": "noodle_mixed",
+        "lat": 31.2229246,
+        "lng": 121.4653806,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap node/5056455522 via Nominatim",
+        "coord_precision": "exact_poi",
+        "coord_note": "OSM name 味香斋 + addr 14 雁荡路"
+      },
+      {
+        "key": "chunyuan",
+        "name": "春園·四如春（復興公園店）",
+        "name_en": "Chunyuan Siruchun (Fuxing Park)",
+        "dish": "牛肉煎包",
+        "dish_en": "Pan-fried beef buns",
+        "address": "上海市黃浦區重慶南路183號（復興公園對面）",
+        "address_en": "183 Chongqing South Rd (opposite Fuxing Park), Huangpu District, Shanghai",
+        "sources": [
+          "https://www.jfdaily.com/sgh/detail?id=1720876",
+          "https://you.ctrip.com/food/2/7004592.html"
+        ],
+        "image_reference": "refs/REF-chunyuan.jpg",
+        "image_kind": "generated_remake",
+        "price": "5元人民幣／只",
+        "price_source": "https://m.thepaper.cn/newsDetail_forward_32399528",
+        "hours": null,
+        "exit_walk": null,
+        "category": "pan_fried_bun",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": "未取得",
+        "coord_note": "重庆南路183号；Nominatim/Photon/Overpass 皆無門牌或店名 POI，不寫街段近似值以免誤導"
+      },
+      {
+        "key": "laorenhe",
+        "name": "老人和（淮海中路店）",
+        "name_en": "Lao Ren He (Huaihai Middle Rd)",
+        "dish": "糟雞",
+        "dish_en": "Zao chicken",
+        "address": "上海市黃浦區淮海中路558號",
+        "address_en": "558 Huaihai Middle Rd, Huangpu District, Shanghai",
+        "sources": [
+          "https://news.qq.com/rain/a/20250811A079BA00",
+          "https://news.qq.com/rain/a/20250817A02C6600",
+          "https://www.sohu.com/a/1060085669_121123850"
+        ],
+        "image_reference": "refs/REF-laorenhe.jpg",
+        "image_kind": "generated_remake",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "benbang_zao",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": "未取得",
+        "coord_note": "淮海中路558號（與老大昌同棟）；OSM 無老人和／老大昌門牌 POI"
+      },
+      {
+        "key": "jieerjing",
+        "name": "潔而精川菜館（雁蕩路店）",
+        "name_en": "Jie Er Jing Sichuan Restaurant",
+        "dish": "麻婆豆腐",
+        "dish_en": "Mapo tofu",
+        "address": "上海市黃浦區雁蕩路82號（近南昌路）",
+        "address_en": "82 Yandang Rd (near Nanchang Rd), Huangpu District, Shanghai",
+        "sources": [
+          "https://c.m.163.com/news/a/KNRKQIJQ0514IGIT.html",
+          "https://c.m.163.com/news/a/KS5KJQ6E0514IGIT.html",
+          "https://news.qq.com/rain/a/20250817A02C6600",
+          "https://you.ctrip.com/food/2/4994201.html"
+        ],
+        "image_reference": "refs/REF-jieerjing.jpg",
+        "image_kind": "generated_remake",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "haipai_sichuan",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": "未取得",
+        "coord_note": "雁荡路82号；僅有雁荡路街段 geocode，無門牌／店名 POI；街段不寫入 lat/lng"
+      },
+      {
+        "key": "guangmingcun",
+        "name": "光明邨大酒家",
+        "name_en": "Guangmingcun Restaurant",
+        "dish": "鮮肉月餅",
+        "dish_en": "Fresh-pork mooncakes",
+        "address": "上海市黃浦區淮海中路588號",
+        "address_en": "588 Huaihai Middle Rd, Huangpu District, Shanghai",
+        "sources": [
+          "https://www.shobserver.com/sgh/detail?id=4059799",
+          "https://news.qq.com/rain/a/20250922A00RFC00",
+          "https://www.thepaper.cn/newsDetail_forward_23417284"
+        ],
+        "image_reference": "refs/REF-guangmingcun.jpg",
+        "image_kind": "generated_remake",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "pastry",
+        "lat": 31.2223979,
+        "lng": 121.463163,
+        "coord_datum": "WGS-84",
+        "coord_source": "OpenStreetMap node/4580624892 via Photon",
+        "coord_precision": "named_poi_no_housenumber",
+        "coord_note": "OSM name 光明邨大酒家 on 淮海中路；無門牌588標註，與包內地址同街名"
+      }
+    ],
+    "images": {
+      "photos": [
+        "photos/weixiang.jpg",
+        "photos/chunyuan.jpg",
+        "photos/laorenhe.jpg",
+        "photos/jieerjing.jpg",
+        "photos/guangmingcun.jpg"
+      ],
+      "slides_en": [
+        "slides_en/01-cover.png",
+        "slides_en/02-weixiang.png",
+        "slides_en/03-chunyuan.png",
+        "slides_en/04-laorenhe.png",
+        "slides_en/05-jieerjing.png",
+        "slides_en/06-guangmingcun.png",
+        "slides_en/07-summary.png",
+        "slides_en/08-cta.png"
+      ],
+      "slides_zh": [
+        "slides_zh/01-cover.png",
+        "slides_zh/02-weixiang.png",
+        "slides_zh/03-chunyuan.png",
+        "slides_zh/04-laorenhe.png",
+        "slides_zh/05-jieerjing.png",
+        "slides_zh/06-guangmingcun.png",
+        "slides_zh/07-summary.png",
+        "slides_zh/08-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/p/DfhKbw_G6WX/",
+      "threads": "https://www.threads.com/@savvysave_/post/DfhK4TFGwQT",
+      "xiaohongshu": null
+    },
+    "sources": [
+      "https://www.163.com/dy/article/KF6NV6650514IGIT.html",
+      "https://www.cnpp100.com/shop/18292.html",
+      "https://www.thepaper.cn/newsDetail_forward_22658379",
+      "https://www.shobserver.cn/sgh/detail?id=4027519",
+      "https://www.jfdaily.com/sgh/detail?id=1720876",
+      "https://you.ctrip.com/food/2/7004592.html",
+      "https://m.thepaper.cn/newsDetail_forward_32399528",
+      "https://news.qq.com/rain/a/20250811A079BA00",
+      "https://news.qq.com/rain/a/20250817A02C6600",
+      "https://www.sohu.com/a/1060085669_121123850",
+      "https://c.m.163.com/news/a/KNRKQIJQ0514IGIT.html",
+      "https://c.m.163.com/news/a/KS5KJQ6E0514IGIT.html",
+      "https://you.ctrip.com/food/2/4994201.html",
+      "https://www.shobserver.com/sgh/detail?id=4059799",
+      "https://news.qq.com/rain/a/20250922A00RFC00",
+      "https://www.thepaper.cn/newsDetail_forward_23417284",
+      "https://m.thepaper.cn/newsDetail_forward_30458815",
+      "https://www.metroman.cn/cities/shanghai/stations/site-of-the-first-cpc-national-congress-south-huangpi-road/guide"
+    ],
+    "_source_files": {
+      "data": "data.json",
+      "data_en": "data-en.json",
+      "threads": "threads.txt",
+      "ig": "ig.txt",
+      "evidence": "sources.md"
+    },
+    "content_version": "south-huangpi-road-2026-11-09-v2-mains",
+    "verification": {
+      "date": "2026-11-09",
+      "timezone": "Asia/Shanghai",
+      "method": "public_web_sources",
+      "live_open_status_checked": false,
+      "price_omitted": false,
+      "hours_included": [],
+      "website_import_tested": false,
+      "prices_included": [
+        "weixiang 14 RMB",
+        "chunyuan 5 RMB each"
+      ],
+      "coords_added": "2026-11-09",
+      "line14_added": true
+    },
+    "station_geo": {
+      "lat": null,
+      "lng": null
+    },
+    "ig_url": "https://www.instagram.com/p/DfhKbw_G6WX/",
+    "threads_url": "https://www.threads.com/@savvysave_/post/DfhK4TFGwQT",
+    "ig_status": "published",
+    "threads_status": "published",
+    "posted_at": "2026-11-09T18:54:00+08:00",
+    "map": {
+      "line": "SH_14",
+      "at": [
+        520,
+        430
+      ]
+    }
+  },
+  {
+    "n": 6,
+    "station": "交通大學",
+    "tagline": "蟹粉、蔥油拌麵到紅燒肉",
+    "date": "2026-11-11",
+    "city": "shanghai",
+    "country": "China",
+    "slug": "shanghai-jiaotong-university",
+    "language": "zh-Hant",
+    "station_en": "Jiaotong University",
+    "station_official": "交通大學",
+    "metro_lines": [
+      "10",
+      "11"
+    ],
+    "station_geo": {
+      "lat": null,
+      "lng": null
+    },
+    "tagline_en": "Crab, scallion noodles & braised pork",
+    "shops": [
+      {
+        "key": "laojishi",
+        "name": "老吉士酒家（天平路店）",
+        "name_en": "Jesse Restaurant (Tianping Rd)",
+        "dish": "蟹粉炒粉皮",
+        "dish_en": "Crab-roe glass noodles",
+        "address": "上海市徐匯區天平路41號",
+        "address_en": "41 Tianping Rd, Xuhui District, Shanghai",
+        "sources": [
+          "https://gs.ctrip.com/html5/you/foods/fooddetail/120094/4926854.html",
+          "https://vocus.cc/article/691596bbfd897800016a8354",
+          "https://puppledream.tistory.com/237",
+          "https://touch.go.qunar.com/poi/3165816"
+        ],
+        "image_reference": "refs/REF-laojishi.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": "188元人民幣",
+        "price_source": "2025-11-21 vocus 同店用餐文＋菜單照；2025-02-08 tistory 同價 https://vocus.cc/article/691596bbfd897800016a8354",
+        "hours": null,
+        "exit_walk": null,
+        "category": "benbang",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      },
+      {
+        "key": "hanxiang",
+        "name": "瀚祥麵館（武康大樓店）",
+        "name_en": "Hanxiang Noodles (Wukang Mansion)",
+        "dish": "蔥油拌麵",
+        "dish_en": "Scallion oil noodles",
+        "address": "上海市徐匯區淮海中路1861號",
+        "address_en": "1861 Huaihai Middle Rd, Xuhui District, Shanghai",
+        "sources": [
+          "https://hk.trip.com/moments/theme/poi-city-148411516-restaurant-993134/",
+          "https://m.ly.com/trip/detail/2626904",
+          "https://m.ly.com/trip/detail/3226643"
+        ],
+        "image_reference": "refs/REF-hanxiang.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "noodles",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      },
+      {
+        "key": "dongxin",
+        "name": "咚馨酒家（武康路店）",
+        "name_en": "Dongxin Restaurant (Wukang Rd)",
+        "dish": "菌菇紅燒肉",
+        "dish_en": "Braised pork with mushrooms",
+        "address": "上海市徐匯區武康路98號",
+        "address_en": "98 Wukang Rd, Xuhui District, Shanghai",
+        "sources": [
+          "https://note.com/h_l380/n/n932bb2ee5252",
+          "https://www.163.com/dy/article/KV50GSEJ0514A42S.html",
+          "https://you.ctrip.com/food/shanghai2/4995500.html",
+          "https://www.thepaper.cn/newsDetail_forward_12703237"
+        ],
+        "image_reference": "refs/REF-dongxin.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": "99元人民幣",
+        "price_source": "2026-02-08 note 上海市ご飯情報 同店菜單照 https://note.com/h_l380/n/n932bb2ee5252",
+        "hours": "9:30–21:30",
+        "exit_walk": null,
+        "category": "benbang",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      },
+      {
+        "key": "xingyuan",
+        "name": "興圓苑·私房菜（番禺路店）",
+        "name_en": "Xingyuanyuan Private Kitchen (Panyu Rd)",
+        "dish": "松鼠鱸魚",
+        "dish_en": "Squirrel-shaped sea bass",
+        "address": "上海市長寧區番禺路405號",
+        "address_en": "405 Panyu Rd, Changning District, Shanghai",
+        "sources": [
+          "https://m.ly.com/trip/detail/3010610",
+          "https://m.ly.com/trip/detail/2898201"
+        ],
+        "image_reference": "refs/REF-xingyuan.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "benbang_private_kitchen",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      },
+      {
+        "key": "coffeetree",
+        "name": "Coffee Tree（武康庭）",
+        "name_en": "Coffee Tree (Ferguson Lane)",
+        "dish": "香烤羊排",
+        "dish_en": "Roast lamb chops",
+        "address": "上海市徐匯區武康路376號武康庭內",
+        "address_en": "Inside Ferguson Lane, 376 Wukang Rd, Xuhui District, Shanghai",
+        "sources": [
+          "https://www.thepaper.cn/newsDetail_forward_12703237",
+          "https://m.ly.com/trip/detail/3205924",
+          "https://hk.trip.com/moments/poi-coffee-tree-16952178/"
+        ],
+        "image_reference": "refs/REF-coffeetree.jpg",
+        "image_kind": "generated_remake_pending",
+        "price": null,
+        "price_source": null,
+        "hours": null,
+        "exit_walk": null,
+        "category": "western",
+        "lat": null,
+        "lng": null,
+        "coord_datum": null,
+        "coord_source": null,
+        "coord_precision": null
+      }
+    ],
+    "images": {
+      "photos": [
+        "photos/laojishi.jpg",
+        "photos/hanxiang.jpg",
+        "photos/dongxin.jpg",
+        "photos/xingyuan.jpg",
+        "photos/coffeetree.jpg"
+      ],
+      "slides": [
+        "slides_zh/01-cover.png",
+        "slides_zh/02-laojishi.png",
+        "slides_zh/03-hanxiang.png",
+        "slides_zh/04-dongxin.png",
+        "slides_zh/05-xingyuan.png",
+        "slides_zh/06-coffeetree.png",
+        "slides_zh/07-summary.png",
+        "slides_zh/08-cta.png"
+      ],
+      "slides_en": [
+        "slides_en/01-cover.png",
+        "slides_en/02-laojishi.png",
+        "slides_en/03-hanxiang.png",
+        "slides_en/04-dongxin.png",
+        "slides_en/05-xingyuan.png",
+        "slides_en/06-coffeetree.png",
+        "slides_en/07-summary.png",
+        "slides_en/08-cta.png"
+      ]
+    },
+    "posts": {
+      "instagram": "https://www.instagram.com/p/DfmVWTcG9TG/",
+      "threads": "https://www.threads.com/@savvysave_/post/DfmWtzJG38-",
+      "xiaohongshu": null
+    },
+    "ig_status": null,
+    "threads_status": null,
+    "posted_at": null,
+    "sources": [
+      "https://gs.ctrip.com/html5/you/foods/fooddetail/120094/4926854.html",
+      "https://vocus.cc/article/691596bbfd897800016a8354",
+      "https://puppledream.tistory.com/237",
+      "https://touch.go.qunar.com/poi/3165816",
+      "https://hk.trip.com/moments/theme/poi-city-148411516-restaurant-993134/",
+      "https://m.ly.com/trip/detail/2626904",
+      "https://m.ly.com/trip/detail/3226643",
+      "https://note.com/h_l380/n/n932bb2ee5252",
+      "https://www.163.com/dy/article/KV50GSEJ0514A42S.html",
+      "https://you.ctrip.com/food/shanghai2/4995500.html",
+      "https://www.thepaper.cn/newsDetail_forward_12703237",
+      "https://m.ly.com/trip/detail/3010610",
+      "https://m.ly.com/trip/detail/2898201",
+      "https://m.ly.com/trip/detail/3205924",
+      "https://hk.trip.com/moments/poi-coffee-tree-16952178/",
+      "https://www.wikidata.org/wiki/Q985988"
+    ],
+    "_source_files": {
+      "captions": [
+        "ig.txt",
+        "threads.txt"
+      ],
+      "data": [
+        "data.json",
+        "data-en.json"
+      ],
+      "sources": "sources.md"
+    },
+    "map": {
+      "line": "SH_10",
+      "at": [
+        140,
+        600
+      ]
+    }
   }
 ]
