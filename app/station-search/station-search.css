@@ -345,7 +345,7 @@
 
 @media (max-width: 800px) {
   .hero-search-col {
-    margin-top: 28px;
+    margin-top: 8px;
   }
 
   .hero-search-col .map-stage {
@@ -353,7 +353,15 @@
   }
 
   .ss-hero {
-    margin-bottom: 16px;
+    margin-bottom: 4px;
+  }
+
+  .ss-hero-label.strip-label {
+    margin-bottom: 4px;
+  }
+
+  .ss-input-row [data-slot="combobox-input"] {
+    min-height: 44px;
   }
 
   .ss-hero [data-slot="combobox-content"] {
