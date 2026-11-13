@@ -1,4 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
+import { getShanghaiFoodStations } from "../../lib/metro";
+import { buildSearchIndex, filterStations, resultCountText } from "../../lib/station-search.mjs";
 import { waitForCardOpen } from "./helpers";
 
 const WIDTHS = [390, 1280] as const;
@@ -177,7 +179,9 @@ for (const width of WIDTHS) {
     await expect(name).not.toHaveText(first);
     await input.press("ArrowUp");
     await expect(name).toHaveText(first);
-    await expect(page.getByTestId("station-search-count")).toHaveText("4 站符合「麵」");
+    const noodleStations = filterStations(buildSearchIndex(getShanghaiFoodStations()), { query: "麵" });
+    await expect(page.getByTestId("station-search-count")).toHaveText(resultCountText(noodleStations.length, "麵"));
+    await expect(page.locator("[data-slot=combobox-item]:not([hidden])")).toHaveCount(noodleStations.length);
     await expect(page.locator("[data-slot=combobox-item]:not([hidden])").filter({ hasText: "黃陂南路" })).toBeVisible();
 
     await input.fill("沒有這家zzzz");

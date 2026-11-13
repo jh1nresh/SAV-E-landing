@@ -698,5 +698,40 @@
     },
     "notes": "r1 2026-11-11 DESIGN: map.at [140,600] is an exact segment endpoint on SH_10 and SH_11 (snap 0). SH_10 now enters from the left edge through this station instead of rising from the bottom edge (real Line 10 runs west from Xintiandi to Jiaotong Univ and Hongqiao); SH_10 between 豫園 [760,400] and the top edge is unchanged, so 豫園 and 南京東路 keep snap 0. SH_11 is new (#871C2B, en.wikipedia Module:Adjacent_stations/Shanghai_Metro). Schematic, not geographic.",
     "geo_precision_gtm": "station"
+  },
+  {
+    "n": 7,
+    "slug": "shanghai-dapuqiao",
+    "station": "打浦橋",
+    "map": {
+      "line": "SH_9",
+      "at": [
+        470,
+        570
+      ]
+    },
+    "id": "shanghai-dapuqiao",
+    "city": "shanghai",
+    "order": 7,
+    "name_en": "Dapuqiao",
+    "name_zh": "打浦橋",
+    "lines": [
+      "9"
+    ],
+    "lines_gtm": [
+      "9"
+    ],
+    "lat": 31.2075,
+    "lng": 121.46388889,
+    "coord_system": "WGS-84",
+    "source": "content/metro/daily/shanghai/2026-11-12/web.json station_geo (Wikidata Q5936524 P625; P81 Line 9 Q1152370)",
+    "verified": {
+      "map_at": false,
+      "geo": true,
+      "lines": true,
+      "geo_basis": "GTM: Wikidata P625, station-level, not surveyed"
+    },
+    "notes": "r1 2026-11-13: map.at [470,570] is an exact segment endpoint on new SH_9 (snap 0). Derived from the 交通大學 [140,600] @ 31.2039,121.43 to 黃陂南路 [520,430] @ 31.2246,121.4687 schematic scale applied to Wikidata Q5936524 P625 31.2075,121.46388889 (projected 472.8,570.4), then rounded to the nearest 10. SH_9 (#87CAED, en.wikipedia Module:Adjacent_stations/Shanghai_Metro) runs east-west south of SH_14; existing line paths are unchanged so earlier stations keep snap 0. Schematic, not geographic. DESIGN must review map.at. The published pack and Wikidata P81 list Line 9 only (Q1152370); the Line 9/13 interchange is the next station, Madang Road.",
+    "geo_precision_gtm": "station"
   }
 ]
