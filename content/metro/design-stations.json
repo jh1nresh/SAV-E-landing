@@ -259,6 +259,10 @@
         234
       ],
       "label": "right",
+      "labelOffset": [
+        0,
+        -24
+      ],
       "posterLabelOffset": [
         -56,
         40

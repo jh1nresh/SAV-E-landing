@@ -199,7 +199,7 @@ test('Taipei stations 1-16 keep their identity and schematic points', () => {
   assert.equal(taipeiPublished.length, 23);
   assert.deepEqual(stations.filter(station => station.n >= 18).map(station => [station.n, station.slug, station.station, station.map.at, station.city]), TAIPEI_18_23);
   const zhongxiao = stations.find(station => station.slug === 'zhongxiao-fuxing');
-  assert.equal(zhongxiao.map.labelOffset, undefined);
+  assert.deepEqual(zhongxiao.map.labelOffset, [0, -24]);
   assert.deepEqual(zhongxiao.map.posterLabelOffset, [-56, 40]);
   assert.ok(stations.every(s => s.city === 'taipei'));
   assert.equal(JSON.stringify(stations).includes('31.2303'), false);
@@ -241,7 +241,7 @@ test('stations are keyed by city and n, and missing geo coordinates stay pending
     [22, 'xiangshan', '象山', { line: 'L_red', at: [379, 461], label: 'right' }],
     [23, 'tamsui', '淡水', { line: 'L_red', at: [-30, -150], label: 'right' }],
   ]);
-  assert.equal(taipeiDesign.find(entry => entry.slug === 'zhongxiao-fuxing').map.labelOffset, undefined);
+  assert.deepEqual(taipeiDesign.find(entry => entry.slug === 'zhongxiao-fuxing').map.labelOffset, [0, -24]);
   assert.deepEqual(taipeiDesign.find(entry => entry.slug === 'zhongxiao-fuxing').map.posterLabelOffset, [-56, 40]);
   const shanghai = designCatalog.filter(entry => entry.city === 'shanghai');
   assert.deepEqual(shanghai.map(entry => [entry.n, entry.slug, entry.datum, entry.geoPin, entry.map.at]), [
