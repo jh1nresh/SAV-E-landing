@@ -698,5 +698,32 @@
     },
     "notes": "r1 2026-11-11 DESIGN: map.at [140,600] is an exact segment endpoint on SH_10 and SH_11 (snap 0). SH_10 now enters from the left edge through this station instead of rising from the bottom edge (real Line 10 runs west from Xintiandi to Jiaotong Univ and Hongqiao); SH_10 between 豫園 [760,400] and the top edge is unchanged, so 豫園 and 南京東路 keep snap 0. SH_11 is new (#871C2B, en.wikipedia Module:Adjacent_stations/Shanghai_Metro). Schematic, not geographic.",
     "geo_precision_gtm": "station"
+  },
+  {
+    "n": 18,
+    "slug": "taipei-101-world-trade-center",
+    "station": "台北101／世貿",
+    "city": "taipei",
+    "map": {
+      "line": "L_red",
+      "at": [
+        373,
+        430
+      ],
+      "label": "right"
+    }
+  },
+  {
+    "n": 19,
+    "slug": "taipei-main-station",
+    "station": "台北車站",
+    "city": "taipei",
+    "map": {
+      "line": "L_red",
+      "at": [
+        186,
+        200
+      ]
+    }
   }
 ]

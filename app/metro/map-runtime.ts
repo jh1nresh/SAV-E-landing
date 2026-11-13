@@ -1,4 +1,4 @@
-import { stationLabelPosition, layoutPhotoPins } from "./map-label";
+import { stationLabelPosition, layoutPhotoPins, nudgeBoxClear, type Box } from "./map-label";
 import {
   PRICE_PENDING_LABEL,
   countBadge,
@@ -278,7 +278,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const nw = !soon && stationIsNew(storesOf(s.id), clock);
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
       const { x: lx, y: ly, anchor } = stationLabelPosition(s.mapPos);
-      caps += `<text x="${lx}" y="${ly}" text-anchor="${anchor}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
+      caps += `<text data-lx="${lx}" data-ly="${ly}" x="${lx}" y="${ly}" text-anchor="${anchor}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
       el.type = "button";
       el.className = `pin ${soon ? "soon " : ""}${nw ? "new " : ""}${!soon && !img ? "nophoto" : ""}${!soon && !list.length ? " content-only" : ""}`;
@@ -565,13 +565,26 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const cy = cam.y.x;
     const worldTransform = `translate3d(${W / 2 - (cx - WB.x) * s}px,${H / 2 - (cy - WB.y) * s}px,0) scale(${s / R})`;
     world.style.transform = worldTransform;
-    const labels = [...(stdots?.querySelectorAll<SVGGraphicsElement>("text") ?? [])].map(label => {
+    const labelEls = [...(stdots?.querySelectorAll<SVGGraphicsElement>("text") ?? [])];
+    for (const label of labelEls) {
+      label.setAttribute("x", label.dataset.lx ?? label.getAttribute("x") ?? "0");
+      label.setAttribute("y", label.dataset.ly ?? label.getAttribute("y") ?? "0");
+    }
+    const pad = (box: Box, n: number): Box => ({ x: box.x - n, y: box.y - n, width: box.width + n * 2, height: box.height + n * 2 });
+    const vpRect = vp.getBoundingClientRect();
+    const labels = labelEls.map(label => {
       const b = label.getBBox();
       return { x: (b.x - cx) * s + W / 2 - 3, y: (b.y - cy) * s + H / 2 - 3,
         width: b.width * s + 6, height: b.height * s + 6 };
     });
+    const screenBox = (el: Element): Box => {
+      const b = el.getBoundingClientRect();
+      return { x: b.left - vpRect.left, y: b.top - vpRect.top, width: b.width, height: b.height };
+    };
+    const hud = [...root.querySelectorAll<HTMLElement>(".cart, #stampB")].map(screenBox).filter(box => box.width > 0 && box.height > 0);
+    const controls = [...root.querySelectorAll<HTMLElement>(".mapzoom button")].map(screenBox).filter(box => box.width > 0 && box.height > 0);
     const positions = layoutPhotoPins(pins.map(p => ({ id: p.id, x: (p.x - cx) * s + W / 2,
-      y: (p.y - cy) * s + H / 2, diameter: 44 + 16 * p.b.x })), labels, W, H);
+      y: (p.y - cy) * s + H / 2, diameter: 44 + 16 * p.b.x })), [...labels.map(box => pad(box, 12)), ...hud.map(box => pad(box, 4)), ...controls.map(box => pad(box, 4))], W, H);
     pins.forEach((p) => {
       const sx = (p.x - cx) * s + W / 2;
       const sy = (p.y - cy) * s + H / 2;
@@ -591,6 +604,30 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       p.inn.style.opacity = reduce ? String(clamp01(pop * 3)) : "1";
       p.lab.style.transform = `translateX(-50%) scale(${reduce ? (b > 0.5 ? 1 : 0) : Math.max(0, b).toFixed(3)})`;
     });
+    // Photo search uses schematic boxes. A second pass uses the painted rects
+    // so a label that still sits on the caption or a photo steps clear.
+    const overlaps = (a: Box, b: Box) => Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x) > 1
+      && Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y) > 1;
+    for (let pass = 0; pass < 4; pass++) {
+      const painted = labelEls.map(label => screenBox(label));
+      const photos = pins.map(p => screenBox(p.el.querySelector(".ph")!)).filter(box => box.width > 1 && box.height > 1);
+      const obstacles = [...hud.map(box => pad(box, 2)), ...photos];
+      let moved = false;
+      labelEls.forEach((label, index) => {
+        const box = painted[index];
+        if (!box || !obstacles.some(other => overlaps(box, other))) return;
+        const nudge = nudgeBoxClear(box, [...obstacles, ...painted.filter((_, other) => other !== index)], W, H);
+        if (!nudge.dx && !nudge.dy) return;
+        const lx = Number(label.dataset.lx);
+        const ly = Number(label.dataset.ly);
+        const x = Number(label.getAttribute("x"));
+        const y = Number(label.getAttribute("y"));
+        label.setAttribute("x", (Number.isFinite(x) ? x : lx) + nudge.dx / s + "");
+        label.setAttribute("y", (Number.isFinite(y) ? y : ly) + nudge.dy / s + "");
+        moved = true;
+      });
+      if (!moved) break;
+    }
     const zoomed = cam.s.t > s0 * 1.05;
     const panned = Math.hypot(cam.x.t - home.x, cam.y.t - home.y) > PAN_SLOP;
     resetBtn.classList.toggle("on", zoomed || panned);
