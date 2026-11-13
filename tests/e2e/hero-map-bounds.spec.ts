@@ -52,6 +52,8 @@ for (const [width, height] of sizes) {
   });
 
   test(`N2 ${width}: every shop stays inside the frame`, async ({ page }) => {
+    // WebKit walks every station and shop. 23 Taipei stations exceed the 60s default at 1280.
+    test.setTimeout(120_000);
     await page.setViewportSize({ width, height });
     await page.goto("/?reduce=1&clock=2026-10-26");
     await page.waitForFunction(() => !!window.__savvyMap);
