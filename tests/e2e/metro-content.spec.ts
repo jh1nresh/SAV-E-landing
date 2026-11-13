@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { mergeFoodStations, loadDesignStations } from '../../scripts/metro-content.mjs';
+import { readFileSync } from 'node:fs';
+import { mergeFoodStations, loadDesignStations, loadDailyStations } from '../../scripts/metro-content.mjs';
 
 type Shop = {
   name?: string | null;
@@ -28,17 +28,8 @@ const shopFields = {
   hours: '營業時間',
 } as const;
 
-const dailyDir = 'content/metro/daily';
 const baseStations = JSON.parse(readFileSync('content/metro/stations.json', 'utf8')) as Station[];
-const dailyStations = existsSync(dailyDir)
-  ? readdirSync(dailyDir)
-      .filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date))
-      .sort()
-      .flatMap((date) => {
-        const path = `${dailyDir}/${date}/web.json`;
-        return existsSync(path) ? [JSON.parse(readFileSync(path, 'utf8')) as Station] : [];
-      })
-  : [];
+const dailyStations = loadDailyStations('content/metro') as Station[];
 // stations.json + daily + DESIGN. The public pages serve Taipei; Shanghai stays in the content layer.
 const designCatalog = loadDesignStations('content/metro');
 const stations = (mergeFoodStations(baseStations, dailyStations, designCatalog) as Station[])
