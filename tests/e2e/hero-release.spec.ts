@@ -9,8 +9,8 @@ for (const mode of ["", "reduce=1"]) {
       window.__savvyMap!.select("dongmen");
       window.__savvyMap!.goHome();
     });
-    // Outlast both the selection delay and the closing animation.
-    await page.waitForTimeout(1500);
+    // Close latency is frame-bound. Animated WebKit on CI run 43431820013 still showed #card after the 10s expect.
+    await page.waitForFunction(() => { const s = window.__savvyMap!.state(); return s.showing === null && !s.closing; }, null, { timeout: 45_000 });
     await expect(page.locator("#card")).toBeHidden();
     expect(await page.evaluate(() => window.__savvyMap!.state().openId)).toBeNull();
     await expect(page.locator("#reset")).not.toHaveClass(/on/);
