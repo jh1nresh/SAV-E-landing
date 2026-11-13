@@ -17,7 +17,7 @@ App Store badges keep `data-swap="appstore-url"` so the href can be swapped at l
 ## Language
 
 - Default: Traditional Chinese (`zh-Hant`)
-- English: `?lang=en` or the EN chip
+- English: `?lang=en` or the EN chip. The homepage is prerendered in Chinese; the head boot script applies the English title and description when `lang=en`, so the page does not read search params.
 - The toggle sets `<html lang>` to `zh-Hant` or `en`
 
 ## Product lock (copy)

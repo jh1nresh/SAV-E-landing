@@ -1,40 +1,26 @@
 import type { Metadata } from "next";
 import { taipeiDate } from "../lib/metro-logic.mjs";
 import SavvyLanding from "./SavvyLanding";
-import {
-  SITE_DESCRIPTION_EN,
-  SITE_DESCRIPTION_ZH,
-  SITE_TITLE_EN,
-  SITE_TITLE_ZH,
-  parseSiteLang,
-} from "./site";
+import { SITE_DESCRIPTION_ZH, SITE_TITLE_ZH } from "./site";
 import { PRODUCT_TERMS, SCHEMA_DESCRIPTION, SITE_ORIGIN } from "../lib/site-content";
 
-export async function generateMetadata({
-  searchParams,
-}: {
-  searchParams: Promise<{ lang?: string }>;
-}): Promise<Metadata> {
-  const { lang } = await searchParams;
-  const en = parseSiteLang(lang) === "en";
-  const title = en ? SITE_TITLE_EN : SITE_TITLE_ZH;
-  const description = en ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION_ZH;
-  return {
-    title,
-    description,
-    alternates: { canonical: `${SITE_ORIGIN}/`, types: { "text/markdown": `${SITE_ORIGIN}/index.md` } },
-    openGraph: {
-      title,
-      description,
-      url: SITE_ORIGIN,
-      siteName: "Savvy",
-      locale: en ? "en" : "zh_Hant_TW",
-      type: "website",
-      images: [{ url: "/og.png", width: 1200, height: 630, alt: "Savvy" }],
-    },
-    twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
-  };
-}
+// Static metadata. `?lang=en` updates the title and description in the head
+// boot script, so this page does not read search params.
+export const metadata: Metadata = {
+  title: SITE_TITLE_ZH,
+  description: SITE_DESCRIPTION_ZH,
+  alternates: { canonical: `${SITE_ORIGIN}/`, types: { "text/markdown": `${SITE_ORIGIN}/index.md` } },
+  openGraph: {
+    title: SITE_TITLE_ZH,
+    description: SITE_DESCRIPTION_ZH,
+    url: SITE_ORIGIN,
+    siteName: "Savvy",
+    locale: "zh_Hant_TW",
+    type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Savvy" }],
+  },
+  twitter: { card: "summary_large_image", title: SITE_TITLE_ZH, description: SITE_DESCRIPTION_ZH, images: ["/og.png"] },
+};
 
 export default function Home() {
   // Today's date is fixed when this static page is built. The live map recomputes NEW in the browser.
