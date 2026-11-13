@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 /** Hand-drawn schematic line geometry (view units, not geographic). */
@@ -12,7 +12,22 @@ export const LINE_PATHS = {
     "M860 22 C 800 46 700 72 598 86 C560 106 510 126 440 142 C380 156 316 192 278 238 C262 258 254 262 246 268 C228 286 214 318 202 382 C 196 440 188 540 176 770",
 };
 
-const shanghaiLines = JSON.parse(readFileSync(resolve(process.cwd(), "content/metro/shanghai-lines.json"), "utf8"));
+/**
+ * The inbox workflow checks main out under main/ and runs with cwd at the parent.
+ * Repo scripts and Playwright run with cwd at the repository root.
+ * Prefer the two-checkout path so a file at the parent cannot shadow main.
+ */
+function shanghaiLinesPath() {
+  const candidates = [
+    resolve(process.cwd(), "main/content/metro/shanghai-lines.json"),
+    resolve(process.cwd(), "content/metro/shanghai-lines.json"),
+  ];
+  const found = candidates.find(path => existsSync(path));
+  if (!found) throw new Error(`shanghai-lines.json not found. Looked in: ${candidates.join(", ")}`);
+  return found;
+}
+
+const shanghaiLines = JSON.parse(readFileSync(shanghaiLinesPath(), "utf8"));
 /** Shanghai schematic paths. Separate from LINE_PATHS so the Taipei map SVG stays unchanged. */
 export const SHANGHAI_LINE_PATHS = Object.fromEntries(Object.entries(shanghaiLines.lines).map(([id, line]) => [id, line.d]));
 export const SHANGHAI_VIEWBOX = shanghaiLines.viewBox;

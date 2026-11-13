@@ -58,7 +58,7 @@ node scripts/gtm-inbox-upload.mjs --dir /path/to/2026-11-05 --dry-run
 
 新站上線前，必須先有一筆人工 PR 把該站寫進 `content/metro/design-stations.json`（`city` / `n` / `slug` / `station` / `map`）。示意 `map` 缺該城該站時，排程會停這包、**不改官網**，並開／更新同一則 issue。`lat`／`lng` 為空只表示地理座標 pending，不會拿別的數來填，也不會因此擋掉已有示意 `map` 的包。
 
-上海內容 PR 的路徑是 `content/metro/daily/shanghai/<date>/web.json` 與 `content/metro/images/shanghai/<NN-slug>/...`，和台北一樣只含每日 JSON 與圖片時可自動合併。台北仍走原來的 `content/metro/daily/<date>/web.json`。
+內容 PR 的每日 JSON 都走 `(city, n)` 路徑：`content/metro/daily/taipei/<date>/web.json` 與 `content/metro/daily/shanghai/<date>/web.json`。上海圖片是 `content/metro/images/shanghai/<NN-slug>/...`。台北圖片仍放 `content/metro/images/<NN-slug>/...`，因為建置會先讀這個既有資料夾。更早的 `content/metro/daily/<date>/web.json` 仍會被建置讀取。只含這些每日 JSON 與圖片時可自動合併。
 
 ## 手動重跑
 
