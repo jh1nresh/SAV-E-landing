@@ -13,8 +13,14 @@ for (const width of [390, 1280]) {
       SVGGraphicsElement.prototype.getBBox = function (...args) { boxes++; return original.apply(this, args); };
       try {
         window.__savvyMap!.select("arena");
-        await new Promise(resolve => setTimeout(resolve, 350));
         const body = document.getElementById("cbody")!;
+        await new Promise<void>(resolve => {
+          const check = () => {
+            if (Number(body.style.opacity) >= .95) resolve();
+            else setTimeout(check, 20);
+          };
+          check();
+        });
         return { boxes, opacity: Number(getComputedStyle(body).opacity) };
       } finally { SVGGraphicsElement.prototype.getBBox = original; }
     });
@@ -51,33 +57,41 @@ test("cached label measurements refresh after resize and font loading", async ({
 
 
 test("slow frame work does not stretch the popup clock", async ({ page }) => {
+  await page.addInitScript(() => {
+    let now = 0;
+    let nextId = 0;
+    let inFrame = false;
+    const queue = new Map<number, FrameRequestCallback>();
+    Object.defineProperty(performance, "now", { value: () => now });
+    window.requestAnimationFrame = callback => { queue.set(++nextId, callback); return nextId; };
+    window.cancelAnimationFrame = id => { queue.delete(id); };
+    const original = SVGGraphicsElement.prototype.setAttribute;
+    SVGGraphicsElement.prototype.setAttribute = function (name, value) {
+      if (inFrame && name === "x" && this.matches("#stdots text:first-of-type")) now += 70;
+      original.call(this, name, value);
+    };
+    (window as unknown as { advanceMapFrame: () => void }).advanceMapFrame = () => {
+      now += 16;
+      const timestamp = now;
+      const callbacks = [...queue.values()];
+      queue.clear();
+      inFrame = true;
+      callbacks.forEach(callback => callback(timestamp));
+      inFrame = false;
+    };
+  });
   await page.goto("/");
   await waitForMap(page);
   await page.evaluate(() => document.fonts.ready);
-  const result = await page.evaluate(async () => {
-    const label = document.querySelector<SVGGraphicsElement>("#stdots text")!;
-    const original = label.setAttribute;
-    label.setAttribute = function (name, value) {
-      if (name === "x") {
-        const until = performance.now() + 70;
-        while (performance.now() < until) { /* Simulate an expensive frame on a slower device. */ }
-      }
-      original.call(this, name, value);
-    };
-    const start = performance.now();
-    try {
-      window.__savvyMap!.select("arena");
-      await new Promise<void>(resolve => {
-        const check = () => {
-          const visible = Number(document.getElementById("cbody")!.style.opacity) >= .95;
-          if (visible || performance.now() - start > 1500) resolve();
-          else requestAnimationFrame(check);
-        };
-        requestAnimationFrame(check);
-      });
-      return { elapsed: performance.now() - start, opacity: Number(document.getElementById("cbody")!.style.opacity) };
-    } finally { label.setAttribute = original; }
+  const result = await page.evaluate(() => {
+    window.__savvyMap!.select("arena");
+    for (let frame = 0; frame < 4; frame++) {
+      (window as unknown as { advanceMapFrame: () => void }).advanceMapFrame();
+    }
+    const card = document.getElementById("card")!;
+    return { opacity: Number(document.getElementById("cbody")!.style.opacity),
+      scale: Number(card.style.transform.match(/scale\(([^,]+)/)?.[1]) };
   });
   expect(result.opacity).toBeGreaterThanOrEqual(.95);
-  expect(result.elapsed).toBeLessThan(700);
+  expect(result.scale).toBeGreaterThanOrEqual(.98);
 });
