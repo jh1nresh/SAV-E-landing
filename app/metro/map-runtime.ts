@@ -46,7 +46,7 @@ export type SavvyMapState = {
 };
 
 export type SavvyMapApi = {
-  select: (id: string) => void;
+  select: (id: string, opts?: { focus?: boolean }) => void;
   closeCard: (opts?: { focus?: boolean }) => void;
   goHome: () => void;
   state: () => SavvyMapState;
@@ -331,6 +331,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   let storeIdx = 0;
   let closing = false;
   let suppressClick = false;
+  let cardFocusTimer: number | undefined;
   const cardP = mk(0, MOTION.cardOpen, 0.002);
   const dragY = mk(0, MOTION.cardClose, 0.3);
   let cw = 340;
@@ -416,7 +417,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     cw = card.offsetWidth;
   }
 
-  function openCard(id: string) {
+  function openCard(id: string, focus = true) {
     openId = id;
     showing = id;
     storeIdx = 0;
@@ -442,8 +443,9 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     render();
     syncTabs();
     document.dispatchEvent(new CustomEvent("savvy-station", { detail: { id } }));
-    if (!still)
-      window.setTimeout(() => {
+    if (focus && !still)
+      cardFocusTimer = window.setTimeout(() => {
+        if (destroyed || showing !== id || closing) return;
         try {
           card.focus({ preventScroll: true });
         } catch {
@@ -476,6 +478,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   }
 
   function closeCard({ focus = true, preservePending = false }: { focus?: boolean; preservePending?: boolean } = {}) {
+    window.clearTimeout(cardFocusTimer);
     if (!preservePending) cancelPendingSelection();
     if (!showing || closing) return;
     closing = true;
@@ -528,11 +531,12 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     hint.classList.add("gone");
   }
 
-  function select(id: string) {
+  function select(id: string, { focus = true }: { focus?: boolean } = {}) {
+    window.clearTimeout(cardFocusTimer);
     cancelPan();
     cancelPendingSelection();
     if (openId === id) {
-      closeCard();
+      closeCard({ focus });
       return;
     }
     hideHint();
@@ -550,11 +554,11 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
           dragY.snapTo(0);
           finishClose(old, false);
         }
-        openCard(id);
+        openCard(id, focus);
       }, reduce ? 320 : 170);
       return;
     }
-    openCard(id);
+    openCard(id, focus);
     flyTo(f, false);
   }
 
@@ -1211,6 +1215,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       cancelPan();
       cancelPendingSelection();
       window.clearTimeout(flightTimer);
+      window.clearTimeout(cardFocusTimer);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", onWinResize);
       window.removeEventListener("orientationchange", onOrient);

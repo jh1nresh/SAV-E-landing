@@ -35,6 +35,7 @@ test.describe("hero map interactions", () => {
   test("D-1 pin and tab open the same station; 全圖 returns home", async ({ page }) => {
     await clickPin(page, "houshanpi");
     await waitForCardOpen(page);
+    await expect(page.locator("#card")).toBeFocused();
     await expect(page.locator("#cardTitle")).toContainText("後山埤");
     const zoomed = await page.evaluate(() => window.__savvyMap!.state().camS);
     await expect(page.locator("[data-testid=metro-reset]")).toHaveClass(/on/);

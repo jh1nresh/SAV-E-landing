@@ -36,6 +36,13 @@ test("choosing newest, oldest, and a middle station updates the trigger, pin, an
   await waitForMap(page);
   for (const station of [oldest, middle, newest]) {
     await page.getByTestId("station-picker-trigger").click();
+    await page.evaluate(() => {
+      // Delay card opening to reproduce focus loss on a busy main thread.
+      document.addEventListener("click", () => {
+        const until = performance.now() + 400;
+        while (performance.now() < until) {}
+      }, { once: true });
+    });
     await page.getByTestId(`station-option-${station.selectId}`).click();
     await expect(page.getByTestId("station-picker-trigger")).toHaveAttribute("aria-expanded", "false");
     await expect(page.getByTestId("station-picker-trigger")).toBeFocused();
@@ -44,6 +51,7 @@ test("choosing newest, oldest, and a middle station updates the trigger, pin, an
     await expect(page.locator(".pin.picked")).toHaveCount(1);
     await expect(page.locator(`[data-testid="metro-pin-${station.selectId}"]`)).toHaveClass(/picked/);
     await waitForCardOpen(page);
+    await expect(page.getByTestId("station-picker-trigger")).toBeFocused();
     await expect(page.locator("#cardTitle")).toContainText(station.station);
     const srcs = await page.locator("#card img").evaluateAll((els) => els.map((el) => el.getAttribute("src")).filter((src): src is string => Boolean(src)));
     expect(srcs.length).toBeGreaterThan(0);
