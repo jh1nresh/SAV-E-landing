@@ -38,4 +38,4 @@ export function isNewStore(store: NewStore, todayYmd: string): boolean;
 export function stationIsNew(stores: ReadonlyArray<NewStore>, todayYmd: string): boolean;
 export const FOOD_DISCLAIMER: string;
 export const PRICE_PENDING: '價格待確認';
-export function foodShopRows(shop: import('./metro').FoodShop): [string, string][];
+export function foodShopRows(shop: import('./metro').FoodShop, city?: import('./metro').FoodStation['city']): [string, string][];
