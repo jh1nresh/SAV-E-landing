@@ -18,8 +18,8 @@
       "price": null,
       "price_source": null,
       "address": "上海市靜安區愚園路140號",
-      "exit_walk": null,
-      "hours": null
+      "exit_walk": "地鐵2號線靜安寺站(地鐵3通道口-晶品商场)387公尺，步行約5分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/143190727.html",
+      "hours": "09:00–22:00；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/143190727.html"
     },
     {
       "key": "dongji",
@@ -29,7 +29,7 @@
       "price_source": null,
       "address": "上海市靜安區北京西路1806號底層",
       "exit_walk": null,
-      "hours": null
+      "hours": "24小時（平台參考）；來源未標更新日；2026-11-14查詢 https://www.trip.com/restaurant/china/shanghai/detail/restaurant-57278467/"
     },
     {
       "key": "huangayi",
@@ -38,7 +38,7 @@
       "price": null,
       "price_source": null,
       "address": "上海市萬航渡路174號",
-      "exit_walk": null,
+      "exit_walk": "地鐵2號線靜安寺站(地鐵1通道口-华山路)691公尺，步行約9分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994927.html",
       "hours": "05:00–20:30",
       "lat": 31.2269307,
       "lng": 121.4366121,
@@ -51,7 +51,7 @@
       "price": null,
       "price_source": null,
       "address": "上海市靜安區愚園路68號晶品B2／LG2",
-      "exit_walk": null,
+      "exit_walk": "地鐵2號線靜安寺站(地鐵3通道口-晶品商场)370公尺，步行約5分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/16548886.html",
       "hours": "10:00–21:30",
       "lat": 31.2272133,
       "lng": 121.4416405,
@@ -64,8 +64,8 @@
       "price": null,
       "price_source": null,
       "address": "上海市靜安區北京西路1738號",
-      "exit_walk": null,
-      "hours": null,
+      "exit_walk": "地鐵2號線靜安寺站(地鐵1通道口-华山路)566公尺，步行約7分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/136424662.html",
+      "hours": "10:00–15:00；16:00–20:30；來源未標更新日；2026-11-14查詢 https://www.trip.com/restaurant/china/shanghai/detail/restaurant-136424662/",
       "lat": 31.2269684,
       "lng": 121.438461,
       "datum": "WGS-84"

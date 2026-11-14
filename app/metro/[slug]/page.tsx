@@ -51,10 +51,10 @@ export default async function StationPage({ params }: { params: Promise<{ slug: 
       return <article className="guide-card" id={shopAnchor(shop, index)} tabIndex={-1} key={shop.key ?? index}>
       {photo && <figure className="food-shop-photo"><img src={photo} alt={`${shop.name}：${shop.dish || guideStationName(station) + '美食'}`} width={800} height={600} loading="lazy" /><figcaption>{shop.name}</figcaption></figure>}
       {shop.name && <h2>{shop.name}</h2>}
-      <dl>{foodShopRows(shop, station.city).map(([label, value]) => <div className="food-row" key={label}><dt>{label}</dt><dd>{label === '價格出處' ? sourceText(value) : value}</dd></div>)}</dl>
+      <dl>{foodShopRows(shop, station.city).map(([label, value]) => <div className="food-row" key={label}><dt>{label}</dt><dd>{sourceText(value)}</dd></div>)}</dl>
       <a className="food-map-link" href={map.href} target="_blank" rel="noopener noreferrer" aria-label={`在${map.label}查看${shop.name}`}>{map.label} ↗</a>
     </article>})}</div>
-    <section className="food-before-going" aria-labelledby="before-going"><h2 id="before-going">出發前確認</h2><p>價格會保留資料來源與餐點份量；標示外送價的品項不等於店內價，舊菜單或食記價格也不代表今天售價。尚未取得可靠來源的欄位不填入推估數字。</p><p>地圖連結會依店名與地址搜尋。選定分店後，再確認當日營業時間、路線與是否需要預約。</p></section>
+    <section className="food-before-going" aria-labelledby="before-going"><h2 id="before-going">出發前確認</h2><p>標示外送價的品項不等於店內價，舊菜單或食記價格也不代表今天售價。「查詢」日期是讀取公開頁的時間，並非店家更新日期；暫停供應、堂食與窗口限制請看各店說明。</p><p>地圖連結依店名與地址搜尋；步行時間與距離採來源估計，有些路線從其他鄰近車站起算。選定分店後，再確認當日營業時間、路線與是否需要預約。</p></section>
   </main>;
 }
 

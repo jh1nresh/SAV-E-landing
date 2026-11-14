@@ -123,7 +123,7 @@ test("/taipei permanently redirects to / and keeps the query string", async ({ p
   await expect(page.getByText("Save what you love")).toBeVisible();
 });
 
-test("legacy Taipei metro URLs still serve Taipei, and / is the Taipei map", async ({ request }) => {
+test("legacy Taipei station URLs stay intact, the guide index covers both cities, and / defaults to Taipei", async ({ request }) => {
   const taipei = getFoodStations();
   for (const slug of LEGACY_SLUGS) expect(taipei.some((station) => station.slug === slug)).toBe(true);
   expect(taipei.some((station) => station.slug === "nangang")).toBe(true);
@@ -134,7 +134,7 @@ test("legacy Taipei metro URLs still serve Taipei, and / is the Taipei map", asy
   const listHtml = await list.text();
   expect(listHtml).toContain("小巨蛋");
   expect(listHtml).toContain("南港");
-  expect(listHtml).not.toContain("豫園");
+  expect(listHtml).toContain('href="/metro/shanghai-yuyuan"');
 
   for (const station of taipei) {
     const response = await request.get(`/metro/${station.slug}`);

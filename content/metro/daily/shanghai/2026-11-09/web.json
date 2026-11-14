@@ -17,8 +17,8 @@
       "price": "14元人民幣／碗",
       "price_source": "https://www.shobserver.cn/sgh/detail?id=4027519",
       "address": "上海市黃浦區雁蕩路14號（近淮海中路）",
-      "exit_walk": null,
-      "hours": null,
+      "exit_walk": "地鐵1號線一大会址·黃陂南路站(1口)498公尺，步行約7分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/6977327.html",
+      "hours": "06:30–21:00；2026-07-26記錄；2026-11-14查詢 https://www.jfdaily.com/sgh/detail?id=4027519",
       "lat": 31.2229246,
       "lng": 121.4653806,
       "datum": "WGS-84"
@@ -30,7 +30,7 @@
       "price": "5元人民幣／只",
       "price_source": "https://m.thepaper.cn/newsDetail_forward_32399528",
       "address": "上海市黃浦區重慶南路183號（復興公園對面）",
-      "exit_walk": null,
+      "exit_walk": "一大會址・新天地站5號口，步行約330公尺（高德頁面參考）；來源未標更新日；2026-11-14查詢 https://www.amap.com/place/B00157I188",
       "hours": null
     },
     {
@@ -40,8 +40,8 @@
       "price": null,
       "price_source": null,
       "address": "上海市黃浦區淮海中路558號",
-      "exit_walk": null,
-      "hours": null
+      "exit_walk": "地鐵1號線一大会址·黃陂南路站(1口)639公尺，步行約9分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/7009657.html",
+      "hours": "堂食11:00–14:00；17:00–20:00（糟貨外賣窗口另確認）；來源未標更新日；2026-11-14查詢 https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-15149315/"
     },
     {
       "key": "jieerjing",
@@ -50,8 +50,8 @@
       "price": null,
       "price_source": null,
       "address": "上海市黃浦區雁蕩路82號（近南昌路）",
-      "exit_walk": null,
-      "hours": null
+      "exit_walk": "地鐵1號線一大会址·黃陂南路站(1口)692公尺，步行約9分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994201.html",
+      "hours": "11:00–14:00；17:00–21:00；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994201.html"
     },
     {
       "key": "guangmingcun",
@@ -60,8 +60,8 @@
       "price": "2026 報導 ¥6／只",
       "price_source": "2026-09-22 麻辣鲜香臭、东西南北中！中秋月饼市场既卷口味也卷文化！（日期所示參考價，非即時售價）；2026-11-14核對 https://finance.sina.com.cn/jjxw/2026-09-22/doc-inisspzc6968375.shtml",
       "address": "上海市黃浦區淮海中路588號",
-      "exit_walk": null,
-      "hours": null,
+      "exit_walk": "淮海中路站1號口，步行約300公尺（高德頁面參考）；來源未標更新日；2026-11-14查詢 https://ditu.amap.com/place/B00155L02C",
+      "hours": "堂食11:00–14:00；17:00–20:30（鮮肉月餅窗口另確認）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2192/4994197.html",
       "lat": 31.2223979,
       "lng": 121.463163,
       "datum": "WGS-84"

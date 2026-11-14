@@ -1,0 +1,2353 @@
+{
+  "checkedAt": "2026-11-14",
+  "policy": "優先最新可核官方／同分店資料。查詢日期不等於菜單或時段更新日期；歷史價與未供應提示保留。平台路線估計保留實際起點，不自行換算座標或分鐘。",
+  "adoptions": [
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "atian",
+      "field": "price",
+      "value": "陽春麵 NT$50＋滷蛋 NT$15，合計 NT$65；中碗另加10、大碗另加20",
+      "sourceUrl": "https://achu.tw/a-tian-mian-chifeng/",
+      "sourceTitle": "阿朱的日常：阿田麵赤峰街",
+      "publishedAt": "2026-03-22",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "原文赤峰街44巷20號、電話2556-0927；菜單照片亦印阿田麵及同電話。",
+      "portionOrChannel": "現場菜單照片；基礎陽春麵＋滷蛋；不是加肉的全套。",
+      "evidence": "直接檢視原文所連https://achu.tw/wp-content/uploads/2026/03/7batch_IMG_0594.webp：陽春麵50、魯蛋15、中碗加10、大碗加20；65為兩個明示單價相加。",
+      "status": "dated2026",
+      "caveats": "是2026-03食記的菜單照片，拍攝日未另明示，不保證2026-11現價。若文案保留65起，需同列份量／加大條件。圖片沒有依賴矛盾的全套價格敘述。",
+      "beforeValue": null,
+      "adoptedValue": "陽春麵＋滷蛋 NT$65（基本碗；中碗另加10、大碗另加20；2026-03菜單）",
+      "contentFile": "content/metro/stations.json"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "atian",
+      "field": "price_source",
+      "value": "陽春麵 NT$50＋滷蛋 NT$15，合計 NT$65；中碗另加10、大碗另加20",
+      "sourceUrl": "https://achu.tw/a-tian-mian-chifeng/",
+      "sourceTitle": "阿朱的日常：阿田麵赤峰街",
+      "publishedAt": "2026-03-22",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "原文赤峰街44巷20號、電話2556-0927；菜單照片亦印阿田麵及同電話。",
+      "portionOrChannel": "現場菜單照片；基礎陽春麵＋滷蛋；不是加肉的全套。",
+      "evidence": "直接檢視原文所連https://achu.tw/wp-content/uploads/2026/03/7batch_IMG_0594.webp：陽春麵50、魯蛋15、中碗加10、大碗加20；65為兩個明示單價相加。",
+      "status": "dated2026",
+      "caveats": "是2026-03食記的菜單照片，拍攝日未另明示，不保證2026-11現價。若文案保留65起，需同列份量／加大條件。圖片沒有依賴矛盾的全套價格敘述。",
+      "beforeValue": null,
+      "adoptedValue": "2026-03-22記錄；2026-11-14查詢 https://achu.tw/a-tian-mian-chifeng/",
+      "contentFile": "content/metro/stations.json"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "oyster",
+      "field": "price",
+      "value": "蚵仔麵線小碗 NT$65／大碗 NT$75（2025-10影片菜單）",
+      "sourceUrl": "https://www.youtube.com/watch?v=VGdLXZauDpw&t=465s",
+      "sourceTitle": "Meck食之記憶：雙連蚵仔麵線＋大王漢寶殿",
+      "publishedAt": "2025-10-08",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "影片原始description明列民生西路66巷1號、0937-544-770；約465秒店招與菜單同框有同電話。",
+      "portionOrChannel": "現場菜單牌；蚵仔麵線，小／大碗。",
+      "evidence": "公開YouTube原始HTML的videoDetails與2025-10-08台灣日期已讀取；視覺檢視約465秒最高320px原始storyboard並僅作最近鄰放大，可辨蚵仔麵線小65、大75；同牌清麵線小40、大50。",
+      "status": "historical",
+      "caveats": "沒有找到可驗證的2026同店新菜單。只可標2025-10影像記錄，不能稱現價。阿川198-17號、天祥、民生西路47號其他店全部排除。未下載影片或寫入本地圖片。",
+      "beforeValue": null,
+      "adoptedValue": "蚵仔麵線小碗 NT$65／大碗 NT$75（2025-10影片菜單）",
+      "contentFile": "content/metro/stations.json"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "oyster",
+      "field": "price_source",
+      "value": "蚵仔麵線小碗 NT$65／大碗 NT$75（2025-10影片菜單）",
+      "sourceUrl": "https://www.youtube.com/watch?v=VGdLXZauDpw&t=465s",
+      "sourceTitle": "Meck食之記憶：雙連蚵仔麵線＋大王漢寶殿",
+      "publishedAt": "2025-10-08",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "影片原始description明列民生西路66巷1號、0937-544-770；約465秒店招與菜單同框有同電話。",
+      "portionOrChannel": "現場菜單牌；蚵仔麵線，小／大碗。",
+      "evidence": "公開YouTube原始HTML的videoDetails與2025-10-08台灣日期已讀取；視覺檢視約465秒最高320px原始storyboard並僅作最近鄰放大，可辨蚵仔麵線小65、大75；同牌清麵線小40、大50。",
+      "status": "historical",
+      "caveats": "沒有找到可驗證的2026同店新菜單。只可標2025-10影像記錄，不能稱現價。阿川198-17號、天祥、民生西路47號其他店全部排除。未下載影片或寫入本地圖片。",
+      "beforeValue": null,
+      "adoptedValue": "2025-10-08記錄；2026-11-14查詢 https://www.youtube.com/watch?v=VGdLXZauDpw&t=465s",
+      "contentFile": "content/metro/stations.json"
+    },
+    {
+      "stationSlug": "longshan-temple",
+      "shopKey": "sanliu",
+      "field": "price",
+      "value": "黃金麻糬（包起司）NT$65／2顆（2026-05菜單照片；當時該項劃叉）",
+      "sourceUrl": "https://litwenblog.com/36ricecaking/",
+      "sourceTitle": "小蚊子愛飛飛：三六食粑原三六圓仔店",
+      "publishedAt": "2026-05-22",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "原文明列萬華區三水街92號；店面菜單照片印三六食粑。",
+      "portionOrChannel": "店面菜單，黃金麻糬2顆／包起司；非蜜燒麻糬。",
+      "evidence": "在記憶體直接開啟原文菜單圖https://litwenblog.com/wp-content/uploads/2026/05/20260509-118.jpg：黃金麻糬(2顆)(包起司)65，該列有紅X；上一列蜜燒麻糬2顆60沒有可見X。",
+      "status": "dated2026",
+      "caveats": "2026-05文章及20260509圖片檔名是新來源脈絡，作者未另寫明實際拍攝日。紅X只證照片當時該項被劃叉／未供應提示，原因不明，不能說今天仍停賣。不得只顯示65卻省略當時劃叉與日期。",
+      "beforeValue": null,
+      "adoptedValue": "黃金麻糬 NT$65／2顆（2026-05菜單當時劃叉，現況待確認）",
+      "contentFile": "content/metro/daily/taipei/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "longshan-temple",
+      "shopKey": "sanliu",
+      "field": "price_source",
+      "value": "黃金麻糬（包起司）NT$65／2顆（2026-05菜單照片；當時該項劃叉）",
+      "sourceUrl": "https://litwenblog.com/36ricecaking/",
+      "sourceTitle": "小蚊子愛飛飛：三六食粑原三六圓仔店",
+      "publishedAt": "2026-05-22",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "原文明列萬華區三水街92號；店面菜單照片印三六食粑。",
+      "portionOrChannel": "店面菜單，黃金麻糬2顆／包起司；非蜜燒麻糬。",
+      "evidence": "在記憶體直接開啟原文菜單圖https://litwenblog.com/wp-content/uploads/2026/05/20260509-118.jpg：黃金麻糬(2顆)(包起司)65，該列有紅X；上一列蜜燒麻糬2顆60沒有可見X。",
+      "status": "dated2026",
+      "caveats": "2026-05文章及20260509圖片檔名是新來源脈絡，作者未另寫明實際拍攝日。紅X只證照片當時該項被劃叉／未供應提示，原因不明，不能說今天仍停賣。不得只顯示65卻省略當時劃叉與日期。",
+      "beforeValue": null,
+      "adoptedValue": "2026-05-22記錄；2026-11-14查詢 https://litwenblog.com/36ricecaking/",
+      "contentFile": "content/metro/daily/taipei/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "atian",
+      "field": "hours",
+      "value": "週一至週五10:00–15:00；週六、日公休",
+      "sourceUrl": "https://chifeng.org.tw/阿田麵/",
+      "sourceTitle": "臺北市赤峰商圈永續發展協會：阿田麵",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "協會店家頁明列赤峰街44巷20號1樓及02-2556-0927。",
+      "portionOrChannel": "商圈協會直接店家資訊頁；不是外送服務時段。",
+      "evidence": "已開啟頁面營業時間欄：週一至五10:00–15:00、週六日休；頁面屬特約店家，協會樂購券活動另明示2026-05至07。",
+      "status": "verified-live",
+      "caveats": "頁面本身未標刊登／更新日期，不能把2026活動日期當店家hours更新日期。協會直接列示比矛盾食記更可採；國定假日規則頁面未寫，不能自行加上。",
+      "beforeValue": null,
+      "adoptedValue": "週一至週五10:00–15:00；週六、日公休；來源未標更新日；2026-11-14查詢 https://chifeng.org.tw/阿田麵/",
+      "contentFile": "content/metro/stations.json"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "oyster",
+      "field": "hours",
+      "value": "07:30–16:00；週日公休（2025-10影片記錄）",
+      "sourceUrl": "https://www.youtube.com/watch?v=VGdLXZauDpw",
+      "sourceTitle": "Meck食之記憶：雙連蚵仔麵線＋大王漢寶殿",
+      "publishedAt": "2025-10-08",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "原始影片description直接並列店名、民生西路66巷1號、電話0937-544-770及此時段。",
+      "portionOrChannel": "影片作者當時實訪店家資訊。",
+      "evidence": "透過公開YouTubeHTML成功讀出原始videoDetails.shortDescription；時段07:30–16:00、公休日星期日；不是只用搜尋摘要。",
+      "status": "historical",
+      "caveats": "此為查得較新的可核原始記錄，並非2026或即時營業保證。未找到可讀2026第一方公告；Facebook舊店家頁讀取節流後停止。",
+      "beforeValue": null,
+      "adoptedValue": "07:30–16:00；週日公休（2025-10影片記錄）；2025-10-08記錄；2026-11-14查詢 https://www.youtube.com/watch?v=VGdLXZauDpw",
+      "contentFile": "content/metro/stations.json"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "huoshi",
+      "field": "hours",
+      "value": "週一至五13:00–21:30；週六、日12:30–21:30（2026-07報導）",
+      "sourceUrl": "https://supertaste.tvbs.com.tw/food/360339",
+      "sourceTitle": "食尚玩家：雙北芒果冰Top10／貨室甜品",
+      "publishedAt": "2026-07-04",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "已開啟正文No.6貨室甜品，直接列赤峰街71巷34號及此時段。",
+      "portionOrChannel": "2026夏季媒體店家資訊；非同品牌華山門市。",
+      "evidence": "正文No.6地址與時段明列；公開HTML結構資料datePublished及dateModified均2026-07-04T01:00:00+08:00。較2025食記21:00更新。",
+      "status": "dated2026",
+      "caveats": "是有日期的2026報導，非今日店家保證。臺北官方2026夏刊也搜尋到同址同時段，但PDF與網頁原文都403，未當作已開啟佐證。勿只因官方搜尋摘要便升為官方verified。",
+      "beforeValue": null,
+      "adoptedValue": "週一至五13:00–21:30；週六、日12:30–21:30（2026-07報導）；2026-07-04記錄；2026-11-14查詢 https://supertaste.tvbs.com.tw/food/360339",
+      "contentFile": "content/metro/stations.json"
+    },
+    {
+      "stationSlug": "daan",
+      "shopKey": "longji",
+      "field": "hours",
+      "value": "來源標示已歇業／營業狀態需確認",
+      "sourceUrl": "https://scenery.tw/longji-snack-shop/",
+      "sourceTitle": "Dream Scenery：龍記小吃店（龍華燒臘）已歇業",
+      "publishedAt": "2025-02-25",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "同頁信義路四段30巷32號、02-2708-5028；不是公館龍記炒燴或中山同名店。",
+      "portionOrChannel": "原作者現存文章的閉店標示；非店家正式公告。",
+      "evidence": "已讀原頁h1標題包含已歇業，店家資料的hours位置亦寫已歇業。HTML BlogPosting及article meta的datePublished=2025-02-25T12:00:00+08:00、dateModified=2026-04-01T10:37:33+08:00。",
+      "status": "unverified",
+      "caveats": "閉店標註加入日期與實際歇業日期皆未明示；dateModified不能當關門日。未得獨立第一方證實；愛食記同址頁仍自動顯示營業時段但引用的食記停在2025，不能證明仍開。建議以有來源的待確認警語呈現，保留舊資料，不宣告永久歇業。",
+      "beforeValue": "11:00–14:00、16:30–20:30",
+      "adoptedValue": "營業狀態需確認：原食記現已標示歇業，關閉日期及店方公告未核實。原筆記時段 11:00–14:00、16:30–20:30，不可作為現行營業保證；2026-11-14查詢 https://scenery.tw/longji-snack-shop/",
+      "contentFile": "content/metro/stations.json"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "renheguan",
+      "shopName": "人和館·上海菜（肇嘉浜路店）",
+      "field": "price",
+      "value": "攜程公開頁參考：蟹粉撈飯小份¥199／大份¥397，僅堂食",
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/ren-he-guanshanghai-cuisine-28576182/",
+      "sourceTitle": "Trip.com：人和館·上海菜（徐匯店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "徐匯店，肇嘉浜路407號",
+      "portionOrChannel": "RMB，小份199／大份397；僅堂食；重量和可供人數未列。",
+      "evidence": "已開公開頁：店名徐匯店、肇嘉浜路407號；人氣菜式直接列蟹粉撈飯小199／大397、只限堂吃。非人均，並非促銷欄位。",
+      "status": "verified-live",
+      "caveats": [
+        "底層菜價更新日期未披露；2026-11-11是評論日期，不是菜單更新日期。",
+        "只可作已查閱的公開平台參考價，不能稱餐廳即時官方售價。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "蟹粉撈飯小份 ¥199／大份 ¥397（僅堂食；攜程頁面參考）",
+      "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "renheguan",
+      "shopName": "人和館·上海菜（肇嘉浜路店）",
+      "field": "price_source",
+      "value": "攜程公開頁參考：蟹粉撈飯小份¥199／大份¥397，僅堂食",
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/ren-he-guanshanghai-cuisine-28576182/",
+      "sourceTitle": "Trip.com：人和館·上海菜（徐匯店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "徐匯店，肇嘉浜路407號",
+      "portionOrChannel": "RMB，小份199／大份397；僅堂食；重量和可供人數未列。",
+      "evidence": "已開公開頁：店名徐匯店、肇嘉浜路407號；人氣菜式直接列蟹粉撈飯小199／大397、只限堂吃。非人均，並非促銷欄位。",
+      "status": "verified-live",
+      "caveats": [
+        "底層菜價更新日期未披露；2026-11-11是評論日期，不是菜單更新日期。",
+        "只可作已查閱的公開平台參考價，不能稱餐廳即時官方售價。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "來源未標更新日；2026-11-14查詢；平台所列菜名價，非即時官方菜單 https://hk.trip.com/restaurant/china/shanghai/detail/ren-he-guanshanghai-cuisine-28576182/",
+      "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "nanxiang",
+      "shopName": "南翔饅頭店（豫園店）",
+      "field": "hours",
+      "value": "07:30–20:00",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926728.html",
+      "sourceTitle": "攜程：南翔饅頭店（豫園店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "豫園路87號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "頁面顯示次日07:30–20:00；未列不同樓層的分別服務時間。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "07:30–20:00；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926728.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-07/web.json"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "songhelou",
+      "shopName": "松鶴樓麵館（豫園店）",
+      "field": "hours",
+      "value": "10:30–20:30",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/24569067.html",
+      "sourceTitle": "攜程：松鶴樓麵館（豫園店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "百翎路5號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "公開同店頁列10:30–20:30。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "10:30–20:30；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/24569067.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-07/web.json"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "laofandian",
+      "shopName": "上海老飯店",
+      "field": "hours",
+      "value": "11:00–14:00；17:00–20:30",
+      "sourceUrl": "https://www.smartshanghai.com/taxi/14233",
+      "sourceTitle": "SmartShanghai：上海老飯店",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "福佑路242號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "現存公開店頁列午晚市時段，無資料更新日期。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "11:00–14:00；17:00–20:30；來源未標更新日；2026-11-14查詢 https://www.smartshanghai.com/taxi/14233",
+      "contentFile": "content/metro/daily/shanghai/2026-11-07/web.json"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "lubolang",
+      "shopName": "綠波廊",
+      "field": "hours",
+      "value": "11:00–14:00；17:00–20:30",
+      "sourceUrl": "https://www.meet-in-shanghai.net/cn/food/green-wave-corridor-yuyuan-garden-road-589622/",
+      "sourceTitle": "上海市文旅局：綠波廊（豫園路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "豫園路115號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "官方旅遊店舖目錄列午晚市，與攜程418669同址頁相同。",
+      "status": "verified-live",
+      "caveats": [
+        "官方目錄未列該店資料更新日期；網頁全站日期不是店舖內容發布日期。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "11:00–14:00；17:00–20:30；來源未標更新日；2026-11-14查詢 https://www.meet-in-shanghai.net/cn/food/green-wave-corridor-yuyuan-garden-road-589622/",
+      "contentFile": "content/metro/daily/shanghai/2026-11-07/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "dusche",
+      "shopName": "毒蛇麵館（靜安寺店）",
+      "field": "hours",
+      "value": "09:00–22:00",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/143190727.html",
+      "sourceTitle": "攜程：毒蛇麵館（靜安寺店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "愚園路140號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "HTTP200公開店頁列09–22。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "09:00–22:00；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/143190727.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-08/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "dongji",
+      "shopName": "董記廬春麵館",
+      "field": "hours",
+      "value": "24小時（平台參考）",
+      "sourceUrl": "https://www.trip.com/restaurant/china/shanghai/detail/restaurant-57278467/",
+      "sourceTitle": "Trip.com：董記廬春麵館",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "北京西路1806號底層",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "現存同址頁明確顯示Open all day。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "24小時（平台參考）；來源未標更新日；2026-11-14查詢 https://www.trip.com/restaurant/china/shanghai/detail/restaurant-57278467/",
+      "contentFile": "content/metro/daily/shanghai/2026-11-08/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huxi",
+      "shopName": "滬西老弄堂麵館（靜安寺店）",
+      "field": "hours",
+      "value": "10:00–15:00；16:00–20:30",
+      "sourceUrl": "https://www.trip.com/restaurant/china/shanghai/detail/restaurant-136424662/",
+      "sourceTitle": "Trip.com：滬西老弄堂麵館（靜安寺店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "北京西路1738號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開同址公開頁列分段時段，2024靜安官方餐飲介紹亦一致；以現存平台顯示為查閱依據。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "10:00–15:00；16:00–20:30；來源未標更新日；2026-11-14查詢 https://www.trip.com/restaurant/china/shanghai/detail/restaurant-136424662/",
+      "contentFile": "content/metro/daily/shanghai/2026-11-08/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "weixiang",
+      "shopName": "味香齋（雁蕩路店）",
+      "field": "hours",
+      "value": "06:30–21:00",
+      "sourceUrl": "https://www.jfdaily.com/sgh/detail?id=4027519",
+      "sourceTitle": "上觀：贊達亞再訪味香齋",
+      "publishedAt": "2026-07-26",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "雁蕩路14號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "2026-07-26記者文章店舖資訊明列06:30–21。",
+      "status": "dated2026",
+      "caveats": [
+        "2026-07-26採訪資料，不保證11月臨時休假安排。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "06:30–21:00；2026-07-26記錄；2026-11-14查詢 https://www.jfdaily.com/sgh/detail?id=4027519",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "laorenhe",
+      "shopName": "老人和（淮海中路店）",
+      "field": "hours",
+      "value": "堂食11:00–14:00；17:00–20:00（糟貨外賣窗口另確認）",
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-15149315/",
+      "sourceTitle": "Trip.com：老人和（淮海中路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "淮海中路558號",
+      "portionOrChannel": "餐廳堂食",
+      "evidence": "公開餐廳頁列午晚市；這是餐廳服務時段，不能推斷糟雞街邊零售窗口同時營業。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。",
+        "必須保留以上地址精度、次日限定或服務渠道限定，不能去掉限定後作全店每日保證。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "堂食11:00–14:00；17:00–20:00（糟貨外賣窗口另確認）；來源未標更新日；2026-11-14查詢 https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-15149315/",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "guangmingcun",
+      "shopName": "光明邨大酒家",
+      "field": "hours",
+      "value": "堂食11:00–14:00；17:00–20:30（鮮肉月餅窗口另確認）",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2192/4994197.html",
+      "sourceTitle": "攜程：光明邨大酒家（淮海中路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "淮海中路588號",
+      "portionOrChannel": "餐廳堂食",
+      "evidence": "已開現存同址餐廳頁，列堂食午晚市。推薦菜鮮肉月餅屬窗口渠道，該窗口時間未能核實。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。",
+        "必須保留以上地址精度、次日限定或服務渠道限定，不能去掉限定後作全店每日保證。"
+      ],
+      "adoptionRecommended": false,
+      "beforeValue": null,
+      "adoptedValue": "堂食11:00–14:00；17:00–20:30（鮮肉月餅窗口另確認）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2192/4994197.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "laojishi",
+      "shopName": "老吉士酒家（天平路店）",
+      "field": "hours",
+      "value": "11:00–14:30；17:00–21:30",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926854.html",
+      "sourceTitle": "攜程：老吉士酒家（天平路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "天平路41號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "HTTP200同店頁列兩段服務時間。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "11:00–14:30；17:00–21:30；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926854.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-11/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "xingyuan",
+      "shopName": "興圓苑·私房菜（番禺路店）",
+      "field": "hours",
+      "value": "11:00–14:00；16:30–22:30",
+      "sourceUrl": "https://jp.trip.com/restaurant/china/shanghai/detail/restaurant-30952326/",
+      "sourceTitle": "Trip.com：興圓苑·私房菜（番禺路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "番禺路405號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開同址公開頁，與攜程15456646同址頁時段一致。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "11:00–14:00；16:30–22:30；來源未標更新日；2026-11-14查詢 https://jp.trip.com/restaurant/china/shanghai/detail/restaurant-30952326/",
+      "contentFile": "content/metro/daily/shanghai/2026-11-11/web.json"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "shanghai12",
+      "shopName": "上海12弄·新派上海菜（日月光店）",
+      "field": "hours",
+      "value": "10:30–15:30；16:30–21:00",
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-148509736/",
+      "sourceTitle": "Trip.com：上海12弄（日月光打浦橋店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "徐家匯路618號日月光中心打浦橋店2樓（高德同店佐證）",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開Trip.com店頁並HTTP讀取攜程148509736，均列10:30–15:30、16:30–21。不是商場整體時間。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "10:30–15:30；16:30–21:00；來源未標更新日；2026-11-14查詢 https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-148509736/",
+      "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "mamajia",
+      "shopName": "媽媽家·本幫菜",
+      "field": "hours",
+      "value": "11:00–13:30；16:30–21:00",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/11389652.html",
+      "sourceTitle": "攜程：媽媽家（徐家匯路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "徐家匯路548-4號；電話021-54666173",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "公開同店頁明列兩段時間。2023鳳凰網文章寫548-5，與現存平台門牌後綴衝突；未借用548-1鄰店。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。",
+        "必須保留以上地址精度、次日限定或服務渠道限定，不能去掉限定後作全店每日保證。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "11:00–13:30；16:30–21:00（門牌尾號548-4／548-5來源有分歧，請先核對店家）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/11389652.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "duojie",
+      "shopName": "多傑拉姆藏餐吧（田子坊店）",
+      "field": "hours",
+      "value": "11:00–23:30",
+      "sourceUrl": "https://us.trip.com/restaurant/china/shanghai/detail/restaurant-31021973/",
+      "sourceTitle": "Trip.com：多傑拉姆藏餐吧（田子坊店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "泰康路248弄30號後門",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開同址公開頁列11–23:30；2026-04-06官方報導亦確認後門地址。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "11:00–23:30；來源未標更新日；2026-11-14查詢 https://us.trip.com/restaurant/china/shanghai/detail/restaurant-31021973/",
+      "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "renheguan",
+      "shopName": "人和館·上海菜（肇嘉浜路店）",
+      "field": "hours",
+      "value": "11:00–21:30",
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/ren-he-guanshanghai-cuisine-28576182/",
+      "sourceTitle": "Trip.com：人和館·上海菜（徐匯店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "肇嘉浜路407號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開同址店頁列11–21:30，攜程正確店號15098466相同。平台未揭露中場廚房安排。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true,
+      "beforeValue": null,
+      "adoptedValue": "11:00–21:30；來源未標更新日；2026-11-14查詢 https://hk.trip.com/restaurant/china/shanghai/detail/ren-he-guanshanghai-cuisine-28576182/",
+      "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "jieerjing",
+      "field": "hours",
+      "value": "11:00–14:00；17:00–21:00",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994201.html",
+      "sourceTitle": "攜程：潔而精川菜館（復興公園店／雁蕩路82號）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "瑞金二路街道雁荡路82号(近南昌路)",
+      "evidence": "公開同址餐廳頁營業欄明列11–14／17–21；非已過期的夏季夜排檔時間。",
+      "status": "verified-live",
+      "caveats": [
+        "平台未披露更新日期；不保證當日臨時安排。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "11:00–14:00；17:00–21:00；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994201.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "nanxiang",
+      "field": "exit_walk",
+      "value": "地鐵14號線豫园站(7口)606公尺，步行約8分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926728.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "豫园路87号",
+      "evidence": "距地铁14号线豫园站(7口)606m，步行8min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵14號線豫园站(7口)606公尺，步行約8分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926728.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-07/web.json"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "songhelou",
+      "field": "exit_walk",
+      "value": "地鐵14號線豫园站(7口)616公尺，步行約8分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/24569067.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "百翎路5号(近旧校场路豫园5号口)",
+      "evidence": "距地铁14号线豫园站(7口)616m，步行8min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵14號線豫园站(7口)616公尺，步行約8分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/24569067.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-07/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "dusche",
+      "field": "exit_walk",
+      "value": "地鐵2號線靜安寺站(地鐵3通道口-晶品商场)387公尺，步行約5分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/143190727.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "愚园路140号",
+      "evidence": "距地铁2号线静安寺站(地铁3通道口-晶品商场)387m，步行5min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵2號線靜安寺站(地鐵3通道口-晶品商场)387公尺，步行約5分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/143190727.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-08/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huangayi",
+      "field": "exit_walk",
+      "value": "地鐵2號線靜安寺站(地鐵1通道口-华山路)691公尺，步行約9分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994927.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "万航渡路174号",
+      "evidence": "距地铁2号线静安寺站(地铁1通道口-华山路)691m，步行9min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵2號線靜安寺站(地鐵1通道口-华山路)691公尺，步行約9分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994927.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-08/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "hanxiang",
+      "field": "exit_walk",
+      "value": "地鐵10號線交通大學站(1口)628公尺，步行約8分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/148411516.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市淮海中路1861号",
+      "evidence": "距地铁10号线交通大学站(1口)628m，步行8min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵10號線交通大學站(1口)628公尺，步行約8分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/148411516.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-11/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "dongxin",
+      "field": "exit_walk",
+      "value": "地鐵1號線常熟路站(8口)1.3公里，步行約17分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4995500.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "武康路98号（武康大楼北门880米）",
+      "evidence": "距地铁1号线常熟路站(8口)1.3km，步行17min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵1號線常熟路站(8口)1.3公里，步行約17分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4995500.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-11/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "xingyuan",
+      "field": "exit_walk",
+      "value": "地鐵10號線交通大學站(5口)544公尺，步行約7分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/15456646.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "番禺路405号(10号线交通大学站5号口步行400m)",
+      "evidence": "距地铁10号线交通大学站(5口)544m，步行7min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵10號線交通大學站(5口)544公尺，步行約7分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/15456646.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-11/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "coffeetree",
+      "field": "exit_walk",
+      "value": "地鐵1號線衡山路站(2口)1.3公里，步行約18分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/8585710.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "武康路376号武康庭内",
+      "evidence": "距地铁1号线衡山路站(2口)1.3km，步行18min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵1號線衡山路站(2口)1.3公里，步行約18分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/8585710.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-11/web.json"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "shanghai12",
+      "field": "exit_walk",
+      "value": "地鐵9號線打浦桥站(地鐵1通道口-日月光中心)370公尺，步行約5分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/148509736.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市黄浦区瑞金二路街道日月光中心(打浦桥店)",
+      "evidence": "距地铁9号线打浦桥站(地铁1通道口-日月光中心)370m，步行5min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵9號線打浦桥站(地鐵1通道口-日月光中心)370公尺，步行約5分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/148509736.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "yangchun",
+      "field": "exit_walk",
+      "value": "地鐵9號線打浦桥站(地鐵3通道口-日月光中心)323公尺，步行約4分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/153999556.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "黄浦区-徐家汇路679号",
+      "evidence": "距地铁9号线打浦桥站(地铁3通道口-日月光中心)323m，步行4min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵9號線打浦桥站(地鐵3通道口-日月光中心)323公尺，步行約4分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/153999556.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "jiajia",
+      "field": "exit_walk",
+      "value": "地鐵2號線靜安寺站(地鐵3通道口-晶品商场)370公尺，步行約5分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/16548886.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "愚园路68号晶品LG2层13A室",
+      "evidence": "距地铁2号线静安寺站(地铁3通道口-晶品商场)370m，步行5min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵2號線靜安寺站(地鐵3通道口-晶品商场)370公尺，步行約5分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/16548886.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-08/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "weixiang",
+      "field": "exit_walk",
+      "value": "地鐵1號線一大会址·黃陂南路站(1口)498公尺，步行約7分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/6977327.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "雁荡路14号",
+      "evidence": "距地铁1号线一大会址·黄陂南路站(1口)498m，步行7min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵1號線一大会址·黃陂南路站(1口)498公尺，步行約7分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/6977327.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "laorenhe",
+      "field": "exit_walk",
+      "value": "地鐵1號線一大会址·黃陂南路站(1口)639公尺，步行約9分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/7009657.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "瑞金二路街道淮海中路558号(成都南路与淮海中路交叉口旁)",
+      "evidence": "距地铁1号线一大会址·黄陂南路站(1口)639m，步行9min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵1號線一大会址·黃陂南路站(1口)639公尺，步行約9分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/7009657.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "renheguan",
+      "field": "exit_walk",
+      "value": "地鐵12號線嘉善路站(5口)393公尺，步行約5分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/15098466.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "肇嘉浜路407号（近田子坊、建业里、昆虫博物馆）",
+      "evidence": "距地铁12号线嘉善路站(5口)393m，步行5min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵12號線嘉善路站(5口)393公尺，步行約5分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/15098466.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huxi",
+      "field": "exit_walk",
+      "value": "地鐵2號線靜安寺站(地鐵1通道口-华山路)566公尺，步行約7分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/136424662.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "北京西路1738号",
+      "evidence": "距地铁2号线静安寺站(地铁1通道口-华山路)566m，步行7min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵2號線靜安寺站(地鐵1通道口-华山路)566公尺，步行約7分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/136424662.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-08/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "jieerjing",
+      "field": "exit_walk",
+      "value": "地鐵1號線一大会址·黃陂南路站(1口)692公尺，步行約9分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994201.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "瑞金二路街道雁荡路82号(近南昌路)",
+      "evidence": "距地铁1号线一大会址·黄陂南路站(1口)692m，步行9min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "地鐵1號線一大会址·黃陂南路站(1口)692公尺，步行約9分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994201.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "laofandian",
+      "field": "exit_walk",
+      "value": "豫園站7號口，步行約260公尺",
+      "sourceUrl": "https://ditu.amap.com/place/B001549946",
+      "sourceTitle": "高德公開地點頁",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "福佑路242號",
+      "evidence": "同店地址欄直接列地鐵站、出口及步行距離。",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；距離為來源估計，未自行推算分鐘；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "豫園站7號口，步行約260公尺（高德頁面參考）；來源未標更新日；2026-11-14查詢 https://ditu.amap.com/place/B001549946",
+      "contentFile": "content/metro/daily/shanghai/2026-11-07/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "chunyuan",
+      "field": "exit_walk",
+      "value": "一大會址・新天地站5號口，步行約330公尺",
+      "sourceUrl": "https://www.amap.com/place/B00157I188",
+      "sourceTitle": "高德公開地點頁",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "重慶南路183號",
+      "evidence": "同店地址欄直接列地鐵站、出口及步行距離。",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；距離為來源估計，未自行推算分鐘；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "一大會址・新天地站5號口，步行約330公尺（高德頁面參考）；來源未標更新日；2026-11-14查詢 https://www.amap.com/place/B00157I188",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "guangmingcun",
+      "field": "exit_walk",
+      "value": "淮海中路站1號口，步行約300公尺",
+      "sourceUrl": "https://ditu.amap.com/place/B00155L02C",
+      "sourceTitle": "高德公開地點頁",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "淮海中路588號",
+      "evidence": "同店地址欄直接列地鐵站、出口及步行距離。",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；距離為來源估計，未自行推算分鐘；起點可能是其他鄰近車站。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "淮海中路站1號口，步行約300公尺（高德頁面參考）；來源未標更新日；2026-11-14查詢 https://ditu.amap.com/place/B00155L02C",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    }
+  ],
+  "researchConclusions": [
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "atian",
+      "field": "price",
+      "value": "陽春麵 NT$50＋滷蛋 NT$15，合計 NT$65；中碗另加10、大碗另加20",
+      "sourceUrl": "https://achu.tw/a-tian-mian-chifeng/",
+      "sourceTitle": "阿朱的日常：阿田麵赤峰街",
+      "publishedAt": "2026-03-22",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "原文赤峰街44巷20號、電話2556-0927；菜單照片亦印阿田麵及同電話。",
+      "portionOrChannel": "現場菜單照片；基礎陽春麵＋滷蛋；不是加肉的全套。",
+      "evidence": "直接檢視原文所連https://achu.tw/wp-content/uploads/2026/03/7batch_IMG_0594.webp：陽春麵50、魯蛋15、中碗加10、大碗加20；65為兩個明示單價相加。",
+      "status": "dated2026",
+      "caveats": "是2026-03食記的菜單照片，拍攝日未另明示，不保證2026-11現價。若文案保留65起，需同列份量／加大條件。圖片沒有依賴矛盾的全套價格敘述。"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "oyster",
+      "field": "price",
+      "value": "蚵仔麵線小碗 NT$65／大碗 NT$75（2025-10影片菜單）",
+      "sourceUrl": "https://www.youtube.com/watch?v=VGdLXZauDpw&t=465s",
+      "sourceTitle": "Meck食之記憶：雙連蚵仔麵線＋大王漢寶殿",
+      "publishedAt": "2025-10-08",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "影片原始description明列民生西路66巷1號、0937-544-770；約465秒店招與菜單同框有同電話。",
+      "portionOrChannel": "現場菜單牌；蚵仔麵線，小／大碗。",
+      "evidence": "公開YouTube原始HTML的videoDetails與2025-10-08台灣日期已讀取；視覺檢視約465秒最高320px原始storyboard並僅作最近鄰放大，可辨蚵仔麵線小65、大75；同牌清麵線小40、大50。",
+      "status": "historical",
+      "caveats": "沒有找到可驗證的2026同店新菜單。只可標2025-10影像記錄，不能稱現價。阿川198-17號、天祥、民生西路47號其他店全部排除。未下載影片或寫入本地圖片。"
+    },
+    {
+      "stationSlug": "daan",
+      "shopKey": "longji",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://scenery.tw/longji-snack-shop/",
+      "sourceTitle": "Dream Scenery：龍記小吃店（龍華燒臘）已歇業",
+      "publishedAt": "2025-02-25",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "原作者搬站後頁面仍明列信義路四段30巷32號、02-2708-5028，與原資料相同。",
+      "portionOrChannel": "原資料泛稱燒臘飯，未指定品項；營業狀態也有衝突。",
+      "evidence": "最新可開原作者頁標示已歇業；140油雞腿飯／150脆皮燒肉飯仍只是2025文章價。未取得2026現行同店菜單或商家營業佐證。",
+      "status": "unverified",
+      "caveats": "不以舊價填補、也不將未證實的歇業當成永久關門。原名稱先後龍華／龍記仍未獲第一方證實；另見operating_status。"
+    },
+    {
+      "stationSlug": "longshan-temple",
+      "shopKey": "sanliu",
+      "field": "price",
+      "value": "黃金麻糬（包起司）NT$65／2顆（2026-05菜單照片；當時該項劃叉）",
+      "sourceUrl": "https://litwenblog.com/36ricecaking/",
+      "sourceTitle": "小蚊子愛飛飛：三六食粑原三六圓仔店",
+      "publishedAt": "2026-05-22",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "原文明列萬華區三水街92號；店面菜單照片印三六食粑。",
+      "portionOrChannel": "店面菜單，黃金麻糬2顆／包起司；非蜜燒麻糬。",
+      "evidence": "在記憶體直接開啟原文菜單圖https://litwenblog.com/wp-content/uploads/2026/05/20260509-118.jpg：黃金麻糬(2顆)(包起司)65，該列有紅X；上一列蜜燒麻糬2顆60沒有可見X。",
+      "status": "dated2026",
+      "caveats": "2026-05文章及20260509圖片檔名是新來源脈絡，作者未另寫明實際拍攝日。紅X只證照片當時該項被劃叉／未供應提示，原因不明，不能說今天仍停賣。不得只顯示65卻省略當時劃叉與日期。"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "atian",
+      "field": "hours",
+      "value": "週一至週五10:00–15:00；週六、日公休",
+      "sourceUrl": "https://chifeng.org.tw/阿田麵/",
+      "sourceTitle": "臺北市赤峰商圈永續發展協會：阿田麵",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "協會店家頁明列赤峰街44巷20號1樓及02-2556-0927。",
+      "portionOrChannel": "商圈協會直接店家資訊頁；不是外送服務時段。",
+      "evidence": "已開啟頁面營業時間欄：週一至五10:00–15:00、週六日休；頁面屬特約店家，協會樂購券活動另明示2026-05至07。",
+      "status": "verified-live",
+      "caveats": "頁面本身未標刊登／更新日期，不能把2026活動日期當店家hours更新日期。協會直接列示比矛盾食記更可採；國定假日規則頁面未寫，不能自行加上。"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "oyster",
+      "field": "hours",
+      "value": "07:30–16:00；週日公休（2025-10影片記錄）",
+      "sourceUrl": "https://www.youtube.com/watch?v=VGdLXZauDpw",
+      "sourceTitle": "Meck食之記憶：雙連蚵仔麵線＋大王漢寶殿",
+      "publishedAt": "2025-10-08",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "原始影片description直接並列店名、民生西路66巷1號、電話0937-544-770及此時段。",
+      "portionOrChannel": "影片作者當時實訪店家資訊。",
+      "evidence": "透過公開YouTubeHTML成功讀出原始videoDetails.shortDescription；時段07:30–16:00、公休日星期日；不是只用搜尋摘要。",
+      "status": "historical",
+      "caveats": "此為查得較新的可核原始記錄，並非2026或即時營業保證。未找到可讀2026第一方公告；Facebook舊店家頁讀取節流後停止。"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "zinaigu",
+      "field": "hours",
+      "value": null,
+      "sourceUrl": "https://www.foodpanda.com.tw/restaurant/a2iz/zi-nai-gu-guo-zi-shao/reviews",
+      "sourceTitle": "Foodpanda：滋奶谷菓子燒",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "已開啟頁尾明列萬全街4號。",
+      "portionOrChannel": "外送平台服務時段，不是已證實現場開門時間。",
+      "evidence": "Foodpanda頁尾現在列Mon–Sat10:30–19:00；先前Uber列Mon13:00–19:00、Tue–Sat10:30–19:00。店家Facebook No4cake頁只能取得temporarilyblocked頁。",
+      "status": "unverified",
+      "caveats": "平台之間週一開門時間仍不一致，不能把外送時段當實體店完整營業時間。若另展示外送資訊可引平台，但現場hours應維持待確認。沒有發現可驗證的2026第一方時段公告。"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "huoshi",
+      "field": "hours",
+      "value": "週一至五13:00–21:30；週六、日12:30–21:30（2026-07報導）",
+      "sourceUrl": "https://supertaste.tvbs.com.tw/food/360339",
+      "sourceTitle": "食尚玩家：雙北芒果冰Top10／貨室甜品",
+      "publishedAt": "2026-07-04",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "已開啟正文No.6貨室甜品，直接列赤峰街71巷34號及此時段。",
+      "portionOrChannel": "2026夏季媒體店家資訊；非同品牌華山門市。",
+      "evidence": "正文No.6地址與時段明列；公開HTML結構資料datePublished及dateModified均2026-07-04T01:00:00+08:00。較2025食記21:00更新。",
+      "status": "dated2026",
+      "caveats": "是有日期的2026報導，非今日店家保證。臺北官方2026夏刊也搜尋到同址同時段，但PDF與網頁原文都403，未當作已開啟佐證。勿只因官方搜尋摘要便升為官方verified。"
+    },
+    {
+      "stationSlug": "daan",
+      "shopKey": "longji",
+      "field": "operating_status",
+      "value": "來源標示已歇業／營業狀態需確認",
+      "sourceUrl": "https://scenery.tw/longji-snack-shop/",
+      "sourceTitle": "Dream Scenery：龍記小吃店（龍華燒臘）已歇業",
+      "publishedAt": "2025-02-25",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "同頁信義路四段30巷32號、02-2708-5028；不是公館龍記炒燴或中山同名店。",
+      "portionOrChannel": "原作者現存文章的閉店標示；非店家正式公告。",
+      "evidence": "已讀原頁h1標題包含已歇業，店家資料的hours位置亦寫已歇業。HTML BlogPosting及article meta的datePublished=2025-02-25T12:00:00+08:00、dateModified=2026-04-01T10:37:33+08:00。",
+      "status": "unverified",
+      "caveats": "閉店標註加入日期與實際歇業日期皆未明示；dateModified不能當關門日。未得獨立第一方證實；愛食記同址頁仍自動顯示營業時段但引用的食記停在2025，不能證明仍開。建議以有來源的待確認警語呈現，保留舊資料，不宣告永久歇業。"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "yuanzai",
+      "field": "price_freshness_review",
+      "value": "保留2025官方外送表NT$110／2粒，未核得更新2026同份量價",
+      "sourceUrl": "https://www.sweetriceball.tw/e-3-out.jpg",
+      "sourceTitle": "雙連圓仔湯官方外送表",
+      "publishedAt": "2025-04",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "官方民生西路136號／2559-7595相符。",
+      "portionOrChannel": "燒麻糬2粒，官方外送訂購單版本114.04。",
+      "evidence": "重新以2026、近月、精確分店與品項搜尋；未取得符合條件的新價格證據，沒有將頁面更新年份改當消費日期。",
+      "status": "historical",
+      "caveats": "沒有找到可驗證且真正更新的2026同品項同份量菜單；2026字樣懶人包／價位帶不等於新菜單。原2025外送表不能改稱2026現價。"
+    },
+    {
+      "stationSlug": "shuanglian",
+      "shopKey": "huoshi",
+      "field": "price_freshness_review",
+      "value": "保留2025-05麵茶牛乳雙拼NT$180歷史記錄；未核得更新2026單品價",
+      "sourceUrl": "https://wunweistories.com/food-huoshih-202505/",
+      "sourceTitle": "Wun-Wei Stories：貨室甜品赤峰門市",
+      "publishedAt": "2025-07-25",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "赤峰街71巷34號，同分店。",
+      "portionOrChannel": "麵茶牛乳雙拼刨冰一份；原文自述2025-05用餐。",
+      "evidence": "重新以2026、近月、精確分店與品項搜尋；未取得符合條件的新價格證據，沒有將頁面更新年份改當消費日期。",
+      "status": "historical",
+      "caveats": "2026夏季報導有新hours但沒有該品項單價。Uber同名頁索引價格未列，不以均消210或不同配料組合取代。"
+    },
+    {
+      "stationSlug": "shilin",
+      "shopKey": "hongdou",
+      "field": "price_freshness_review",
+      "value": "保留2025-08紅豆餅NT$15／個歷史記錄；未核得更新2026士林店價",
+      "sourceUrl": "https://vivawei.tw/shilin-red-bean-cake-2025/",
+      "sourceTitle": "瑋瑋：晴光紅豆餅士林店",
+      "publishedAt": "2025-08-23",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "美德街40號／02-2881-8766，同士林店。",
+      "portionOrChannel": "紅豆餅1個。",
+      "evidence": "重新以2026、近月、精確分店與品項搜尋；未取得符合條件的新價格證據，沒有將頁面更新年份改當消費日期。",
+      "status": "historical",
+      "caveats": "2026-10創始店20元等搜尋結果為雙城街晴光市場分店，未套用。士林店原文官方Facebook連結讀取節流；沒有可驗證的新價公告。"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "nanxiang",
+      "shopName": "南翔饅頭店（豫園店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926728.html",
+      "sourceTitle": "攜程：南翔饅頭店（豫園店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "豫園路87號",
+      "portionOrChannel": "鮮肉小籠；份數、樓層及堂食／外帶價未核實。",
+      "evidence": "同店頁及近年官方豫園美食指南確認豫園路87號；公開推薦菜只有菜名，沒有可核實的鮮肉小籠正常價和份數。搜尋中的不同樓層、外帶／堂食價格不可互換。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "ningbo",
+      "shopName": "寧波湯團店（豫園店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://www.jfdaily.com/sgh/detail?id=1741646",
+      "sourceTitle": "上觀／上海黃浦：寧波湯團店遷店與傳承報導",
+      "publishedAt": "2026-04-28",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "豫春路9–11號",
+      "portionOrChannel": "黑芝麻湯團；現行份數、RMB單價未知。",
+      "evidence": "2026-04-28報導確認2024遷至豫春路9–11號及黑芝麻豬油湯團，沒有菜價。2024現場20元／8個只屬歷史觀察，不採作2026價格。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "songhelou",
+      "shopName": "松鶴樓麵館（豫園店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/24569067.html",
+      "sourceTitle": "攜程：松鶴樓麵館（豫園店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "百翎路5號",
+      "portionOrChannel": "蘇式紅湯麵；澆頭、份量未定。",
+      "evidence": "已開百翎路5號公開店頁，未見具日期的2026蘇式紅湯麵菜單。紅湯麵是類別，澆頭和份量不同；平台人均不可充作一碗麵價。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "laofandian",
+      "shopName": "上海老飯店",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://www.sohu.com/a/980448552_421713",
+      "sourceTitle": "2026-01-27上海老飯店八寶鴨零售推廣",
+      "publishedAt": "2026-01-27",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "福佑路242號",
+      "portionOrChannel": "1.2kg零售冷凍商品，與本頁堂食菜渠道不符。",
+      "evidence": "2026新文章是1.2kg速凍／加熱食用八寶鴨零售配送推廣，標示市場198、福利138；缺福佑路242號堂食分店對應。兩者都不能充作該店堂食八寶鴨價。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "lubolang",
+      "shopName": "綠波廊",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://www.meet-in-shanghai.net/cn/food/green-wave-corridor-yuyuan-garden-road-589622/",
+      "sourceTitle": "上海市文旅局：綠波廊（豫園路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "豫園路115號",
+      "portionOrChannel": "清炒手剝河蝦仁；重量／盤份未知。",
+      "evidence": "官方現存店頁確認豫園路115號及餐廳資料，沒有清炒手剝河蝦仁份量和價格。2026合作酒店早餐或其他店菜單不能作這家分店的現行正餐價。 最後核對公開桌面評論：食神牛所述同菜278元的發布日期為2024-05-08，已排除為現價依據，且份量未列。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false,
+      "supportingSources": [
+        {
+          "url": "https://you.ctrip.com/food/shanghai2/418669-dianping5203807.html",
+          "publishedAt": "2024-05-08",
+          "observed": "可見評論正文清炒手剝河蝦仁278元；食神牛評論結尾日期2024-05-08。舊觀察，未採用。"
+        }
+      ]
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "dusche",
+      "shopName": "毒蛇麵館（靜安寺店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/143190727.html",
+      "sourceTitle": "攜程：毒蛇麵館（靜安寺店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市靜安區愚園路140號",
+      "portionOrChannel": "響油鱔絲拌麵；標準鱔絲份量未知。",
+      "evidence": "愚園路140號同店頁與2026用戶內容未提供可核實的標準響油鱔絲拌麵份量單價。舊報導半斤鱔絲120元與泛指30–60區間都不能當作本菜固定價，其他分店42元亦未採用。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "dongji",
+      "shopName": "董記廬春麵館",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://www.trip.com/restaurant/china/shanghai/detail/restaurant-57278467/",
+      "sourceTitle": "Trip.com：董記廬春麵館",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市靜安區北京西路1806號底層",
+      "portionOrChannel": "醬爆豬肝麵；RMB／碗未知。",
+      "evidence": "北京西路1806號現存頁沒有醬爆豬肝麵金額與份量。2024文章25元所指魚片麵並非豬肝麵；不借用該價。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huangayi",
+      "shopName": "黃阿姨鍋貼大王（萬航渡路店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://you.ctrip.com/food/shanghai2/4994927-dianping175385277.html",
+      "sourceTitle": "攜程：黃阿姨鍋貼大王（萬航渡路店）2026評論",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市萬航渡路174號",
+      "portionOrChannel": "鍋貼；現行每份隻數和價格未知。",
+      "evidence": "已開同店公開評論；2026-04-24用餐描述有鍋貼但無可分離的單品價、數量。舊7元／4隻不作2026正常售價；平台整餐人均亦排除。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "jiajia",
+      "shopName": "佳家湯包（晶品店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-33329369/",
+      "sourceTitle": "Trip.com：佳家湯包（晶品店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市靜安區愚園路68號晶品B2／LG2",
+      "portionOrChannel": "蟹黃湯包；2026份數、RMB單價未知。",
+      "evidence": "同店頁確認愚園路68號晶品B2，公開評論主要2022／2018；未見2026蟹黃湯包價格。舊35元／12個食記不採；2018鮮肉18元／12個還是不同菜品。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huxi",
+      "shopName": "滬西老弄堂麵館（靜安寺店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://www.trip.com/restaurant/china/shanghai/detail/restaurant-136424662/",
+      "sourceTitle": "Trip.com：滬西老弄堂麵館（靜安寺店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市靜安區北京西路1738號",
+      "portionOrChannel": "蔥油拌麵；RMB／碗未知。",
+      "evidence": "北京西路1738號現存店頁有營業時間，無蔥油拌麵單品金額。2022七元報導訪問另一家老店並稱靜安寺店尚在裝修；不得移用。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "laorenhe",
+      "shopName": "老人和（淮海中路店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://www.jfdaily.com/sgh/detail?id=4002851",
+      "sourceTitle": "上觀：老人和糟雞限購熱銷報導",
+      "publishedAt": "2026-06-11",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市黃浦區淮海中路558號",
+      "portionOrChannel": "糟雞半隻；18.8元為促銷，禁止採為正常價。",
+      "evidence": "2026-06-11報導的18.8元／半隻糟雞明確屬特價且每人限購一份；不能成為常態價格。未取得同址普通糟雞規格菜單。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "jieerjing",
+      "shopName": "潔而精川菜館（雁蕩路店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://www.sohu.com/a/1043172766_121668715",
+      "sourceTitle": "上海黃浦：來淮海路吃夜排檔！",
+      "publishedAt": "2026-06-29",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市黃浦區雁蕩路82號（近南昌路）",
+      "portionOrChannel": "麻婆豆腐；每盤份量、價格未知。",
+      "evidence": "2026-06-29同址官方帳號文章只介紹夏季夜市和其他菜，沒有麻婆豆腐規格價。舊同店麻婆豆腐介紹也沒有現行價；第三方20–40估算無菜單基礎，不採。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "hanxiang",
+      "shopName": "瀚祥麵館（武康大樓店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/148411516.html",
+      "sourceTitle": "攜程：瀚祥麵館（武康大樓店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市徐匯區淮海中路1861號",
+      "portionOrChannel": "蔥油拌麵；RMB／碗未知。",
+      "evidence": "同店淮海中路1861號公開頁列老上海蔥油麵，沒有確切單品金額。人均46元是用餐預算，不是一碗麵的價格；未取得2026實際菜單。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "xingyuan",
+      "shopName": "興圓苑·私房菜（番禺路店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://jp.trip.com/restaurant/china/shanghai/detail/restaurant-30952326/",
+      "sourceTitle": "Trip.com：興圓苑私房菜（番禺路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市長寧區番禺路405號",
+      "portionOrChannel": "松鼠鱸魚；魚重、每條金額未知。",
+      "evidence": "同址番禺路405號現存頁沒有松鼠鱸魚規格價。舊176元評論是松子桂魚，魚種和年代不符，不能換成松鼠鱸魚價格。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "coffeetree",
+      "shopName": "Coffee Tree（武康庭）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/8585710.html",
+      "sourceTitle": "攜程：Coffee Tree花園西餐廳（武康路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市徐匯區武康路376號武康庭內",
+      "portionOrChannel": "羊排配菜；主菜份量、RMB價未知。",
+      "evidence": "武康路376號店頁有香烤羊排配烤蘆筍土豆泥菜名，沒有羊排重量、塊數和金額。人均143元不是羊排價。官方網站本輪未能讀取，公開照片索引也未提供可核實2026菜單日期。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "shanghai12",
+      "shopName": "上海12弄·新派上海菜（日月光店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-148509736/",
+      "sourceTitle": "Trip.com：上海12弄（日月光打浦橋店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市黃浦區徐家匯路618號日月光中心2樓",
+      "portionOrChannel": "清蒸鱸魚；魚重、計價單位未知。",
+      "evidence": "現存頁確為日月光中心打浦橋分店，但沒有清蒸鱸魚魚重、按斤／按條計價或金額。未取得分店2026正常菜單；不借其他上海菜館或商場資料。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "mamajia",
+      "shopName": "媽媽家·本幫菜",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/11389652.html",
+      "sourceTitle": "攜程：媽媽家（徐家匯路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市黃浦區徐家匯路548號",
+      "portionOrChannel": "紅燒肉；標準配料、每盤份量未知。",
+      "evidence": "現存同店頁地址548-4，2026評論提及紅燒肉燒鮑魚／全家福紅燒肉，但菜名、份量和一般紅燒肉不同且沒有確切單價。人均不可當菜價；548-5舊資料未能證明是相同舖面菜單。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "yangchun",
+      "shopName": "陽春三記（田子坊店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/153999556.html",
+      "sourceTitle": "攜程：陽春三記·江南麵箋·小酒館（田子坊店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市黃浦區徐家匯路679號",
+      "portionOrChannel": "手拆蟹粉麵；RMB／碗和份量未知。",
+      "evidence": "已HTTP200讀取公開頁，精確名稱及徐家匯路679號相符；沒有推薦菜單、金額或用戶評論。其他人民廣場分店蟹粉麵內容不能移用。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "duojie",
+      "shopName": "多傑拉姆藏餐吧（田子坊店）",
+      "field": "price",
+      "value": null,
+      "sourceUrl": "https://www.jfdaily.com/sgh/detail?id=1731119",
+      "sourceTitle": "上觀／上海黃浦：田子坊藏餐報導",
+      "publishedAt": "2026-04-06",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市黃浦區泰康路248弄30號後門",
+      "portionOrChannel": "犛牛肉火鍋；鍋／肉份量與價格未知。",
+      "evidence": "2026-04-06報導確認泰康路248弄30號後門與犛牛肉火鍋，沒有鍋規格、人數或金額。現存Trip.com店頁也未列單品價，故不能以整餐人均代替。",
+      "status": "unverified",
+      "caveats": [
+        "結論是未核實正常菜價；文章／頁面本日可讀不代表菜單本日更新。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "renheguan",
+      "shopName": "人和館·上海菜（肇嘉浜路店）",
+      "field": "price",
+      "value": "攜程公開頁參考：蟹粉撈飯小份¥199／大份¥397，僅堂食",
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/ren-he-guanshanghai-cuisine-28576182/",
+      "sourceTitle": "Trip.com：人和館·上海菜（徐匯店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "徐匯店，肇嘉浜路407號",
+      "portionOrChannel": "RMB，小份199／大份397；僅堂食；重量和可供人數未列。",
+      "evidence": "已開公開頁：店名徐匯店、肇嘉浜路407號；人氣菜式直接列蟹粉撈飯小199／大397、只限堂吃。非人均，並非促銷欄位。",
+      "status": "verified-live",
+      "caveats": [
+        "底層菜價更新日期未披露；2026-11-11是評論日期，不是菜單更新日期。",
+        "只可作已查閱的公開平台參考價，不能稱餐廳即時官方售價。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "nanxiang",
+      "shopName": "南翔饅頭店（豫園店）",
+      "field": "hours",
+      "value": "07:30–20:00",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926728.html",
+      "sourceTitle": "攜程：南翔饅頭店（豫園店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "豫園路87號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "頁面顯示次日07:30–20:00；未列不同樓層的分別服務時間。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "ningbo",
+      "shopName": "寧波湯團店（豫園店）",
+      "field": "hours",
+      "value": "09:00–21:00",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/8584693.html",
+      "sourceTitle": "攜程：寧波湯團店（豫園店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "店名豫園店；平台地址僅豫園商城，2026官方報導確認新址豫春路9–11號。",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "同品牌同區店頁顯示09–21；平台地址精度不足以獨立排除舊址資料殘留。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。",
+        "必須保留以上地址精度、次日限定或服務渠道限定，不能去掉限定後作全店每日保證。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "songhelou",
+      "shopName": "松鶴樓麵館（豫園店）",
+      "field": "hours",
+      "value": "10:30–20:30",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/24569067.html",
+      "sourceTitle": "攜程：松鶴樓麵館（豫園店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "百翎路5號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "公開同店頁列10:30–20:30。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "laofandian",
+      "shopName": "上海老飯店",
+      "field": "hours",
+      "value": "11:00–14:00；17:00–20:30",
+      "sourceUrl": "https://www.smartshanghai.com/taxi/14233",
+      "sourceTitle": "SmartShanghai：上海老飯店",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "福佑路242號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "現存公開店頁列午晚市時段，無資料更新日期。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "lubolang",
+      "shopName": "綠波廊",
+      "field": "hours",
+      "value": "11:00–14:00；17:00–20:30",
+      "sourceUrl": "https://www.meet-in-shanghai.net/cn/food/green-wave-corridor-yuyuan-garden-road-589622/",
+      "sourceTitle": "上海市文旅局：綠波廊（豫園路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "豫園路115號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "官方旅遊店舖目錄列午晚市，與攜程418669同址頁相同。",
+      "status": "verified-live",
+      "caveats": [
+        "官方目錄未列該店資料更新日期；網頁全站日期不是店舖內容發布日期。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "dusche",
+      "shopName": "毒蛇麵館（靜安寺店）",
+      "field": "hours",
+      "value": "09:00–22:00",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/143190727.html",
+      "sourceTitle": "攜程：毒蛇麵館（靜安寺店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "愚園路140號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "HTTP200公開店頁列09–22。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "dongji",
+      "shopName": "董記廬春麵館",
+      "field": "hours",
+      "value": "24小時（平台參考）",
+      "sourceUrl": "https://www.trip.com/restaurant/china/shanghai/detail/restaurant-57278467/",
+      "sourceTitle": "Trip.com：董記廬春麵館",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "北京西路1806號底層",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "現存同址頁明確顯示Open all day。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huxi",
+      "shopName": "滬西老弄堂麵館（靜安寺店）",
+      "field": "hours",
+      "value": "10:00–15:00；16:00–20:30",
+      "sourceUrl": "https://www.trip.com/restaurant/china/shanghai/detail/restaurant-136424662/",
+      "sourceTitle": "Trip.com：滬西老弄堂麵館（靜安寺店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "北京西路1738號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開同址公開頁列分段時段，2024靜安官方餐飲介紹亦一致；以現存平台顯示為查閱依據。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "weixiang",
+      "shopName": "味香齋（雁蕩路店）",
+      "field": "hours",
+      "value": "06:30–21:00",
+      "sourceUrl": "https://www.jfdaily.com/sgh/detail?id=4027519",
+      "sourceTitle": "上觀：贊達亞再訪味香齋",
+      "publishedAt": "2026-07-26",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "雁蕩路14號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "2026-07-26記者文章店舖資訊明列06:30–21。",
+      "status": "dated2026",
+      "caveats": [
+        "2026-07-26採訪資料，不保證11月臨時休假安排。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "chunyuan",
+      "shopName": "春園·四如春（復興公園店）",
+      "field": "hours",
+      "value": "06:30–19:00（平台顯示次日營業時段）",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/7004592.html",
+      "sourceTitle": "攜程：春園四如春（復興公園店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "重慶南路183號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "HTTP200可見文字顯示休息中、明日06:30–19:00。未取得完整每週排程。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。",
+        "必須保留以上地址精度、次日限定或服務渠道限定，不能去掉限定後作全店每日保證。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "laorenhe",
+      "shopName": "老人和（淮海中路店）",
+      "field": "hours",
+      "value": "堂食11:00–14:00；17:00–20:00（糟貨外賣窗口另確認）",
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-15149315/",
+      "sourceTitle": "Trip.com：老人和（淮海中路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "淮海中路558號",
+      "portionOrChannel": "餐廳堂食",
+      "evidence": "公開餐廳頁列午晚市；這是餐廳服務時段，不能推斷糟雞街邊零售窗口同時營業。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。",
+        "必須保留以上地址精度、次日限定或服務渠道限定，不能去掉限定後作全店每日保證。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "guangmingcun",
+      "shopName": "光明邨大酒家",
+      "field": "hours",
+      "value": "堂食11:00–14:00；17:00–20:30（鮮肉月餅窗口另確認）",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2192/4994197.html",
+      "sourceTitle": "攜程：光明邨大酒家（淮海中路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "淮海中路588號",
+      "portionOrChannel": "餐廳堂食",
+      "evidence": "已開現存同址餐廳頁，列堂食午晚市。推薦菜鮮肉月餅屬窗口渠道，該窗口時間未能核實。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。",
+        "必須保留以上地址精度、次日限定或服務渠道限定，不能去掉限定後作全店每日保證。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "laojishi",
+      "shopName": "老吉士酒家（天平路店）",
+      "field": "hours",
+      "value": "11:00–14:30；17:00–21:30",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926854.html",
+      "sourceTitle": "攜程：老吉士酒家（天平路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "天平路41號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "HTTP200同店頁列兩段服務時間。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "xingyuan",
+      "shopName": "興圓苑·私房菜（番禺路店）",
+      "field": "hours",
+      "value": "11:00–14:00；16:30–22:30",
+      "sourceUrl": "https://jp.trip.com/restaurant/china/shanghai/detail/restaurant-30952326/",
+      "sourceTitle": "Trip.com：興圓苑·私房菜（番禺路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "番禺路405號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開同址公開頁，與攜程15456646同址頁時段一致。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "shanghai12",
+      "shopName": "上海12弄·新派上海菜（日月光店）",
+      "field": "hours",
+      "value": "10:30–15:30；16:30–21:00",
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-148509736/",
+      "sourceTitle": "Trip.com：上海12弄（日月光打浦橋店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "徐家匯路618號日月光中心打浦橋店2樓（高德同店佐證）",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開Trip.com店頁並HTTP讀取攜程148509736，均列10:30–15:30、16:30–21。不是商場整體時間。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "mamajia",
+      "shopName": "媽媽家·本幫菜",
+      "field": "hours",
+      "value": "11:00–13:30；16:30–21:00",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/11389652.html",
+      "sourceTitle": "攜程：媽媽家（徐家匯路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "徐家匯路548-4號；電話021-54666173",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "公開同店頁明列兩段時間。2023鳳凰網文章寫548-5，與現存平台門牌後綴衝突；未借用548-1鄰店。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。",
+        "必須保留以上地址精度、次日限定或服務渠道限定，不能去掉限定後作全店每日保證。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "duojie",
+      "shopName": "多傑拉姆藏餐吧（田子坊店）",
+      "field": "hours",
+      "value": "11:00–23:30",
+      "sourceUrl": "https://us.trip.com/restaurant/china/shanghai/detail/restaurant-31021973/",
+      "sourceTitle": "Trip.com：多傑拉姆藏餐吧（田子坊店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "泰康路248弄30號後門",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開同址公開頁列11–23:30；2026-04-06官方報導亦確認後門地址。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "renheguan",
+      "shopName": "人和館·上海菜（肇嘉浜路店）",
+      "field": "hours",
+      "value": "11:00–21:30",
+      "sourceUrl": "https://hk.trip.com/restaurant/china/shanghai/detail/ren-he-guanshanghai-cuisine-28576182/",
+      "sourceTitle": "Trip.com：人和館·上海菜（徐匯店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "肇嘉浜路407號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "已開同址店頁列11–21:30，攜程正確店號15098466相同。平台未揭露中場廚房安排。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。"
+      ],
+      "adoptionRecommended": true
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "jieerjing",
+      "shopName": "潔而精川菜館（雁蕩路店）",
+      "field": "hours",
+      "value": null,
+      "sourceUrl": "https://www.sohu.com/a/1043172766_121668715",
+      "sourceTitle": "上海黃浦：來淮海路吃夜排檔！",
+      "publishedAt": "2026-06-29",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "雁蕩路82號",
+      "portionOrChannel": "常態每日堂食時間未核實",
+      "evidence": "2026-06-29官方帳號同址文章只給6–8月週五六20–23的限時夜市；11–14／17–翌日01其實在後面的老弟兄海鮮排檔段落，不能誤歸潔而精。其他公開平台時間衝突，政府PDF晚市起點為7:00字樣，不能擅改成17:00。",
+      "status": "unverified",
+      "caveats": [
+        "夏季夜市已過期；不作11月常態時間。"
+      ],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "hanxiang",
+      "shopName": "瀚祥麵館（武康大樓店）",
+      "field": "hours",
+      "value": null,
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/148411516.html",
+      "sourceTitle": "攜程：瀚祥麵館（武康大樓店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "淮海中路1861號",
+      "portionOrChannel": "每日營業時間未核實",
+      "evidence": "精確同址淮海中路1861號頁面沒有可見營業時段；搜尋到泛旅遊6:30–21資料缺可信採集／更新日及官方菜單，未採用。",
+      "status": "unverified",
+      "caveats": [],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "coffeetree",
+      "shopName": "Coffee Tree（武康庭）",
+      "field": "hours",
+      "value": null,
+      "sourceUrl": "https://www.smartshanghai.com/venue/3062/smshwxmpqr.jpeg",
+      "sourceTitle": "SmartShanghai：Coffee Tree（Ferguson Lane）",
+      "publishedAt": "2026-06-19",
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "武康路376號武康庭1樓",
+      "portionOrChannel": "平日開門時間衝突",
+      "evidence": "編輯頁最後更新2026-06-19：平日10–22、週末9–22。攜程同址頁9–22；Corner可見正文更新2026-07-11且週三9–22。沒有可讀商家官方時段，平日9與10仍衝突。",
+      "status": "unverified",
+      "caveats": [
+        "Corner搜尋摘要顯示的較新日期與正文不同，本包採正文2026-07-11；不能把搜尋抓取日當更新日。"
+      ],
+      "adoptionRecommended": false,
+      "supportingSources": [
+        {
+          "url": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/8585710.html",
+          "observed": "09:00–22:00，未披露更新日"
+        },
+        {
+          "url": "https://www.corner.inc/place/pJ1eb9xnDsFq",
+          "observed": "正文Updated July 11th 2026；Wednesday09:00–22:00"
+        },
+        {
+          "url": "http://www.coffeetreecafe.com.cn",
+          "observed": "商家網站本輪HTTP/TLS／開頁失敗，未取得可讀時間。"
+        }
+      ]
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "yangchun",
+      "shopName": "陽春三記（田子坊店）",
+      "field": "hours",
+      "value": null,
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/153999556.html",
+      "sourceTitle": "攜程：陽春三記·江南麵箋·小酒館（田子坊店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "田子坊店，黃浦區徐家匯路679號",
+      "portionOrChannel": "公開頁明示暫無營業時間",
+      "evidence": "HTTP200公開頁精確徐家匯路679號，頁面明確顯示暫無營業時間；不能借用人民廣場店。",
+      "status": "unverified",
+      "caveats": [],
+      "adoptionRecommended": false
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "mamajia",
+      "shopName": "媽媽家·本幫菜",
+      "field": "identity",
+      "value": "現存攜程548-4；2023文章548-5差異未釐清",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/11389652.html",
+      "sourceTitle": "攜程：媽媽家（徐家匯路店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "徐家匯路548-4號（現存列表）",
+      "portionOrChannel": null,
+      "evidence": "正確攜程店號11389652，地址548-4及電話可辨；2023鳳凰網報導548-5。Trip.com20775417不能直套攜程：該號在攜程返回意大利餐廳。",
+      "status": "verified-live",
+      "caveats": [
+        "可採分店佐證；不足以擅自改寫既有548號地址或保證-4／-5是否同一舖面。"
+      ],
+      "adoptionRecommended": false,
+      "supportingSources": [
+        {
+          "url": "https://foodnwine.ifeng.com/c/8T6ESB6zy58",
+          "publishedAt": "2023-09-15",
+          "observed": "舊報導列徐家匯路548-5號"
+        }
+      ]
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "yangchun",
+      "shopName": "陽春三記（田子坊店）",
+      "field": "identity",
+      "value": "田子坊店：徐家匯路679號",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/153999556.html",
+      "sourceTitle": "攜程：陽春三記·江南麵箋·小酒館（田子坊店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "黃浦區徐家匯路679號",
+      "portionOrChannel": null,
+      "evidence": "本輪HTTP200精確店名、區域及門牌均匹配，故舊調查的門牌身份未知可更新為有現存公開店頁佐證；沒有菜單價或時間。",
+      "status": "verified-live",
+      "caveats": [
+        "公開平台列表佐證，非商家登記證明；不可把其他分店價格搬過來。"
+      ],
+      "adoptionRecommended": true
+    }
+  ],
+  "routeConclusions": [
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "nanxiang",
+      "field": "exit_walk",
+      "value": "地鐵14號線豫园站(7口)606公尺，步行約8分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926728.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "豫园路87号",
+      "evidence": "距地铁14号线豫园站(7口)606m，步行8min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "songhelou",
+      "field": "exit_walk",
+      "value": "地鐵14號線豫园站(7口)616公尺，步行約8分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/24569067.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "百翎路5号(近旧校场路豫园5号口)",
+      "evidence": "距地铁14号线豫园站(7口)616m，步行8min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "dusche",
+      "field": "exit_walk",
+      "value": "地鐵2號線靜安寺站(地鐵3通道口-晶品商场)387公尺，步行約5分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/143190727.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "愚园路140号",
+      "evidence": "距地铁2号线静安寺站(地铁3通道口-晶品商场)387m，步行5min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huangayi",
+      "field": "exit_walk",
+      "value": "地鐵2號線靜安寺站(地鐵1通道口-华山路)691公尺，步行約9分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994927.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "万航渡路174号",
+      "evidence": "距地铁2号线静安寺站(地铁1通道口-华山路)691m，步行9min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "hanxiang",
+      "field": "exit_walk",
+      "value": "地鐵10號線交通大學站(1口)628公尺，步行約8分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/148411516.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市淮海中路1861号",
+      "evidence": "距地铁10号线交通大学站(1口)628m，步行8min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "dongxin",
+      "field": "exit_walk",
+      "value": "地鐵1號線常熟路站(8口)1.3公里，步行約17分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4995500.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "武康路98号（武康大楼北门880米）",
+      "evidence": "距地铁1号线常熟路站(8口)1.3km，步行17min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "xingyuan",
+      "field": "exit_walk",
+      "value": "地鐵10號線交通大學站(5口)544公尺，步行約7分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/15456646.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "番禺路405号(10号线交通大学站5号口步行400m)",
+      "evidence": "距地铁10号线交通大学站(5口)544m，步行7min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "coffeetree",
+      "field": "exit_walk",
+      "value": "地鐵1號線衡山路站(2口)1.3公里，步行約18分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/8585710.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "武康路376号武康庭内",
+      "evidence": "距地铁1号线衡山路站(2口)1.3km，步行18min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "shanghai12",
+      "field": "exit_walk",
+      "value": "地鐵9號線打浦桥站(地鐵1通道口-日月光中心)370公尺，步行約5分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/148509736.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "上海市黄浦区瑞金二路街道日月光中心(打浦桥店)",
+      "evidence": "距地铁9号线打浦桥站(地铁1通道口-日月光中心)370m，步行5min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "yangchun",
+      "field": "exit_walk",
+      "value": "地鐵9號線打浦桥站(地鐵3通道口-日月光中心)323公尺，步行約4分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/153999556.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "黄浦区-徐家汇路679号",
+      "evidence": "距地铁9号线打浦桥站(地铁3通道口-日月光中心)323m，步行4min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "jiajia",
+      "field": "exit_walk",
+      "value": "地鐵2號線靜安寺站(地鐵3通道口-晶品商场)370公尺，步行約5分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/16548886.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "愚园路68号晶品LG2层13A室",
+      "evidence": "距地铁2号线静安寺站(地铁3通道口-晶品商场)370m，步行5min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "weixiang",
+      "field": "exit_walk",
+      "value": "地鐵1號線一大会址·黃陂南路站(1口)498公尺，步行約7分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/6977327.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "雁荡路14号",
+      "evidence": "距地铁1号线一大会址·黄陂南路站(1口)498m，步行7min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "laorenhe",
+      "field": "exit_walk",
+      "value": "地鐵1號線一大会址·黃陂南路站(1口)639公尺，步行約9分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/7009657.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "瑞金二路街道淮海中路558号(成都南路与淮海中路交叉口旁)",
+      "evidence": "距地铁1号线一大会址·黄陂南路站(1口)639m，步行9min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "renheguan",
+      "field": "exit_walk",
+      "value": "地鐵12號線嘉善路站(5口)393公尺，步行約5分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/15098466.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "肇嘉浜路407号（近田子坊、建业里、昆虫博物馆）",
+      "evidence": "距地铁12号线嘉善路站(5口)393m，步行5min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huxi",
+      "field": "exit_walk",
+      "value": "地鐵2號線靜安寺站(地鐵1通道口-华山路)566公尺，步行約7分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/136424662.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "北京西路1738号",
+      "evidence": "距地铁2号线静安寺站(地铁1通道口-华山路)566m，步行7min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "jieerjing",
+      "field": "exit_walk",
+      "value": "地鐵1號線一大会址·黃陂南路站(1口)692公尺，步行約9分鐘",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994201.html",
+      "sourceTitle": "攜程公開路線參考",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "瑞金二路街道雁荡路82号(近南昌路)",
+      "evidence": "距地铁1号线一大会址·黄陂南路站(1口)692m，步行9min",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；步行數字為平台估計，並非實測或保證最短路線；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "laofandian",
+      "field": "exit_walk",
+      "value": "豫園站7號口，步行約260公尺",
+      "sourceUrl": "https://ditu.amap.com/place/B001549946",
+      "sourceTitle": "高德公開地點頁",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "福佑路242號",
+      "evidence": "同店地址欄直接列地鐵站、出口及步行距離。",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；距離為來源估計，未自行推算分鐘；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "chunyuan",
+      "field": "exit_walk",
+      "value": "一大會址・新天地站5號口，步行約330公尺",
+      "sourceUrl": "https://www.amap.com/place/B00157I188",
+      "sourceTitle": "高德公開地點頁",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "重慶南路183號",
+      "evidence": "同店地址欄直接列地鐵站、出口及步行距離。",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；距離為來源估計，未自行推算分鐘；起點可能是其他鄰近車站。"
+      ]
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "guangmingcun",
+      "field": "exit_walk",
+      "value": "淮海中路站1號口，步行約300公尺",
+      "sourceUrl": "https://ditu.amap.com/place/B00155L02C",
+      "sourceTitle": "高德公開地點頁",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "淮海中路588號",
+      "evidence": "同店地址欄直接列地鐵站、出口及步行距離。",
+      "status": "verified-live",
+      "caveats": [
+        "來源未披露更新日；距離為來源估計，未自行推算分鐘；起點可能是其他鄰近車站。"
+      ]
+    }
+  ],
+  "routeUnresolved": [
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "ningbo",
+      "reason": "平台地址僅豫園商城，不能排除舊址路線；未採用其出口／分鐘。"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "lubolang",
+      "reason": "現存攜程路線選到公車站；其他聚合頁未提供可靠更新依據，不作地鐵出口結論。"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "dongji",
+      "reason": "同址平台頁有時間，未取得可靠的近期地鐵出口／步行資料；不借愚園路781號分店。"
+    },
+    {
+      "stationSlug": "shanghai-jiaotong-university",
+      "shopKey": "laojishi",
+      "reason": "現存攜程提供公車站，交通大學1口470公尺原始介紹為2021，不作近期實測。"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "mamajia",
+      "reason": "平台路線選到遠處公車站；門牌尾號分歧尚未釐清，不借鄰店走法。"
+    },
+    {
+      "stationSlug": "shanghai-dapuqiao",
+      "shopKey": "duojie",
+      "reason": "近期同址頁未列可核地鐵走法，田子坊通用入口攻略不能替代到後門的店家路線。"
+    }
+  ]
+}

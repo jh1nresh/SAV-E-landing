@@ -255,22 +255,22 @@
         "key": "atian",
         "name": "阿田麵",
         "dish": "古早味陽春麵＋滷蛋",
-        "price": null,
-        "price_source": null,
+        "price": "陽春麵＋滷蛋 NT$65（基本碗；中碗另加10、大碗另加20；2026-03菜單）",
+        "price_source": "2026-03-22記錄；2026-11-14查詢 https://achu.tw/a-tian-mian-chifeng/",
         "address": "台北市大同區赤峰街44巷20號1樓",
         "exit_walk": "1 號出口約 3 分鐘",
-        "hours": null,
+        "hours": "週一至週五10:00–15:00；週六、日公休；來源未標更新日；2026-11-14查詢 https://chifeng.org.tw/阿田麵/",
         "sources": null
       },
       {
         "key": "oyster",
         "name": "雙連蚵仔麵線",
         "dish": "一早就開的麵線",
-        "price": null,
-        "price_source": null,
+        "price": "蚵仔麵線小碗 NT$65／大碗 NT$75（2025-10影片菜單）",
+        "price_source": "2025-10-08記錄；2026-11-14查詢 https://www.youtube.com/watch?v=VGdLXZauDpw&t=465s",
         "address": "台北市中山區民生西路66巷1號",
         "exit_walk": "1 號出口右手邊",
-        "hours": null,
+        "hours": "07:30–16:00；週日公休（2025-10影片記錄）；2025-10-08記錄；2026-11-14查詢 https://www.youtube.com/watch?v=VGdLXZauDpw",
         "sources": null
       },
       {
@@ -303,7 +303,7 @@
         "price_source": "2025-07-25 Wun-Wei Stories：貨室甜品赤峰門市（日期所示參考價，非即時售價）；2026-11-14核對 https://wunweistories.com/food-huoshih-202505/",
         "address": "台北市大同區赤峰街71巷34號",
         "exit_walk": "雙連站約 4 分鐘",
-        "hours": null,
+        "hours": "週一至五13:00–21:30；週六、日12:30–21:30（2026-07報導）；2026-07-04記錄；2026-11-14查詢 https://supertaste.tvbs.com.tw/food/360339",
         "sources": null
       }
     ],
@@ -1379,7 +1379,7 @@
         "price_source": null,
         "address": "大安區信義路四段30巷32號",
         "exit_walk": "大安站附近",
-        "hours": "11:00–14:00、16:30–20:30",
+        "hours": "營業狀態需確認：原食記現已標示歇業，關閉日期及店方公告未核實。原筆記時段 11:00–14:00、16:30–20:30，不可作為現行營業保證；2026-11-14查詢 https://scenery.tw/longji-snack-shop/",
         "sources": [
           "https://boboeatking.pixnet.net/blog/posts/16191603959"
         ]

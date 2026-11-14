@@ -92,7 +92,12 @@ async function expectStationContent(page: Page, station: Station) {
       const rowLabel = station.city === 'shanghai' && key === 'price' ? '價格（人民幣）' : label;
       const row = card.locator('.food-row').filter({ has: page.locator('dt', { hasText: new RegExp(`^${rowLabel.replace(/[()]/g, '\\$&')}$`) }) });
       const value = shop[key];
-      if (value) await expect(row.locator('dd')).toHaveText(value);
+      if (value) {
+        await expect(row.locator('dd')).toHaveText(value);
+        for (const url of value.match(/https?:\/\/[^\s]+/g) ?? []) {
+          await expect(row.locator('dd a').filter({ hasText: url })).toHaveAttribute('href', url);
+        }
+      }
       else if (key === 'price' && station.city !== 'shanghai') await expect(row.locator('dd')).toHaveText('價格待確認');
       else await expect(row).toHaveCount(0);
     }
