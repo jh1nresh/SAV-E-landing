@@ -34,4 +34,4 @@ export function hrefWithLang(path: string, lang: SiteLang): string {
   return lang === "en" ? `${path}?lang=en` : path;
 }
 
-export const LANG_BOOT_SCRIPT = `(()=>{const en=new URLSearchParams(location.search).get("lang")==="en";document.documentElement.lang=en?"en":"zh-Hant";if(en&&location.pathname==="/"){document.title=${JSON.stringify(SITE_TITLE_EN)};const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute("content",${JSON.stringify(SITE_DESCRIPTION_EN)});}})();`;
+export const LANG_BOOT_SCRIPT = `(()=>{document.documentElement.classList.add("js");const en=new URLSearchParams(location.search).get("lang")==="en";document.documentElement.lang=en?"en":"zh-Hant";if(en&&location.pathname==="/"){document.title=${JSON.stringify(SITE_TITLE_EN)};const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute("content",${JSON.stringify(SITE_DESCRIPTION_EN)});}})();`;
