@@ -1,6 +1,39 @@
 import { expect, test } from "@playwright/test";
 import { openStation } from "./helpers";
 
+test("unmounting a closing map cancels its animation waits", async ({ page }) => {
+  await page.goto("/");
+  await openStation(page, "arena");
+  const result = await page.evaluate(async () => {
+    // Hold newly scheduled frames so teardown happens during the close spring.
+    // Also deliver cancelled callbacks to cover a frame already in dispatch.
+    const originalCancel = window.cancelAnimationFrame.bind(window);
+    const originalRequest = window.requestAnimationFrame;
+    const queue = new Map<number, FrameRequestCallback>();
+    let nextId = 0;
+    window.requestAnimationFrame = callback => { queue.set(--nextId, callback); return nextId; };
+    window.cancelAnimationFrame = id => { if (id < 0) queue.delete(id); else originalCancel(id); };
+    try {
+      const map = window.__savvyMap!;
+      document.getElementById("cardX")!.click();
+      const wasClosing = map.state().closing;
+      const staleCallbacks = [...queue.values()];
+      map.destroy();
+      const remainingAfterDestroy = queue.size;
+      staleCallbacks.forEach(callback => callback(performance.now()));
+      // Intro/badge timers must not restart a destroyed map either.
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      return { wasClosing, capturedWait: staleCallbacks.length > 0,
+        remainingAfterDestroy, remainingAfterCallbacks: queue.size, closing: map.state().closing };
+    } finally {
+      window.requestAnimationFrame = originalRequest;
+      window.cancelAnimationFrame = originalCancel;
+    }
+  });
+  expect(result).toEqual({ wasClosing: true, capturedWait: true,
+    remainingAfterDestroy: 0, remainingAfterCallbacks: 0, closing: false });
+});
+
 for (const mode of ["", "reduce=1"]) {
   test(`returning home during a station transition cancels selection (${mode || "animated"})`, async ({ page }) => {
     await page.goto(`/?${mode}`);

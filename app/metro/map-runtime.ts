@@ -159,10 +159,12 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     return s;
   };
 
+  let destroyed = false;
   let raf = 0;
+  let closeWaitRaf = 0;
   let last = 0;
   const kick = () => {
-    if (!raf) {
+    if (!destroyed && !raf) {
       last = performance.now();
       raf = requestAnimationFrame(tick);
     }
@@ -451,6 +453,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   }
 
   function finishClose(id: string, focus = true) {
+    if (destroyed) return;
     closing = false;
     showing = null;
     card.hidden = true;
@@ -491,10 +494,12 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     to(dragY, 0, MOTION.cardClose);
     kick();
     const wait = () => {
+      closeWaitRaf = 0;
+      if (destroyed) return;
       if (cardP.done && closing) finishClose(id, focus);
-      else if (closing) requestAnimationFrame(wait);
+      else if (closing) closeWaitRaf = requestAnimationFrame(wait);
     };
-    requestAnimationFrame(wait);
+    closeWaitRaf = requestAnimationFrame(wait);
   }
 
   let pendingId: string | null = null;
@@ -699,6 +704,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   function tick(now: number) {
     raf = 0;
+    if (destroyed) return;
     const dt = Math.min(0.25, Math.max(0.001, (now - last) / 1000));
     last = now;
     let busy = false;
@@ -1093,7 +1099,6 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   window.addEventListener("resize", onWinResize);
   window.addEventListener("orientationchange", onOrient);
 
-  let destroyed = false;
   const onFonts = () => {
     if (destroyed) return;
     measureGeometry();
@@ -1193,6 +1198,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }),
     destroy: () => {
       destroyed = true;
+      closing = false;
       document.fonts?.removeEventListener("loadingdone", onFonts);
       pinch = null;
       zoomIn.removeEventListener("click", onZoomIn);
@@ -1215,6 +1221,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       ro.disconnect();
       io?.disconnect();
       if (raf) cancelAnimationFrame(raf);
+      if (closeWaitRaf) cancelAnimationFrame(closeWaitRaf);
+      raf = closeWaitRaf = 0;
       if (window.__savvyMap === api) delete window.__savvyMap;
     },
   };
