@@ -23,7 +23,7 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
   );
   return (
     <div className="mapwrap mapwrap-slot" data-testid="metro-map-slot" role="img"
-      aria-label={lang === "en" ? `${cityMapName(data)} metro food map` : `${data._meta.city === "shanghai" ? "上海地鐵" : "台北捷運"}美食地圖`}>
+      aria-label={lang === "en" ? (data._meta.city === "shanghai" ? "Shanghai metro food map" : "Taipei MRT food map") : `${data._meta.city === "shanghai" ? "上海地鐵" : "台北捷運"}美食地圖`}>
       <div aria-hidden="true">
         <div dangerouslySetInnerHTML={{ __html: posterSvg(SVG_DEFS) }} />
         <div className="mapcard">
