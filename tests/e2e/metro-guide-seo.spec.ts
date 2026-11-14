@@ -30,6 +30,7 @@ test('all station guides have unique search metadata and matching Markdown facts
     const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
     const description = html.match(/<meta name="description" content="([^"]+)"/)?.[1];
     expect(title).toContain('美食攻略');
+    expect(title).toContain(station.city === 'shanghai' ? '上海' : '台北');
     expect(description).toContain(`${station.shops.length}家店`);
     expect(titles.has(title!)).toBe(false);
     expect(descriptions.has(description!)).toBe(false);

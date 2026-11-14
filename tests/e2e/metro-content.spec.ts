@@ -58,7 +58,8 @@ test('food pages fit a narrow viewport', async ({ page }) => {
 
 async function expectStationContent(page: Page, station: Station) {
   await page.goto(`/metro/${station.slug}`);
-  await expect(page.locator('h1')).toHaveText(`${station.station}${station.station.endsWith('站') ? '' : '站'}美食攻略`);
+  const city = station.city === 'shanghai' ? '上海' : '台北';
+  await expect(page.locator('h1')).toHaveText(`${station.station.startsWith(city) ? '' : city}${station.station}${station.station.endsWith('站') ? '' : '站'}美食攻略`);
   await expect(page).toHaveTitle(new RegExp(`${station.station}.*美食攻略`));
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://savvy.jeezlabs.io/metro/${station.slug}`);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', new RegExp(`${station.shops.length}家店`));

@@ -13,7 +13,9 @@ test('guide headings avoid duplicate station suffix and describe only available 
   assert.match(guideDescription(station), /^台北車站周邊2家店/);
   assert.doesNotMatch(guideDescription(station), /出口走法|營業資訊/);
   assert.doesNotMatch(guideDescription({ ...station, shops: [] }), /收錄。|，。/);
-  assert.equal(guideHeading({ ...station, station: '雙連' }), '雙連站美食攻略');
+  assert.equal(guideHeading({ ...station, station: '雙連' }), '台北雙連站美食攻略');
+  assert.equal(guideHeading({ ...station, city: 'shanghai', station: '豫園' }), '上海豫園站美食攻略');
+  assert.equal(guideHeading({ ...station, station: '台北101／世貿' }), '台北101／世貿站美食攻略');
 });
 
 test('modification date is the later content/template date, independent of wall clock', () => {
