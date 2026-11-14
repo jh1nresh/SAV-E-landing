@@ -403,3 +403,19 @@
     transition: none;
   }
 }
+
+/* The no-JS list is ~1100px. Hide it before paint when JS runs, and show the
+   closed trigger immediately, so hydration does not collapse the page under
+   a WebKit scroll offset. */
+html.js .sd-static {
+  display: none !important;
+}
+
+html.js .sd-live[hidden] {
+  display: block !important;
+}
+
+.sd-dock,
+.sd-static {
+  overflow-anchor: none;
+}

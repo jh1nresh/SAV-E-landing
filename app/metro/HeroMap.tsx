@@ -15,6 +15,9 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
+    // Show the live map before __savvyMap exists. WebKit drops focus() on a
+    // control inside visibility:hidden and does not retry after it becomes visible.
+    root.parentElement?.classList.add("is-ready");
     const api = bootMetroMap(root, data);
     onReady?.();
     return () => api.destroy();
