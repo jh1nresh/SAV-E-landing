@@ -39,10 +39,6 @@ export function CityHeroMap({ clock }: { clock: string }) {
   return <div className="hero-search-col" data-city={city}>
     <StationPicker key={city} stations={stations} city={city} freshIds={freshIds} freshSources={freshSources} note={note} partial={partial} showLineMenu={city === "shanghai"} />
     <HeroMapLazy key={`map-${city}`} data={metro} />
-    {city === "shanghai" && <p className="guide-small">
-      <span className="zh">價格以人民幣（¥）表示；未提供價格的店家留白。</span>
-      <span className="en">Prices are renminbi (¥); unpublished prices stay blank.</span>
-    </p>}
     {city === "shanghai" && <noscript>{shanghaiFoods.map(station => <section id={station.slug} key={station.slug}>
       <h2>{station.station}</h2>
       {station.shops.map((shop, i) => <article key={shop.key ?? i}><h3>{shop.name}</h3><p>{shop.address}</p>{shop.price && <p>{shop.price}</p>}</article>)}

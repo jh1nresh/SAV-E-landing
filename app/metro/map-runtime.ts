@@ -347,7 +347,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       img
         ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(imageAlt(s))}" width="104" height="118" loading="lazy" decoding="async" fetchpriority="low">`
         : ""
-    }</div><div class="bd"><h4>${escapeHtml(s.name)}</h4><dl class="article-details"><div><dt>地址</dt><dd>${escapeHtml(s.article?.address?.trim() || "地址待確認")}</dd></div><div><dt>價格</dt><dd>${price(s)}</dd></div></dl></div></article>`;
+    }</div><div class="bd"><h4>${escapeHtml(s.name)}</h4><dl class="article-details"><div><dt>地址</dt><dd>${escapeHtml(s.article?.address?.trim() || "地址待確認")}</dd></div><div><dt>價格${data._meta.city === "shanghai" ? "（人民幣）" : ""}</dt><dd>${price(s)}</dd></div></dl></div></article>`;
   };
 
   function fillCard(id: string) {

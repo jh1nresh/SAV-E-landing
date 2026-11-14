@@ -184,6 +184,7 @@ test("Shanghai switches inside the same hero with the shared photo map and cards
       await expect(card.locator("h3")).toHaveText(station.station);
       await expect(card).toContainText(station.shops[0].address!);
       await expect(card).not.toContainText("NT$");
+      await expect(card.locator("dt").nth(1)).toHaveText("價格（人民幣）");
       for (const [i, shop] of station.shops.entries()) {
         await card.locator(".thumbs button").nth(i).click();
         await expect(card.locator("h4")).toHaveText(shop.name!);
