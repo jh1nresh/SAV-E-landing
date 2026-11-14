@@ -32,7 +32,7 @@ for (const width of [390, 1280]) {
     await link.focus();
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(/\/metro\/xiaojudan$/);
-    await expect(page.locator("h1")).toHaveText("小巨蛋");
+    await expect(page.locator("h1")).toHaveText("台北小巨蛋站美食攻略");
   });
 }
 

@@ -408,7 +408,11 @@ test('published Shanghai stations stay inside the city and do not invent prices'
   assert.equal(dapuqiao.posts.instagram, 'https://www.instagram.com/savvysave_/p/Dfo61SiG2v1/');
   assert.equal(dapuqiao.posts.threads, 'https://www.threads.com/@savvysave_/post/Dfo7AEEm_8z');
   assert.equal(dapuqiao.posts.xiaohongshu ?? null, null);
-  assert.equal(dapuqiao.shops.every(shop => shop.price == null), true);
+  const dapuqiaoSource = expected.find(station => station.slug === dapuqiao.slug);
+  for (const shop of dapuqiao.shops) {
+    assert.equal(shop.price, dapuqiaoSource.shops.find(source => source.key === shop.key).price ?? null);
+    if (shop.price) assert.ok(shop.price_source?.trim(), 'published prices need their source');
+  }
   assert.equal(huangpi.posts.instagram, 'https://www.instagram.com/p/DfhKbw_G6WX/');
   assert.equal(huangpi.posts.threads, 'https://www.threads.com/@savvysave_/post/DfhK4TFGwQT');
   assert.equal(huangpi.shops.find(shop => shop.name === '味香齋（雁蕩路店）').price, '14元人民幣／碗');

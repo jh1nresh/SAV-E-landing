@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { getPublicMetroData } from "../../lib/metro";
+import { getPublicMetroData, getShanghaiFoodStations } from "../../lib/metro";
 const metro = getPublicMetroData();
 
 const sizes = [[1280, 800], [1440, 900], [390, 844], [375, 667], [320, 568]];
@@ -9,11 +9,13 @@ async function bounds(page: Page) {
     const rect = (selector: string) => document.querySelector(selector)!.getBoundingClientRect();
     const frame = rect("#vp"), card = rect("#card"), title = rect("#cardTitle");
     const body = document.querySelector("#cbody")!;
+    const controls = [...document.querySelectorAll("#card .thumbs button")].map(el => el.getBoundingClientRect());
     return {
       left: card.left - frame.left, top: card.top - frame.top,
       right: frame.right - card.right, bottom: frame.bottom - card.bottom,
       titleInside: title.top >= card.top && title.bottom <= card.bottom && title.left >= card.left && title.right <= card.right,
       overflow: body.scrollWidth > body.clientWidth + 1 || body.scrollHeight > body.clientHeight + 1,
+      controlsInside: controls.every(box => box.left >= card.left && box.right <= card.right && box.top >= card.top && box.bottom <= card.bottom && box.left >= frame.left && box.right <= frame.right && box.top >= frame.top && box.bottom <= frame.bottom),
       stamp: getComputedStyle(document.querySelector("#stamp")!).visibility,
     };
   });
@@ -66,11 +68,50 @@ for (const [width, height] of sizes) {
           await page.locator(".thumbs button").nth(i).click();
           await expect(page.locator("#fcslot h4")).toHaveText(stores[i].name);
         }
-        await expect.poll(() => bounds(page)).toMatchObject({ titleInside: true, overflow: false, stamp: "hidden" });
+        await expect.poll(() => bounds(page), { message: `${station.id}: ${stores[i]?.name ?? "station"}` }).toMatchObject({ titleInside: true, overflow: false, controlsInside: true, stamp: "hidden" });
         await expect.poll(async () => Math.min(...Object.entries(await bounds(page)).filter(([key]) => ["left", "right", "top", "bottom"].includes(key)).map(([, value]) => Number(value)))).toBeGreaterThanOrEqual(10);
       }
       await page.evaluate(() => window.__savvyMap!.closeCard({focus:false}));
       await expect(page.locator("#stamp")).toHaveCSS("visibility", "visible");
+    }
+  });
+}
+
+test("320px: Shanghai shop controls and complete prices stay inside the card", async ({ page }) => {
+  const stations = getShanghaiFoodStations();
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto("/?city=shanghai&reduce=1");
+  await page.getByTestId(`metro-pin-${stations[0].slug}`).waitFor({ state: "attached" });
+  await page.waitForFunction(() => !!window.__savvyMap);
+  for (const station of stations) {
+    await page.evaluate(id => window.__savvyMap!.select(id), station.slug);
+    for (const [i, shop] of station.shops.entries()) {
+      await page.locator(".thumbs button").nth(i).click();
+      await expect(page.locator("#fcslot h4")).toHaveText(shop.name!);
+      await expect(page.locator("#card .article-details dd").nth(1)).toHaveText(shop.price?.trim() || "");
+      await expect.poll(() => bounds(page), { message: `${station.slug}: ${shop.name}` }).toMatchObject({ titleInside: true, overflow: false, controlsInside: true });
+    }
+    await page.evaluate(() => window.__savvyMap!.closeCard({ focus: false }));
+    await expect(page.locator("#stamp")).toHaveCSS("visibility", "visible");
+  }
+});
+
+for (const letterSpacing of ["normal", "0.5px"]) {
+  test(`320px: longer sourced prices fit with larger article text${letterSpacing === "normal" ? "" : " and expanded spacing"}`, async ({ page, browserName }) => {
+    await page.setViewportSize({ width: 320, height: 568 });
+    await page.goto("/?reduce=1&clock=2026-10-26");
+    await page.waitForFunction(() => !!window.__savvyMap);
+    // Reserve the four price lines seen in Linux WebKit, even on macOS fonts.
+    const fourLinePrice = letterSpacing === "normal" ? "" : ".article-details div:last-child dd { min-height: 92.8px; }";
+    await page.addStyleTag({ content: `.article-details { font-size: 16px; letter-spacing: ${letterSpacing}; } ${fourLinePrice}` });
+    await page.evaluate(() => window.__savvyMap!.select("shuanglian"));
+    const stores = metro.stores.filter(store => store.stationId === "shuanglian");
+    for (let i = 0; i < stores.length; i++) {
+      await page.locator(".thumbs button").nth(i).click();
+      await expect(page.locator("#fcslot h4")).toHaveText(stores[i].name);
+      await expect(page.locator("#card .article-details")).toContainText(stores[i].article!.price!);
+      if (i === 0) await page.locator("#vp").screenshot({ path: `guide-screenshots/hero-price-320-${browserName}${letterSpacing === "normal" ? "" : "-expanded"}.png`, animations: "disabled" });
+      await expect.poll(() => bounds(page), { message: stores[i].name }).toMatchObject({ titleInside: true, overflow: false, controlsInside: true });
     }
   });
 }

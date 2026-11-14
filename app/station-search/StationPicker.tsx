@@ -72,7 +72,7 @@ function markSelected(station: PickerStation) {
   document.querySelector(`[data-testid="metro-pin-${station.selectId}"]`)?.classList.add("picked");
 }
 
-function openTaipeiStation(id: string) {
+function openTaipeiStation(id: string, focus = true) {
   const stage = document.querySelector(".map-stage");
   if (!stage) return;
   stage.scrollIntoView({ behavior: scrollBehavior(), block: "center" });
@@ -85,13 +85,13 @@ function openTaipeiStation(id: string) {
     }
     const state = api.state();
     if (state.openId === id || state.showing === id) return;
-    api.select(id);
+    api.select(id, { focus });
   };
   attempt(120);
 }
 
-function openShanghaiStation(slug: string) {
-  if (document.querySelector(".map-stage")) { openTaipeiStation(slug); return; }
+function openShanghaiStation(slug: string, focus = true) {
+  if (document.querySelector(".map-stage")) { openTaipeiStation(slug, focus); return; }
   const el = document.getElementById(slug);
   if (!el) return;
   el.scrollIntoView({ behavior: scrollBehavior(), block: "start" });
@@ -284,9 +284,9 @@ export function StationPicker({
     setOpen(false);
     writeHash(station.slug);
     markSelected(station);
-    if (station.city === "shanghai") openShanghaiStation(station.slug);
-    else openTaipeiStation(station.selectId);
-    window.setTimeout(() => focusStill(triggerRef.current), 360);
+    if (station.city === "shanghai") openShanghaiStation(station.slug, false);
+    else openTaipeiStation(station.selectId, false);
+    focusStill(triggerRef.current);
   }
 
   function moveActive(next: number) {

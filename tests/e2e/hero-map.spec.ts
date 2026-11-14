@@ -35,6 +35,7 @@ test.describe("hero map interactions", () => {
   test("D-1 pin and tab open the same station; 全圖 returns home", async ({ page }) => {
     await clickPin(page, "houshanpi");
     await waitForCardOpen(page);
+    await expect(page.locator("#card")).toBeFocused();
     await expect(page.locator("#cardTitle")).toContainText("後山埤");
     const zoomed = await page.evaluate(() => window.__savvyMap!.state().camS);
     await expect(page.locator("[data-testid=metro-reset]")).toHaveClass(/on/);
@@ -235,6 +236,14 @@ test.describe("hero map interactions", () => {
     await page.locator("[data-testid=metro-close]").click();
     await openStation(page, "shuanglian");
     await page.locator('.thumbs button[aria-label="雙連蚵仔麵線"]').click();
+    const oyster = getFoodStations().find(s => s.slug === "shuanglian")!.shops.find(s => s.key === "oyster")!;
+    await expect(page.locator("#card .article-details")).toContainText(oyster.price!);
+
+    await page.locator("[data-testid=metro-close]").click();
+    await openStation(page, "daan");
+    const pending = getFoodStations().find(s => s.slug === "daan")!.shops.find(s => s.key === "longji")!;
+    expect(pending.price).toBeNull();
+    await page.getByRole("button", { name: pending.name!, exact: true }).click();
     await expect(page.locator("#card .article-details")).toContainText(PRICE_PENDING);
     await expect(page.locator("#card .price")).toHaveCount(0);
   });

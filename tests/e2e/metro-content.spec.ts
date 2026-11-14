@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { mergeFoodStations, loadDesignStations, loadDailyStations } from '../../scripts/metro-content.mjs';
 
 type Shop = {
+  key?: string | null;
   name?: string | null;
   dish?: string | null;
   price?: string | null;
@@ -30,10 +31,9 @@ const shopFields = {
 
 const baseStations = JSON.parse(readFileSync('content/metro/stations.json', 'utf8')) as Station[];
 const dailyStations = loadDailyStations('content/metro') as Station[];
-// stations.json + daily + DESIGN. The public pages serve Taipei; Shanghai stays in the content layer.
+// Both cities are public guides, generated from stations.json + daily + DESIGN.
 const designCatalog = loadDesignStations('content/metro');
-const stations = (mergeFoodStations(baseStations, dailyStations, designCatalog) as Station[])
-  .filter((station) => (station.city ?? 'taipei') === 'taipei');
+const stations = mergeFoodStations(baseStations, dailyStations, designCatalog) as Station[];
 const disclaimer = '營業時間、價格可能調整，出發前再確認';
 
 test('food list shows source disclaimer and every station', async ({ page }) => {
@@ -58,23 +58,51 @@ test('food pages fit a narrow viewport', async ({ page }) => {
 
 async function expectStationContent(page: Page, station: Station) {
   await page.goto(`/metro/${station.slug}`);
-  await expect(page.locator('h1')).toHaveText(station.station);
+  const city = station.city === 'shanghai' ? '上海' : '台北';
+  await expect(page.locator('h1')).toHaveText(`${station.station.startsWith(city) ? '' : city}${station.station}${station.station.endsWith('站') ? '' : '站'}美食攻略`);
+  await expect(page).toHaveTitle(new RegExp(`${station.station}.*美食攻略`));
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://savvy.jeezlabs.io/metro/${station.slug}`);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', new RegExp(`${station.shops.length}家店`));
+  const data = JSON.parse(await page.locator('script[type="application/ld+json"]').innerText());
+  const article = data['@graph'].find((item: { '@type': string }) => item['@type'] === 'Article');
+  const list = data['@graph'].find((item: { '@type': string }) => item['@type'] === 'ItemList');
+  expect(article.headline).toBe(await page.locator('h1').innerText());
+  expect(article.url).toBe(`https://savvy.jeezlabs.io/metro/${station.slug}`);
+  expect(list.numberOfItems).toBe(station.shops.length);
+  expect(list.itemListElement.map((item: { name: string }) => item.name)).toEqual(station.shops.map(shop => shop.name));
   await expect(page.getByText(disclaimer, { exact: true })).toBeVisible();
   const cards = page.locator('.food-shops article');
   await expect(cards).toHaveCount(station.shops.length);
   for (const [index, shop] of station.shops.entries()) {
     const card = cards.nth(index);
+    const anchor = await card.getAttribute('id');
+    expect(list.itemListElement[index].url).toBe(`${article.url}#${anchor}`);
+    await expect(page.locator('.food-quick-index a').nth(index)).toHaveAttribute('href', `#${anchor}`);
+    const map = new URL((await card.locator('.food-map-link').getAttribute('href'))!);
+    expect(map.protocol).toBe('https:');
+    expect(map.hostname).toBe(station.city === 'shanghai' ? 'uri.amap.com' : 'maps.apple.com');
+    const query = map.searchParams.get(station.city === 'shanghai' ? 'keyword' : 'query');
+    expect(query).toContain(shop.name);
+    if (shop.address) expect(query).toContain(shop.address);
+    const photo = card.locator('.food-shop-photo img');
+    if (await photo.count()) expect((await photo.getAttribute('src'))!.split('/').at(-1)?.replace(/\.[^.]+$/, '')).toBe(shop.key);
     if (shop.name) await expect(card.locator('h2')).toHaveText(shop.name);
     else await expect(card.locator('h2')).toHaveCount(0);
     for (const [key, label] of Object.entries(shopFields) as [keyof typeof shopFields, string][]) {
-      const row = card.locator('.food-row').filter({ has: page.locator('dt', { hasText: new RegExp(`^${label}$`) }) });
+      const rowLabel = station.city === 'shanghai' && key === 'price' ? '價格（人民幣）' : label;
+      const row = card.locator('.food-row').filter({ has: page.locator('dt', { hasText: new RegExp(`^${rowLabel.replace(/[()]/g, '\\$&')}$`) }) });
       const value = shop[key];
-      if (value) await expect(row.locator('dd')).toHaveText(value);
-      else if (key === 'price') await expect(row.locator('dd')).toHaveText('價格待確認');
+      if (value) {
+        await expect(row.locator('dd')).toHaveText(value);
+        for (const url of value.match(/https?:\/\/[^\s]+/g) ?? []) {
+          await expect(row.locator('dd a').filter({ hasText: url })).toHaveAttribute('href', url);
+        }
+      }
+      else if (key === 'price' && station.city !== 'shanghai') await expect(row.locator('dd')).toHaveText('價格待確認');
       else await expect(row).toHaveCount(0);
     }
   }
-  await page.locator('.food-gallery img').evaluateAll(async images => {
+  await page.locator('.food-shop-photo img').evaluateAll(async images => {
     await Promise.all(images.map(img => new Promise<void>((resolve, reject) => {
       const image = img as HTMLImageElement;
       image.loading = 'eager';

@@ -17,8 +17,8 @@
       "price": null,
       "price_source": null,
       "address": "豫園路87號",
-      "exit_walk": null,
-      "hours": null,
+      "exit_walk": "地鐵14號線豫园站(7口)606公尺，步行約8分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926728.html",
+      "hours": "07:30–20:00；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926728.html",
       "lat": 31.2285341,
       "lng": 121.4871017,
       "datum": "WGS-84"
@@ -43,8 +43,8 @@
       "price": null,
       "price_source": null,
       "address": "百翎路5號",
-      "exit_walk": null,
-      "hours": null
+      "exit_walk": "地鐵14號線豫园站(7口)616公尺，步行約8分鐘（平台估計）；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/24569067.html",
+      "hours": "10:30–20:30；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/24569067.html"
     },
     {
       "key": "laofandian",
@@ -53,8 +53,8 @@
       "price": null,
       "price_source": null,
       "address": "福佑路242號",
-      "exit_walk": null,
-      "hours": null,
+      "exit_walk": "豫園站7號口，步行約260公尺（高德頁面參考）；來源未標更新日；2026-11-14查詢 https://ditu.amap.com/place/B001549946",
+      "hours": "11:00–14:00；17:00–20:30；來源未標更新日；2026-11-14查詢 https://www.smartshanghai.com/taxi/14233",
       "lat": 31.2294579,
       "lng": 121.4864045,
       "datum": "WGS-84"
@@ -67,7 +67,7 @@
       "price_source": null,
       "address": "豫園路115號",
       "exit_walk": null,
-      "hours": null
+      "hours": "11:00–14:00；17:00–20:30；來源未標更新日；2026-11-14查詢 https://www.meet-in-shanghai.net/cn/food/green-wave-corridor-yuyuan-garden-road-589622/"
     }
   ],
   "images": {

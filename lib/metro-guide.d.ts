@@ -1,0 +1,13 @@
+import type { FoodShop, FoodStation } from './metro';
+export const GUIDE_PAGE_UPDATED_AT: string;
+export function guideCityName(station: FoodStation): string;
+export function guideStationName(station: FoodStation): string;
+export function guideHeading(station: FoodStation): string;
+export function guideTitle(station: FoodStation): string;
+export function guideUpdatedAt(station: FoodStation): string;
+export function guideDescription(station: FoodStation): string;
+export function shopAnchor(shop: FoodShop, index: number): string;
+export function shopPhoto(station: FoodStation, shop?: FoodShop): string | undefined;
+export function shopMapLink(station: FoodStation, shop: FoodShop): { href: string; label: string };
+export function guideStructuredData(station: FoodStation, origin: string): Record<string, unknown>;
+export function safeJsonLd(value: unknown): string;

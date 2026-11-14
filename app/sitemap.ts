@@ -1,6 +1,7 @@
 import { getFoodStations, getShanghaiFoodStations } from "../lib/metro";
 import type { MetadataRoute } from "next";
 import { GUIDE_ROOT, SITE_ORIGIN, guidePath, guides } from "./zh-tw/guides/content";
+import { guideUpdatedAt } from "../lib/metro-guide.mjs";
 
 // Explicit public-content allowlist. Never derive entries from user/share data.
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -9,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_ORIGIN}/shanghai` },
     ...["about", "contact", "privacy", "support", "docs"].map(path => ({ url: `${SITE_ORIGIN}/${path}` })),
     { url: `${SITE_ORIGIN}/metro` },
-    ...[...getFoodStations(), ...getShanghaiFoodStations()].map(s => ({ url: `${SITE_ORIGIN}/metro/${s.slug}`, lastModified: s.date })),
+    ...[...getFoodStations(), ...getShanghaiFoodStations()].map(s => ({ url: `${SITE_ORIGIN}/metro/${s.slug}`, lastModified: guideUpdatedAt(s) })),
     { url: `${SITE_ORIGIN}${GUIDE_ROOT}` },
     ...guides.map((guide) => ({ url: `${SITE_ORIGIN}${guidePath(guide.slug)}`, lastModified: guide.updatedAt })),
   ];

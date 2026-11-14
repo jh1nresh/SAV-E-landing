@@ -1296,13 +1296,38 @@ body.rm .pin.new .gr {
   .hero .h.zh {
     font-size: 32px;
   }
+  /* Leave room for platform font wrapping without shrinking text or tap targets. */
+  .card .cbody {
+    padding: 14px 11px 9px;
+  }
+  .card .ph-head {
+    min-height: 32px;
+    margin-bottom: 4px;
+  }
   .card .fc {
     grid-template-columns: 64px minmax(0, 1fr);
     gap: 8px;
+    row-gap: 4px;
+    padding: 6px;
+  }
+  .card .thumbs {
+    gap: 4px;
+    margin-top: 6px;
   }
   .card .fc .ph {
     width: 64px;
-    height: 80px;
+    height: 48px;
+  }
+  /* Give qualified prices the full card width when the photo column is tight. */
+  .card .fc .bd {
+    display: contents;
+  }
+  .card .fc h4 {
+    align-self: center;
+  }
+  .card .fc .article-details {
+    grid-column: 1 / -1;
+    margin-top: 0;
   }
 }
 
