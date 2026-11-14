@@ -70,8 +70,8 @@ export function markdownFor(path: string): string | null {
     return `${block.type === "question" ? "### " : ""}${"text" in block ? block.text : ""}`;
   }).join("\n\n")}`).join("\n\n")}\n\n[查看 Savvy TestFlight 測試版](${TESTFLIGHT_URL})\n\n這不是 App Store 正式下載。${resources}\n`;
   if (path === "/metro") return `# Savvy 捷運美食清單\n\n${FOOD_DISCLAIMER}\n\n${getFoodStations().map(station => `- ${link(station.station, `/metro/${station.slug}`)}: ${station.tagline ?? ""}`).join("\n")}\n\n${resources}\n`;
-  const station = getFoodStations().find(entry => path === `/metro/${entry.slug}`);
-  if (station) return `# ${station.station}站美食清單｜Savvy\n\n${station.date} · ${station.tagline ?? ""}\n\n${FOOD_DISCLAIMER}\n\n${Object.entries(station.posts).filter(([, url]) => url).map(([name, url]) => `[${name}](${url})`).join(" · ")}\n\n${station.shops.map(shop => `## ${shop.name ?? "店家"}\n\n${foodShopRows(shop).map(([label, value]) => `- ${label}: ${value}`).join("\n")}`).join("\n\n")}\n\n${resources}\n`;
+  const station = [...getFoodStations(), ...getShanghaiFoodStations()].find(entry => path === `/metro/${entry.slug}`);
+  if (station) return `# ${station.station}站美食清單｜Savvy\n\n${station.date} · ${station.tagline ?? ""}\n\n${FOOD_DISCLAIMER}\n\n${Object.entries(station.posts).filter(([, url]) => url).map(([name, url]) => `[${name}](${url})`).join(" · ")}\n\n${station.shops.map(shop => `## ${shop.name ?? "店家"}\n\n${foodShopRows(shop, station.city).map(([label, value]) => `- ${label}: ${value}`).join("\n")}`).join("\n\n")}\n\n${resources}\n`;
   return null;
 }
 

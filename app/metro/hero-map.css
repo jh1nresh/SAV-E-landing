@@ -1355,4 +1355,23 @@ body.rm .pin.new .gr {
   }
 }
 
-.station-detail-link { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.station-detail-link {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  min-block-size: 44px;
+  max-inline-size: 100%;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.station-detail-link::after {
+  content: "完整清單 →";
+  font: 600 13px/1.2 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  white-space: nowrap;
+}
+.station-detail-link:focus-visible {
+  outline: 3px dashed var(--coral);
+  outline-offset: 2px;
+}

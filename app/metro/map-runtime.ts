@@ -369,7 +369,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }
     const firstImg = list[0]?.image ? publicImage(list[0].image) : "";
     cmorph.style.backgroundImage = firstImg ? `url(${firstImg})` : "none";
-    const title = s.slug && data._meta.city !== "shanghai"
+    const title = s.slug
       ? `<a class="station-detail-link" href="/metro/${escapeHtml(s.slug)}" data-testid="metro-food-link-${escapeHtml(s.id)}" aria-label="看${escapeHtml(s.name)}站完整美食清單">${escapeHtml(s.name)}</a>`
       : escapeHtml(s.name);
     cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${title}</h3></div>
