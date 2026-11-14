@@ -19,8 +19,8 @@ import { TEST_QUERY_HOOKS } from "../../lib/test-hooks.mjs";
 
 export const MOTION = {
   badge: [0.46, 0.61] as const,
-  cardOpen: [0.46, 0.74] as const,
-  cardClose: [0.51, 0.86] as const,
+  cardOpen: [0.22, 0.9] as const,
+  cardClose: [0.2, 0.95] as const,
   camera: [1.05, 0.76] as const,
 };
 
@@ -367,7 +367,10 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     }
     const firstImg = list[0]?.image ? publicImage(list[0].image) : "";
     cmorph.style.backgroundImage = firstImg ? `url(${firstImg})` : "none";
-    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}</h3></div>
+    const title = s.slug && data._meta.city !== "shanghai"
+      ? `<a class="station-detail-link" href="/metro/${escapeHtml(s.slug)}" data-testid="metro-food-link-${escapeHtml(s.id)}" aria-label="看${escapeHtml(s.name)}站完整美食清單">${escapeHtml(s.name)}</a>`
+      : escapeHtml(s.name);
+    cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${title}</h3></div>
  <div id="fcslot">${fcard(list[0])}</div>
  <div class="thumbs" role="group" aria-label="這一站的店家">${list
    .map(
@@ -561,32 +564,79 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
 
   const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
+  let labelMetrics: { el: SVGGraphicsElement; box: Box; x: number; y: number }[] = [];
+  let hudBoxes: Box[] = [];
+  let controlBoxes: Box[] = [];
+  let resetWidth = 0;
+  let borderX = 0;
+  let borderY = 0;
+
+  // Font and viewport geometry is stable during a flight. Read it once, before frame writes.
+  function measureGeometry() {
+    const elements = [...(stdots?.querySelectorAll<SVGGraphicsElement>("text") ?? [])];
+    const vpRect = vp.getBoundingClientRect();
+    borderX = vp.clientLeft;
+    borderY = vp.clientTop;
+    const screenBox = (el: Element): Box => {
+      const box = el.getBoundingClientRect();
+      return { x: box.left - vpRect.left, y: box.top - vpRect.top, width: box.width, height: box.height };
+    };
+    labelMetrics = elements.map(el => {
+      const box = el.getBBox();
+      const x = Number(el.dataset.lx);
+      const y = Number(el.dataset.ly);
+      return { el, box: { x: box.x + x - Number(el.getAttribute("x")), y: box.y + y - Number(el.getAttribute("y")), width: box.width, height: box.height }, x, y };
+    });
+    hudBoxes = [...root.querySelectorAll<HTMLElement>(".cart, #stampB")].map(screenBox).filter(box => box.width > 0 && box.height > 0);
+    controlBoxes = [...root.querySelectorAll<HTMLElement>(".mapzoom button")].map(screenBox).filter(box => box.width > 0 && box.height > 0);
+    resetWidth = resetBtn.offsetWidth;
+  }
+
   function render() {
     const s = cam.s.x;
     const cx = cam.x.x;
     const cy = cam.y.x;
     const worldTransform = `translate3d(${W / 2 - (cx - WB.x) * s}px,${H / 2 - (cy - WB.y) * s}px,0) scale(${s / R})`;
-    world.style.transform = worldTransform;
-    const labelEls = [...(stdots?.querySelectorAll<SVGGraphicsElement>("text") ?? [])];
-    for (const label of labelEls) {
-      label.setAttribute("x", label.dataset.lx ?? label.getAttribute("x") ?? "0");
-      label.setAttribute("y", label.dataset.ly ?? label.getAttribute("y") ?? "0");
-    }
     const pad = (box: Box, n: number): Box => ({ x: box.x - n, y: box.y - n, width: box.width + n * 2, height: box.height + n * 2 });
-    const vpRect = vp.getBoundingClientRect();
-    const labels = labelEls.map(label => {
-      const b = label.getBBox();
-      return { x: (b.x - cx) * s + W / 2 - 3, y: (b.y - cy) * s + H / 2 - 3,
-        width: b.width * s + 6, height: b.height * s + 6 };
-    });
-    const screenBox = (el: Element): Box => {
-      const b = el.getBoundingClientRect();
-      return { x: b.left - vpRect.left, y: b.top - vpRect.top, width: b.width, height: b.height };
-    };
-    const hud = [...root.querySelectorAll<HTMLElement>(".cart, #stampB")].map(screenBox).filter(box => box.width > 0 && box.height > 0);
-    const controls = [...root.querySelectorAll<HTMLElement>(".mapzoom button")].map(screenBox).filter(box => box.width > 0 && box.height > 0);
+    const projected = labelMetrics.map(({ box }) => ({ x: (box.x - cx) * s + W / 2, y: (box.y - cy) * s + H / 2,
+      width: box.width * s, height: box.height * s }));
+    const labels = projected.map(box => pad(box, 3));
+    // Match the former painted-rect pass, including the viewport border.
+    const painted = projected.map(box => ({ ...box, x: box.x + borderX, y: box.y + borderY }));
+    const hud = hudBoxes;
+    const controls = controlBoxes;
     const positions = layoutPhotoPins(pins.map(p => ({ id: p.id, x: (p.x - cx) * s + W / 2,
       y: (p.y - cy) * s + H / 2, diameter: 44 + 16 * p.b.x })), [...labels.map(box => pad(box, 12)), ...hud.map(box => pad(box, 4)), ...controls.map(box => pad(box, 4))], W, H);
+    const photoBoxes = pins.flatMap(p => {
+      if (p.el.classList.contains("content-only")) return [];
+      const position = positions.get(p.id)!;
+      const d = (44 + 16 * p.b.x) * (reduce ? 1 : Math.max(0, p.pop.x));
+      return d > 1 ? [{ x: position.x + borderX - d / 2, y: position.y + borderY - d, width: d, height: d }] : [];
+    });
+    const overlaps = (a: Box, b: Box) => Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x) > 1
+      && Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y) > 1;
+    const obstacles = [...hud.map(box => pad(box, 2)), ...photoBoxes];
+    const offsets = labelMetrics.map(() => ({ dx: 0, dy: 0 }));
+    for (let pass = 0; pass < 4; pass++) {
+      const snapshot = painted.map(box => ({ ...box }));
+      let moved = false;
+      snapshot.forEach((box, index) => {
+        if (!obstacles.some(other => overlaps(box, other))) return;
+        const nudge = nudgeBoxClear(box, [...obstacles, ...snapshot.filter((_, other) => other !== index)], W, H);
+        if (!nudge.dx && !nudge.dy) return;
+        painted[index].x += nudge.dx;
+        painted[index].y += nudge.dy;
+        offsets[index].dx += nudge.dx;
+        offsets[index].dy += nudge.dy;
+        moved = true;
+      });
+      if (!moved) break;
+    }
+    world.style.transform = worldTransform;
+    labelMetrics.forEach(({ el, x, y }, index) => {
+      el.setAttribute("x", String(x + offsets[index].dx / s));
+      el.setAttribute("y", String(y + offsets[index].dy / s));
+    });
     pins.forEach((p) => {
       const sx = (p.x - cx) * s + W / 2;
       const sy = (p.y - cy) * s + H / 2;
@@ -606,30 +656,6 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       p.inn.style.opacity = reduce ? String(clamp01(pop * 3)) : "1";
       p.lab.style.transform = `translateX(-50%) scale(${reduce ? (b > 0.5 ? 1 : 0) : Math.max(0, b).toFixed(3)})`;
     });
-    // Photo search uses schematic boxes. A second pass uses the painted rects
-    // so a label that still sits on the caption or a photo steps clear.
-    const overlaps = (a: Box, b: Box) => Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x) > 1
-      && Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y) > 1;
-    for (let pass = 0; pass < 4; pass++) {
-      const painted = labelEls.map(label => screenBox(label));
-      const photos = pins.map(p => screenBox(p.el.querySelector(".ph")!)).filter(box => box.width > 1 && box.height > 1);
-      const obstacles = [...hud.map(box => pad(box, 2)), ...photos];
-      let moved = false;
-      labelEls.forEach((label, index) => {
-        const box = painted[index];
-        if (!box || !obstacles.some(other => overlaps(box, other))) return;
-        const nudge = nudgeBoxClear(box, [...obstacles, ...painted.filter((_, other) => other !== index)], W, H);
-        if (!nudge.dx && !nudge.dy) return;
-        const lx = Number(label.dataset.lx);
-        const ly = Number(label.dataset.ly);
-        const x = Number(label.getAttribute("x"));
-        const y = Number(label.getAttribute("y"));
-        label.setAttribute("x", (Number.isFinite(x) ? x : lx) + nudge.dx / s + "");
-        label.setAttribute("y", (Number.isFinite(y) ? y : ly) + nudge.dy / s + "");
-        moved = true;
-      });
-      if (!moved) break;
-    }
     const zoomed = cam.s.t > s0 * 1.05;
     const panned = Math.hypot(cam.x.t - home.x, cam.y.t - home.y) > PAN_SLOP;
     resetBtn.classList.toggle("on", zoomed || panned);
@@ -656,28 +682,24 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
         const top = Math.max(11, H - 11 - ch);
         const ox = pn.sx - left;
         const oy = pn.sy - 32 - top;
-        card.style.left = `${left}px`;
-        card.style.top = `${top}px`;
         card.style.transformOrigin = `${ox}px ${oy}px`;
-        card.style.transform = `translate3d(0,${dy}px,0) scale(${scale.toFixed(4)},${scaleY.toFixed(4)})`;
+        card.style.transform = `translate3d(${left}px,${top + dy}px,0) scale(${scale.toFixed(4)},${scaleY.toFixed(4)})`;
       } else {
         // Keep the card clear of the 全圖 HUD (top-right) while it is shown.
-        const hud = resetBtn.classList.contains("on") ? resetBtn.offsetWidth + 11 : 0;
+        const hud = resetBtn.classList.contains("on") ? resetWidth + 11 : 0;
         const left = Math.min(W - cw - 11 - hud, Math.max(11, pn.sx - cw / 2));
         const top = Math.max(11, Math.min(H - ch - 11, pn.sy - ch - 10));
         const tx = pn.sx - left;
         card.style.setProperty("--tx", `${tx}px`);
-        card.style.left = `${left}px`;
-        card.style.top = `${top}px`;
         card.style.transformOrigin = `${tx}px ${ch + 10 - 32}px`;
-        card.style.transform = `translate3d(0,${dy}px,0) scale(${scale.toFixed(4)},${scaleY.toFixed(4)})`;
+        card.style.transform = `translate3d(${left}px,${top + dy}px,0) scale(${scale.toFixed(4)},${scaleY.toFixed(4)})`;
       }
     }
   }
 
   function tick(now: number) {
     raf = 0;
-    const dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000));
+    const dt = Math.min(0.25, Math.max(0.001, (now - last) / 1000));
     last = now;
     let busy = false;
     for (const s of springs) {
@@ -690,7 +712,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       }
     }
     render();
-    if (busy) kick();
+    if (busy) raf = requestAnimationFrame(tick);
   }
 
   function renderStrip() {
@@ -739,6 +761,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     if (showing && !card.hidden) {
       sizeCard();
     }
+    measureGeometry();
     updateBadges();
     render();
   }
@@ -1070,6 +1093,16 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   window.addEventListener("resize", onWinResize);
   window.addEventListener("orientationchange", onOrient);
 
+  let destroyed = false;
+  const onFonts = () => {
+    if (destroyed) return;
+    measureGeometry();
+    if (showing && !card.hidden) sizeCard();
+    render();
+  };
+  document.fonts?.ready.then(onFonts);
+  document.fonts?.addEventListener("loadingdone", onFonts);
+
   paintStamp();
   renderStrip();
   buildPins();
@@ -1159,6 +1192,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       weekCount: weekCountNow(),
     }),
     destroy: () => {
+      destroyed = true;
+      document.fonts?.removeEventListener("loadingdone", onFonts);
       pinch = null;
       zoomIn.removeEventListener("click", onZoomIn);
       zoomOut.removeEventListener("click", onZoomOut);

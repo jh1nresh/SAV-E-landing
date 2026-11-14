@@ -207,12 +207,13 @@ test.describe("hero map interactions", () => {
     await expect(page.locator("#card .ok")).toHaveCount(0);
   });
 
-  test("B-7 source links remain on articles rather than compact cards", async ({ page, request }) => {
+  test("B-7 compact titles link to station guides with the source posts", async ({ page, request }) => {
     for (const id of ["arena", "shuanglian", "houshanpi"]) {
       await openStation(page, id);
       await expect(page.locator("#card .src, #card .article-link")).toHaveCount(0);
       const station = metroSource.stations.find(s => s.id === id)!;
       const article = getFoodStations().find(s => s.slug === station.slug)!;
+      await expect(page.getByTestId(`metro-food-link-${id}`)).toHaveAttribute("href", `/metro/${article.slug}`);
       const response = await request.get(`/metro/${article.slug}`);
       expect(response.status()).toBe(200);
       const html = await response.text();

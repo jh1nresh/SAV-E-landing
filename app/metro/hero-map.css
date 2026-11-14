@@ -1354,3 +1354,5 @@ body.rm .pin.new .gr {
     top: -140px;
   }
 }
+
+.station-detail-link { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
