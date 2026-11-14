@@ -3,7 +3,8 @@
  * Apply an inbox-sync plan: upsert one blocking issue per failed package,
  * open/update content-only PRs for ready packages. Invoked from Actions.
  *
- * Requires env: GH_TOKEN, GH_REPO
+ * Requires env: GH_TOKEN, GH_REPO when the plan has packages.
+ * An empty plan logs and exits 0 before any GitHub API call.
  * Args: --plan inbox-sync-plan.json --work-root pr-work
  */
 import { readFileSync, mkdirSync, cpSync, rmSync, existsSync, writeFileSync } from 'node:fs';
@@ -17,12 +18,53 @@ function argValue(argv, name, fallback = null) {
   return argv[i + 1] ?? fallback;
 }
 
+// Closed pull listings are full objects: 58 PRs were 1,063,401 bytes on
+// 2026-11-13, just over spawnSync's 1MB default. That kills gh with
+// status null / SIGPIPE / ENOBUFS and an empty stderr. Keep headroom for
+// bodies to grow; the pulls query itself is also narrowed with --jq.
+const SPAWN_MAX_BUFFER = 32 * 1024 * 1024;
+
 function run(cmd, args, opts = {}) {
-  const res = spawnSync(cmd, args, { encoding: 'utf8', ...opts });
-  if (res.status !== 0) {
-    throw new Error(`${cmd} ${args.join(' ')}\n${res.stderr || res.stdout}`);
+  const res = spawnSync(cmd, args, {
+    encoding: 'utf8',
+    maxBuffer: SPAWN_MAX_BUFFER,
+    ...opts,
+  });
+  if (res.error || res.status !== 0) {
+    const status = res.status == null
+      ? `status null${res.signal ? ` signal ${res.signal}` : ''}`
+      : `exit ${res.status}`;
+    const spawnError = res.error
+      ? `${res.error.code || 'error'}: ${res.error.message}`
+      : '';
+    const stderr = (res.stderr || '').trim();
+    const detail = [status, spawnError, stderr].filter(Boolean).join('\n');
+    throw new Error(`${cmd} ${args.join(' ')}\n${detail}`);
   }
   return (res.stdout || '').trim();
+}
+
+// `gh api --paginate --jq` prints one JSON value per line. `--slurp` cannot
+// be combined with `--jq`. A single JSON array (or an array of pages) is
+// accepted too, so a fixture can feed the same parser.
+function parseGhJsonList(raw) {
+  const trimmed = (raw || '').trim();
+  if (!trimmed) return [];
+  try {
+    const parsed = JSON.parse(trimmed);
+    if (Array.isArray(parsed)) return parsed.flat();
+    return [parsed];
+  } catch {
+    const items = [];
+    for (const line of trimmed.split('\n')) {
+      const row = line.trim();
+      if (!row) continue;
+      const parsed = JSON.parse(row);
+      if (Array.isArray(parsed)) items.push(...parsed);
+      else items.push(parsed);
+    }
+    return items;
+  }
 }
 
 function gh(args) {
@@ -32,11 +74,15 @@ function gh(args) {
 const argv = process.argv.slice(2);
 const planPath = resolve(argValue(argv, '--plan', 'inbox-sync-plan.json'));
 const workRoot = resolve(argValue(argv, '--work-root', 'pr-work'));
+const plan = JSON.parse(readFileSync(planPath, 'utf8'));
+if (!Array.isArray(plan.packages) || plan.packages.length === 0) {
+  console.log('0 packages, nothing to apply');
+  process.exit(0);
+}
+
 const repo = process.env.GH_REPO;
 const token = process.env.GH_TOKEN;
 if (!repo || !token) throw new Error('GH_REPO and GH_TOKEN required');
-
-const plan = JSON.parse(readFileSync(planPath, 'utf8'));
 
 function upsertIssue(title, body) {
   // Paginate via REST so a blocked issue beyond the first page is updated, not duplicated.
@@ -71,15 +117,21 @@ function extractDeliveryKeys(body, keys) {
   }
 }
 
+// Fields the replay guard reads. Full pull payloads repeat head.repo and
+// base.repo on every row; that, not the bodies, pushed the closed list
+// past 1MB. merged_at drops closed-unmerged PRs. head.repo.full_name drops forks.
+const PULL_FIELDS_JQ = '.[] | {number, title, body, merged_at, head: {ref: .head.ref, repo: (if .head.repo == null then null else {full_name: .head.repo.full_name} end)}}';
+
 /** Collect delivery keys from open PRs and merged PRs only (paginated). Closed-unmerged must not count as landed. */
 function knownDeliveryKeys() {
   const keys = new Set();
   for (const state of ['open', 'closed']) {
-    const pages = JSON.parse(gh([
-      'api', '--paginate', '--slurp',
+    const pulls = parseGhJsonList(gh([
+      'api', '--paginate',
       `repos/${repo}/pulls?state=${state}&per_page=100`,
+      '--jq', PULL_FIELDS_JQ,
     ]));
-    for (const pr of pages.flat()) {
+    for (const pr of pulls) {
       if (state === 'closed' && !pr.merged_at) continue;
       // Same-repo only: fork PR bodies must not poison the replay guard.
       const headRepo = pr.head?.repo?.full_name;
