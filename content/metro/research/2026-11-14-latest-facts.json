@@ -962,6 +962,26 @@
       "beforeValue": null,
       "adoptedValue": "淮海中路站1號口，步行約300公尺（高德頁面參考）；來源未標更新日；2026-11-14查詢 https://ditu.amap.com/place/B00155L02C",
       "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
+    },
+    {
+      "stationSlug": "shanghai-south-huangpi-road",
+      "shopKey": "chunyuan",
+      "field": "hours",
+      "value": "週一至週日06:30–19:00",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/7004592.html",
+      "sourceTitle": "攜程：春園四如春（復興公園店）",
+      "publishedAt": null,
+      "checkedAt": "2026-11-14",
+      "branchEvidence": "重慶南路183號",
+      "portionOrChannel": "公開店舖營業資訊",
+      "evidence": "同分店公開HTML的RestaurantInfo.WeekdayDtoList列週一至週日各06:30–19:00，全年1/1–12/31；MergeWeekdayDtoList亦列周一至周日06:30–19:00，WeekdayRemark為null。",
+      "status": "verified-live",
+      "caveats": [
+        "平台未披露營業資訊更新日期；查詢日期不等於店家更新日期，假日與臨時調整出發前仍須確認。"
+      ],
+      "beforeValue": null,
+      "adoptedValue": "週一至週日06:30–19:00；來源未標更新日；2026-11-14查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/7004592.html",
+      "contentFile": "content/metro/daily/shanghai/2026-11-09/web.json"
     }
   ],
   "researchConclusions": [
@@ -1710,20 +1730,19 @@
       "shopKey": "chunyuan",
       "shopName": "春園·四如春（復興公園店）",
       "field": "hours",
-      "value": "06:30–19:00（平台顯示次日營業時段）",
+      "value": "週一至週日06:30–19:00",
       "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/7004592.html",
       "sourceTitle": "攜程：春園四如春（復興公園店）",
       "publishedAt": null,
       "checkedAt": "2026-11-14",
       "branchEvidence": "重慶南路183號",
       "portionOrChannel": "公開店舖營業資訊",
-      "evidence": "HTTP200可見文字顯示休息中、明日06:30–19:00。未取得完整每週排程。",
+      "evidence": "同分店公開HTML的RestaurantInfo.WeekdayDtoList列週一至週日各06:30–19:00，全年1/1–12/31；MergeWeekdayDtoList亦列周一至周日06:30–19:00，WeekdayRemark為null。",
       "status": "verified-live",
       "caveats": [
-        "公開平台／目錄所示參考時間；未披露資料更新日期或逐日休假，出發前仍須確認。",
-        "必須保留以上地址精度、次日限定或服務渠道限定，不能去掉限定後作全店每日保證。"
+        "平台未披露營業資訊更新日期；查詢日期不等於店家更新日期，假日與臨時調整出發前仍須確認。"
       ],
-      "adoptionRecommended": false
+      "adoptionRecommended": true
     },
     {
       "stationSlug": "shanghai-south-huangpi-road",
