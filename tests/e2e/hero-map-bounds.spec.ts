@@ -86,7 +86,7 @@ test("320px: longer sourced prices fit with larger article text", async ({ page,
   for (let i = 0; i < stores.length; i++) {
     await page.locator(".thumbs button").nth(i).click();
     await expect(page.locator("#fcslot h4")).toHaveText(stores[i].name);
+    if (i === 0) await page.locator("#vp").screenshot({ path: `guide-screenshots/hero-price-320-${browserName}.png`, animations: "disabled" });
     await expect.poll(() => bounds(page), { message: stores[i].name }).toMatchObject({ titleInside: true, overflow: false });
-    if (i === 0) await page.locator("#vp").screenshot({ path: `guide-screenshots/hero-price-320-${browserName}.png` });
   }
 });
