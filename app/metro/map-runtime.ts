@@ -335,7 +335,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
   let ch = 250;
 
   const price = (s: MetroStore) => {
-    if (s.article) return escapeHtml(s.article.price?.trim() || "價格待確認");
+    if (s.article) return escapeHtml(s.article.price?.trim() || (data._meta.city === "shanghai" ? "" : "價格待確認"));
     if (priceIsPending(s)) {
       return `<span data-testid="price-pending">${PRICE_PENDING_LABEL}${isExampleStore(s) ? "（示意）" : ""}</span>`;
     }

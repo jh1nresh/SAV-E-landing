@@ -35,6 +35,10 @@ export function useSiteLang() {
   return useContext(LangContext);
 }
 
+export type CityId = "taipei" | "shanghai";
+const CityContext = createContext<{ city: CityId; setCity: (city: CityId) => void }>({ city: "taipei", setCity: () => undefined });
+export function useSiteCity() { return useContext(CityContext); }
+
 function applyHomeMeta(lang: SiteLang) {
   if (window.location.pathname !== "/") return;
   const title = lang === "en" ? SITE_TITLE_EN : SITE_TITLE_ZH;
@@ -56,19 +60,42 @@ function persistLang(lang: SiteLang) {
 }
 
 export function SiteChrome({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const [city, setCityState] = useState<CityId>(pathname === "/shanghai" ? "shanghai" : "taipei");
+  useEffect(() => {
+    const readCity = () => {
+      const query = new URLSearchParams(window.location.search).get("city");
+      setCityState(query === "shanghai" || (!query && window.location.pathname === "/shanghai") ? "shanghai" : "taipei");
+    };
+    readCity();
+    window.addEventListener("popstate", readCity);
+    return () => window.removeEventListener("popstate", readCity);
+  }, [pathname]);
+  const setCity = useCallback((next: CityId) => {
+    const url = new URL(window.location.href);
+    if (next === "shanghai") url.searchParams.set("city", next);
+    else url.searchParams.delete("city");
+    url.hash = "";
+    window.history.pushState(null, "", `/${url.search}`);
+    setCityState(next);
+  }, []);
   const [lang, setLangState] = useState<SiteLang>("zh-Hant");
 
   useEffect(() => {
     const read = () => parseSiteLang(new URLSearchParams(window.location.search).get("lang"));
-    const next = read();
-    setLangState(next);
-    document.documentElement.lang = next;
-    applyHomeMeta(next);
+    const sync = () => {
+      const next = read();
+      setLangState(next);
+      document.documentElement.lang = next;
+      applyHomeMeta(next);
+    };
+    sync();
+    window.addEventListener("popstate", sync);
     // Next applies the prerendered Chinese metadata after this effect. Keep the
     // title and description on the language the URL already chose.
     const observer = new MutationObserver(() => applyHomeMeta(read()));
     observer.observe(document.head, { subtree: true, childList: true, attributes: true, characterData: true });
-    return () => observer.disconnect();
+    return () => { observer.disconnect(); window.removeEventListener("popstate", sync); };
   }, []);
 
   const setLang = useCallback((next: SiteLang) => {
@@ -78,9 +105,11 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 
   return (
     <LangContext.Provider value={{ lang, setLang }}>
-      <SiteNav />
-      {children}
-      <SiteFooter />
+      <CityContext.Provider value={{ city, setCity }}>
+        <SiteNav />
+        {children}
+        <SiteFooter />
+      </CityContext.Provider>
     </LangContext.Provider>
   );
 }
@@ -88,15 +117,16 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 function SiteNav() {
   const { lang, setLang } = useSiteLang();
   const pathname = usePathname();
-  const city = pathname === "/shanghai" ? "shanghai" : pathname === "/" ? "taipei" : null;
+  const { city, setCity } = useSiteCity();
+  const hasCity = pathname === "/shanghai" || pathname === "/";
 
   return (
-    <nav className={city ? "top has-city" : "top"}>
+    <nav className={hasCity ? "top has-city" : "top"}>
       <a className="brand" href={hrefWithLang("/", lang)}>
         <img src="/assets/icon.png" alt="" width={44} height={44} />
         Savvy
       </a>
-      {city ? <CitySwitch active={city} lang={lang} /> : null}
+      {hasCity ? <CitySwitch active={city} lang={lang} onSelect={setCity} /> : null}
       <div className="chips" role="group" aria-label="Language">
         <button
           type="button"

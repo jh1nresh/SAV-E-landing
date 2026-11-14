@@ -34,9 +34,9 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
     const taipei = page.locator("nav.top").getByTestId("city-switch-taipei");
     const shanghai = page.locator("nav.top").getByTestId("city-switch-shanghai");
     await expect(page.locator("main").getByTestId("city-switch")).toHaveCount(0);
-    await expect(taipei).toHaveAttribute("aria-current", "page");
+    await expect(taipei).toHaveAttribute("aria-current", "true");
     await expect(taipei).toHaveAttribute("href", "/");
-    await expect(shanghai).not.toHaveAttribute("aria-current", "page");
+    await expect(shanghai).not.toHaveAttribute("aria-current", "true");
     await expect(shanghai).toHaveAttribute("href", "/shanghai");
     await expect(taipei).toContainText("台北");
     await expect(shanghai).toContainText("上海");
@@ -57,20 +57,22 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
   await expect(page.getByTestId("city-switch")).toHaveAttribute("aria-label", "City");
   const taipei = page.locator("nav.top").getByTestId("city-switch-taipei");
   const shanghai = page.locator("nav.top").getByTestId("city-switch-shanghai");
-  await expect(taipei).toHaveAttribute("aria-current", "page");
+  await expect(taipei).toHaveAttribute("aria-current", "true");
   await expect(taipei).toHaveAttribute("href", "/?lang=en");
   await expect(shanghai).toHaveAttribute("href", "/shanghai?lang=en");
   await shanghai.focus();
   await expect(shanghai).toBeFocused();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/shanghai\?lang=en$/);
-  await expect(page.locator("h1:visible")).toHaveText("Shanghai, one stop at a time");
+  expect(new URL(page.url()).pathname).toBe("/");
+  expect(new URL(page.url()).searchParams.get("city")).toBe("shanghai");
+  await expect(page.locator("h1:visible")).toHaveText("Save what you loveRemember where you've been");
+  await expect(page.locator("#hero .hud.cart b").last()).toHaveText("Shanghai");
   await expect(page.getByRole("link", { name: "選城市" })).toHaveCount(0);
-  await expect(page.getByTestId("city-switch-shanghai")).toHaveAttribute("aria-current", "page");
-  await expect(page.getByTestId("city-switch-taipei")).not.toHaveAttribute("aria-current", "page");
+  await expect(page.getByTestId("city-switch-shanghai")).toHaveAttribute("aria-current", "true");
+  await expect(page.getByTestId("city-switch-taipei")).not.toHaveAttribute("aria-current", "true");
   await page.getByTestId("city-switch-taipei").click();
   await expect(page).toHaveURL(/\/\?lang=en$/);
-  await expect(page.getByTestId("city-switch-taipei")).toHaveAttribute("aria-current", "page");
+  await expect(page.getByTestId("city-switch-taipei")).toHaveAttribute("aria-current", "true");
   await expect(page.getByText("Save what you love")).toBeVisible();
   await expect(page.locator(".map-stage")).toBeVisible();
 });
@@ -85,7 +87,7 @@ test("Accept-Language does not redirect the homepage away from Taipei", async ({
   expect(html).toContain("看到喜歡的存下");
   expect(html).toContain('data-testid="city-switch-taipei"');
   expect(html).toContain('href="/shanghai"');
-  expect(html).toContain('aria-current="page"');
+  expect(html).toContain('aria-current="true"');
   expect(html).not.toContain("geolocation");
   expect(html).not.toContain('href="/taipei"');
   expect(html).not.toContain("先選城市");
@@ -162,45 +164,59 @@ test("legacy Taipei metro URLs still serve Taipei, and / is the Taipei map", asy
   expect(homeHtml).not.toContain("豫園");
 });
 
-test("Shanghai is Chinese-first, with published addresses and no invented prices", async ({ page }) => {
+test("Shanghai switches inside the same hero with the shared photo map and cards", async ({ page }) => {
   const stations = getShanghaiFoodStations();
-  expect(stations.map((station) => station.slug)).toEqual([
-    "shanghai-yuyuan",
-    "shanghai-jingan-temple",
-    "shanghai-south-huangpi-road",
-    "shanghai-jiaotong-university",
-    "shanghai-dapuqiao",
-  ]);
-  await page.setViewportSize({ width: 390, height: 844 });
-  const response = await page.goto("/shanghai");
-  expect(response?.status()).toBe(200);
-  await expect(page.locator("h1:visible")).toHaveText("上海地鐵，一站一站吃");
-  await expect(page.locator("html")).toHaveAttribute("lang", "zh-Hant");
-  await expect(page.getByTestId("shanghai-pin-shanghai-yuyuan")).toHaveCount(1);
-  await expect(page.getByTestId("shanghai-pin-shanghai-jingan-temple")).toHaveCount(1);
-  await expect(page.getByTestId("shanghai-pin-shanghai-south-huangpi-road")).toHaveCount(1);
-  await expect(page.getByTestId("shanghai-pin-shanghai-jiaotong-university")).toHaveCount(1);
-  await expect(page.getByTestId("shanghai-pin-shanghai-dapuqiao")).toHaveCount(1);
-  await expect(page.locator("[data-testid^=shanghai-pin-]")).toHaveCount(stations.length);
-  await expect(page.locator(".zh-address")).toHaveCount(stations.reduce((sum, station) => sum + station.shops.length, 0));
-  await expect(page.getByText("豫園路87號", { exact: true })).toBeVisible();
-  await expect(page.getByText("上海市靜安區愚園路140號", { exact: true })).toBeVisible();
-  await expect(page.getByText("上海市黃浦區雁蕩路14號（近淮海中路）", { exact: true })).toBeVisible();
-  await expect(page.getByText("光明邨大酒家", { exact: true })).toBeVisible();
-  await expect(page.getByText("14元人民幣／碗", { exact: true })).toBeVisible();
-  await expect(page.getByText("5元人民幣／只", { exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Instagram ↗" })).toHaveCount(stations.filter((station) => station.posts.instagram).length);
-  await expect(page.getByText("人民幣（¥）")).toBeVisible();
-  await expect(page.getByText("南京東路")).toHaveCount(0);
-  await expect(page.getByText("價格待確認")).toHaveCount(0);
-  await noHorizontalOverflow(page);
-  for (const [width, height] of [[1280, 800], [1440, 900]] as const) {
-    await page.setViewportSize({ width, height });
-    await noHorizontalOverflow(page);
-    for (const slug of ["shanghai-yuyuan", "shanghai-jingan-temple", "shanghai-south-huangpi-road"]) {
-      const box = (await page.getByTestId(`shanghai-pin-${slug}`).boundingBox())!;
-      expect(box.y, slug).toBeGreaterThanOrEqual(0);
-      expect(box.y + box.height, slug).toBeLessThanOrEqual(height);
+  for (const width of [390, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/?reduce=1");
+    await page.locator("#hero").evaluate(el => el.setAttribute("data-preserved", "yes"));
+    await page.getByTestId("city-switch-shanghai").click();
+    expect(new URL(page.url()).pathname).toBe("/");
+    await expect(page.locator("#hero")).toHaveAttribute("data-preserved", "yes");
+    await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "shanghai");
+    await expect(page.locator("h1:visible")).toContainText("看到喜歡的存下");
+    await expect(page.locator("#hero .mapcard").last()).toBeVisible();
+    await expect(page.locator(".sh-page, .sh-mapcard")).toHaveCount(0);
+    for (const station of stations) {
+      await page.getByTestId(`metro-pin-${station.slug}`).locator(".hit").click();
+      const card = page.getByTestId("metro-card");
+      await expect(card).toBeVisible();
+      await expect(card.locator("h3")).toHaveText(station.station);
+      await expect(card).toContainText(station.shops[0].address!);
+      await expect(card).not.toContainText("NT$");
+      for (const [i, shop] of station.shops.entries()) {
+        await card.locator(".thumbs button").nth(i).click();
+        await expect(card.locator("h4")).toHaveText(shop.name!);
+        await expect(card.locator("dd").nth(0)).toHaveText(shop.address?.trim() || "地址待確認");
+        await expect(card.locator("dd").nth(1)).toHaveText(shop.price?.trim() || "");
+        const photo = station.images.photos.find(path => path.split("/").at(-1)?.replace(/\.[^.]+$/, "") === shop.key);
+        if (photo) await expect(card.locator(".fc img")).toHaveAttribute("src", photo);
+      }
+      await page.getByTestId("metro-close").click();
+      await page.getByTestId("metro-reset").click();
     }
+    await noHorizontalOverflow(page);
+    await page.getByTestId("city-switch-taipei").click();
+    await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "taipei");
+    await expect(page.locator(".pin .hit").first()).toBeVisible();
   }
+});
+
+test("legacy Shanghai entry, deep links, history and no-JS content retain the landing hero", async ({ page, browser }) => {
+  await page.goto("/shanghai?lang=en&reduce=1#shanghai-yuyuan");
+  await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "shanghai");
+  await expect(page.getByTestId("metro-card").locator("h3")).toHaveText("豫園");
+  await expect(page.getByTestId("hero-appstore")).toBeVisible();
+  await page.getByTestId("city-switch-taipei").click();
+  await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "taipei");
+  await page.getByRole("button", { name: "中文", exact: true }).click();
+  await page.goBack();
+  await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "shanghai");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const noJS = await context.newPage();
+  await noJS.goto("/shanghai");
+  await expect(noJS.locator("#hero")).toBeVisible();
+  await expect(noJS.getByText("豫園路87號", { exact: true })).toBeVisible();
+  await context.close();
 });

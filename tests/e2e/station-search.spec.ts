@@ -30,7 +30,7 @@ test("homepage search is the Taipei station list", async ({ page }) => {
     await expect(page.getByText("先選城市")).toHaveCount(0);
     await expect(page.locator("[data-slot=segmented-control]")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "只看這條線" })).toHaveCount(0);
-    await expect(page.locator("nav.top").getByTestId("city-switch-taipei")).toHaveAttribute("aria-current", "page");
+    await expect(page.locator("nav.top").getByTestId("city-switch-taipei")).toHaveAttribute("aria-current", "true");
     const input = await search(page);
     await input.fill("豫園");
     await expect(page.getByTestId("station-search-empty")).toHaveText("這個篩選下沒有符合的站，換個字試試。");
@@ -137,10 +137,8 @@ for (const width of WIDTHS) {
     expect(font.toLowerCase()).not.toContain("iansui");
     await expect(page.locator("[data-slot=segmented-control]")).toHaveCount(0);
 
-    const note = (await page.getByText("價錢是人民幣").boundingBox())!;
     const searchBox = (await page.getByTestId("station-search").boundingBox())!;
-    const map = (await page.locator(".sh-mapcard").boundingBox())!;
-    expect(note.y).toBeLessThan(searchBox.y);
+    const map = (await page.locator(".map-stage").boundingBox())!;
     expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(map.y + 1);
     const menu = page.getByRole("button", { name: "只看這條線" });
     const menuBox = (await menu.boundingBox())!;
@@ -158,7 +156,7 @@ for (const width of WIDTHS) {
     const mapBefore = map.y;
     await input.fill("麵");
     await expect(input).toHaveAttribute("aria-expanded", "true");
-    const mapNow = (await page.locator(".sh-mapcard").boundingBox())!;
+    const mapNow = (await page.locator(".map-stage").boundingBox())!;
     expect(Math.abs(mapNow.y - mapBefore)).toBeLessThan(2);
     const name = page.locator("[data-slot=combobox-item][data-highlighted] [data-slot=combobox-item-text]");
     const first = await name.innerText();
@@ -190,9 +188,9 @@ for (const width of WIDTHS) {
 
     await input.fill("豫園");
     await input.press("Enter");
-    const section = page.locator("#shanghai-yuyuan");
-    await expect(section).toBeInViewport();
-    await expect(section.locator("h2")).toHaveText("豫園");
+    const card = page.getByTestId("metro-card");
+    await expect(card).toBeVisible();
+    await expect(card.locator("h3")).toHaveText("豫園");
     expect(errors.filter((error) => /hydrat|did not match|Minified React error/i.test(error))).toEqual([]);
   });
 }

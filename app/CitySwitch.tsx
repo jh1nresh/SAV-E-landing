@@ -8,7 +8,7 @@ const CITIES = [
 
 type CityId = (typeof CITIES)[number]["id"];
 
-export default function CitySwitch({ active, lang }: { active: CityId; lang: SiteLang }) {
+export default function CitySwitch({ active, lang, onSelect }: { active: CityId; lang: SiteLang; onSelect: (city: CityId) => void }) {
   return (
     <div className="city-switch-row">
       <div className="city-switch" role="group" aria-label={lang === "en" ? "City" : "城市"} data-testid="city-switch">
@@ -20,7 +20,12 @@ export default function CitySwitch({ active, lang }: { active: CityId; lang: Sit
               className="city-switch-item"
               data-testid={`city-switch-${city.id}`}
               href={hrefWithLang(city.href, lang)}
-              aria-current={selected ? "page" : undefined}
+              aria-current={selected ? "true" : undefined}
+              onClick={(event) => {
+                if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                onSelect(city.id);
+              }}
             >
               <span className="zh">{city.zh}</span>
               <span className="en">{city.en}</span>

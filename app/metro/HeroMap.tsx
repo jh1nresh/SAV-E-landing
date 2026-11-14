@@ -1,8 +1,9 @@
 "use client";
 
+import { cityMapSvg, cityMapName } from "./city-map";
 import { useEffect, useRef } from "react";
 import { formatMd, latestUpdatedAt, stampLevel, stampNote, type MetroData } from "../../lib/metro";
-import { MAP_SVG, SVG_DEFS } from "./map-svg";
+import { SVG_DEFS } from "./map-svg";
 import { MapPaper } from "./MapPaper";
 import { bootMetroMap } from "./map-runtime";
 
@@ -35,7 +36,7 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
           {note ? <i className={partial ? "partial" : undefined}>{note}</i> : null}
         </div>
         <div className="vp" id="vp" data-testid="metro-vp">
-          <div className="world" id="world" dangerouslySetInnerHTML={{ __html: MAP_SVG }} />
+          <div className="world" id="world" dangerouslySetInnerHTML={{ __html: cityMapSvg(data) }} />
           <div className="pinlayer" id="pinlayer" />
           <div className="hud mapzoom" role="group" aria-label="地圖縮放">
             <button type="button" id="zoomIn" aria-label="放大地圖">＋</button>
@@ -43,7 +44,7 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
           </div>
           <div className="hud map-caption-group">
             <div className="hud cart">
-              <b>Taipei</b>
+              <b>{cityMapName(data)}</b>
               <span>捷運口袋名單 · 示意位置</span>
             </div>
             <div className="hud hint" id="hint">
