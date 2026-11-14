@@ -8,6 +8,31 @@
 .food-row dd { margin: 4px 0 0; line-height: 1.7; }
 .food-posts { display: flex; flex-wrap: wrap; gap: 20px; }
 .food-posts a { padding: 12px 0; }
-.food-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.food-gallery img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; }
-@media (max-width: 760px) { .food-shops { grid-template-columns: 1fr; } .food-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.food-breadcrumbs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; font-size: 13px; line-height: 1.7; color: var(--muted); }
+.food-breadcrumbs a { color: var(--forest); }
+.food-intro { max-width: 68ch; line-height: 1.85; }
+.food-city-index { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.food-city-index a, .food-map-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--forest); text-underline-offset: 4px; }
+.food-city-index a { padding: 8px 16px; border: 1px solid var(--forest); border-radius: 100px; }
+.food-city-section { margin-top: 48px; scroll-margin-top: 24px; }
+.food-city-section > h2 { margin-bottom: 8px; font-size: 28px; color: var(--forest); }
+.food-city-section > p { margin-bottom: 24px; color: var(--muted); }
+.food-city-section .guide-card h3 { font-size: 25px; margin: 10px 0; color: var(--forest); }
+.food-quick-index { margin: 32px 0 40px; }
+.food-quick-index h2 { margin-bottom: 12px; color: var(--forest); font-size: 23px; }
+.food-quick-index ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--kraft); }
+.food-quick-index li { border-bottom: 1px solid var(--kraft); }
+.food-quick-index a { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 4px 12px; padding: 14px 0; min-height: 44px; color: var(--forest); text-decoration: none; }
+.food-quick-index a > span { grid-row: span 2; color: var(--muted); }
+.food-quick-index a small { color: var(--ink); font-size: 14px; line-height: 1.5; }
+.food-quick-index a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+.food-shops article { scroll-margin-top: 24px; }
+.food-shops article:target { border-color: var(--forest); }
+.food-shop-photo { margin: -4px -4px 24px; }
+.food-shop-photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; }
+.food-shop-photo figcaption { margin-top: 8px; font-size: 12px; color: var(--muted); }
+.food-map-link { margin-top: 8px; font-weight: 700; }
+.food-map-link:focus-visible, .food-city-index a:focus-visible, .food-quick-index a:focus-visible { outline: 3px dashed var(--coral); outline-offset: 3px; }
+.food-before-going { margin-top: 40px; border-top: 1px solid var(--kraft); padding-top: 24px; line-height: 1.8; }
+.food-before-going h2 { font-size: 23px; color: var(--forest); }
+@media (max-width: 760px) { .food-shops { grid-template-columns: 1fr; } }

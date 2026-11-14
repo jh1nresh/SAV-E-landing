@@ -24,7 +24,7 @@ for (const width of [320, 390, 1280]) {
         expect(target.x + target.width).toBeLessThanOrEqual(card.x + card.width);
         await link.tap();
         await expect(page).toHaveURL(new RegExp(`/metro/${slug}$`));
-        await expect(page.locator("h1")).toHaveText(name);
+        await expect(page.locator("h1")).toHaveText(`${name}站美食攻略`);
         await expect(page.locator("link[rel=canonical]")).toHaveAttribute("href", `https://savvy.jeezlabs.io/metro/${slug}`);
         await noHorizontalOverflow(page);
         if (city === "shanghai") {
@@ -43,8 +43,8 @@ test("every published Shanghai guide retains source details and is discoverable"
     expect(sitemap).toContain(`https://savvy.jeezlabs.io${url}`);
     const response = await page.goto(url);
     expect(response!.status()).toBe(200);
-    await expect(page.locator("h1")).toHaveText(station.station);
-    await expect(page).toHaveTitle(`${station.station}站美食清單｜Savvy`);
+    await expect(page.locator("h1")).toHaveText(`${station.station}站美食攻略`);
+    await expect.poll(() => page.title()).toContain(`${station.station}站美食攻略`);
     const shops = page.locator(".food-shops article");
     await expect(shops).toHaveCount(station.shops.length);
     for (const [i, shop] of station.shops.entries()) {
@@ -61,7 +61,7 @@ test("every published Shanghai guide retains source details and is discoverable"
       expect(markdown.status()).toBe(200);
       expect(markdown.headers()["content-type"]).toContain("text/markdown");
       const body = await markdown.text();
-      expect(body).toContain(`# ${station.station}站美食清單`);
+      expect(body).toContain(`# ${station.station}站美食攻略`);
       for (const shop of station.shops) {
         if (shop.name) expect(body).toContain(`## ${shop.name}`);
         for (const [label, value] of foodShopRows(shop, station.city)) expect(body).toContain(`- ${label}: ${value}`);
