@@ -66,7 +66,7 @@ for (const [width, height] of sizes) {
           await page.locator(".thumbs button").nth(i).click();
           await expect(page.locator("#fcslot h4")).toHaveText(stores[i].name);
         }
-        await expect.poll(() => bounds(page)).toMatchObject({ titleInside: true, overflow: false, stamp: "hidden" });
+        await expect.poll(() => bounds(page), { message: `${station.id}: ${stores[i]?.name ?? "station"}` }).toMatchObject({ titleInside: true, overflow: false, stamp: "hidden" });
         await expect.poll(async () => Math.min(...Object.entries(await bounds(page)).filter(([key]) => ["left", "right", "top", "bottom"].includes(key)).map(([, value]) => Number(value)))).toBeGreaterThanOrEqual(10);
       }
       await page.evaluate(() => window.__savvyMap!.closeCard({focus:false}));
@@ -74,3 +74,19 @@ for (const [width, height] of sizes) {
     }
   });
 }
+
+test("320px: longer sourced prices fit with larger article text", async ({ page, browserName }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto("/?reduce=1&clock=2026-10-26");
+  await page.waitForFunction(() => !!window.__savvyMap);
+  // Exercise larger text, as user settings and platform fallback fonts differ.
+  await page.addStyleTag({ content: ".article-details { font-size: 16px; }" });
+  await page.evaluate(() => window.__savvyMap!.select("shuanglian"));
+  const stores = metro.stores.filter(store => store.stationId === "shuanglian");
+  for (let i = 0; i < stores.length; i++) {
+    await page.locator(".thumbs button").nth(i).click();
+    await expect(page.locator("#fcslot h4")).toHaveText(stores[i].name);
+    await expect.poll(() => bounds(page), { message: stores[i].name }).toMatchObject({ titleInside: true, overflow: false });
+    if (i === 0) await page.locator("#vp").screenshot({ path: `guide-screenshots/hero-price-320-${browserName}.png` });
+  }
+});

@@ -1304,6 +1304,17 @@ body.rm .pin.new .gr {
     width: 64px;
     height: 80px;
   }
+  /* Give qualified prices the full card width when the photo column is tight. */
+  .card .fc .bd {
+    display: contents;
+  }
+  .card .fc h4 {
+    align-self: center;
+  }
+  .card .fc .article-details {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
 }
 
 /* Keep the invitation beside the caption, including the static poster. */

@@ -235,6 +235,14 @@ test.describe("hero map interactions", () => {
     await page.locator("[data-testid=metro-close]").click();
     await openStation(page, "shuanglian");
     await page.locator('.thumbs button[aria-label="雙連蚵仔麵線"]').click();
+    const oyster = getFoodStations().find(s => s.slug === "shuanglian")!.shops.find(s => s.key === "oyster")!;
+    await expect(page.locator("#card .article-details")).toContainText(oyster.price!);
+
+    await page.locator("[data-testid=metro-close]").click();
+    await openStation(page, "daan");
+    const pending = getFoodStations().find(s => s.slug === "daan")!.shops.find(s => s.key === "longji")!;
+    expect(pending.price).toBeNull();
+    await page.getByRole("button", { name: pending.name!, exact: true }).click();
     await expect(page.locator("#card .article-details")).toContainText(PRICE_PENDING);
     await expect(page.locator("#card .price")).toHaveCount(0);
   });
