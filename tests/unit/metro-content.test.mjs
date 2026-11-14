@@ -33,6 +33,9 @@ test('all content stations preserve source display fields; served image paths ex
 test('null, missing and empty fields hide the entire row independently', () => {
   assert.deepEqual(foodShopRows({ dish: null, price: undefined, hours: '', address: '地址' }), [['價格', '價格待確認'], ['地址', '地址']]);
   assert.deepEqual(foodShopRows({ price: '$60', price_source: null }), [['價格', '$60']]);
+  assert.deepEqual(foodShopRows({ price: null, address: '豫園路87號' }, 'shanghai'), [['地址', '豫園路87號']]);
+  assert.deepEqual(foodShopRows({ price: '  ' }, 'shanghai'), []);
+  assert.deepEqual(foodShopRows({ price: '人均 ¥60' }, 'shanghai'), [['價格（人民幣）', '人均 ¥60']]);
 });
 test('internal keys are removed at every depth, including arrays', () => {
   assert.deepEqual(stripInternal({ _secret: 'x', nested: [{ _secret: 'y', good: { _hidden: 1, value: 2 } }] }), { nested: [{ good: { value: 2 } }] });
