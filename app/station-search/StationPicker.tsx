@@ -35,6 +35,21 @@ function scrollBehavior(): ScrollBehavior {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 }
 
+function focusStill(el: HTMLElement | null | undefined) {
+  el?.focus({ preventScroll: true });
+}
+
+/** Move the active option inside the list. scrollIntoView would also scroll the page. */
+function scrollOptionIntoList(id: string) {
+  const el = document.getElementById(id);
+  const list = el?.closest(".sd-list");
+  if (!(el instanceof HTMLElement) || !(list instanceof HTMLElement)) return;
+  const elRect = el.getBoundingClientRect();
+  const listRect = list.getBoundingClientRect();
+  if (elRect.top < listRect.top) list.scrollTop -= listRect.top - elRect.top;
+  else if (elRect.bottom > listRect.bottom) list.scrollTop += elRect.bottom - listRect.bottom;
+}
+
 function stationHref(city: City, slug: string) {
   switch (city) {
     case "taipei":
@@ -151,6 +166,7 @@ export function StationPicker({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dockRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const pointerRef = useRef({ x: Number.NaN, y: Number.NaN });
   const [rows, setRows] = useState(stations);
   const [freshList, setFreshList] = useState(freshIds);
   const latest = latestStation(rows);
@@ -190,7 +206,7 @@ export function StationPicker({
 
   useEffect(() => {
     if (!open) return;
-    inputRef.current?.focus();
+    focusStill(inputRef.current);
   }, [open]);
 
   useEffect(() => {
@@ -242,14 +258,14 @@ export function StationPicker({
       event.preventDefault();
       event.stopPropagation();
       setOpen(false);
-      triggerRef.current?.focus();
+      focusStill(triggerRef.current);
     };
     const onPointer = (event: PointerEvent) => {
       const target = event.target;
       if (!(target instanceof Node) || dockRef.current?.contains(target)) return;
       if (target instanceof Element && target.closest("[data-slot=menu-content]")) return;
       setOpen(false);
-      triggerRef.current?.focus();
+      focusStill(triggerRef.current);
     };
     window.addEventListener("keydown", onKey, true);
     window.addEventListener("pointerdown", onPointer);
@@ -266,14 +282,27 @@ export function StationPicker({
     markSelected(station);
     if (station.city === "shanghai") openShanghaiStation(station.slug);
     else openTaipeiStation(station.selectId);
-    window.setTimeout(() => triggerRef.current?.focus(), 360);
+    window.setTimeout(() => focusStill(triggerRef.current), 360);
   }
 
   function moveActive(next: number) {
     if (!visible.length) return;
     const index = Math.max(0, Math.min(visible.length - 1, next));
     setActive(index);
-    document.getElementById(`${listId}-${visible[index]?.selectId}`)?.scrollIntoView({ block: "nearest" });
+    scrollOptionIntoList(`${listId}-${visible[index]?.selectId}`);
+  }
+
+  function onDockPointerMove(event: React.PointerEvent<HTMLDivElement>) {
+    const point = pointerRef.current;
+    const same = event.clientX === point.x && event.clientY === point.y;
+    point.x = event.clientX;
+    point.y = event.clientY;
+    if (same) return;
+    const option = event.target instanceof Element ? event.target.closest("[data-slot=combobox-item]") : null;
+    if (!option) return;
+    const id = option.getAttribute("data-station-id");
+    const index = visible.findIndex((station) => station.selectId === id);
+    if (index >= 0) setActive(index);
   }
 
   function onInputKey(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -308,8 +337,8 @@ export function StationPicker({
   const updated = latest ? `更新於 ${formatMd(latest.date)}` : "";
 
   return (
-    <div className={`sd-dock${city === "taipei" ? " has-stamp" : ""}`} lang="zh-Hant" data-testid="station-search" ref={dockRef}>
-      <div hidden={live}>
+    <div className={`sd-dock${city === "taipei" ? " has-stamp" : ""}`} lang="zh-Hant" data-testid="station-search" ref={dockRef} onPointerMove={onDockPointerMove}>
+      <div hidden={live} className="sd-static">
         <div className="sd-label-row">
           <p className="sd-label">找一站</p>
           {city === "taipei" ? (
@@ -351,7 +380,7 @@ export function StationPicker({
           </span>
         </button>
         <div className="sd-panel" data-open={open ? "true" : "false"} hidden={!open}>
-          <button type="button" className="sd-backdrop" aria-label="關閉選站" tabIndex={-1} onClick={() => { setOpen(false); triggerRef.current?.focus(); }} />
+          <button type="button" className="sd-backdrop" aria-label="關閉選站" tabIndex={-1} onClick={() => { setOpen(false); focusStill(triggerRef.current); }} />
           <div className="sd-sheet" role="presentation">
             <div className="sd-sheet-handle" aria-hidden="true"><span /></div>
             <p className="sd-sheet-title">找一站</p>
@@ -406,7 +435,6 @@ export function StationPicker({
                           data-station-id={station.selectId}
                           data-highlighted={index === active ? "true" : undefined}
                           aria-selected={isSelected}
-                          onMouseEnter={() => setActive(index)}
                           onClick={() => choose(station)}
                         >
                           <span className="sd-dot" style={{ background: station.lineColor }} aria-hidden="true" />
