@@ -75,7 +75,7 @@ export type MetroStation = {
   status: "live" | "coming_soon";
   updatedAt: string | null;
   mapPos: {
-    line: "L_red" | "L_blue" | "L_green" | "L_orange";
+    line: string;
     at: [number, number];
     snapped?: [number, number];
     /** Label beside the dot instead of below it (keeps clear of neighbouring photo pins). */
@@ -90,6 +90,7 @@ export type MetroStation = {
 export type MetroData = {
   _meta: {
     asOf: string;
+    city?: "taipei" | "shanghai";
     note?: string;
   };
   stations: MetroStation[];

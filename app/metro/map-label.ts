@@ -57,13 +57,14 @@ export function layoutPhotoPins(points: PhotoPoint[], labels: Box[], width: numb
     // The hit is top:-54, height 62. A clipped hit makes scrollIntoView pan the map and steals the centre.
     const hitInside = (x: number, y: number) =>
       x - 23 >= 2 && y - 54 >= 2 && x + 23 <= width - 2 && y + 8 <= height - 2;
+    const obstacles = [...labels, ...placed];
     let chosen: { x: number; y: number; box: Box } | null = null;
     for (const { dx, dy } of photoOffsets) {
       const x = point.x + dx;
       const y = point.y + dy;
       const box = boxAt(x, y);
       if (!fullyInside(box)) continue;
-      if ([...labels, ...placed].some(other => intersects(box, other))) continue;
+      if (obstacles.some(other => intersects(box, other))) continue;
       chosen = { x, y, box };
       break;
     }
@@ -77,7 +78,7 @@ export function layoutPhotoPins(points: PhotoPoint[], labels: Box[], width: numb
         const y = point.y + dy;
         if (!hitInside(x, y)) continue;
         const box = boxAt(x, y);
-        const cost = [...labels, ...placed].reduce((sum, other) => sum + overlapArea(box, other), 0);
+        const cost = obstacles.reduce((sum, other) => sum + overlapArea(box, other), 0);
         const outside = fullyInside(box) ? 0 : 1;
         const dist = dx * dx + dy * dy;
         const clearer = !best

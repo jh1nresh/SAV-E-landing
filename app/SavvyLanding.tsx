@@ -1,9 +1,5 @@
+import { CityHeroMap } from "./metro/CityHeroMap";
 import { AppStoreBadge } from "./SiteChrome";
-import { getFoodStations, getPublicMetroData, stampLevel, stampNote, stationIsNew } from "../lib/metro";
-import { buildPickerStations, TAIPEI_LINE_COLOR } from "../lib/station-picker.mjs";
-import { TEST_QUERY_HOOKS, type FreshSource } from "../lib/test-hooks.mjs";
-import { HeroMapLazy } from "./metro/HeroMapLazy";
-import { StationPicker } from "./station-search/StationPicker";
 import "./metro/hero-map.css";
 
 import { GUIDE_ROOT, guidePath, guides } from "./zh-tw/guides/content";
@@ -19,25 +15,6 @@ const STICKERS = [
 ] as const;
 
 export default function SavvyLanding({ clock }: { clock: string }) {
-  const metro = getPublicMetroData();
-  const stations = buildPickerStations(getFoodStations(), metro.stations, TAIPEI_LINE_COLOR);
-  const freshIds = metro.stations
-    .filter((station) => stationIsNew(metro.stores.filter((store) => store.stationId === station.id), clock))
-    .map((station) => station.id);
-  const freshSources: FreshSource[] | undefined = TEST_QUERY_HOOKS
-    ? metro.stations.map((station) => ({
-        id: station.id,
-        stores: metro.stores.filter((store) => store.stationId === station.id).map((store) => ({
-          kind: store.kind,
-          backfill: store.backfill,
-          addedAt: store.addedAt,
-          sourcePosts: store.sourcePosts,
-        })),
-      }))
-    : undefined;
-  const note = stampNote(metro.stores);
-  const partial = stampLevel(metro.stores) === "partial";
-
   return (
     <main>
       <section className="s1 hero" id="hero">
@@ -76,10 +53,7 @@ export default function SavvyLanding({ clock }: { clock: string }) {
               ))}
             </div>
           </div>
-          <div className="hero-search-col">
-            <StationPicker stations={stations} city="taipei" freshIds={freshIds} freshSources={freshSources} note={note} partial={partial} />
-            <HeroMapLazy data={metro} />
-          </div>
+          <CityHeroMap clock={clock} />
         </div>
       </section>
 

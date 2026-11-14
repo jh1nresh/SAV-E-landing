@@ -65,7 +65,7 @@ function stationHref(city: City, slug: string) {
 
 function markSelected(station: PickerStation) {
   document.querySelectorAll(".pin.picked, .sh-map a.picked").forEach((el) => el.classList.remove("picked"));
-  if (station.city === "shanghai") {
+  if (station.city === "shanghai" && !document.querySelector(".map-stage")) {
     document.querySelector(`.sh-map a[href="#${station.slug}"]`)?.classList.add("picked");
     return;
   }
@@ -73,10 +73,13 @@ function markSelected(station: PickerStation) {
 }
 
 function openTaipeiStation(id: string) {
-  document.querySelector(".map-stage")?.scrollIntoView({ behavior: scrollBehavior(), block: "center" });
+  const stage = document.querySelector(".map-stage");
+  if (!stage) return;
+  stage.scrollIntoView({ behavior: scrollBehavior(), block: "center" });
   const attempt = (left: number) => {
+    if (!stage.isConnected) return;
     const api = window.__savvyMap;
-    if (!api) {
+    if (!api || !stage.querySelector(`[data-testid="metro-pin-${id}"]`)) {
       if (left > 0) window.setTimeout(() => attempt(left - 1), 50);
       return;
     }
@@ -88,6 +91,7 @@ function openTaipeiStation(id: string) {
 }
 
 function openShanghaiStation(slug: string) {
+  if (document.querySelector(".map-stage")) { openTaipeiStation(slug); return; }
   const el = document.getElementById(slug);
   if (!el) return;
   el.scrollIntoView({ behavior: scrollBehavior(), block: "start" });
@@ -215,7 +219,7 @@ export function StationPicker({
     let cancelled = false;
     const tick = (left: number) => {
       if (cancelled) return;
-      const found = station.city === "shanghai"
+      const found = station.city === "shanghai" && !document.querySelector(".map-stage")
         ? document.querySelector(`.sh-map a[href="#${station.slug}"]`)
         : document.querySelector(`[data-testid="metro-pin-${station.selectId}"]`);
       if (found) {

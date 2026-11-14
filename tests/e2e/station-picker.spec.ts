@@ -220,14 +220,15 @@ test("the weekly stamp does not cover 國父紀念館 at 390", async ({ page }) 
 test("every Shanghai pin is on the first screen at 1280x800", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/shanghai");
-  await expect(page.locator("[data-testid^=shanghai-pin-]")).toHaveCount(shanghai.length);
-  for (const pin of await page.locator("[data-testid^=shanghai-pin-]").all()) {
+  await waitForMap(page);
+  await expect(page.locator(".pin")).toHaveCount(shanghai.length);
+  for (const pin of await page.locator(".pin .ph").all()) {
     const box = (await pin.boundingBox())!;
     const id = (await pin.getAttribute("data-testid")) ?? "shanghai-pin";
     expect(box.y, id).toBeGreaterThanOrEqual(0);
     expect(box.y + box.height, id).toBeLessThanOrEqual(800);
   }
-  const labels = await page.evaluate(() => [...document.querySelectorAll(".sh-map text")].map((el) => {
+  const labels = await page.evaluate(() => [...document.querySelectorAll("#stdots text")].map((el) => {
     const rect = el.getBoundingClientRect();
     return { name: el.textContent ?? "", top: rect.top, bottom: rect.bottom };
   }));

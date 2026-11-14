@@ -40,14 +40,14 @@ a.city-switch-item {
   font: 600 15px/1.2 ui-rounded, -apple-system, "PingFang TC", sans-serif;
 }
 
-a.city-switch-item[aria-current="page"] {
+a.city-switch-item[aria-current="true"] {
   background: var(--forest);
   color: var(--paper);
   font-weight: 700;
 }
 
 @media (hover: hover) {
-  a.city-switch-item:not([aria-current="page"]):hover {
+  a.city-switch-item:not([aria-current="true"]):hover {
     background: var(--kraft);
   }
 }
@@ -62,3 +62,5 @@ a.city-switch-item:focus-visible {
     min-width: 96px;
   }
 }
+
+.city-switch-item[aria-current="true"] span { text-decoration: underline; text-underline-offset: 4px; }

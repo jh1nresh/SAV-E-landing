@@ -1,8 +1,9 @@
+import { cityMapSvg, cityMapName } from "./city-map";
 import { stationLabelPosition, layoutPosterPhotos, posterLabelBox } from "./map-label";
 import { type MetroData } from "../../lib/metro";
 import { useSiteLang } from "../SiteChrome";
 import { MapPaper } from "./MapPaper";
-import { MAP_SVG, SVG_DEFS } from "./map-svg";
+import { SVG_DEFS } from "./map-svg";
 
 // Keep the existing artwork, but isolate its SVG references from the live map.
 const posterSvg = (value: string) => value
@@ -22,7 +23,7 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
   );
   return (
     <div className="mapwrap mapwrap-slot" data-testid="metro-map-slot" role="img"
-      aria-label={lang === "en" ? "Taipei MRT food map" : "台北捷運美食地圖"}>
+      aria-label={lang === "en" ? (data._meta.city === "shanghai" ? "Shanghai metro food map" : "Taipei MRT food map") : `${data._meta.city === "shanghai" ? "上海地鐵" : "台北捷運"}美食地圖`}>
       <div aria-hidden="true">
         <div dangerouslySetInnerHTML={{ __html: posterSvg(SVG_DEFS) }} />
         <div className="mapcard">
@@ -30,7 +31,7 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
           <span className="tape a" />
           <div className="vp poster-vp" data-testid="metro-map-skeleton">
             <div className="poster-world">
-              <div dangerouslySetInnerHTML={{ __html: posterSvg(MAP_SVG) }} />
+              <div dangerouslySetInnerHTML={{ __html: posterSvg(cityMapSvg(data)) }} />
               <svg viewBox="-150 -170 1000 940" className="poster-pins">
                 {stations.map(s => {
                   const [x, y] = s.mapPos.snapped ?? s.mapPos.at;
@@ -55,7 +56,7 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
               </svg>
             </div>
             <div className="hud map-caption-group">
-              <div className="hud cart" data-testid="metro-poster-title"><b>Taipei</b><span>捷運口袋名單 · 示意位置</span></div>
+              <div className="hud cart" data-testid="metro-poster-title"><b>{cityMapName(data)}</b><span>捷運口袋名單 · 示意位置</span></div>
               <div className="hud hint">點一站，看吃什麼</div>
             </div>
           </div>
