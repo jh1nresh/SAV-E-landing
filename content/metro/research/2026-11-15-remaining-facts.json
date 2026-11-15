@@ -192,6 +192,78 @@
         }
       ],
       "contentFile": "content/metro/daily/shanghai/2026-11-12/web.json"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "laofandian",
+      "field": "price",
+      "beforeValue": null,
+      "adoptedValue": "八寶鴨 RMB198（攜程列價；份量未載、更新日不明）",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926708.html",
+      "sourceTitle": "攜程：上海老飯店推薦菜公開資料",
+      "publishedAt": null,
+      "observedAt": null,
+      "checkedAt": "2026-11-15",
+      "branchEvidence": "福佑路242號",
+      "portionOrChannel": "份量、堂食／外帶管道未載；不能推為每顆、每隻、公斤或標準份數。",
+      "evidence": "公開HTML的RestaurantInfo.Name及Address對應上海老飯店／福佑路242號，CurrencyUnit=RMB；RestaurantRecommendedFoodList中目標菜名八寶鴨的Price=198。不是AveragePrice。促銷欄位為空。 菜品Desc描述填料、蒸燜、原鹵調製蝦仁青豆的現做菜，不是冷凍零售商品。",
+      "status": "verified-live-platform-reference",
+      "caveats": "只是公開平台推薦菜資料列價，來源未標更新日；不是店家現行報價或2026菜單。查詢日只代表讀取日期。",
+      "contentFile": "content/metro/daily/shanghai/2026-11-07/web.json"
+    },
+    {
+      "stationSlug": "shanghai-yuyuan",
+      "shopKey": "laofandian",
+      "field": "price_source",
+      "beforeValue": null,
+      "adoptedValue": "攜程推薦菜資料列價，非人均；份量及店家現價待核；2026-11-15查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926708.html",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926708.html",
+      "sourceTitle": "攜程：上海老飯店推薦菜公開資料",
+      "publishedAt": null,
+      "observedAt": null,
+      "checkedAt": "2026-11-15",
+      "branchEvidence": "福佑路242號",
+      "portionOrChannel": "份量、堂食／外帶管道未載；不能推為每顆、每隻、公斤或標準份數。",
+      "evidence": "公開HTML的RestaurantInfo.Name及Address對應上海老飯店／福佑路242號，CurrencyUnit=RMB；RestaurantRecommendedFoodList中目標菜名八寶鴨的Price=198。不是AveragePrice。促銷欄位為空。 菜品Desc描述填料、蒸燜、原鹵調製蝦仁青豆的現做菜，不是冷凍零售商品。",
+      "status": "verified-live-platform-reference",
+      "caveats": "只是公開平台推薦菜資料列價，來源未標更新日；不是店家現行報價或2026菜單。查詢日只代表讀取日期。",
+      "contentFile": "content/metro/daily/shanghai/2026-11-07/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huangayi",
+      "field": "price",
+      "beforeValue": null,
+      "adoptedValue": "鍋貼 RMB7（攜程列價；份量未載、更新日不明）",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994927.html",
+      "sourceTitle": "攜程：黃阿姨鍋貼大王（萬航渡路店）推薦菜公開資料",
+      "publishedAt": null,
+      "observedAt": null,
+      "checkedAt": "2026-11-15",
+      "branchEvidence": "萬航渡路174號",
+      "portionOrChannel": "份量、堂食／外帶管道未載；不能推為每顆、每隻、公斤或標準份數。",
+      "evidence": "公開HTML的RestaurantInfo.Name及Address對應黃阿姨鍋貼大王（萬航渡路店）／萬航渡路174號，CurrencyUnit=RMB；RestaurantRecommendedFoodList中目標菜名鍋貼的Price=7。不是AveragePrice。促銷欄位為空。",
+      "status": "verified-live-platform-reference",
+      "caveats": "只是公開平台推薦菜資料列價，來源未標更新日；不是店家現行報價或2026菜單。查詢日只代表讀取日期。",
+      "contentFile": "content/metro/daily/shanghai/2026-11-08/web.json"
+    },
+    {
+      "stationSlug": "shanghai-jingan-temple",
+      "shopKey": "huangayi",
+      "field": "price_source",
+      "beforeValue": null,
+      "adoptedValue": "攜程推薦菜資料列價，非人均；份量及店家現價待核；2026-11-15查詢 https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994927.html",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994927.html",
+      "sourceTitle": "攜程：黃阿姨鍋貼大王（萬航渡路店）推薦菜公開資料",
+      "publishedAt": null,
+      "observedAt": null,
+      "checkedAt": "2026-11-15",
+      "branchEvidence": "萬航渡路174號",
+      "portionOrChannel": "份量、堂食／外帶管道未載；不能推為每顆、每隻、公斤或標準份數。",
+      "evidence": "公開HTML的RestaurantInfo.Name及Address對應黃阿姨鍋貼大王（萬航渡路店）／萬航渡路174號，CurrencyUnit=RMB；RestaurantRecommendedFoodList中目標菜名鍋貼的Price=7。不是AveragePrice。促銷欄位為空。",
+      "status": "verified-live-platform-reference",
+      "caveats": "只是公開平台推薦菜資料列價，來源未標更新日；不是店家現行報價或2026菜單。查詢日只代表讀取日期。",
+      "contentFile": "content/metro/daily/shanghai/2026-11-08/web.json"
     }
   ],
   "priceConclusions": [
@@ -339,27 +411,24 @@
       "shopKey": "laofandian",
       "shopName": "上海老飯店",
       "field": "price",
-      "proposedPrice": null,
-      "value": null,
-      "sourceUrl": "https://www.sohu.com/a/973886045_121668715",
+      "proposedPrice": "八寶鴨 RMB198（攜程列價；份量未載、更新日不明）",
+      "value": "八寶鴨 RMB198（攜程列價；份量未載、更新日不明）",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926708.html",
       "sourceTitle": "上海黃浦：上海老飯店年夜飯禮包",
-      "publishedAt": "2026-01-08",
+      "publishedAt": null,
       "observedAt": null,
       "checkedAt": "2026-11-15",
       "address": "福佑路242號",
       "portion": "未核實堂食八寶鴨單隻規格",
       "channel": "堂食推薦菜；文章是半成品禮包",
       "quoteProof": null,
-      "conclusion": "新開2026官方記者到店報導：八寶鴨屬888元半成品大禮包中的一道菜，亦提專門禮盒但未給單品價。故不能將888元、零售138元促銷或198元市場價充作福佑242堂食八寶鴨價。",
-      "caveats": [
-        "2026-09自稱實測280元文章無原始菜單／現場分店證據，不採。",
-        "2026CNS同址店訪亦沒有價格。"
-      ],
+      "conclusion": "後續改查公開SSR單品欄位而非擷取菜名，取得同址推薦菜列價；僅採明示份量及更新日未知的參考值。",
+      "caveats": "不能宣稱店家當日正常價、2026菜單或已核份量。",
       "newSearchPath": [
         "另搜2026年夜飯原創報導、新近八寶鴨280元說法；原官方報導只支持套餐。"
       ],
-      "status": "unresolved",
-      "adoptionRecommended": false,
+      "status": "verified-live-platform-reference",
+      "adoptionRecommended": true,
       "supportingSources": [
         {
           "url": "https://www.citynewsservice.cn/articles/cns/shanghai-living/hai-guide/hai-streets-the-big-guide-on-what-to-eat-at-yuyuan-garden-yn6o3l3n",
@@ -372,7 +441,15 @@
           "evidence": "1.2kg速凍配送138促銷／198市場標示，渠道不匹配。"
         }
       ],
-      "adopted": false
+      "adopted": true,
+      "priorConclusion": {
+        "sourceUrl": "https://www.sohu.com/a/973886045_121668715",
+        "conclusion": "新開2026官方記者到店報導：八寶鴨屬888元半成品大禮包中的一道菜，亦提專門禮盒但未給單品價。故不能將888元、零售138元促銷或198元市場價充作福佑242堂食八寶鴨價。",
+        "status": "unresolved"
+      },
+      "currentRegularPriceVerified": false,
+      "evidence": "公開HTML的RestaurantInfo.Name及Address對應上海老飯店／福佑路242號，CurrencyUnit=RMB；RestaurantRecommendedFoodList中目標菜名八寶鴨的Price=198。不是AveragePrice。促銷欄位為空。 菜品Desc描述填料、蒸燜、原鹵調製蝦仁青豆的現做菜，不是冷凍零售商品。",
+      "controllerDecision": "獨立來源審查確認兩店同址、RMB、菜名及Price，與人均欄位分開；只採公開平台參考。"
     },
     {
       "stationSlug": "shanghai-yuyuan",
@@ -482,28 +559,25 @@
       "shopKey": "huangayi",
       "shopName": "黃阿姨鍋貼大王（萬航渡路店）",
       "field": "price",
-      "proposedPrice": null,
-      "value": null,
-      "sourceUrl": "https://www.bilibili.com/video/BV1T9ni6vETD/",
+      "proposedPrice": "鍋貼 RMB7（攜程列價；份量未載、更新日不明）",
+      "value": "鍋貼 RMB7（攜程列價；份量未載、更新日不明）",
+      "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994927.html",
       "sourceTitle": "小豬好吃喝：再探上海鍋貼江湖，一天連吃16家",
-      "publishedAt": "2026-10-21",
+      "publishedAt": null,
       "observedAt": null,
       "checkedAt": "2026-11-15",
       "address": "上海市萬航渡路174號",
       "portion": "現行鍋貼每份隻數與價格未核實",
       "channel": "萬航渡路174號身份需在影片中確認",
       "quoteProof": null,
-      "conclusion": "新影片是10月21日原創，搜尋索引確認有黃阿姨且消費詳見影片。實際桌面、行動頁及公開metadata均HTTP412；web開頁不可讀，沒有取得原始字幕或價目畫面，所以未採任何新金額。",
-      "caveats": [
-        "不能僅憑索引中的店名或影片聲稱列價格就填值。",
-        "最新可讀7元／4隻仍是2023-04-02同店用戶記錄，本輪沒有證明2026未變。"
-      ],
+      "conclusion": "後續改查公開SSR單品欄位而非擷取菜名，取得同址推薦菜列價；僅採明示份量及更新日未知的參考值。",
+      "caveats": "不能宣稱店家當日正常價、2026菜單或已核份量。",
       "newSearchPath": [
         "讀取指定Bili桌面頁一次、行動頁和公開view metadata各一次，均412後停止；沒有登入或下載影片。",
         "搜尋原標題、BV號、作者及黃阿姨2026價格，沒有找到可讀原創字幕／轉載價格。"
       ],
-      "status": "unresolved",
-      "adoptionRecommended": false,
+      "status": "verified-live-platform-reference",
+      "adoptionRecommended": true,
       "supportingSources": [
         {
           "url": "https://hk.trip.com/restaurant/china/shanghai/detail/shafuxiaochishengjianguotiedawang-11143708/",
@@ -511,7 +585,15 @@
           "evidence": "前輪及新索引可見4隻7元，但為2023記錄，未提升新近價格。"
         }
       ],
-      "adopted": false
+      "adopted": true,
+      "priorConclusion": {
+        "sourceUrl": "https://www.bilibili.com/video/BV1T9ni6vETD/",
+        "conclusion": "新影片是10月21日原創，搜尋索引確認有黃阿姨且消費詳見影片。實際桌面、行動頁及公開metadata均HTTP412；web開頁不可讀，沒有取得原始字幕或價目畫面，所以未採任何新金額。",
+        "status": "unresolved"
+      },
+      "currentRegularPriceVerified": false,
+      "evidence": "公開HTML的RestaurantInfo.Name及Address對應黃阿姨鍋貼大王（萬航渡路店）／萬航渡路174號，CurrencyUnit=RMB；RestaurantRecommendedFoodList中目標菜名鍋貼的Price=7。不是AveragePrice。促銷欄位為空。",
+      "controllerDecision": "獨立來源審查確認兩店同址、RMB、菜名及Price，與人均欄位分開；只採公開平台參考。"
     },
     {
       "stationSlug": "shanghai-jingan-temple",
