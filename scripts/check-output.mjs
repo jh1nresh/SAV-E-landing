@@ -19,11 +19,11 @@ if (pubText.includes("#example")) {
 }
 // Legacy review-derived prices stay private. Public article hours and walking
 // directions may cite a map listing without becoming a private price source.
-const articlePriceSources = [
+const articlePrices = [
   ...(pub.foodStations ?? []),
   ...(pub.shanghaiFoodStations ?? []),
-].flatMap((station) => station.shops.map((shop) => shop.price_source));
-const privatePriceText = JSON.stringify({ stores: pub.stores, articlePriceSources });
+].flatMap((station) => station.shops.map((shop) => [shop.price, shop.price_source]));
+const privatePriceText = JSON.stringify({ stores: pub.stores, articlePrices });
 if (/google/i.test(privatePriceText) || pubText.includes("priceSource")) {
   console.error("metro.public.json leaked a private price source");
   process.exit(1);

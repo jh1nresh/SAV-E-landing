@@ -265,12 +265,14 @@ test("the output gate permits public map directions but rejects review price sou
       delete shop[field];
     }
     for (const cityField of ["foodStations", "shanghaiFoodStations"]) {
-      delete pub.foodStations;
-      delete pub.shanghaiFoodStations;
-      pub[cityField] = [{ shops: [{ price_source: "Google review price" }] }];
-      const result = run();
-      assert.notEqual(result.status, 0);
-      assert.match(result.stderr, /private price source/);
+      for (const field of ["price", "price_source"]) {
+        delete pub.foodStations;
+        delete pub.shanghaiFoodStations;
+        pub[cityField] = [{ shops: [{ price_source: null, [field]: "Google review price" }] }];
+        const result = run();
+        assert.notEqual(result.status, 0);
+        assert.match(result.stderr, /private price source/);
+      }
     }
     delete pub.foodStations;
     delete pub.shanghaiFoodStations;
