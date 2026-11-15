@@ -240,6 +240,47 @@ test("the output gate accepts an imageless post without relaxing example image r
   }
 });
 
+test("the output gate permits public map directions but rejects review price sources", () => {
+  const pub = buildPublicMetro(load());
+  const shop = {
+    hours: "Google地圖週表 https://www.google.com/maps/place/example",
+    exit_walk: "Google地圖步行估計 https://www.google.com/maps/dir/example",
+    price_source: null,
+  };
+  pub.shanghaiFoodStations = [{ shops: [shop] }];
+  const dir = mkdtempSync(join(tmpdir(), "savvy-map-source-gate-"));
+  try {
+    mkdirSync(join(dir, "app/metro"), { recursive: true });
+    symlinkSync(resolve("public"), join(dir, "public"), "dir");
+    const run = () => {
+      writeFileSync(join(dir, "app/metro/metro.public.json"), JSON.stringify(pub));
+      return spawnSync(process.execPath, [resolve("scripts/check-output.mjs")], { cwd: dir, encoding: "utf8" });
+    };
+    assert.equal(run().status, 0);
+    for (const field of ["price_source", "priceSource"]) {
+      shop[field] = "Google review price";
+      const result = run();
+      assert.notEqual(result.status, 0);
+      assert.match(result.stderr, /private price source/);
+      delete shop[field];
+    }
+    for (const cityField of ["foodStations", "shanghaiFoodStations"]) {
+      delete pub.foodStations;
+      delete pub.shanghaiFoodStations;
+      pub[cityField] = [{ shops: [{ price_source: "Google review price" }] }];
+      const result = run();
+      assert.notEqual(result.status, 0);
+      assert.match(result.stderr, /private price source/);
+    }
+    delete pub.foodStations;
+    delete pub.shanghaiFoodStations;
+    pub.stores[0].priceSource = "Google review price";
+    assert.match(run().stderr, /private price source/);
+  } finally {
+    rmSync(dir, { recursive: true });
+  }
+});
+
 test("imported imageAi cannot suppress the derived AI disclosure", () => {
   for (const source of [undefined, "ai"]) {
     const raw = load();
