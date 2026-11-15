@@ -414,18 +414,19 @@
       "proposedPrice": "八寶鴨 RMB198（攜程列價；份量未載、更新日不明）",
       "value": "八寶鴨 RMB198（攜程列價；份量未載、更新日不明）",
       "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4926708.html",
-      "sourceTitle": "上海黃浦：上海老飯店年夜飯禮包",
+      "sourceTitle": "攜程：上海老飯店（豫園店）推薦菜公開資料",
       "publishedAt": null,
       "observedAt": null,
       "checkedAt": "2026-11-15",
       "address": "福佑路242號",
-      "portion": "未核實堂食八寶鴨單隻規格",
-      "channel": "堂食推薦菜；文章是半成品禮包",
-      "quoteProof": null,
+      "portion": "份量未載，不推算每顆、每隻、重量或標準份數。",
+      "channel": "平台推薦菜資料；堂食／外帶管道未載，店家現價待核。",
+      "quoteProof": "RestaurantRecommendedFoodList: Title=八宝鸭; Price=198",
       "conclusion": "後續改查公開SSR單品欄位而非擷取菜名，取得同址推薦菜列價；僅採明示份量及更新日未知的參考值。",
       "caveats": "不能宣稱店家當日正常價、2026菜單或已核份量。",
       "newSearchPath": [
-        "另搜2026年夜飯原創報導、新近八寶鴨280元說法；原官方報導只支持套餐。"
+        "另搜2026年夜飯原創報導、新近八寶鴨280元說法；原官方報導只支持套餐。",
+        "公開HTML附帶SSR：逐欄核對RestaurantInfo分店地址、RMB及RestaurantRecommendedFoodList的目標Title／Price；不採AveragePrice。"
       ],
       "status": "verified-live-platform-reference",
       "adoptionRecommended": true,
@@ -445,7 +446,12 @@
       "priorConclusion": {
         "sourceUrl": "https://www.sohu.com/a/973886045_121668715",
         "conclusion": "新開2026官方記者到店報導：八寶鴨屬888元半成品大禮包中的一道菜，亦提專門禮盒但未給單品價。故不能將888元、零售138元促銷或198元市場價充作福佑242堂食八寶鴨價。",
-        "status": "unresolved"
+        "status": "unresolved",
+        "sourceTitle": "上海黃浦：上海老飯店年夜飯禮包",
+        "channel": "堂食推薦菜；文章是半成品禮包",
+        "portion": "未核實堂食八寶鴨單隻規格",
+        "publishedAt": "2026-01-08",
+        "quoteProof": null
       },
       "currentRegularPriceVerified": false,
       "evidence": "公開HTML的RestaurantInfo.Name及Address對應上海老飯店／福佑路242號，CurrencyUnit=RMB；RestaurantRecommendedFoodList中目標菜名八寶鴨的Price=198。不是AveragePrice。促銷欄位為空。 菜品Desc描述填料、蒸燜、原鹵調製蝦仁青豆的現做菜，不是冷凍零售商品。",
@@ -562,19 +568,20 @@
       "proposedPrice": "鍋貼 RMB7（攜程列價；份量未載、更新日不明）",
       "value": "鍋貼 RMB7（攜程列價；份量未載、更新日不明）",
       "sourceUrl": "https://gs.ctrip.com/html5/you/foods/fooddetail/2/4994927.html",
-      "sourceTitle": "小豬好吃喝：再探上海鍋貼江湖，一天連吃16家",
+      "sourceTitle": "攜程：黃阿姨鍋貼大王（萬航渡路店）推薦菜公開資料",
       "publishedAt": null,
       "observedAt": null,
       "checkedAt": "2026-11-15",
       "address": "上海市萬航渡路174號",
-      "portion": "現行鍋貼每份隻數與價格未核實",
-      "channel": "萬航渡路174號身份需在影片中確認",
-      "quoteProof": null,
+      "portion": "份量未載，不推算每顆、每隻、重量或標準份數。",
+      "channel": "平台推薦菜資料；堂食／外帶管道未載，店家現價待核。",
+      "quoteProof": "RestaurantRecommendedFoodList: Title=锅贴; Price=¥ 7",
       "conclusion": "後續改查公開SSR單品欄位而非擷取菜名，取得同址推薦菜列價；僅採明示份量及更新日未知的參考值。",
       "caveats": "不能宣稱店家當日正常價、2026菜單或已核份量。",
       "newSearchPath": [
         "讀取指定Bili桌面頁一次、行動頁和公開view metadata各一次，均412後停止；沒有登入或下載影片。",
-        "搜尋原標題、BV號、作者及黃阿姨2026價格，沒有找到可讀原創字幕／轉載價格。"
+        "搜尋原標題、BV號、作者及黃阿姨2026價格，沒有找到可讀原創字幕／轉載價格。",
+        "公開HTML附帶SSR：逐欄核對RestaurantInfo分店地址、RMB及RestaurantRecommendedFoodList的目標Title／Price；不採AveragePrice。"
       ],
       "status": "verified-live-platform-reference",
       "adoptionRecommended": true,
@@ -589,7 +596,12 @@
       "priorConclusion": {
         "sourceUrl": "https://www.bilibili.com/video/BV1T9ni6vETD/",
         "conclusion": "新影片是10月21日原創，搜尋索引確認有黃阿姨且消費詳見影片。實際桌面、行動頁及公開metadata均HTTP412；web開頁不可讀，沒有取得原始字幕或價目畫面，所以未採任何新金額。",
-        "status": "unresolved"
+        "status": "unresolved",
+        "sourceTitle": "小豬好吃喝：再探上海鍋貼江湖，一天連吃16家",
+        "channel": "萬航渡路174號身份需在影片中確認",
+        "portion": "現行鍋貼每份隻數與價格未核實",
+        "publishedAt": "2026-10-21",
+        "quoteProof": null
       },
       "currentRegularPriceVerified": false,
       "evidence": "公開HTML的RestaurantInfo.Name及Address對應黃阿姨鍋貼大王（萬航渡路店）／萬航渡路174號，CurrencyUnit=RMB；RestaurantRecommendedFoodList中目標菜名鍋貼的Price=7。不是AveragePrice。促銷欄位為空。",
