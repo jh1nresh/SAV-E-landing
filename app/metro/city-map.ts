@@ -1,43 +1,6 @@
-import designStations from "../../content/metro/design-stations.json";
 import shanghaiLines from "../../content/metro/shanghai-lines.json";
-import type { FoodStation, MetroData, MetroStation } from "../../lib/metro";
+import type { FoodStation, MetroData, MetroStation, ShanghaiMapPin } from "../../lib/metro";
 import { MAP_SVG } from "./map-svg";
-
-type DesignStation = {
-  n?: number;
-  slug?: string;
-  station?: string;
-  city?: string;
-  lines?: string[] | null;
-  map?: {
-    line?: string;
-    at?: number[];
-    label?: "left" | "right";
-    labelOffset?: number[];
-    posterLabelOffset?: number[];
-  };
-};
-
-// 南京東路 is already in the catalog without a food package, and this batch's
-// eight pins are the five published stations plus n=8–10. Leave it off the hero.
-const HERO_HOLDOUTS = new Set(["shanghai-nanjing-east"]);
-
-function isPlottedDesign(entry: DesignStation): entry is DesignStation & {
-  n: number;
-  slug: string;
-  station: string;
-  map: { line: string; at: [number, number]; label?: "left" | "right"; labelOffset?: number[]; posterLabelOffset?: number[] };
-} {
-  const at = entry.map?.at;
-  return entry.city === "shanghai"
-    && typeof entry.n === "number"
-    && typeof entry.slug === "string"
-    && typeof entry.station === "string"
-    && typeof entry.map?.line === "string"
-    && Array.isArray(at)
-    && at.length === 2
-    && at.every(value => typeof value === "number" && Number.isFinite(value));
-}
 
 const scalePair = (pair?: number[]): [number, number] | undefined =>
   pair && pair.length === 2 && pair.every(value => typeof value === "number" && Number.isFinite(value))
@@ -48,10 +11,10 @@ const scalePair = (pair?: number[]): [number, number] | undefined =>
 const point = ([x, y]: [number, number]): [number, number] => [x * .72 - 60, y * .72 - 40];
 
 /** Dots and names for design stations whose daily food package has not landed. */
-function mapOnlyStations(published: FoodStation[]): MetroStation[] {
+function mapOnlyStations(published: FoodStation[], pins: ShanghaiMapPin[]): MetroStation[] {
   const slugs = new Set(published.map(station => station.slug));
-  return (designStations as DesignStation[]).flatMap(entry => {
-    if (!isPlottedDesign(entry) || slugs.has(entry.slug) || HERO_HOLDOUTS.has(entry.slug)) return [];
+  return pins.flatMap(entry => {
+    if (slugs.has(entry.slug)) return [];
     const labelOffset = scalePair(entry.map.labelOffset);
     const posterLabelOffset = scalePair(entry.map.posterLabelOffset);
     return [{
@@ -73,7 +36,7 @@ function mapOnlyStations(published: FoodStation[]): MetroStation[] {
   });
 }
 
-export function shanghaiMetro(stations: FoodStation[]): MetroData {
+export function shanghaiMetro(stations: FoodStation[], pins: ShanghaiMapPin[] = []): MetroData {
   return {
     _meta: { city: "shanghai", asOf: stations.map(s => s.date).sort().at(-1) ?? "" },
     stations: [...stations.map(s => ({
@@ -82,7 +45,7 @@ export function shanghaiMetro(stations: FoodStation[]): MetroData {
       status: "live" as const, updatedAt: s.date,
       mapPos: { line: s.map.line, at: point(s.map.snapped ?? s.map.at),
         labelOffset: s.map.labelOffset?.map(n => n * .72) as [number, number] | undefined },
-    })), ...mapOnlyStations(stations)],
+    })), ...mapOnlyStations(stations, pins)],
     stores: stations.flatMap(s => s.shops.map((shop, i) => ({
       id: `${s.slug}-${shop.key ?? i}`, kind: "post" as const, stationId: s.slug,
       name: shop.name ?? "", article: shop, priceFrom: false, priceCheckedAt: null,

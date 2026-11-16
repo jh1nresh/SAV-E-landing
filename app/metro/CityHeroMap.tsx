@@ -1,6 +1,6 @@
 "use client";
 
-import { getFoodStations, getShanghaiFoodStations, getPublicMetroData, stampLevel, stampNote, stationIsNew } from "../../lib/metro";
+import { getFoodStations, getShanghaiFoodStations, getShanghaiMapPins, getPublicMetroData, stampLevel, stampNote, stationIsNew } from "../../lib/metro";
 import { buildPickerStations, TAIPEI_LINE_COLOR } from "../../lib/station-picker.mjs";
 import { TEST_QUERY_HOOKS, type FreshSource } from "../../lib/test-hooks.mjs";
 import shanghaiLines from "../../content/metro/shanghai-lines.json";
@@ -11,7 +11,7 @@ import { shanghaiMetro } from "./city-map";
 
 const taipei = getPublicMetroData();
 const shanghaiFoods = getShanghaiFoodStations();
-const shanghai = shanghaiMetro(shanghaiFoods);
+const shanghai = shanghaiMetro(shanghaiFoods, getShanghaiMapPins());
 const shanghaiColors = Object.fromEntries(Object.entries(shanghaiLines.lines).map(([id, line]) => [id, line.color]));
 
 export function CityHeroMap({ clock }: { clock: string }) {

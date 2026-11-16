@@ -10,7 +10,7 @@ import { isAllowedStoreSource } from "./source-links.mjs";
 export { isAllowedSourceUrl } from "./source-links.mjs";
 import { articleMapStores } from "../lib/metro-articles.mjs";
 import { STORE_KINDS } from "../lib/metro-logic.mjs";
-import { buildFoodStations, validateStationMap } from "./metro-content.mjs";
+import { buildFoodStations, loadDesignStations, publicShanghaiMapPins, validateStationMap } from "./metro-content.mjs";
 import { snapToLine } from "./metro-lines.mjs";
 
 const PRIVATE_KEY = "not" + "es";
@@ -229,7 +229,13 @@ function main() {
     const publicData = buildPublicMetro(raw, foodStations);
     publicData.foodStations = foodStations;
     publicData.shanghaiFoodStations = shanghaiFoodStations;
+    publicData.shanghaiMapPins = publicShanghaiMapPins(
+      loadDesignStations(resolve(root, "content/metro")),
+      shanghaiFoodStations.map((station) => station.slug),
+    );
     publicData.mapStores = articleMapStores(foodStations);
+    const serialized = JSON.stringify(publicData);
+    if (serialized.includes(`"${PRIVATE_KEY}"`)) fail("serialized output still contains a private field");
     mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, `${JSON.stringify(publicData, null, 2)}\n`, "utf8");
     console.log(

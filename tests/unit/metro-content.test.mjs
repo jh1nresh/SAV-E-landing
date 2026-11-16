@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync, mkdtempSync, mkdirSync, writeFileSync, cpSync, rmSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, loadDailyStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin, localeForCity } from '../../scripts/metro-content.mjs';
+import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, loadDailyStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin, localeForCity, publicShanghaiMapPins } from '../../scripts/metro-content.mjs';
 import { SHANGHAI_LINE_PATHS, snapToLine } from '../../scripts/metro-lines.mjs';
 import { contentOnly, contentOnlyFromNameStatus, isAllowedMetroContentPath } from '../../scripts/metro-content-gate.mjs';
 import { foodShopRows, FOOD_DISCLAIMER } from '../../lib/metro-logic.mjs';
@@ -258,6 +258,33 @@ test('shanghai n=8-10 sit on their lines and the frozen stations stay put', () =
   onLine('SH_10', [740, 220]);
   onLine('SH_10', [760, 400]);
   onLine('SH_14', [760, 400]);
+});
+
+test('shanghai hero pins publish schematic fields and leave catalog notes behind', () => {
+  const published = new Set(expected.filter(station => station.city === 'shanghai').map(station => station.slug));
+  const pins = publicShanghaiMapPins(designCatalog, published);
+  assert.deepEqual(pins.map(pin => [pin.n, pin.slug, pin.station, pin.lines, pin.map.at, pin.map.labelOffset]), [
+    [8, 'shanghai-nanjing-west-road', '南京西路', ['2', '12', '13'], [400, 330], [-58, -106]],
+    [9, 'shanghai-lujiazui', '陸家嘴', ['2', '14'], [900, 230], [-54, -72]],
+    [10, 'shanghai-xujiahui', '徐家匯', ['1', '9', '11'], [220, 640], [54, -20]],
+  ]);
+  assert.equal(pins.some(pin => pin.slug === 'shanghai-nanjing-east' || published.has(pin.slug)), false);
+  const leaked = {
+    n: 8, city: 'shanghai', slug: 'shanghai-nanjing-west-road', station: '南京西路',
+    lines: ['2', '12', '13'],
+    map: { line: 'SH_2', at: [400, 330], labelOffset: [-58, -106] },
+    notes: 'internal review note',
+    source: 'private catalog path',
+    lat: 31.23181, lng: 121.45601, datum: 'WGS-84', coord_system: 'WGS-84',
+    verified: { map_at: true, geo: false },
+  };
+  const projected = publicShanghaiMapPins([leaked], []);
+  assert.deepEqual(Object.keys(projected[0]).sort(), ['lines', 'map', 'n', 'slug', 'station']);
+  assert.deepEqual(Object.keys(projected[0].map).sort(), ['at', 'labelOffset', 'line']);
+  const text = JSON.stringify(projected);
+  for (const needle of ['"notes"', 'internal review', 'private catalog', '31.23181', 'coord_system', 'verified']) {
+    assert.equal(text.includes(needle), false, needle);
+  }
 });
 
 test('stations are keyed by city and n, and missing geo coordinates stay pending', () => {

@@ -68,8 +68,9 @@ const labelCopy = [
 ];
 const strings = [...ui, ...labelCopy];
 // Article text uses the system font in food pages and map cards; new shops need no font regeneration.
-// Shanghai notes are the same kind of article text, so they are not part of the Iansui subset.
-const { foodStations, shanghaiFoodStations, mapStores, ...mapData } = metro;
+// Shanghai station names, including design-only hero pins, are the same kind of article text.
+const { foodStations, shanghaiFoodStations, shanghaiMapPins, mapStores, ...mapData } = metro;
+void shanghaiMapPins;
 collect(mapData, strings);
 
 const skip = /[\s\dA-Za-z0-9.,:;!?'"“”‘’…—–\-_/#+@$%&()[\]{}<>~`|\\^*=]|[▲△○●□■]/u;
