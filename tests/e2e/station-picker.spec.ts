@@ -2,10 +2,19 @@ import { expect, test } from "@playwright/test";
 import { getFoodStations, getPublicMetroData, getShanghaiFoodStations } from "../../lib/metro";
 import { buildPickerStations, compareNewest, latestStation, TAIPEI_LINE_COLOR, withFixtureCount } from "../../lib/station-picker.mjs";
 import { buildSearchIndex, filterStations } from "../../lib/station-search.mjs";
+import { heroMapPins, mapOnlyIn, newestPackage, publicationSets, publishedIn, SHANGHAI_HERO_HOLDOUTS } from "../metro-publication.mjs";
 import { waitForCardOpen, waitForMap } from "./helpers";
 
+const publication = publicationSets(".");
+const publishedTaipei = publishedIn(publication, "taipei");
+const publishedShanghai = publishedIn(publication, "shanghai");
+const shanghaiHeroPins = heroMapPins(publication.mapOnly);
 const taipei = buildPickerStations(getFoodStations(), getPublicMetroData().stations, TAIPEI_LINE_COLOR).sort(compareNewest);
 const shanghai = buildPickerStations(getShanghaiFoodStations(), []).sort(compareNewest);
+
+function stationIdentity(stations: { n: number; slug: string }[]) {
+  return stations.map((station) => `${station.n}:${station.slug}`).sort();
+}
 const newest = latestStation(taipei)!;
 const oldest = taipei[taipei.length - 1]!;
 const middle = taipei[Math.floor(taipei.length / 2)]!;
@@ -163,12 +172,12 @@ function intersects(
 }
 
 test("every Taipei pin and name is on the first screen at 1280x800", async ({ page }) => {
-  expect(taipei, "published Taipei stations").toHaveLength(23);
+  expect(stationIdentity(taipei), "published Taipei stations").toEqual(stationIdentity(publishedTaipei));
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
   await waitForMap(page);
   const pins = page.locator("[data-testid^=metro-pin-]");
-  await expect(pins).toHaveCount(23);
+  await expect(pins).toHaveCount(publishedTaipei.length);
   for (const station of taipei) {
     const pin = page.locator(`[data-testid="metro-pin-${station.selectId}"] .ph`);
     await expect(pin, station.station).toHaveCount(1);
@@ -188,8 +197,8 @@ test("every Taipei pin and name is on the first screen at 1280x800", async ({ pa
   const mapNames = getPublicMetroData().stations
     .filter((station) => taipei.some((food) => food.slug === station.slug))
     .map((station) => station.name);
-  expect(mapNames).toHaveLength(23);
-  expect(labels).toHaveLength(23);
+  expect(mapNames).toHaveLength(publishedTaipei.length);
+  expect(labels).toHaveLength(publishedTaipei.length);
   for (const name of mapNames) {
     const label = labels.find((item) => item.name === name);
     expect(label, name).toBeTruthy();
@@ -225,11 +234,10 @@ test("the weekly stamp does not cover 國父紀念館 at 390", async ({ page }) 
   expect(intersects(stamp, memorial!)).toBe(false);
 });
 
-const SHANGHAI_MAP_ONLY = ["南京西路", "陸家嘴", "徐家匯"];
-
 for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900 }]) {
   test(`every Shanghai pin is on the first screen at ${viewport.width}x${viewport.height}`, async ({ page }) => {
-    const names = [...shanghai.map((station) => station.station), ...SHANGHAI_MAP_ONLY];
+    expect(stationIdentity(shanghai), "published Shanghai stations").toEqual(stationIdentity(publishedShanghai));
+    const names = [...shanghai.map((station) => station.station), ...shanghaiHeroPins.map((station) => station.station)];
     await page.setViewportSize(viewport);
     await page.goto("/shanghai?reduce=1");
     await waitForMap(page);
@@ -239,8 +247,13 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900
     });
     await page.evaluate(() => document.fonts.ready);
     await expect(page.locator(".pin")).toHaveCount(names.length);
-    await expect(page.locator(".pin.content-only")).toHaveCount(SHANGHAI_MAP_ONLY.length);
-    await expect(page.locator("#stdots text", { hasText: "南京東路" })).toHaveCount(0);
+    await expect(page.locator(".pin.content-only")).toHaveCount(shanghaiHeroPins.length);
+    for (const station of shanghaiHeroPins) {
+      await expect(page.getByTestId(`metro-pin-${station.slug}`), station.station).toHaveClass(/content-only/);
+    }
+    for (const holdout of mapOnlyIn(publication, "shanghai").filter((entry) => SHANGHAI_HERO_HOLDOUTS.has(entry.slug))) {
+      await expect(page.locator("#stdots text", { hasText: holdout.station })).toHaveCount(0);
+    }
     for (const pin of await page.locator(".pin:not(.content-only) .ph").all()) {
       const box = (await pin.boundingBox())!;
       const id = await pin.evaluate((el) => el.closest("button")?.getAttribute("data-testid") ?? "shanghai-pin");
@@ -284,30 +297,38 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900
 }
 
 test("a Shanghai station without a food package stays a map dot and does not invent a guide", async ({ page }) => {
+  test.skip(shanghaiHeroPins.length === 0, "no map-only Shanghai stations");
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/shanghai?reduce=1");
   await waitForMap(page);
-  await page.getByTestId("metro-pin-shanghai-nanjing-west-road").locator(".hit").click();
-  const card = page.getByTestId("metro-card");
-  await expect(card).toContainText("南京西路");
-  await expect(card).toContainText("這一站的店家資料準備中");
-  await expect(card.locator("a")).toHaveCount(0);
-  expect(new URL(page.url()).pathname).toBe("/shanghai");
+  for (const station of shanghaiHeroPins) {
+    const pin = page.getByTestId(`metro-pin-${station.slug}`);
+    await expect(pin, station.station).toHaveClass(/content-only/);
+    await pin.locator(".hit").click();
+    const card = page.getByTestId("metro-card");
+    await expect(card).toContainText(station.station);
+    await expect(card).toContainText("這一站的店家資料準備中");
+    await expect(card.locator("a")).toHaveCount(0);
+    expect(new URL(page.url()).pathname).toBe("/shanghai");
+  }
 });
 
-test("shanghai dropdown lists the five published stations with 打浦橋 selected", async ({ page }) => {
-  expect(shanghai).toHaveLength(5);
-  expect(latestStation(shanghai)?.station).toBe("打浦橋");
+test("shanghai dropdown lists the published stations and selects the newest", async ({ page }) => {
+  expect(stationIdentity(shanghai), "published Shanghai stations").toEqual(stationIdentity(publishedShanghai));
+  const newest = latestStation(shanghai);
+  const newestContent = newestPackage(publication, "shanghai");
+  expect(newest?.n).toBe(newestContent?.n);
+  expect(newest?.slug).toBe(newestContent?.slug);
   expect(shanghai.some((station) => station.station.includes("人民廣場"))).toBe(false);
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/shanghai");
   expect(await page.content()).not.toContain("人民廣場");
   const trigger = page.getByTestId("station-picker-trigger");
-  await expect(trigger).toContainText("第 7 站");
-  await expect(trigger).toContainText("打浦橋");
+  await expect(trigger).toContainText(`第 ${newest?.n} 站`);
+  await expect(trigger).toContainText(newest?.station ?? "");
   await trigger.click();
   const optionNames = page.getByRole("option").locator("[data-slot=combobox-item-text]");
-  await expect(optionNames).toHaveCount(5);
+  await expect(optionNames).toHaveCount(publishedShanghai.length);
   expect((await optionNames.allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim())).toEqual(shanghai.map((station) => station.station));
 
   const index = buildSearchIndex(getShanghaiFoodStations());
@@ -330,11 +351,12 @@ test("shanghai dropdown lists the five published stations with 打浦橋 selecte
 test.describe("shanghai no-JS station list", () => {
   test.use({ javaScriptEnabled: false });
 
-  test("lists the five stations as links and omits 人民廣場", async ({ page }) => {
+  test("lists the published stations as links and omits 人民廣場", async ({ page }) => {
+    expect(stationIdentity(shanghai), "published Shanghai stations").toEqual(stationIdentity(publishedShanghai));
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/shanghai");
     const links = page.getByTestId("station-fallback").locator("a");
-    await expect(links).toHaveCount(shanghai.length);
+    await expect(links).toHaveCount(publishedShanghai.length);
     expect(await links.allInnerTexts()).toEqual(shanghai.map((station) => station.station));
     for (const station of shanghai) {
       await expect(links.filter({ hasText: station.station })).toHaveAttribute("href", `#${station.slug}`);

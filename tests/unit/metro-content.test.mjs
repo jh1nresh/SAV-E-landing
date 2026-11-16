@@ -7,9 +7,11 @@ import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations
 import { SHANGHAI_LINE_PATHS, snapToLine } from '../../scripts/metro-lines.mjs';
 import { contentOnly, contentOnlyFromNameStatus, isAllowedMetroContentPath } from '../../scripts/metro-content-gate.mjs';
 import { foodShopRows, FOOD_DISCLAIMER } from '../../lib/metro-logic.mjs';
+import { heroMapPins, mapOnlyIn, publicationSets, publishedIn, schematicMapPin } from '../metro-publication.mjs';
 const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
 const designCatalog = loadDesignStations(resolve('content/metro'));
 const daily = loadDailyStations(resolve('content/metro'), resolve('.'));
+const publication = publicationSets('.');
 // Pass DESIGN so a daily-only new station (map omitted per F-6) can initialize tests the same way production builds.
 const expected = mergeFoodStations(base, daily, designCatalog);
 test('all content stations preserve source display fields; served image paths exist', () => {
@@ -197,11 +199,16 @@ test('Taipei stations 1-16 keep their identity and schematic points', () => {
     [stations[16].n, stations[16].slug, stations[16].station, stations[16].map.at, stations[16].city],
     [17, 'nangang', '南港', [620, 287], 'taipei'],
   );
-  const taipeiPublished = expected.filter(station => (station.city ?? 'taipei') === 'taipei');
-  assert.equal(stations.length, taipeiPublished.length);
-  assert.equal(taipeiPublished.length, TAIPEI_1_16.length + 1 + TAIPEI_18_23.length);
-  assert.equal(taipeiPublished.length, 23);
-  assert.deepEqual(stations.filter(station => station.n >= 18).map(station => [station.n, station.slug, station.station, station.map.at, station.city]), TAIPEI_18_23);
+  const taipeiPublished = publishedIn(publication, 'taipei');
+  assert.deepEqual(stations.map(station => [station.n, station.slug]), taipeiPublished.map(station => [station.n, station.slug]));
+  for (const entry of mapOnlyIn(publication, 'taipei')) {
+    assert.equal(stations.some(station => station.n === entry.n || station.slug === entry.slug), false, entry.slug);
+  }
+  for (const row of TAIPEI_18_23) {
+    const station = stations.find(item => item.n === row[0]);
+    assert.ok(station, String(row[0]));
+    assert.deepEqual([station.n, station.slug, station.station, station.map.at, station.city], row);
+  }
   const zhongxiao = stations.find(station => station.slug === 'zhongxiao-fuxing');
   assert.deepEqual(zhongxiao.map.labelOffset, [0, -24]);
   assert.deepEqual(zhongxiao.map.posterLabelOffset, [-56, 40]);
@@ -211,16 +218,30 @@ test('Taipei stations 1-16 keep their identity and schematic points', () => {
 
 test('published Shanghai stations use their DESIGN maps and leave station coordinates pending', () => {
   const shanghai = buildFoodStations(resolve('.'), { city: 'shanghai' });
-  assert.deepEqual(shanghai.map(station => [station.n, station.slug, station.station, station.map.line, station.map.at, station.geoStatus, station.lat]), [
+  const published = publishedIn(publication, 'shanghai');
+  assert.deepEqual(shanghai.map(station => [station.n, station.slug]), published.map(entry => [entry.n, entry.slug]));
+  for (const entry of published) {
+    const station = shanghai.find(item => item.slug === entry.slug);
+    assert.ok(station, entry.slug);
+    assert.equal(station.map.line, entry.map.line);
+    assert.deepEqual(station.map.at, entry.map.at);
+  }
+  for (const row of [
     [2, 'shanghai-yuyuan', '豫園', 'SH_14', [760, 400], 'pending', null],
     [3, 'shanghai-jingan-temple', '靜安寺', 'SH_14', [220, 420], 'pending', null],
     [4, 'shanghai-south-huangpi-road', '黃陂南路', 'SH_14', [520, 430], 'pending', null],
     [6, 'shanghai-jiaotong-university', '交通大學', 'SH_10', [140, 600], 'pending', null],
     [7, 'shanghai-dapuqiao', '打浦橋', 'SH_9', [470, 570], 'wgs84', 31.2075],
-  ]);
+  ]) {
+    const station = shanghai.find(item => item.slug === row[1]);
+    assert.ok(station, row[1]);
+    assert.deepEqual([station.n, station.slug, station.station, station.map.line, station.map.at, station.geoStatus, station.lat], row);
+  }
   assert.deepEqual(shanghai.find(station => station.slug === 'shanghai-dapuqiao').map.labelOffset, [0, 5]);
   assert.equal(shanghai.some(station => station.n === 5 || station.station === '人民廣場'), false);
-  assert.equal(shanghai.some(station => [8, 9, 10].includes(station.n)), false);
+  for (const entry of mapOnlyIn(publication, 'shanghai')) {
+    assert.equal(shanghai.some(station => station.n === entry.n || station.slug === entry.slug), false, entry.slug);
+  }
   const huangpi = shanghai.find(station => station.n === 4);
   assert.equal(huangpi.shops.find(shop => shop.key === 'guangmingcun').name, '光明邨大酒家');
   assert.equal(huangpi.shops.find(shop => shop.key === 'weixiang').address, '上海市黃浦區雁蕩路14號（近淮海中路）');
@@ -261,14 +282,18 @@ test('shanghai n=8-10 sit on their lines and the frozen stations stay put', () =
 });
 
 test('shanghai hero pins publish schematic fields and leave catalog notes behind', () => {
-  const published = new Set(expected.filter(station => station.city === 'shanghai').map(station => station.slug));
+  const published = new Set(publishedIn(publication, 'shanghai').map(station => station.slug));
   const pins = publicShanghaiMapPins(designCatalog, published);
-  assert.deepEqual(pins.map(pin => [pin.n, pin.slug, pin.station, pin.lines, pin.map.at, pin.map.labelOffset]), [
-    [8, 'shanghai-nanjing-west-road', '南京西路', ['2', '12', '13'], [400, 330], [-58, -106]],
-    [9, 'shanghai-lujiazui', '陸家嘴', ['2', '14'], [900, 230], [-54, -72]],
-    [10, 'shanghai-xujiahui', '徐家匯', ['1', '9', '11'], [220, 640], [54, -20]],
-  ]);
+  const expectedPins = heroMapPins(publication.mapOnly).map(schematicMapPin);
+  assert.deepEqual(pins, expectedPins);
   assert.equal(pins.some(pin => pin.slug === 'shanghai-nanjing-east' || published.has(pin.slug)), false);
+  for (const entry of heroMapPins(publication.mapOnly)) {
+    const pin = pins.find(item => item.slug === entry.slug);
+    assert.ok(pin, entry.slug);
+    assert.deepEqual(pin.lines, entry.lines ?? []);
+    assert.deepEqual(pin.map.at, entry.map.at);
+    assert.deepEqual(pin.map.labelOffset, entry.map.labelOffset);
+  }
   const leaked = {
     n: 8, city: 'shanghai', slug: 'shanghai-nanjing-west-road', station: '南京西路',
     lines: ['2', '12', '13'],
@@ -296,10 +321,13 @@ test('stations are keyed by city and n, and missing geo coordinates stay pending
   assert.equal(nangang?.n, 17);
   assert.deepEqual(nangang?.map, { line: 'L_blue', at: [620, 287] });
   const taipeiDesign = designCatalog.filter(entry => entry.city === 'taipei');
-  const publishedTaipei = expected.filter(station => (station.city ?? 'taipei') === 'taipei');
-  assert.equal(taipeiDesign.length, publishedTaipei.length);
-  assert.equal(publishedTaipei.length, TAIPEI_1_16.length + 1 + TAIPEI_18_23.length);
-  assert.equal(publishedTaipei.length, 23);
+  const publishedTaipei = publishedIn(publication, 'taipei');
+  const mergedTaipei = expected.filter(station => (station.city ?? 'taipei') === 'taipei');
+  assert.deepEqual(mergedTaipei.map(station => [station.n, station.slug]), publishedTaipei.map(entry => [entry.n, entry.slug]));
+  for (const entry of mapOnlyIn(publication, 'taipei')) {
+    assert.equal(mergedTaipei.some(station => station.n === entry.n || station.slug === entry.slug), false, entry.slug);
+  }
+  assert.equal(taipeiDesign.length, TAIPEI_1_16.length + 1 + TAIPEI_18_23.length);
   assert.deepEqual(taipeiDesign.filter(entry => entry.n >= 18).map(entry => [entry.n, entry.slug, entry.station, entry.map]), [
     [18, 'taipei-101-world-trade-center', '台北101／世貿', { line: 'L_red', at: [373, 430], label: 'right' }],
     [19, 'taipei-main-station', '台北車站', { line: 'L_red', at: [186, 200] }],
@@ -452,14 +480,22 @@ test('published Shanghai stations stay inside the city and do not invent prices'
   const shanghai = buildFoodStations(resolve('.'), { city: 'shanghai' });
   assert.ok(taipei.every(station => station.city === 'taipei'));
   assert.equal(taipei.some(station => station.slug.startsWith('shanghai-')), false);
-  assert.deepEqual(shanghai.map(station => [station.n, station.slug, station.station, station.metro_lines]), [
+  const published = publishedIn(publication, 'shanghai');
+  assert.deepEqual(shanghai.map(station => [station.n, station.slug]), published.map(entry => [entry.n, entry.slug]));
+  for (const row of [
     [2, 'shanghai-yuyuan', '豫園', ['10', '14']],
     [3, 'shanghai-jingan-temple', '靜安寺', ['2', '7', '14']],
     [4, 'shanghai-south-huangpi-road', '黃陂南路', ['1', '14']],
     [6, 'shanghai-jiaotong-university', '交通大學', ['10', '11']],
     [7, 'shanghai-dapuqiao', '打浦橋', ['9']],
-  ]);
-  assert.equal(shanghai.some(station => station.slug === 'shanghai-nanjing-east'), false);
+  ]) {
+    const station = shanghai.find(item => item.slug === row[1]);
+    assert.ok(station, row[1]);
+    assert.deepEqual([station.n, station.slug, station.station, station.metro_lines], row);
+  }
+  for (const entry of mapOnlyIn(publication, 'shanghai')) {
+    assert.equal(shanghai.some(station => station.slug === entry.slug), false, entry.slug);
+  }
   for (const station of shanghai) {
     const scoped = `content/metro/daily/shanghai/${station.date}/web.json`;
     const legacy = `content/metro/daily/${station.date}/web.json`;
@@ -497,7 +533,17 @@ test('published Shanghai stations stay inside the city and do not invent prices'
   assert.equal(yuyuan.shops.find(shop => shop.name === '南翔饅頭店（豫園店）').address, '豫園路87號');
   assert.equal(jingan.shops.find(shop => shop.name === '毒蛇麵館（靜安寺店）').address, '上海市靜安區愚園路140號');
   assert.ok(shanghai.flatMap(station => station.shops).filter(shop => shop.price == null).length > 0);
-  assert.deepEqual(shanghai.map(station => station.name_en), ['Yuyuan', "Jing'an Temple", 'South Huangpi Rd', 'Jiaotong University', 'Dapuqiao']);
+  assert.deepEqual(
+    shanghai.map(station => station.name_en ?? null),
+    publishedIn(publication, 'shanghai').map(entry => entry.name_en ?? null),
+  );
+  for (const [slug, name] of [
+    ['shanghai-yuyuan', 'Yuyuan'],
+    ['shanghai-jingan-temple', "Jing'an Temple"],
+    ['shanghai-south-huangpi-road', 'South Huangpi Rd'],
+    ['shanghai-jiaotong-university', 'Jiaotong University'],
+    ['shanghai-dapuqiao', 'Dapuqiao'],
+  ]) assert.equal(shanghai.find(station => station.slug === slug)?.name_en, name);
   assert.equal(JSON.stringify(shanghai).includes('"notes"'), false);
   assert.equal(JSON.stringify(taipei).includes('"notes"'), false);
 });
