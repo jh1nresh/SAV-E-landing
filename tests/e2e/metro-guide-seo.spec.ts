@@ -47,9 +47,10 @@ test('all station guides have unique search metadata and matching Markdown facts
 });
 
 for (const width of [320, 390, 1280]) {
-  test(`guide navigation and long source links fit ${width}px`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
+  test(`guide navigation and long source links fit ${width}px`, async ({ context }) => {
     for (const slug of ['shuanglian', 'xiangshan', 'shanghai-south-huangpi-road']) {
+      const page = await context.newPage();
+      await page.setViewportSize({ width, height: 900 });
       await page.goto(`/metro/${slug}`);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       if (slug === 'shuanglian' || slug === 'shanghai-south-huangpi-road') {
@@ -65,6 +66,7 @@ for (const width of [320, 390, 1280]) {
       }
       await page.locator('.food-quick-index a').last().click();
       await expect(page.locator('.food-shops article').last()).toBeInViewport();
+      await page.close();
     }
   });
 }

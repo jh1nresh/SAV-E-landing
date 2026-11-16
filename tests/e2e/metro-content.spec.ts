@@ -48,11 +48,13 @@ for (const station of stations) {
   });
 }
 
-test('food pages fit a narrow viewport', async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 812 });
+test('food pages fit a narrow viewport', async ({ context }) => {
   for (const path of ['/metro', '/metro/xiaojudan']) {
+    const page = await context.newPage();
+    await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(path);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.close();
   }
 });
 

@@ -368,13 +368,17 @@ test.describe("shanghai no-JS station list", () => {
   });
 });
 
-test("a 45-station fixture keeps the closed control height and the panel cap", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/");
-  await waitForMap(page);
-  const closed = (await page.getByTestId("station-search").boundingBox())!;
+test("a 45-station fixture keeps the closed control height and the panel cap", async ({ context }) => {
+  const closedPage = await context.newPage();
+  await closedPage.setViewportSize({ width: 1280, height: 800 });
+  await closedPage.goto("/");
+  await waitForMap(closedPage);
+  const closed = (await closedPage.getByTestId("station-search").boundingBox())!;
+  await closedPage.close();
   const grownStations = withFixtureCount(taipei, 45);
   const grownLatest = latestStation(grownStations)!;
+  const page = await context.newPage();
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/?pickerFixture=45");
   await waitForMap(page);
   const grown = (await page.getByTestId("station-search").boundingBox())!;
@@ -385,4 +389,5 @@ test("a 45-station fixture keeps the closed control height and the panel cap", a
   await page.getByTestId("station-picker-trigger").click();
   await expect(page.getByRole("option")).toHaveCount(45);
   expect((await page.locator(".sd-sheet").boundingBox())!.height).toBeLessThanOrEqual(300);
+  await page.close();
 });

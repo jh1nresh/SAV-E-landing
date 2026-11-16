@@ -136,13 +136,19 @@ test("no-JS homepage and trust pages expose meaningful content, metadata and hon
     expect(org.contactPoint).toMatchObject({ contactType: "customer support", url: `${origin}/contact` });
     expect(org).not.toHaveProperty("address");
     expect(JSON.stringify(schema)).not.toContain("support@sav-e.app");
+    // Reusing this no-JS WebKit page for another goto stalled in Linux CI.
     for (const width of [390, 1280]) {
-      await page.setViewportSize({ width, height: 844 });
       for (const path of ["/about", "/contact", "/privacy", "/docs"]) {
-        await page.goto(path);
-        expect((await page.locator("main").innerText()).length, path).toBeGreaterThanOrEqual(500);
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${path} at ${width}`).toBe(true);
-        if (path !== "/privacy") expect(await page.locator("main").innerText()).not.toContain("support@sav-e.app");
+        const trust = await context.newPage();
+        try {
+          await trust.setViewportSize({ width, height: 844 });
+          await trust.goto(path);
+          expect((await trust.locator("main").innerText()).length, path).toBeGreaterThanOrEqual(500);
+          expect(await trust.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${path} at ${width}`).toBe(true);
+          if (path !== "/privacy") expect(await trust.locator("main").innerText()).not.toContain("support@sav-e.app");
+        } finally {
+          await trust.close();
+        }
       }
     }
   } finally { await context.close(); }

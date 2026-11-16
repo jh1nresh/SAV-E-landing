@@ -7,11 +7,11 @@ for (const width of [320, 390, 1280]) {
   test(`both city cards visibly link to full guides with usable touch targets at ${width}`, async ({ browser }) => {
     const context = await browser.newContext({ viewport: { width, height: 900 }, hasTouch: true });
     try {
-      const page = await context.newPage();
       for (const { city, id, slug, name } of [
         { city: "taipei", id: "arena", slug: "xiaojudan", name: "小巨蛋" },
         { city: "shanghai", id: "shanghai-yuyuan", slug: "shanghai-yuyuan", name: "豫園" },
       ]) {
+        const page = await context.newPage();
         await page.goto(`/?city=${city}`);
         await openStation(page, id);
         const link = page.getByTestId(`metro-food-link-${id}`);
@@ -31,16 +31,18 @@ for (const width of [320, 390, 1280]) {
           await page.getByRole("link", { name: "← 回到上海地圖" }).click();
           await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "shanghai");
         }
+        await page.close();
       }
     } finally { await context.close(); }
   });
 }
 
-test("every published Shanghai guide retains source details and is discoverable", async ({ page, request }) => {
+test("every published Shanghai guide retains source details and is discoverable", async ({ context, request }) => {
   const sitemap = await (await request.get("/sitemap.xml")).text();
   for (const station of getShanghaiFoodStations()) {
     const url = `/metro/${station.slug}`;
     expect(sitemap).toContain(`https://savvy.jeezlabs.io${url}`);
+    const page = await context.newPage();
     const response = await page.goto(url);
     expect(response!.status()).toBe(200);
     await expect(page.locator("h1")).toHaveText(`上海${station.station}站美食攻略`);
@@ -67,6 +69,7 @@ test("every published Shanghai guide retains source details and is discoverable"
         for (const [label, value] of foodShopRows(shop, station.city)) expect(body).toContain(`- ${label}: ${value}`);
       }
     }
+    await page.close();
   }
   expect((await request.get("/metro/shanghai-not-a-published-station")).status()).toBe(404);
 });
