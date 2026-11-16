@@ -1,19 +1,51 @@
 import shanghaiLines from "../../content/metro/shanghai-lines.json";
-import type { FoodStation, MetroData } from "../../lib/metro";
+import type { FoodStation, MetroData, MetroStation, ShanghaiMapPin } from "../../lib/metro";
 import { MAP_SVG } from "./map-svg";
+
+const scalePair = (pair?: number[]): [number, number] | undefined =>
+  pair && pair.length === 2 && pair.every(value => typeof value === "number" && Number.isFinite(value))
+    ? [pair[0] * .72, pair[1] * .72]
+    : undefined;
 
 // Fit the published Shanghai schematic into the existing hero camera's view units.
 const point = ([x, y]: [number, number]): [number, number] => [x * .72 - 60, y * .72 - 40];
-export function shanghaiMetro(stations: FoodStation[]): MetroData {
+
+/** Dots and names for design stations whose daily food package has not landed. */
+function mapOnlyStations(published: FoodStation[], pins: ShanghaiMapPin[]): MetroStation[] {
+  const slugs = new Set(published.map(station => station.slug));
+  return pins.flatMap(entry => {
+    if (slugs.has(entry.slug)) return [];
+    const labelOffset = scalePair(entry.map.labelOffset);
+    const posterLabelOffset = scalePair(entry.map.posterLabelOffset);
+    return [{
+      id: entry.slug,
+      slug: entry.slug,
+      order: entry.n,
+      name: entry.station,
+      line: (entry.lines ?? []).map(n => `${n} 號線`).join("、"),
+      status: "live",
+      updatedAt: null,
+      mapPos: {
+        line: entry.map.line,
+        at: point(entry.map.at),
+        ...(entry.map.label ? { label: entry.map.label } : {}),
+        ...(labelOffset ? { labelOffset } : {}),
+        ...(posterLabelOffset ? { posterLabelOffset } : {}),
+      },
+    }];
+  });
+}
+
+export function shanghaiMetro(stations: FoodStation[], pins: ShanghaiMapPin[] = []): MetroData {
   return {
     _meta: { city: "shanghai", asOf: stations.map(s => s.date).sort().at(-1) ?? "" },
-    stations: stations.map(s => ({
+    stations: [...stations.map(s => ({
       id: s.slug, slug: s.slug, order: s.n, name: s.station,
       line: (s.metro_lines ?? []).map(n => `${n} 號線`).join("、"),
-      status: "live", updatedAt: s.date,
+      status: "live" as const, updatedAt: s.date,
       mapPos: { line: s.map.line, at: point(s.map.snapped ?? s.map.at),
         labelOffset: s.map.labelOffset?.map(n => n * .72) as [number, number] | undefined },
-    })),
+    })), ...mapOnlyStations(stations, pins)],
     stores: stations.flatMap(s => s.shops.map((shop, i) => ({
       id: `${s.slug}-${shop.key ?? i}`, kind: "post" as const, stationId: s.slug,
       name: shop.name ?? "", article: shop, priceFrom: false, priceCheckedAt: null,

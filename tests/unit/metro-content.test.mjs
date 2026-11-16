@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync, mkdtempSync, mkdirSync, writeFileSync, cpSync, rmSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, loadDailyStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin, localeForCity } from '../../scripts/metro-content.mjs';
+import { buildFoodStations, mergeFoodStations, stripInternal, loadDesignStations, loadDailyStations, applyDesignMaps, resolvePhotoList, resolveSlideList, readWgs84, stationGeoPin, localeForCity, publicShanghaiMapPins } from '../../scripts/metro-content.mjs';
+import { SHANGHAI_LINE_PATHS, snapToLine } from '../../scripts/metro-lines.mjs';
 import { contentOnly, contentOnlyFromNameStatus, isAllowedMetroContentPath } from '../../scripts/metro-content-gate.mjs';
 import { foodShopRows, FOOD_DISCLAIMER } from '../../lib/metro-logic.mjs';
 const base = JSON.parse(readFileSync('content/metro/stations.json', 'utf8'));
@@ -217,10 +218,73 @@ test('published Shanghai stations use their DESIGN maps and leave station coordi
     [6, 'shanghai-jiaotong-university', '交通大學', 'SH_10', [140, 600], 'pending', null],
     [7, 'shanghai-dapuqiao', '打浦橋', 'SH_9', [470, 570], 'wgs84', 31.2075],
   ]);
+  assert.deepEqual(shanghai.find(station => station.slug === 'shanghai-dapuqiao').map.labelOffset, [0, 5]);
   assert.equal(shanghai.some(station => station.n === 5 || station.station === '人民廣場'), false);
+  assert.equal(shanghai.some(station => [8, 9, 10].includes(station.n)), false);
   const huangpi = shanghai.find(station => station.n === 4);
   assert.equal(huangpi.shops.find(shop => shop.key === 'guangmingcun').name, '光明邨大酒家');
   assert.equal(huangpi.shops.find(shop => shop.key === 'weixiang').address, '上海市黃浦區雁蕩路14號（近淮海中路）');
+});
+
+test('shanghai n=8-10 sit on their lines and the frozen stations stay put', () => {
+  assert.equal(SHANGHAI_LINE_PATHS.SH_2, 'M0 470 C 80 450 150 440 220 420 C 280 390 340 350 400 330 C 450 314 505 306 560 300 C 620 280 680 240 740 220 C 800 210 850 222 900 230 C 940 236 970 236 1000 240');
+  assert.equal(SHANGHAI_LINE_PATHS.SH_10, 'M0 640 C 50 625 95 612 140 600 C 320 560 560 530 650 500 C 700 482 754 445 760 400 C 768 340 760 280 740 220 C 732 180 725 140 720 100 C 716 60 712 30 708 0');
+  assert.equal(SHANGHAI_LINE_PATHS.SH_14, 'M0 395 C 40 388 75 382 110 380 C 150 385 186 400 220 420 C 320 432 420 434 520 430 C 560 426 595 422 630 420 C 680 416 720 410 760 400 C 810 360 860 290 900 230 C 930 190 960 160 1000 140');
+  assert.equal(SHANGHAI_LINE_PATHS.SH_1, 'M540 0 C 548 100 556 200 560 300 C 562 360 540 400 520 430 C 450 500 320 590 220 640 C 210 680 200 710 200 720');
+  assert.equal(SHANGHAI_LINE_PATHS.SH_7, 'M160 0 C 175 100 190 200 200 300 C 206 340 214 380 220 420 C 250 490 280 560 310 620 C 330 660 350 690 370 720');
+  assert.equal(SHANGHAI_LINE_PATHS.SH_9, 'M0 720 C 100 720 190 710 220 640 C 320 600 400 580 470 570 C 567 543 780 500 1000 470');
+  assert.equal(SHANGHAI_LINE_PATHS.SH_11, 'M0 330 C 60 420 115 520 140 600 C 170 620 200 640 220 640 C 220 700 300 720 520 720');
+  assert.equal(SHANGHAI_LINE_PATHS.SH_12, 'M400 720 C 400 600 400 460 400 330 C 430 230 530 110 650 30 C 700 0 750 0 820 0');
+  assert.equal(SHANGHAI_LINE_PATHS.SH_13, 'M0 250 C 120 270 260 310 400 330 C 420 430 480 530 680 550 C 800 565 920 610 1000 660');
+  const lines = JSON.parse(readFileSync('content/metro/shanghai-lines.json', 'utf8')).lines;
+  assert.equal(lines.SH_12.color, '#007A60');
+  assert.equal(lines.SH_13.color, '#E999C0');
+  const onLine = (line, at) => {
+    const snapped = snapToLine(line, at);
+    assert.ok(Math.hypot(snapped[0] - at[0], snapped[1] - at[1]) <= 0.02, `${line} ${at} snapped to ${snapped}`);
+  };
+  for (const line of ['SH_2', 'SH_12', 'SH_13']) onLine(line, [400, 330]);
+  for (const line of ['SH_2', 'SH_14']) onLine(line, [900, 230]);
+  for (const line of ['SH_1', 'SH_9', 'SH_11']) onLine(line, [220, 640]);
+  onLine('SH_1', [520, 430]);
+  onLine('SH_14', [520, 430]);
+  onLine('SH_7', [220, 420]);
+  onLine('SH_2', [220, 420]);
+  onLine('SH_14', [220, 420]);
+  onLine('SH_9', [470, 570]);
+  onLine('SH_10', [140, 600]);
+  onLine('SH_11', [140, 600]);
+  onLine('SH_2', [740, 220]);
+  onLine('SH_10', [740, 220]);
+  onLine('SH_10', [760, 400]);
+  onLine('SH_14', [760, 400]);
+});
+
+test('shanghai hero pins publish schematic fields and leave catalog notes behind', () => {
+  const published = new Set(expected.filter(station => station.city === 'shanghai').map(station => station.slug));
+  const pins = publicShanghaiMapPins(designCatalog, published);
+  assert.deepEqual(pins.map(pin => [pin.n, pin.slug, pin.station, pin.lines, pin.map.at, pin.map.labelOffset]), [
+    [8, 'shanghai-nanjing-west-road', '南京西路', ['2', '12', '13'], [400, 330], [-58, -106]],
+    [9, 'shanghai-lujiazui', '陸家嘴', ['2', '14'], [900, 230], [-54, -72]],
+    [10, 'shanghai-xujiahui', '徐家匯', ['1', '9', '11'], [220, 640], [54, -20]],
+  ]);
+  assert.equal(pins.some(pin => pin.slug === 'shanghai-nanjing-east' || published.has(pin.slug)), false);
+  const leaked = {
+    n: 8, city: 'shanghai', slug: 'shanghai-nanjing-west-road', station: '南京西路',
+    lines: ['2', '12', '13'],
+    map: { line: 'SH_2', at: [400, 330], labelOffset: [-58, -106] },
+    notes: 'internal review note',
+    source: 'private catalog path',
+    lat: 31.23181, lng: 121.45601, datum: 'WGS-84', coord_system: 'WGS-84',
+    verified: { map_at: true, geo: false },
+  };
+  const projected = publicShanghaiMapPins([leaked], []);
+  assert.deepEqual(Object.keys(projected[0]).sort(), ['lines', 'map', 'n', 'slug', 'station']);
+  assert.deepEqual(Object.keys(projected[0].map).sort(), ['at', 'labelOffset', 'line']);
+  const text = JSON.stringify(projected);
+  for (const needle of ['"notes"', 'internal review', 'private catalog', '31.23181', 'coord_system', 'verified']) {
+    assert.equal(text.includes(needle), false, needle);
+  }
 });
 
 test('stations are keyed by city and n, and missing geo coordinates stay pending', () => {
@@ -254,7 +318,17 @@ test('stations are keyed by city and n, and missing geo coordinates stay pending
     [4, 'shanghai-south-huangpi-road', 'WGS-84', true, [520, 430]],
     [6, 'shanghai-jiaotong-university', 'WGS-84', true, [140, 600]],
     [7, 'shanghai-dapuqiao', 'WGS-84', true, [470, 570]],
+    [8, 'shanghai-nanjing-west-road', 'WGS-84', false, [400, 330]],
+    [9, 'shanghai-lujiazui', 'WGS-84', false, [900, 230]],
+    [10, 'shanghai-xujiahui', 'WGS-84', false, [220, 640]],
   ]);
+  assert.deepEqual(shanghai.find(entry => entry.slug === 'shanghai-dapuqiao').map.labelOffset, [0, 5]);
+  assert.deepEqual(shanghai.find(entry => entry.slug === 'shanghai-nanjing-west-road').map.labelOffset, [-58, -106]);
+  assert.deepEqual(shanghai.find(entry => entry.slug === 'shanghai-lujiazui').map.labelOffset, [-54, -72]);
+  assert.deepEqual(shanghai.find(entry => entry.slug === 'shanghai-xujiahui').map.labelOffset, [54, -20]);
+  assert.deepEqual(shanghai.find(entry => entry.slug === 'shanghai-nanjing-west-road').lines, ['2', '12', '13']);
+  assert.deepEqual(shanghai.find(entry => entry.slug === 'shanghai-lujiazui').lines, ['2', '14']);
+  assert.deepEqual(shanghai.find(entry => entry.slug === 'shanghai-xujiahui').lines, ['1', '9', '11']);
   assert.deepEqual(stationGeoPin(shanghai[0]), { lat: 31.2391239, lng: 121.4792291, datum: 'WGS-84' });
   assert.equal(shanghai[0].geoStatus, 'wgs84');
   assert.deepEqual(stationGeoPin(shanghai[1]), { lat: 31.229784, lng: 121.48263, datum: 'WGS-84' });

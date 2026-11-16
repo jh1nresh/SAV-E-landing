@@ -122,6 +122,42 @@ export function readMetroLines(station) {
   return station.metro_lines.map(line => line.trim());
 }
 
+// 南京東路 is already in the catalog without a food package. The hero's eight
+// pins are the published stations plus the design-only additions, so it stays off.
+const SHANGHAI_HERO_HOLDOUTS = new Set(['shanghai-nanjing-east']);
+
+/**
+ * Dots for Shanghai design stations whose daily package has not landed.
+ * The hero may show the name, line numbers, and schematic position. Notes,
+ * sources, verification, and geographic coordinates stay in the catalog.
+ */
+export function publicShanghaiMapPins(design, publishedSlugs = []) {
+  if (!Array.isArray(design)) error('DESIGN catalog required');
+  const slugs = publishedSlugs instanceof Set ? publishedSlugs : new Set(publishedSlugs);
+  const pins = [];
+  for (const entry of design) {
+    if (!entry || resolveCity(entry.city) !== 'shanghai') continue;
+    if (typeof entry.slug !== 'string' || slugs.has(entry.slug) || SHANGHAI_HERO_HOLDOUTS.has(entry.slug)) continue;
+    if (!entry.map || !Array.isArray(entry.map.at)) continue;
+    validateStationMap(entry);
+    if (entry.lines != null && (!Array.isArray(entry.lines) || entry.lines.some(line => typeof line !== 'string' || !line.trim()))) {
+      error(`design entry shanghai:${entry.n} lines must be an array of line numbers`);
+    }
+    const map = { line: entry.map.line, at: [entry.map.at[0], entry.map.at[1]] };
+    if (entry.map.label != null) map.label = entry.map.label;
+    if (entry.map.labelOffset != null) map.labelOffset = [entry.map.labelOffset[0], entry.map.labelOffset[1]];
+    if (entry.map.posterLabelOffset != null) map.posterLabelOffset = [entry.map.posterLabelOffset[0], entry.map.posterLabelOffset[1]];
+    pins.push({
+      n: entry.n,
+      slug: entry.slug,
+      station: entry.station,
+      lines: entry.lines == null ? [] : entry.lines.map(line => line.trim()),
+      map,
+    });
+  }
+  return pins.sort((a, b) => a.n - b.n);
+}
+
 export function validateStationMap(s) {
   const city = resolveCity(s.city);
   const paths = linePathsFor(city);

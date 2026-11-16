@@ -714,8 +714,8 @@
         570
       ],
       "labelOffset": [
-        44,
-        -40
+        0,
+        5
       ]
     },
     "id": "shanghai-dapuqiao",
@@ -741,6 +741,83 @@
     },
     "notes": "r1 2026-11-13: map.at [470,570] is an exact segment endpoint on new SH_9 (snap 0). Derived from the 交通大學 [140,600] @ 31.2039,121.43 to 黃陂南路 [520,430] @ 31.2246,121.4687 schematic scale applied to Wikidata Q5936524 P625 31.2075,121.46388889 (projected 472.8,570.4), then rounded to the nearest 10. SH_9 (#87CAED, en.wikipedia Module:Adjacent_stations/Shanghai_Metro) runs east-west south of SH_14; existing line paths are unchanged so earlier stations keep snap 0. Schematic, not geographic. DESIGN must review map.at. The published pack and Wikidata P81 list Line 9 only (Q1152370); the Line 9/13 interchange is the next station, Madang Road.",
     "geo_precision_gtm": "station"
+  },
+  {
+    "n": 8,
+    "slug": "shanghai-nanjing-west-road",
+    "station": "南京西路",
+    "city": "shanghai",
+    "map": {
+      "line": "SH_2",
+      "at": [
+        400,
+        330
+      ],
+      "labelOffset": [
+        -58,
+        -106
+      ]
+    },
+    "lines": [
+      "2",
+      "12",
+      "13"
+    ],
+    "lat": 31.23181,
+    "lng": 121.45601,
+    "coord_system": "WGS-84",
+    "datum": "WGS-84"
+  },
+  {
+    "n": 9,
+    "slug": "shanghai-lujiazui",
+    "station": "陸家嘴",
+    "city": "shanghai",
+    "map": {
+      "line": "SH_2",
+      "at": [
+        900,
+        230
+      ],
+      "labelOffset": [
+        -54,
+        -72
+      ]
+    },
+    "lines": [
+      "2",
+      "14"
+    ],
+    "lat": 31.2397,
+    "lng": 121.497,
+    "coord_system": "WGS-84",
+    "datum": "WGS-84"
+  },
+  {
+    "n": 10,
+    "slug": "shanghai-xujiahui",
+    "station": "徐家匯",
+    "city": "shanghai",
+    "map": {
+      "line": "SH_1",
+      "at": [
+        220,
+        640
+      ],
+      "labelOffset": [
+        54,
+        -20
+      ]
+    },
+    "lines": [
+      "1",
+      "9",
+      "11"
+    ],
+    "lat": 31.1967,
+    "lng": 121.4323,
+    "coord_system": "WGS-84",
+    "datum": "WGS-84"
   },
   {
     "n": 18,

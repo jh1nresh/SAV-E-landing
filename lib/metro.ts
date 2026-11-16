@@ -189,3 +189,16 @@ export function getFoodStations(): FoodStation[] {
 export function getShanghaiFoodStations(): FoodStation[] {
   return (publicMetro as unknown as { shanghaiFoodStations?: FoodStation[] }).shanghaiFoodStations ?? [];
 }
+
+/** Schematic hero pins for Shanghai stations that do not have a daily package yet. */
+export type ShanghaiMapPin = {
+  n: number;
+  slug: string;
+  station: string;
+  lines: string[];
+  map: FoodStation["map"];
+};
+
+export function getShanghaiMapPins(): ShanghaiMapPin[] {
+  return (publicMetro as unknown as { shanghaiMapPins?: ShanghaiMapPin[] }).shanghaiMapPins ?? [];
+}
