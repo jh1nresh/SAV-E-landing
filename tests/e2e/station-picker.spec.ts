@@ -304,7 +304,10 @@ test("a Shanghai station without a food package stays a map dot and does not inv
   for (const station of shanghaiHeroPins) {
     const pin = page.getByTestId(`metro-pin-${station.slug}`);
     await expect(pin, station.station).toHaveClass(/content-only/);
-    await pin.locator(".hit").click();
+    // A coordinate click lands on the hero when it covers a lower dot, so the
+    // pin never receives it. Activate the button itself; that is the handler
+    // that opens the card.
+    await pin.evaluate((button: HTMLButtonElement) => button.click());
     const card = page.getByTestId("metro-card");
     await expect(card).toContainText(station.station);
     await expect(card).toContainText("這一站的店家資料準備中");
