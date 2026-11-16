@@ -21,8 +21,9 @@ const LEGACY_SLUGS = [
   "taipei-city-hall",
 ] as const;
 
-test("homepage shows Taipei content and a city switch, defaulting to 台北", async ({ page }) => {
+test("homepage shows Taipei content and a city switch, defaulting to 台北", async ({ context }) => {
   for (const width of [390, 1280]) {
+    const page = await context.newPage();
     await page.setViewportSize({ width, height: 900 });
     const response = await page.goto("/");
     expect(response?.status()).toBe(200);
@@ -49,8 +50,10 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
     expect(Math.abs(taipeiBox.width - shanghaiBox.width)).toBeLessThan(2);
     expect(Math.abs(taipeiBox.y - shanghaiBox.y)).toBeLessThan(2);
     await noHorizontalOverflow(page);
+    await page.close();
   }
 
+  const page = await context.newPage();
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/?lang=en");
   await expect(page.getByText("Save what you love")).toBeVisible();
@@ -75,6 +78,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
   await expect(page.getByTestId("city-switch-taipei")).toHaveAttribute("aria-current", "true");
   await expect(page.getByText("Save what you love")).toBeVisible();
   await expect(page.locator(".map-stage")).toBeVisible();
+  await page.close();
 });
 
 test("Accept-Language does not redirect the homepage away from Taipei", async ({ request }) => {
@@ -164,9 +168,10 @@ test("legacy Taipei station URLs stay intact, the guide index covers both cities
   expect(homeHtml).not.toContain("豫園");
 });
 
-test("Shanghai switches inside the same hero with the shared photo map and cards", async ({ page }) => {
+test("Shanghai switches inside the same hero with the shared photo map and cards", async ({ context }) => {
   const stations = getShanghaiFoodStations();
   for (const width of [390, 1280]) {
+    const page = await context.newPage();
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/?reduce=1");
     await page.locator("#hero").evaluate(el => el.setAttribute("data-preserved", "yes"));
@@ -200,6 +205,7 @@ test("Shanghai switches inside the same hero with the shared photo map and cards
     await page.getByTestId("city-switch-taipei").click();
     await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "taipei");
     await expect(page.locator(".pin .hit").first()).toBeVisible();
+    await page.close();
   }
 });
 

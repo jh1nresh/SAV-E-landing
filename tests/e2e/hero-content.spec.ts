@@ -5,7 +5,7 @@ import { countLabel, imageAlt, isExampleStore, isNewDate, stationIsNew, priceIsP
 import { clickPin, openStation, waitForCardOpen, waitForMap } from "./helpers";
 
 test.describe("hero content and motion", () => {
-  test("B-6 NEW on day 6, not on day 7 or 8 (Asia/Taipei, < 7 days), driven by the shipped data", async ({ page }) => {
+  test("B-6 NEW on day 6, not on day 7 or 8 (Asia/Taipei, < 7 days), driven by the shipped data", async ({ context }) => {
     // Clocks are derived from the data (newest entry / newest station update), so adding or ageing
     // entries never needs a test edit. Expectations use the same pure rule the UI uses.
     const maxDate = (xs: Array<string | null>) => xs.filter((x): x is string => Boolean(x)).sort().pop()!;
@@ -18,6 +18,7 @@ test.describe("hero content and motion", () => {
     const clocks = [...new Set(anchors.flatMap((a) => [0, 6, 7, 8].map((n) => addDays(a, n))))];
 
     for (const clock of clocks) {
+      const page = await context.newPage();
       const weekCount = weekNewCount(metro.stores, clock);
       await page.goto(`/?clock=${clock}`);
       await waitForMap(page);
@@ -29,6 +30,7 @@ test.describe("hero content and motion", () => {
         if (st.status === "live" && stationIsNew(metro.stores.filter((s) => s.stationId === st.id), clock)) await expect(pin, `${st.id} @${clock}`).toHaveClass(/new/);
         else await expect(pin, `${st.id} @${clock}`).not.toHaveClass(/new/);
       }
+      await page.close();
     }
 
     // Boundary of the newest entry itself: NEW through day 6, gone from day 7.
@@ -214,24 +216,28 @@ test.describe("hero content and motion", () => {
     await expect(page.locator("#card")).toHaveClass(/rm/);
   });
 
-  test("F-1 metadata includes title description and OG image", async ({ page }) => {
-    await page.goto("/");
-    await expect(page).toHaveTitle("Savvy：把連結存成地圖上的點");
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+  test("F-1 metadata includes title description and OG image", async ({ context }) => {
+    const zh = await context.newPage();
+    await zh.goto("/");
+    await expect(zh).toHaveTitle("Savvy：把連結存成地圖上的點");
+    await expect(zh.locator('meta[name="description"]')).toHaveAttribute(
       "content",
       "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北與上海捷運美食。",
     );
-    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", "Savvy：把連結存成地圖上的點");
-    await expect(page.locator(".hero .sub.zh")).toContainText("存連結 → 確認地點 → 地圖章。");
-    const og = await page.locator('meta[property="og:image"]').getAttribute("content");
+    await expect(zh.locator('meta[property="og:title"]')).toHaveAttribute("content", "Savvy：把連結存成地圖上的點");
+    await expect(zh.locator(".hero .sub.zh")).toContainText("存連結 → 確認地點 → 地圖章。");
+    const og = await zh.locator('meta[property="og:image"]').getAttribute("content");
     expect(og).toMatch(/og\.png/);
+    await zh.close();
 
-    await page.goto("/?lang=en");
-    await expect(page).toHaveTitle("Savvy: Turn links into pins");
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    const en = await context.newPage();
+    await en.goto("/?lang=en");
+    await expect(en).toHaveTitle("Savvy: Turn links into pins");
+    await expect(en.locator('meta[name="description"]')).toHaveAttribute(
       "content",
       "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei and Shanghai metro food.",
     );
-    await expect(page.locator(".hero .sub.en")).toContainText("Save a link → confirm the place → pin it on your map.");
+    await expect(en.locator(".hero .sub.en")).toContainText("Save a link → confirm the place → pin it on your map.");
+    await en.close();
   });
 });

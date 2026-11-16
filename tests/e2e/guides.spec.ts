@@ -53,11 +53,6 @@ test("guide links, keyboard navigation and sitemap use only public canonical pag
   await page.getByRole("link", { name: "從一則分享開始", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#step-1$/);
-  await page.goto(`${root}/import-google-maps-saves?lang=en`);
-  await expect(page.locator("main")).toBeVisible();
-  await expect(page.locator("main")).toHaveAttribute("lang", "zh-Hant");
-  await expect(page.locator("table")).toContainText("CSV");
-  await expect(page.locator("table")).toContainText("目前不支援");
   const home = await request.get("/");
   for (const path of paths) expect(await home.text()).toContain(`href="${path}"`);
   const sitemap = await request.get("/sitemap.xml");
@@ -74,4 +69,13 @@ test("guide links, keyboard navigation and sitemap use only public canonical pag
     const response = await request.get(path);
     expect(response.status()).toBe(404);
   }
+});
+
+// Reusing one WebKit page for another guide load stalled in Linux CI at page.goto().
+test("import-google-maps-saves stays Chinese when the query asks for English", async ({ page }) => {
+  await page.goto(`${root}/import-google-maps-saves?lang=en`);
+  await expect(page.locator("main")).toBeVisible();
+  await expect(page.locator("main")).toHaveAttribute("lang", "zh-Hant");
+  await expect(page.locator("table")).toContainText("CSV");
+  await expect(page.locator("table")).toContainText("目前不支援");
 });

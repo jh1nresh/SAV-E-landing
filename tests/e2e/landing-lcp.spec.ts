@@ -151,20 +151,24 @@ test.describe("first-screen LCP hints and OSM credit", () => {
     });
   }
 
-  test("OSM attribution link is present with the licence href", async ({ page }) => {
-    await page.goto("/");
-    const link = page.getByTestId("osm-attribution");
+  test("OSM attribution link is present with the licence href", async ({ context }) => {
+    const zh = await context.newPage();
+    await zh.goto("/");
+    const link = zh.getByTestId("osm-attribution");
     await expect(link).toHaveText("Map data © OpenStreetMap contributors");
     await expect(link).toHaveAttribute("href", "https://www.openstreetmap.org/copyright");
     await expect(link).toHaveAttribute("rel", "noopener noreferrer");
     await expect(link).toHaveCount(1);
+    await zh.close();
 
-    await page.goto("/?lang=en");
-    await expect(page.getByTestId("osm-attribution")).toHaveAttribute(
+    const en = await context.newPage();
+    await en.goto("/?lang=en");
+    await expect(en.getByTestId("osm-attribution")).toHaveAttribute(
       "href",
       "https://www.openstreetmap.org/copyright",
     );
-    await expect(page.getByTestId("osm-attribution")).toHaveCount(1);
+    await expect(en.getByTestId("osm-attribution")).toHaveCount(1);
+    await en.close();
   });
 
   for (const width of [375, 390]) {
