@@ -244,9 +244,9 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900
     expect(publishedShanghai.length).toBeGreaterThanOrEqual(5);
     expect(stationIdentity(shanghai), "published Shanghai stations").toEqual(stationIdentity(publishedShanghai));
     const names = [...shanghai.map((station) => station.station), ...shanghaiHeroPins.map((station) => station.station)];
+    expect(names).toHaveLength(8);
     for (const name of SHANGHAI_HERO_NAMES) expect(names, name).toContain(name);
     expect([...names].sort()).toEqual([...SHANGHAI_HERO_NAMES].sort());
-    expect(names).toHaveLength(8);
     for (const name of SHANGHAI_EITHER_PUBLISHED_OR_MAP_ONLY) {
       const published = publishedShanghai.some((station) => station.station === name);
       const mapOnly = mapOnlyIn(publication, "shanghai").some((station) => station.station === name);
