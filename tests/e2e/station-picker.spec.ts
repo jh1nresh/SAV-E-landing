@@ -9,6 +9,9 @@ const publication = publicationSets(".");
 const publishedTaipei = publishedIn(publication, "taipei");
 const publishedShanghai = publishedIn(publication, "shanghai");
 const shanghaiHeroPins = heroMapPins(publication.mapOnly);
+/** Stations the Shanghai hero draws today: the five published stations plus the three that are still map-only. 南京東路 stays off this list. */
+const SHANGHAI_HERO_NAMES = ["豫園", "靜安寺", "黃陂南路", "交通大學", "打浦橋", "南京西路", "陸家嘴", "徐家匯"] as const;
+const SHANGHAI_EITHER_PUBLISHED_OR_MAP_ONLY = ["南京西路", "陸家嘴", "徐家匯"] as const;
 const taipei = buildPickerStations(getFoodStations(), getPublicMetroData().stations, TAIPEI_LINE_COLOR).sort(compareNewest);
 const shanghai = buildPickerStations(getShanghaiFoodStations(), []).sort(compareNewest);
 
@@ -172,6 +175,8 @@ function intersects(
 }
 
 test("every Taipei pin and name is on the first screen at 1280x800", async ({ page }) => {
+  expect(publishedTaipei.length).toBeGreaterThanOrEqual(23);
+  expect(taipei.length).toBeGreaterThanOrEqual(23);
   expect(stationIdentity(taipei), "published Taipei stations").toEqual(stationIdentity(publishedTaipei));
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
@@ -236,8 +241,17 @@ test("the weekly stamp does not cover 國父紀念館 at 390", async ({ page }) 
 
 for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900 }]) {
   test(`every Shanghai pin is on the first screen at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+    expect(publishedShanghai.length).toBeGreaterThanOrEqual(5);
     expect(stationIdentity(shanghai), "published Shanghai stations").toEqual(stationIdentity(publishedShanghai));
     const names = [...shanghai.map((station) => station.station), ...shanghaiHeroPins.map((station) => station.station)];
+    for (const name of SHANGHAI_HERO_NAMES) expect(names, name).toContain(name);
+    expect([...names].sort()).toEqual([...SHANGHAI_HERO_NAMES].sort());
+    expect(names).toHaveLength(8);
+    for (const name of SHANGHAI_EITHER_PUBLISHED_OR_MAP_ONLY) {
+      const published = publishedShanghai.some((station) => station.station === name);
+      const mapOnly = mapOnlyIn(publication, "shanghai").some((station) => station.station === name);
+      expect(published !== mapOnly, name).toBe(true);
+    }
     await page.setViewportSize(viewport);
     await page.goto("/shanghai?reduce=1");
     await waitForMap(page);
@@ -251,6 +265,8 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900
     for (const station of shanghaiHeroPins) {
       await expect(page.getByTestId(`metro-pin-${station.slug}`), station.station).toHaveClass(/content-only/);
     }
+    await expect(page.locator("#stdots text", { hasText: "南京東路" })).toHaveCount(0);
+    await expect(page.getByTestId("metro-pin-shanghai-nanjing-east")).toHaveCount(0);
     for (const holdout of mapOnlyIn(publication, "shanghai").filter((entry) => SHANGHAI_HERO_HOLDOUTS.has(entry.slug))) {
       await expect(page.locator("#stdots text", { hasText: holdout.station })).toHaveCount(0);
     }
@@ -286,6 +302,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900
     });
     expect(layout.labels.map((label) => label.name)).toEqual(expect.arrayContaining(names));
     expect(layout.labels).toHaveLength(names.length);
+    expect(layout.labels.find((label) => label.name === "打浦橋")?.name).toBe("打浦橋");
     expect(layout.overlaps).toEqual([]);
     for (const label of layout.labels) {
       expect(label.top, label.name).toBeGreaterThanOrEqual(-1);
@@ -297,7 +314,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900
 }
 
 test("a Shanghai station without a food package stays a map dot and does not invent a guide", async ({ page }) => {
-  test.skip(shanghaiHeroPins.length === 0, "no map-only Shanghai stations");
+  expect(shanghaiHeroPins.length).toBeGreaterThan(0);
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/shanghai?reduce=1");
   await waitForMap(page);
@@ -317,7 +334,9 @@ test("a Shanghai station without a food package stays a map dot and does not inv
 });
 
 test("shanghai dropdown lists the published stations and selects the newest", async ({ page }) => {
+  expect(publishedShanghai.length).toBeGreaterThanOrEqual(5);
   expect(stationIdentity(shanghai), "published Shanghai stations").toEqual(stationIdentity(publishedShanghai));
+  expect(shanghai.find((station) => station.slug === "shanghai-dapuqiao")?.station).toBe("打浦橋");
   const newest = latestStation(shanghai);
   const newestContent = newestPackage(publication, "shanghai");
   expect(newest?.n).toBe(newestContent?.n);
@@ -355,6 +374,7 @@ test.describe("shanghai no-JS station list", () => {
   test.use({ javaScriptEnabled: false });
 
   test("lists the published stations as links and omits 人民廣場", async ({ page }) => {
+    expect(publishedShanghai.length).toBeGreaterThanOrEqual(5);
     expect(stationIdentity(shanghai), "published Shanghai stations").toEqual(stationIdentity(publishedShanghai));
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/shanghai");

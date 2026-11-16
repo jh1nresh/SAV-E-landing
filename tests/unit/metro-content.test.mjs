@@ -200,6 +200,7 @@ test('Taipei stations 1-16 keep their identity and schematic points', () => {
     [17, 'nangang', '南港', [620, 287], 'taipei'],
   );
   const taipeiPublished = publishedIn(publication, 'taipei');
+  assert.ok(taipeiPublished.length >= 23, `taipei published ${taipeiPublished.length}`);
   assert.deepEqual(stations.map(station => [station.n, station.slug]), taipeiPublished.map(station => [station.n, station.slug]));
   for (const entry of mapOnlyIn(publication, 'taipei')) {
     assert.equal(stations.some(station => station.n === entry.n || station.slug === entry.slug), false, entry.slug);
@@ -219,6 +220,8 @@ test('Taipei stations 1-16 keep their identity and schematic points', () => {
 test('published Shanghai stations use their DESIGN maps and leave station coordinates pending', () => {
   const shanghai = buildFoodStations(resolve('.'), { city: 'shanghai' });
   const published = publishedIn(publication, 'shanghai');
+  assert.ok(published.length >= 5, `shanghai published ${published.length}`);
+  assert.equal(published.find(entry => entry.slug === 'shanghai-dapuqiao')?.station, '打浦橋');
   assert.deepEqual(shanghai.map(station => [station.n, station.slug]), published.map(entry => [entry.n, entry.slug]));
   for (const entry of published) {
     const station = shanghai.find(item => item.slug === entry.slug);
@@ -282,10 +285,23 @@ test('shanghai n=8-10 sit on their lines and the frozen stations stay put', () =
 });
 
 test('shanghai hero pins publish schematic fields and leave catalog notes behind', () => {
-  const published = new Set(publishedIn(publication, 'shanghai').map(station => station.slug));
+  const publishedEntries = publishedIn(publication, 'shanghai');
+  const published = new Set(publishedEntries.map(station => station.slug));
   const pins = publicShanghaiMapPins(designCatalog, published);
   const expectedPins = heroMapPins(publication.mapOnly).map(schematicMapPin);
   assert.deepEqual(pins, expectedPins);
+  const SHANGHAI_HERO_NAMES = ['豫園', '靜安寺', '黃陂南路', '交通大學', '打浦橋', '南京西路', '陸家嘴', '徐家匯'];
+  const heroNames = [...publishedEntries.map(entry => entry.station), ...heroMapPins(publication.mapOnly).map(entry => entry.station)];
+  for (const name of SHANGHAI_HERO_NAMES) assert.equal(heroNames.includes(name), true, name);
+  assert.deepEqual([...heroNames].sort(), [...SHANGHAI_HERO_NAMES].sort());
+  assert.equal(heroNames.length, 8);
+  assert.equal(heroNames.includes('南京東路'), false);
+  assert.equal(pins.filter(pin => pin.station === '南京東路').length, 0);
+  for (const name of ['南京西路', '陸家嘴', '徐家匯']) {
+    const publishedHit = publishedEntries.some(entry => entry.station === name);
+    const mapOnlyHit = mapOnlyIn(publication, 'shanghai').some(entry => entry.station === name);
+    assert.equal(publishedHit !== mapOnlyHit, true, name);
+  }
   assert.equal(pins.some(pin => pin.slug === 'shanghai-nanjing-east' || published.has(pin.slug)), false);
   for (const entry of heroMapPins(publication.mapOnly)) {
     const pin = pins.find(item => item.slug === entry.slug);
