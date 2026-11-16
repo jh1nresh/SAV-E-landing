@@ -244,9 +244,9 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900
     expect(publishedShanghai.length).toBeGreaterThanOrEqual(5);
     expect(stationIdentity(shanghai), "published Shanghai stations").toEqual(stationIdentity(publishedShanghai));
     const names = [...shanghai.map((station) => station.station), ...shanghaiHeroPins.map((station) => station.station)];
+    expect(names).toHaveLength(8);
     for (const name of SHANGHAI_HERO_NAMES) expect(names, name).toContain(name);
     expect([...names].sort()).toEqual([...SHANGHAI_HERO_NAMES].sort());
-    expect(names).toHaveLength(8);
     for (const name of SHANGHAI_EITHER_PUBLISHED_OR_MAP_ONLY) {
       const published = publishedShanghai.some((station) => station.station === name);
       const mapOnly = mapOnlyIn(publication, "shanghai").some((station) => station.station === name);
@@ -314,22 +314,43 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900
 }
 
 test("a Shanghai station without a food package stays a map dot and does not invent a guide", async ({ page }) => {
-  expect(shanghaiHeroPins.length).toBeGreaterThan(0);
+  expect([...SHANGHAI_HERO_NAMES]).toEqual(["豫園", "靜安寺", "黃陂南路", "交通大學", "打浦橋", "南京西路", "陸家嘴", "徐家匯"]);
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/shanghai?reduce=1");
   await waitForMap(page);
-  for (const station of shanghaiHeroPins) {
-    const pin = page.getByTestId(`metro-pin-${station.slug}`);
-    await expect(pin, station.station).toHaveClass(/content-only/);
-    // A coordinate click lands on the hero when it covers a lower dot, so the
-    // pin never receives it. Activate the button itself; that is the handler
-    // that opens the card.
-    await pin.evaluate((button: HTMLButtonElement) => button.click());
-    const card = page.getByTestId("metro-card");
-    await expect(card).toContainText(station.station);
-    await expect(card).toContainText("這一站的店家資料準備中");
-    await expect(card.locator("a")).toHaveCount(0);
-    expect(new URL(page.url()).pathname).toBe("/shanghai");
+  await expect(page.locator(".pin")).toHaveCount(SHANGHAI_HERO_NAMES.length);
+  await expect(page.locator("#stdots text", { hasText: "南京東路" })).toHaveCount(0);
+  await expect(page.getByTestId("metro-pin-shanghai-nanjing-east")).toHaveCount(0);
+
+  if (shanghaiHeroPins.length > 0) {
+    for (const station of shanghaiHeroPins) {
+      const pin = page.getByTestId(`metro-pin-${station.slug}`);
+      await expect(pin, station.station).toHaveClass(/content-only/);
+      // A coordinate click lands on the hero when it covers a lower dot, so the
+      // pin never receives it. Activate the button itself; that is the handler
+      // that opens the card.
+      await pin.evaluate((button: HTMLButtonElement) => button.click());
+      const card = page.getByTestId("metro-card");
+      await expect(card).toContainText(station.station);
+      await expect(card).toContainText("這一站的店家資料準備中");
+      await expect(card.locator("a")).toHaveCount(0);
+      expect(new URL(page.url()).pathname).toBe("/shanghai");
+    }
+  } else {
+    await expect(page.locator(".pin.content-only")).toHaveCount(0);
+    for (const name of SHANGHAI_HERO_NAMES) {
+      const entry = publication.design.find((station) => station.city === "shanghai" && station.station === name);
+      expect(entry, name).toBeTruthy();
+      const pin = page.getByTestId(`metro-pin-${entry!.slug}`);
+      await expect(pin, name).toHaveCount(1);
+      await expect(pin, name).not.toHaveClass(/content-only/);
+      await expect(page.locator("#stdots text", { hasText: name })).toHaveCount(1);
+      await pin.evaluate((button: HTMLButtonElement) => button.click());
+      const card = page.getByTestId("metro-card");
+      await expect(card, name).toContainText(name);
+      await expect(card, name).not.toContainText("準備中");
+    }
+    await expect(page.getByText("準備中")).toHaveCount(0);
   }
 });
 

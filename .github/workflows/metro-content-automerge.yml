@@ -57,11 +57,18 @@ jobs:
         run: node --input-type=module -e "import {globSync,readFileSync} from 'node:fs'; for (const f of globSync('content/metro/**/*.json')) JSON.parse(readFileSync(f,'utf8'));"
       - run: npm run check
       - run: npm run typecheck
-      - run: npm run build
+      - name: Build production site
+        env:
+          NEXT_PUBLIC_TESTFLIGHT_URL: https://testflight.apple.com/join/ci-placeholder
+          # Playwright freezes NEW and grows the station list. Vercel does not set this, so production ignores ?clock= and ?pickerFixture=.
+          NEXT_PUBLIC_SAVVY_TEST_HOOKS: '1'
+        run: npm run build
       - run: npx playwright install --with-deps chromium webkit
-      - run: npm test
+      - name: Unit and Playwright tests
         env:
           CI: 'true'
+          NEXT_PUBLIC_TESTFLIGHT_URL: https://testflight.apple.com/join/ci-placeholder
+        run: npm test
   automerge:
     needs: [gate, validate]
     if: needs.gate.outputs.eligible == 'true' && github.event.pull_request.head.repo.full_name == github.repository
