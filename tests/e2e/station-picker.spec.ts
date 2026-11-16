@@ -225,27 +225,74 @@ test("the weekly stamp does not cover 國父紀念館 at 390", async ({ page }) 
   expect(intersects(stamp, memorial!)).toBe(false);
 });
 
-test("every Shanghai pin is on the first screen at 1280x800", async ({ page }) => {
+const SHANGHAI_MAP_ONLY = ["南京西路", "陸家嘴", "徐家匯"];
+
+for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900 }]) {
+  test(`every Shanghai pin is on the first screen at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+    const names = [...shanghai.map((station) => station.station), ...SHANGHAI_MAP_ONLY];
+    await page.setViewportSize(viewport);
+    await page.goto("/shanghai?reduce=1");
+    await waitForMap(page);
+    await page.evaluate(() => {
+      window.__savvyMap?.closeCard({ focus: false });
+      window.__savvyMap?.goHome();
+    });
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator(".pin")).toHaveCount(names.length);
+    await expect(page.locator(".pin.content-only")).toHaveCount(SHANGHAI_MAP_ONLY.length);
+    await expect(page.locator("#stdots text", { hasText: "南京東路" })).toHaveCount(0);
+    for (const pin of await page.locator(".pin:not(.content-only) .ph").all()) {
+      const box = (await pin.boundingBox())!;
+      const id = await pin.evaluate((el) => el.closest("button")?.getAttribute("data-testid") ?? "shanghai-pin");
+      expect(box.y, id).toBeGreaterThanOrEqual(0);
+      expect(box.y + box.height, id).toBeLessThanOrEqual(viewport.height);
+    }
+    const layout = await page.evaluate(() => {
+      const boxOf = (el: SVGGraphicsElement) => {
+        const b = el.getBBox();
+        const m = el.getScreenCTM();
+        if (!m) return null;
+        const pts = [[b.x, b.y], [b.x + b.width, b.y], [b.x, b.y + b.height], [b.x + b.width, b.y + b.height]]
+          .map(([x, y]) => [m.a * x + m.c * y + m.e, m.b * x + m.d * y + m.f]);
+        const xs = pts.map((p) => p[0]);
+        const ys = pts.map((p) => p[1]);
+        return { name: el.textContent?.trim() ?? "", left: Math.min(...xs), top: Math.min(...ys), right: Math.max(...xs), bottom: Math.max(...ys) };
+      };
+      const labels = [...document.querySelectorAll<SVGGraphicsElement>("#stdots text")].map(boxOf).filter((box): box is NonNullable<typeof box> => !!box);
+      const overlaps: string[] = [];
+      for (let i = 0; i < labels.length; i++) {
+        for (let j = i + 1; j < labels.length; j++) {
+          const a = labels[i];
+          const b = labels[j];
+          const w = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+          const h = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+          if (w > 1 && h > 1) overlaps.push(`${a.name} overlaps ${b.name} by ${w.toFixed(1)}×${h.toFixed(1)}`);
+        }
+      }
+      return { labels, overlaps };
+    });
+    expect(layout.labels.map((label) => label.name)).toEqual(expect.arrayContaining(names));
+    expect(layout.labels).toHaveLength(names.length);
+    expect(layout.overlaps).toEqual([]);
+    for (const label of layout.labels) {
+      expect(label.top, label.name).toBeGreaterThanOrEqual(-1);
+      expect(label.bottom, label.name).toBeLessThanOrEqual(viewport.height + 1);
+      expect(label.left, label.name).toBeGreaterThanOrEqual(-1);
+      expect(label.right, label.name).toBeLessThanOrEqual(viewport.width + 1);
+    }
+  });
+}
+
+test("a Shanghai station without a food package stays a map dot and does not invent a guide", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/shanghai");
+  await page.goto("/shanghai?reduce=1");
   await waitForMap(page);
-  await expect(page.locator(".pin")).toHaveCount(shanghai.length);
-  for (const pin of await page.locator(".pin .ph").all()) {
-    const box = (await pin.boundingBox())!;
-    const id = (await pin.getAttribute("data-testid")) ?? "shanghai-pin";
-    expect(box.y, id).toBeGreaterThanOrEqual(0);
-    expect(box.y + box.height, id).toBeLessThanOrEqual(800);
-  }
-  const labels = await page.evaluate(() => [...document.querySelectorAll("#stdots text")].map((el) => {
-    const rect = el.getBoundingClientRect();
-    return { name: el.textContent ?? "", top: rect.top, bottom: rect.bottom };
-  }));
-  expect(labels.map((label) => label.name)).toEqual(expect.arrayContaining(shanghai.map((station) => station.station)));
-  expect(labels).toHaveLength(shanghai.length);
-  for (const label of labels) {
-    expect(label.top, label.name).toBeGreaterThanOrEqual(0);
-    expect(label.bottom, label.name).toBeLessThanOrEqual(800);
-  }
+  await page.getByTestId("metro-pin-shanghai-nanjing-west-road").locator(".hit").click();
+  const card = page.getByTestId("metro-card");
+  await expect(card).toContainText("南京西路");
+  await expect(card).toContainText("這一站的店家資料準備中");
+  await expect(card.locator("a")).toHaveCount(0);
+  expect(new URL(page.url()).pathname).toBe("/shanghai");
 });
 
 test("shanghai dropdown lists the five published stations with 打浦橋 selected", async ({ page }) => {

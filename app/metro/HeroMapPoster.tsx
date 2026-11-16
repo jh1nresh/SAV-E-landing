@@ -14,8 +14,9 @@ const posterSvg = (value: string) => value
 export function HeroMapPoster({ data }: { data: MetroData }) {
   const { lang } = useSiteLang();
   const stations = data.stations.slice().sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
+  const pictured = new Set(data.stores.map(store => store.stationId));
   const posterPhotos = layoutPosterPhotos(
-    stations.map(s => {
+    stations.filter(s => pictured.has(s.id)).map(s => {
       const [x, y] = s.mapPos.snapped ?? s.mapPos.at;
       return { id: s.id, homeX: x, homeY: y - 36, r: 26 };
     }),
@@ -35,22 +36,22 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
               <svg viewBox="-150 -170 1000 940" className="poster-pins">
                 {stations.map(s => {
                   const [x, y] = s.mapPos.snapped ?? s.mapPos.at;
-                  const photo = posterPhotos.get(s.id) ?? { x, y: y - 36 };
-                  const parked = Math.hypot(photo.x - x, photo.y - (y - 36)) < 0.5;
+                  const photoMark = posterPhotos.get(s.id);
+                  const parked = !!photoMark && Math.hypot(photoMark.x - x, photoMark.y - (y - 36)) < 0.5;
                   const label = stationLabelPosition(s.mapPos, "poster");
                   const image = data.stores.find(store => store.stationId === s.id)?.image;
                   const soon = s.status === "coming_soon";
                   return <g key={s.id} data-testid={`metro-poster-marker-${s.id}`} data-station={s.name}>
                     <circle cx={x} cy={y} r="7.5" fill="#fff9eb" stroke="#2f2e23" strokeWidth="2.6" />
                     <text data-testid={`metro-poster-label-${s.id}`} x={label.x} y={label.y} textAnchor={label.anchor} fontFamily="Iansui" fontSize="15" fill="#2f2e23" stroke="#fff9eb" strokeWidth="4.5" paintOrder="stroke">{s.name}</text>
-                    {parked
+                    {photoMark && (parked
                       ? <path d={`M${x - 7} ${y - 13} L${x} ${y} L${x + 7} ${y - 13}`} fill="#fff9eb" stroke="#2f2e23" strokeWidth="2" />
-                      : <line x1={photo.x} y1={photo.y} x2={x} y2={y} stroke="#2f2e23" strokeWidth="1.6" />}
-                    <circle data-testid={`metro-poster-pin-${s.id}`} cx={photo.x} cy={photo.y} r="25" fill="#fff9eb" stroke={soon ? "#8d857a" : "#2f2e23"} strokeWidth="2" />
-                    {image ? <>
-                      <clipPath id={`poster-photo-${s.id}`}><circle cx={photo.x} cy={photo.y} r="21" /></clipPath>
-                      <image href={image} x={photo.x - 21} y={photo.y - 21} width="42" height="42" clipPath={`url(#poster-photo-${s.id})`} />
-                    </> : <text x={photo.x} y={photo.y + 7} textAnchor="middle" fill="#8d857a" fontSize="24">?</text>}
+                      : <line x1={photoMark.x} y1={photoMark.y} x2={x} y2={y} stroke="#2f2e23" strokeWidth="1.6" />)}
+                    {photoMark && <circle data-testid={`metro-poster-pin-${s.id}`} cx={photoMark.x} cy={photoMark.y} r="25" fill="#fff9eb" stroke={soon ? "#8d857a" : "#2f2e23"} strokeWidth="2" />}
+                    {photoMark && (image ? <>
+                      <clipPath id={`poster-photo-${s.id}`}><circle cx={photoMark.x} cy={photoMark.y} r="21" /></clipPath>
+                      <image href={image} x={photoMark.x - 21} y={photoMark.y - 21} width="42" height="42" clipPath={`url(#poster-photo-${s.id})`} />
+                    </> : <text x={photoMark.x} y={photoMark.y + 7} textAnchor="middle" fill="#8d857a" fontSize="24">?</text>)}
                   </g>;
                 })}
               </svg>

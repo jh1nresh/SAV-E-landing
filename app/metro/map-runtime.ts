@@ -279,6 +279,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const list = storesOf(s.id);
       const img = list[0]?.image ? publicImage(list[0].image) : "";
       const nw = !soon && stationIsNew(storesOf(s.id), clock);
+      const awaiting = !soon && !list.length && !s.updatedAt;
       dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
       const { x: lx, y: ly, anchor } = stationLabelPosition(s.mapPos);
       caps += `<text data-lx="${lx}" data-ly="${ly}" x="${lx}" y="${ly}" text-anchor="${anchor}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
@@ -289,7 +290,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       el.setAttribute("data-testid", `metro-pin-${s.id}`);
       el.setAttribute(
         "aria-label",
-        soon
+        soon || awaiting
           ? `${s.name}，即將更新`
           : `${s.name}，更新於 ${formatMd(s.updatedAt ?? "")}${list.length ? `，共 ${countLabel(list)}` : ""}${nw ? "，新增" : ""}`,
       );
@@ -357,7 +358,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const s = stations.find((x) => x.id === id) as MetroStation;
     const list = storesOf(id);
     const nw = stationIsNew(list, clock);
-    if (s.status === "coming_soon") {
+    if (s.status === "coming_soon" || (!list.length && !s.updatedAt)) {
       cbody.innerHTML = `<div class="ph-head"><h3 id="cardTitle">${escapeHtml(s.name)}<small>第 ${s.order} 站</small></h3><span class="soontag">即將更新</span></div><div class="soonbody"><svg viewBox="-20 -46 40 50" width="34" height="42" fill="none" stroke="#8d857a" stroke-width="2.4" stroke-dasharray="3.5 4.5" stroke-linecap="round"><path d="M0 0 C-5 -9 -16 -19 -16 -31 a16 16 0 1 1 32 0 C16 -19 5 -9 0 0Z"/></svg><p><b>這一站的店家資料準備中。</b>核對完成後，會更新到這張地圖上。</p></div>`;
       cmorph.style.backgroundImage = "none";
       return;
@@ -614,8 +615,8 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     const painted = projected.map(box => ({ ...box, x: box.x + borderX, y: box.y + borderY }));
     const hud = hudBoxes;
     const controls = controlBoxes;
-    const positions = layoutPhotoPins(pins.map(p => ({ id: p.id, x: (p.x - cx) * s + W / 2,
-      y: (p.y - cy) * s + H / 2, diameter: 44 + 16 * p.b.x })), [...labels.map(box => pad(box, 12)), ...hud.map(box => pad(box, 4)), ...controls.map(box => pad(box, 4))], W, H);
+    const positions = layoutPhotoPins(pins.flatMap(p => p.el.classList.contains("content-only") ? [] : [{ id: p.id, x: (p.x - cx) * s + W / 2,
+      y: (p.y - cy) * s + H / 2, diameter: 44 + 16 * p.b.x }]), [...labels.map(box => pad(box, 12)), ...hud.map(box => pad(box, 4)), ...controls.map(box => pad(box, 4))], W, H);
     const photoBoxes = pins.flatMap(p => {
       if (p.el.classList.contains("content-only")) return [];
       const position = positions.get(p.id)!;
@@ -649,7 +650,7 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
     pins.forEach((p) => {
       const sx = (p.x - cx) * s + W / 2;
       const sy = (p.y - cy) * s + H / 2;
-      const position = positions.get(p.id)!;
+      const position = positions.get(p.id) ?? { x: sx, y: sy };
       p.sx = position.x;
       p.sy = position.y;
       const leader = p.el.querySelector("line")!;
