@@ -1,0 +1,226 @@
+{
+  "n": 10,
+  "station": "徐家匯",
+  "tagline": "從本幫紅燒肉、川味麻婆到廣式啫啫煲",
+  "date": "2026-11-15",
+  "city": "shanghai",
+  "country": "China",
+  "slug": "shanghai-xujiahui",
+  "language": "zh-Hant",
+  "station_en": "Xujiahui",
+  "station_official": "徐家汇",
+  "metro_lines": [
+    "1",
+    "9",
+    "11"
+  ],
+  "station_geo": {
+    "lat": 31.1967,
+    "lng": 121.4323,
+    "datum": "WGS-84",
+    "source": "Wikidata Q13218444 P625"
+  },
+  "tagline_en": "Shanghainese, Sichuan & Cantonese plates",
+  "shops": [
+    {
+      "key": "yijia",
+      "name": "憶家一宴（南丹東路總店）",
+      "name_en": "Yi Jia Yi Yan (Nandan East Rd flagship)",
+      "dish": "憶家二代紅燒肉",
+      "dish_en": "House red-braised pork",
+      "address": "上海市徐匯區南丹東路109號",
+      "address_en": "109 Nandan East Road, Xuhui District, Shanghai",
+      "sources": [
+        "https://hk.trip.com/moments/detail/shanghai-2-149885758/",
+        "https://hk.trip.com/moments/detail/shanghai-2-145004077/",
+        "https://hk.trip.com/moments/detail/shanghai-2-144600632/",
+        "https://hk.trip.com/moments/detail/shanghai-2-144216759/",
+        "https://hk.trip.com/moments/poi-yijiayiyan-36294248/"
+      ],
+      "image_reference": "refs/REF-yijia.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "shanghainese",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "jingyan",
+      "name": "晶焱上海菜（徐匯店）",
+      "name_en": "Jing Yan Shanghai Cuisine (Xuhui)",
+      "dish": "黃魚小餛飩",
+      "dish_en": "Yellow croaker wontons in a clay pot",
+      "address": "上海市徐匯區南丹路169號2樓",
+      "address_en": "2F, 169 Nandan Road, Xuhui District, Shanghai",
+      "sources": [
+        "https://hk.trip.com/moments/detail/shanghai-2-143740178/",
+        "https://hk.trip.com/moments/detail/shanghai-2-140669432/",
+        "https://hk.trip.com/moments/detail/shanghai-2-128085098/"
+      ],
+      "image_reference": "refs/REF-jingyan.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "shanghainese",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "kongque",
+      "name": "孔雀川菜（港匯恆隆廣場店）",
+      "name_en": "Kongque Sichuan Cuisine (Grand Gateway 66)",
+      "dish": "牛肉麻婆豆腐",
+      "dish_en": "Mapo tofu with beef",
+      "address": "上海市徐匯區虹橋路1號港匯恆隆廣場南座5樓",
+      "address_en": "5F, South Tower, Grand Gateway 66, 1 Hongqiao Road, Xuhui District, Shanghai",
+      "sources": [
+        "https://hk.trip.com/moments/detail/shanghai-2-140923504/",
+        "https://hk.trip.com/restaurant/china/shanghai/detail/maurya-30444583/"
+      ],
+      "image_reference": "refs/REF-kongque.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "sichuan",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "balejiu",
+      "name": "八樂居（港匯恆隆廣場店）",
+      "name_en": "Ba Le Ju (Grand Gateway 66)",
+      "dish": "XO醬西蘭花炒帶子",
+      "dish_en": "XO sauce scallops with broccoli",
+      "address": "上海市徐匯區虹橋路1號港匯恆隆廣場北座3層",
+      "address_en": "3F, North Tower, Grand Gateway 66, 1 Hongqiao Road, Xuhui District, Shanghai",
+      "sources": [
+        "https://hk.trip.com/moments/detail/shanghai-2-154380507/",
+        "http://c.m.163.com/news/a/KVN44C3M0514B5UQ.html"
+      ],
+      "image_reference": "refs/REF-balejiu.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "cantonese",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "zheyuan",
+      "name": "啫苑·廣州啫啫煲（徐家匯店）",
+      "name_en": "Zhe Yuan Guangzhou Claypot (Xujiahui)",
+      "dish": "生啫中山脆肉鯇",
+      "dish_en": "Crispy grass carp claypot",
+      "address": "上海市徐匯區天鑰橋路333號騰飛大廈1層",
+      "address_en": "1F, Tengfei Building, 333 Tianyaoqiao Road, Xuhui District, Shanghai",
+      "sources": [
+        "https://you.ctrip.com/food/2/135929267.html",
+        "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-135929267/"
+      ],
+      "image_reference": "refs/REF-zheyuan.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": "68元人民幣",
+      "price_source": "2026/06 同店結帳單照片（攜程點評 2026-06-24，結帳 2026-06-20）https://dimg04.c-ctrip.com/images/1mh5e12000sx26t40A05F.jpg",
+      "hours": null,
+      "exit_walk": null,
+      "category": "cantonese",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    }
+  ],
+  "images": {
+    "photos": [
+      "photos/yijia.jpg",
+      "photos/jingyan.jpg",
+      "photos/kongque.jpg",
+      "photos/balejiu.jpg",
+      "photos/zheyuan.jpg"
+    ],
+    "slides": [
+      "slides_zh/01-cover.png",
+      "slides_zh/02-yijia.png",
+      "slides_zh/03-jingyan.png",
+      "slides_zh/04-kongque.png",
+      "slides_zh/05-balejiu.png",
+      "slides_zh/06-zheyuan.png",
+      "slides_zh/07-summary.png",
+      "slides_zh/08-cta.png"
+    ],
+    "slides_zh": [
+      "slides_zh/01-cover.png",
+      "slides_zh/02-yijia.png",
+      "slides_zh/03-jingyan.png",
+      "slides_zh/04-kongque.png",
+      "slides_zh/05-balejiu.png",
+      "slides_zh/06-zheyuan.png",
+      "slides_zh/07-summary.png",
+      "slides_zh/08-cta.png"
+    ],
+    "slides_en": [
+      "slides_en/01-cover.png",
+      "slides_en/02-yijia.png",
+      "slides_en/03-jingyan.png",
+      "slides_en/04-kongque.png",
+      "slides_en/05-balejiu.png",
+      "slides_en/06-zheyuan.png",
+      "slides_en/07-summary.png",
+      "slides_en/08-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": null,
+    "threads": "https://www.threads.com/@savvysave_/post/DfwpYgNlUEv",
+    "xiaohongshu": null
+  },
+  "ig_status": null,
+  "threads_status": null,
+  "posted_at": null,
+  "sources": [
+    "http://c.m.163.com/news/a/KVN44C3M0514B5UQ.html",
+    "https://hk.trip.com/moments/detail/shanghai-2-128085098/",
+    "https://hk.trip.com/moments/detail/shanghai-2-140669432/",
+    "https://hk.trip.com/moments/detail/shanghai-2-140923504/",
+    "https://hk.trip.com/moments/detail/shanghai-2-143740178/",
+    "https://hk.trip.com/moments/detail/shanghai-2-144216759/",
+    "https://hk.trip.com/moments/detail/shanghai-2-144600632/",
+    "https://hk.trip.com/moments/detail/shanghai-2-145004077/",
+    "https://hk.trip.com/moments/detail/shanghai-2-149885758/",
+    "https://hk.trip.com/moments/detail/shanghai-2-154380507/",
+    "https://hk.trip.com/moments/poi-ganghui-plaza-66-10566011/",
+    "https://hk.trip.com/moments/poi-yijiayiyan-36294248/",
+    "https://hk.trip.com/moments/theme/destination-xujiahui-subdistrict-2121194-restaurant-993134/",
+    "https://hk.trip.com/restaurant/china/shanghai/detail/maurya-30444583/",
+    "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-135929267/",
+    "https://you.ctrip.com/food/2/135929267.html",
+    "https://www.wikidata.org/wiki/Q13218444"
+  ],
+  "_source_files": [
+    "sources.md",
+    "data.json",
+    "data-en.json"
+  ]
+}
