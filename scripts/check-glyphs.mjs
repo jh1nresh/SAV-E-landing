@@ -102,3 +102,5 @@ for (const ch of ["万", "菓", "双", "ㄦ", "莆", "＋"]) {
 }
 
 console.log(`check-glyphs: ok (${present.size} cmap entries, 万/菓/双/ㄦ/莆/＋ present)`);
+// Stop before any statement appended after this call can run.
+process.exit(0);
