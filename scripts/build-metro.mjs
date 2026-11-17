@@ -241,6 +241,8 @@ function main() {
     console.log(
       `metro public ok: ${publicData.stations.length} stations, ${publicData.stores.length} stores → ${outPath}`,
     );
+    // Stop before any statement appended after this call can run.
+    process.exit(0);
   } catch (err) {
     console.error(err instanceof Error ? err.message : err);
     process.exit(1);
