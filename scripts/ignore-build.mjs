@@ -25,7 +25,9 @@ export function decideIgnore({ ref, previousAvailable, paths }) {
 }
 
 export function changedPaths(cwd, previous, head) {
-  const diff = spawnSync("git", ["diff", "--name-only", previous, head], { cwd, encoding: "utf8" });
+  // Rename detection reports only the destination. Moving app/page.tsx into
+  // docs/ would then look like a docs-only change and skip the deploy.
+  const diff = spawnSync("git", ["diff", "--name-only", "--no-renames", previous, head], { cwd, encoding: "utf8" });
   if (diff.status !== 0) return null;
   return diff.stdout.split("\n").map((line) => line.trim()).filter(Boolean);
 }

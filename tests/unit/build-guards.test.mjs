@@ -65,6 +65,7 @@ test("ignore command exit code skips a docs-only diff and builds an app diff", (
   git(["config", "user.email", "bounded-build@example.com"]);
   git(["config", "user.name", "bounded-build"]);
   git(["config", "commit.gpgsign", "false"]);
+  git(["config", "diff.renames", "true"]);
   writeFileSync(join(cwd, "README.md"), "readme\n");
   mkdirSync(join(cwd, "app"));
   writeFileSync(join(cwd, "app/page.tsx"), "export default function Page(){return null}\n");
@@ -91,5 +92,23 @@ test("ignore command exit code skips a docs-only diff and builds an app diff", (
   assert.equal(inbox.status, 0, inbox.stderr);
   const first = run({ VERCEL_GIT_COMMIT_REF: "main" });
   assert.equal(first.status, 1, first.stderr);
+
+  mkdirSync(join(cwd, "docs"));
+  git(["mv", "app/page.tsx", "docs/page.tsx"]);
+  git(["commit", "-m", "move homepage into docs"]);
+  const moved = git(["rev-parse", "HEAD"]);
+  const movedSite = run({ VERCEL_GIT_PREVIOUS_SHA: app, VERCEL_GIT_COMMIT_SHA: moved, VERCEL_GIT_COMMIT_REF: "cursor/move-5e95" });
+  assert.equal(movedSite.status, 1, movedSite.stderr);
+  assert.match(movedSite.stderr, /app\/page\.tsx/);
+
+  writeFileSync(join(cwd, "docs/note.md"), "note\n");
+  git(["add", "docs/note.md"]);
+  git(["commit", "-m", "docs note"]);
+  const noted = git(["rev-parse", "HEAD"]);
+  git(["mv", "docs/note.md", "docs/renamed.md"]);
+  git(["commit", "-m", "rename inside docs"]);
+  const renamed = git(["rev-parse", "HEAD"]);
+  const docsRename = run({ VERCEL_GIT_PREVIOUS_SHA: noted, VERCEL_GIT_COMMIT_SHA: renamed, VERCEL_GIT_COMMIT_REF: "cursor/docs-rename-5e95" });
+  assert.equal(docsRename.status, 0, docsRename.stderr);
   rmSync(cwd, { recursive: true, force: true });
 });
