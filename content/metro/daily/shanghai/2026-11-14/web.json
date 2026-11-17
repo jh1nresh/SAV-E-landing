@@ -1,0 +1,227 @@
+{
+  "n": 9,
+  "station": "陸家嘴",
+  "tagline": "從淮揚乾絲、徽州臭鱖魚到本幫紅燒肉",
+  "date": "2026-11-14",
+  "city": "shanghai",
+  "country": "China",
+  "slug": "shanghai-lujiazui",
+  "language": "zh-Hant",
+  "station_en": "Lujiazui",
+  "station_official": "陆家嘴",
+  "metro_lines": [
+    "2",
+    "14"
+  ],
+  "station_geo": {
+    "lat": 31.2397,
+    "lng": 121.497,
+    "datum": "WGS-84",
+    "source": "Wikidata Q1073629 P625"
+  },
+  "tagline_en": "Huaiyang, Anhui & Shanghainese plates",
+  "shops": [
+    {
+      "key": "yanhua",
+      "name": "嫣花叁玥·新川揚（國金中心店）",
+      "name_en": "Yan Hua San Yue (Shanghai IFC)",
+      "dish": "淮揚燙乾絲",
+      "dish_en": "Huaiyang tofu shreds in broth",
+      "address": "上海市浦東新區世紀大道8號國金中心商場L4-402&403",
+      "address_en": "L4-402&403, Shanghai IFC Mall, 8 Century Avenue, Pudong New Area, Shanghai",
+      "sources": [
+        "https://yongfugroup.com/yhsy",
+        "https://hk.trip.com/moments/detail/shanghai-2-139690979/",
+        "https://hk.trip.com/moments/detail/shanghai-2-149101051/",
+        "https://hk.trip.com/moments/poi-city-141042125/"
+      ],
+      "image_reference": "refs/REF-yanhua.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "huaiyang",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "yuanyuan",
+      "name": "圓苑（正大廣場店）",
+      "name_en": "Yuan Yuan (Super Brand Mall)",
+      "dish": "脆皮乳鴨",
+      "dish_en": "Crispy-skin roast duck",
+      "address": "上海市浦東新區陸家嘴西路168號正大廣場4F30-31",
+      "address_en": "4F30-31, Super Brand Mall, 168 Lujiazui West Road, Pudong New Area, Shanghai",
+      "sources": [
+        "https://hk.trip.com/moments/detail/shanghai-2-147373052/"
+      ],
+      "image_reference": "refs/REF-yuanyuan.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "shanghainese",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "puhui",
+      "name": "璞徽（正大廣場店）",
+      "name_en": "Pu Hui (Super Brand Mall)",
+      "dish": "印象徽州臭鱖魚",
+      "dish_en": "Anhui-style fermented mandarin fish",
+      "address": "上海市浦東新區陸家嘴西路168號正大廣場5F",
+      "address_en": "5F, Super Brand Mall, 168 Lujiazui West Road, Pudong New Area, Shanghai",
+      "sources": [
+        "https://hk.trip.com/moments/theme/poi-city-144301715-restaurant-993134/",
+        "https://hk.trip.com/moments/detail/shanghai-2-142373029/",
+        "https://hk.trip.com/moments/detail/shanghai-2-142774815/"
+      ],
+      "image_reference": "refs/REF-puhui.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "anhui",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "pinguan",
+      "name": "品冠·上海宴（金茂店）",
+      "name_en": "Pin Guan Shanghai Feast (Jin Mao)",
+      "dish": "海膽石鍋豆腐",
+      "dish_en": "Sea urchin tofu in a stone pot",
+      "address": "上海市浦東新區世紀大道88號金茂大廈裙房3F",
+      "address_en": "3F podium, Jin Mao Tower, 88 Century Avenue, Pudong New Area, Shanghai",
+      "sources": [
+        "https://m.xiaomishu.com/shop/S45C16K25142/",
+        "https://hk.trip.com/moments/detail/shanghai-2-144387930/"
+      ],
+      "image_reference": "refs/REF-pinguan.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "modern-shanghainese",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "quanmao",
+      "name": "權茂上海菜（上海中心大廈店）",
+      "name_en": "Quan Mao Shanghai Cuisine (Shanghai Tower)",
+      "dish": "紅燒肉滷蛋",
+      "dish_en": "Red-braised pork with marinated eggs",
+      "address": "上海市浦東新區銀城中路501號上海中心大廈3樓4號商鋪",
+      "address_en": "Shop 4, 3F, Shanghai Tower, 501 Yincheng Middle Road, Pudong New Area, Shanghai",
+      "sources": [
+        "https://hk.trip.com/moments/detail/shanghai-2-140873657/",
+        "https://you.ctrip.com/food/shanghai2/78246907-dianping.html"
+      ],
+      "image_reference": "refs/REF-quanmao.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "shanghainese",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    }
+  ],
+  "images": {
+    "photos": [
+      "photos/yanhua.jpg",
+      "photos/yuanyuan.jpg",
+      "photos/puhui.jpg",
+      "photos/pinguan.jpg",
+      "photos/quanmao.jpg"
+    ],
+    "slides": [
+      "slides_zh/01-cover.png",
+      "slides_zh/02-yanhua.png",
+      "slides_zh/03-yuanyuan.png",
+      "slides_zh/04-puhui.png",
+      "slides_zh/05-pinguan.png",
+      "slides_zh/06-quanmao.png",
+      "slides_zh/07-summary.png",
+      "slides_zh/08-cta.png"
+    ],
+    "slides_zh": [
+      "slides_zh/01-cover.png",
+      "slides_zh/02-yanhua.png",
+      "slides_zh/03-yuanyuan.png",
+      "slides_zh/04-puhui.png",
+      "slides_zh/05-pinguan.png",
+      "slides_zh/06-quanmao.png",
+      "slides_zh/07-summary.png",
+      "slides_zh/08-cta.png"
+    ],
+    "slides_en": [
+      "slides_en/01-cover.png",
+      "slides_en/02-yanhua.png",
+      "slides_en/03-yuanyuan.png",
+      "slides_en/04-puhui.png",
+      "slides_en/05-pinguan.png",
+      "slides_en/06-quanmao.png",
+      "slides_en/07-summary.png",
+      "slides_en/08-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": null,
+    "threads": "https://www.threads.com/@savvysave_/post/DfuDwprmxCe",
+    "xiaohongshu": null
+  },
+  "ig_status": "failed_not_published",
+  "threads_status": "published",
+  "posted_at": "2026-11-14T19:05:00+08:00",
+  "sources": [
+    "https://hk.trip.com/moments/detail/shanghai-2-139690979/",
+    "https://hk.trip.com/moments/detail/shanghai-2-140873657/",
+    "https://hk.trip.com/moments/detail/shanghai-2-142373029/",
+    "https://hk.trip.com/moments/detail/shanghai-2-142774815/",
+    "https://hk.trip.com/moments/detail/shanghai-2-144387930/",
+    "https://hk.trip.com/moments/detail/shanghai-2-147373052/",
+    "https://hk.trip.com/moments/detail/shanghai-2-149101051/",
+    "https://hk.trip.com/moments/poi-city-141042125/",
+    "https://hk.trip.com/moments/theme/poi-city-144301715-restaurant-993134/",
+    "https://hk.trip.com/moments/theme/poi-lujiazui-24302219-restaurant-993134/",
+    "https://m.xiaomishu.com/shop/S45C16K25142/",
+    "https://yongfugroup.com/yhsy",
+    "https://you.ctrip.com/food/shanghai2/78246907-dianping.html",
+    "https://www.wikidata.org/wiki/Q1073629"
+  ],
+  "_source_files": [
+    "sources.md",
+    "data.json",
+    "data-en.json"
+  ],
+  "threads_eyes_replies": [
+    "https://www.threads.com/@toninottony888/post/DftucHun61p",
+    "https://www.threads.com/@uu_lin8964/post/Dft0v-xkanL",
+    "https://www.threads.com/@c1eepc1eep/post/Dft-jb0EjL7",
+    "https://www.threads.com/@wobushi33ann/post/DftklZ-Gz3o",
+    "https://www.threads.com/@marktu001/post/DfuCqAzjhxD"
+  ]
+}

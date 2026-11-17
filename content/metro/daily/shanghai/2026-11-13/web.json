@@ -1,0 +1,237 @@
+{
+  "n": 8,
+  "station": "南京西路",
+  "tagline": "明蝦、紅燒肉、白水魚到鰻魚飯",
+  "date": "2026-11-13",
+  "city": "shanghai",
+  "country": "China",
+  "slug": "shanghai-nanjing-west-road",
+  "language": "zh-Hant",
+  "station_en": "Nanjing West Road",
+  "station_official": "南京西路",
+  "metro_lines": [
+    "2",
+    "12",
+    "13"
+  ],
+  "station_geo": {
+    "lat": 31.23181,
+    "lng": 121.45601,
+    "datum": "WGS-84",
+    "source": "Wikidata Q1074402 P625"
+  },
+  "tagline_en": "Prawns, braised pork, fish & eel rice",
+  "shops": [
+    {
+      "key": "meilongzhen",
+      "name": "梅龍鎮酒家（南京西路總店）",
+      "name_en": "Meilongzhen Restaurant (Nanjing West Rd flagship)",
+      "dish": "乾燒明蝦",
+      "dish_en": "Dry-braised king prawns",
+      "address": "上海市靜安區南京西路1081弄22號",
+      "address_en": "No. 22, Lane 1081 Nanjing West Rd, Jing'an District, Shanghai",
+      "sources": [
+        "https://hk.trip.com/restaurant/china/shanghai/detail/mei-longzhen-restaurant-11142829/",
+        "https://www.amap.com/place/B00155IV5S",
+        "http://c.m.163.com/news/a/L5TEJN5H0512DU6N.html",
+        "https://hk.trip.com/moments/detail/shanghai-2-149094765/"
+      ],
+      "image_reference": "refs/REF-meilongzhen.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": "11:00–13:30、17:00–21:00",
+      "exit_walk": null,
+      "category": "sichuan-yangzhou",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "dashenji",
+      "name": "大申記·十里洋場上海名菜（豐盛里店）",
+      "name_en": "Da Shen Ji (Fengshengli)",
+      "dish": "陳年梅菜紅燒肉",
+      "dish_en": "Braised pork belly with aged preserved greens",
+      "address": "上海市靜安區茂名北路245弄豐盛里1號203室",
+      "address_en": "Room 203, No. 1, Lane 245 North Maoming Rd (Fengshengli), Jing'an District, Shanghai",
+      "sources": [
+        "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-153975588/",
+        "https://hk.trip.com/moments/detail/shanghai-2-147493228/",
+        "https://hk.trip.com/moments/detail/shanghai-2-149741999/",
+        "https://hk.trip.com/moments/detail/shanghai-2-143213260/",
+        "https://hk.trip.com/moments/detail/shanghai-2-140186621/"
+      ],
+      "image_reference": "refs/REF-dashenji.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "benbang",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "zuilu",
+      "name": "醉廬·新上海菜（南京西路店）",
+      "name_en": "Zui Lu Modern Shanghainese (Nanjing West Rd)",
+      "dish": "清蒸白水魚",
+      "dish_en": "Steamed whitefish",
+      "address": "上海市靜安區吳江路269號湟普匯3樓301-302室",
+      "address_en": "Rooms 301-302, 3F, 269 Wujiang Rd, Jing'an District, Shanghai",
+      "sources": [
+        "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-149913388/",
+        "https://hk.trip.com/moments/detail/shanghai-2-139525961/"
+      ],
+      "image_reference": "refs/REF-zuilu.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "shanghainese",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "manman",
+      "name": "鰻滿·活烤鰻魚（豐盛里店）",
+      "name_en": "Man Man Grilled Eel (Fengshengli)",
+      "dish": "本幫蔥油鰻魚釜飯",
+      "dish_en": "Shanghai-style scallion-oil eel pot rice",
+      "address": "上海市靜安區茂名北路281弄16號102單元（豐盛里）",
+      "address_en": "Unit 102, No. 16, Lane 281 North Maoming Rd (Fengshengli), Jing'an District, Shanghai",
+      "sources": [
+        "https://tw.trip.com/moments/detail/shanghai-2-147730010/",
+        "https://hk.trip.com/moments/detail/shanghai-2-147241438/",
+        "https://www.xinjiapo.news/news/129562",
+        "https://www.xinjiapo.news/news/129563"
+      ],
+      "image_reference": "refs/REF-manman.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "japanese-eel",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    },
+    {
+      "key": "xinzhenjiang",
+      "name": "新鎮江酒家（南京西路店）",
+      "name_en": "New Zhenjiang Restaurant (Nanjing West Rd)",
+      "dish": "紅燒豬手",
+      "dish_en": "Red-braised pig trotter",
+      "address": "上海市靜安區南京西路1111號（近江寧路）",
+      "address_en": "1111 Nanjing West Rd (near Jiangning Rd), Jing'an District, Shanghai",
+      "sources": [
+        "https://tw.trip.com/restaurant/china/shanghai/detail/xin-zhenjiang-restaurant-nanjing-west-road-11142900/",
+        "https://hk.trip.com/moments/detail/shanghai-2-148496735/",
+        "https://www.dianping.com/shop/500714/photos"
+      ],
+      "image_reference": "refs/REF-xinzhenjiang.jpg",
+      "image_kind": "generated_remake_pending",
+      "price": null,
+      "price_source": null,
+      "hours": null,
+      "exit_walk": null,
+      "category": "jiangsu-zhejiang",
+      "lat": null,
+      "lng": null,
+      "coord_datum": null,
+      "coord_source": null,
+      "coord_precision": null
+    }
+  ],
+  "images": {
+    "photos": [
+      "photos/meilongzhen.jpg",
+      "photos/dashenji.jpg",
+      "photos/zuilu.jpg",
+      "photos/manman.jpg",
+      "photos/xinzhenjiang.jpg"
+    ],
+    "slides": [
+      "slides_zh/01-cover.png",
+      "slides_zh/02-meilongzhen.png",
+      "slides_zh/03-dashenji.png",
+      "slides_zh/04-zuilu.png",
+      "slides_zh/05-manman.png",
+      "slides_zh/06-xinzhenjiang.png",
+      "slides_zh/07-summary.png",
+      "slides_zh/08-cta.png"
+    ],
+    "slides_zh": [
+      "slides_zh/01-cover.png",
+      "slides_zh/02-meilongzhen.png",
+      "slides_zh/03-dashenji.png",
+      "slides_zh/04-zuilu.png",
+      "slides_zh/05-manman.png",
+      "slides_zh/06-xinzhenjiang.png",
+      "slides_zh/07-summary.png",
+      "slides_zh/08-cta.png"
+    ],
+    "slides_en": [
+      "slides_en/01-cover.png",
+      "slides_en/02-meilongzhen.png",
+      "slides_en/03-dashenji.png",
+      "slides_en/04-zuilu.png",
+      "slides_en/05-manman.png",
+      "slides_en/06-xinzhenjiang.png",
+      "slides_en/07-summary.png",
+      "slides_en/08-cta.png"
+    ]
+  },
+  "posts": {
+    "instagram": "https://www.instagram.com/p/DfremBem0UD/",
+    "threads": "https://www.threads.com/@savvysave_/post/Dfre12NG9tH",
+    "xiaohongshu": null
+  },
+  "ig_status": "not_published",
+  "threads_status": "not_published",
+  "posted_at": null,
+  "sources": [
+    "https://hk.trip.com/restaurant/china/shanghai/detail/mei-longzhen-restaurant-11142829/",
+    "https://www.amap.com/place/B00155IV5S",
+    "http://c.m.163.com/news/a/L5TEJN5H0512DU6N.html",
+    "https://hk.trip.com/moments/detail/shanghai-2-149094765/",
+    "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-153975588/",
+    "https://hk.trip.com/moments/detail/shanghai-2-147493228/",
+    "https://hk.trip.com/moments/detail/shanghai-2-149741999/",
+    "https://hk.trip.com/moments/detail/shanghai-2-143213260/",
+    "https://hk.trip.com/moments/detail/shanghai-2-140186621/",
+    "https://hk.trip.com/restaurant/china/shanghai/detail/restaurant-149913388/",
+    "https://hk.trip.com/moments/detail/shanghai-2-139525961/",
+    "https://tw.trip.com/moments/detail/shanghai-2-147730010/",
+    "https://hk.trip.com/moments/detail/shanghai-2-147241438/",
+    "https://tw.trip.com/restaurant/china/shanghai/detail/xin-zhenjiang-restaurant-nanjing-west-road-11142900/",
+    "https://hk.trip.com/moments/detail/shanghai-2-148496735/",
+    "https://www.dianping.com/shop/500714/photos",
+    "https://hk.trip.com/moments/theme/poi-zhangyuan-house-31659493-restaurant-993134/",
+    "https://www.wikidata.org/wiki/Q1074402"
+  ],
+  "_source_files": {
+    "captions": [
+      "ig.txt",
+      "threads.txt"
+    ],
+    "data": [
+      "data.json",
+      "data-en.json"
+    ],
+    "sources": "sources.md"
+  }
+}
