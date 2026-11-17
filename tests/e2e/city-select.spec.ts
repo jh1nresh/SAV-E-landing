@@ -1,5 +1,5 @@
-import { expect, test } from "@playwright/test";
-import { getFoodStations, getShanghaiFoodStations } from "../../lib/metro";
+import { expect, test, type Page } from "@playwright/test";
+import { getFoodStations, getShanghaiFoodStations, type FoodStation } from "../../lib/metro";
 import { noHorizontalOverflow } from "./helpers";
 
 const LEGACY_SLUGS = [
@@ -168,46 +168,65 @@ test("legacy Taipei station URLs stay intact, the guide index covers both cities
   expect(homeHtml).not.toContain("豫園");
 });
 
-test("Shanghai switches inside the same hero with the shared photo map and cards", async ({ context }) => {
-  const stations = getShanghaiFoodStations();
-  for (const width of [390, 1280]) {
-    const page = await context.newPage();
-    await page.setViewportSize({ width, height: 900 });
-    await page.goto("/?reduce=1");
-    await page.locator("#hero").evaluate(el => el.setAttribute("data-preserved", "yes"));
-    await page.getByTestId("city-switch-shanghai").click();
-    expect(new URL(page.url()).pathname).toBe("/");
-    await expect(page.locator("#hero")).toHaveAttribute("data-preserved", "yes");
-    await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "shanghai");
-    await expect(page.locator("h1:visible")).toContainText("看到喜歡的存下");
-    await expect(page.locator("#hero .mapcard").last()).toBeVisible();
-    await expect(page.locator(".sh-page, .sh-mapcard")).toHaveCount(0);
-    for (const station of stations) {
-      await page.getByTestId(`metro-pin-${station.slug}`).locator(".hit").click();
-      const card = page.getByTestId("metro-card");
-      await expect(card).toBeVisible();
-      await expect(card.locator("h3")).toHaveText(station.station);
-      await expect(card).toContainText(station.shops[0].address!);
-      await expect(card).not.toContainText("NT$");
-      await expect(card.locator("dt").nth(1)).toHaveText("價格（人民幣）");
-      for (const [i, shop] of station.shops.entries()) {
-        await card.locator(".thumbs button").nth(i).click();
-        await expect(card.locator("h4")).toHaveText(shop.name!);
-        await expect(card.locator("dd").nth(0)).toHaveText(shop.address?.trim() || "地址待確認");
-        await expect(card.locator("dd").nth(1)).toHaveText(shop.price?.trim() || "");
-        const photo = station.images.photos.find(path => path.split("/").at(-1)?.replace(/\.[^.]+$/, "") === shop.key);
-        if (photo) await expect(card.locator(".fc img")).toHaveAttribute("src", photo);
-      }
-      await page.getByTestId("metro-close").click();
-      await page.getByTestId("metro-reset").click();
+const SHANGHAI_WIDTHS = [390, 1280] as const;
+
+test.describe("Shanghai switches inside the same hero with the shared photo map and cards", () => {
+  for (const width of SHANGHAI_WIDTHS) {
+    test(`keeps the hero and returns to visible Taipei pins at ${width}`, async ({ page }) => {
+      await openShanghaiHero(page, width);
+      await noHorizontalOverflow(page);
+      await page.getByTestId("city-switch-taipei").click();
+      await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "taipei");
+      await expect(page.locator("#hero")).toHaveAttribute("data-preserved", "yes");
+      await expect(page.locator(".pin .hit").first()).toBeVisible();
+    });
+
+    for (const station of getShanghaiFoodStations()) {
+      test(`opens ${station.slug} and every shop thumb at ${width}`, async ({ page }) => {
+        await openShanghaiHero(page, width);
+        await expectShanghaiStationCard(page, station);
+      });
     }
-    await noHorizontalOverflow(page);
-    await page.getByTestId("city-switch-taipei").click();
-    await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "taipei");
-    await expect(page.locator(".pin .hit").first()).toBeVisible();
-    await page.close();
   }
 });
+
+async function openShanghaiHero(page: Page, width: number) {
+  await page.setViewportSize({ width, height: 900 });
+  await page.goto("/?reduce=1");
+  await expect(page.getByTestId("city-switch-shanghai")).toBeVisible();
+  await page.locator("#hero").evaluate(el => el.setAttribute("data-preserved", "yes"));
+  await page.getByTestId("city-switch-shanghai").click();
+  expect(new URL(page.url()).pathname).toBe("/");
+  await expect(page.locator("#hero")).toHaveAttribute("data-preserved", "yes");
+  await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "shanghai");
+  await expect(page.locator("h1:visible")).toContainText("看到喜歡的存下");
+  await expect(page.locator("#hero .mapcard").last()).toBeVisible();
+  await expect(page.locator(".sh-page, .sh-mapcard")).toHaveCount(0);
+  // City switch remounts HeroMapLazy. The pin hit exists only after that live map mounts.
+  await expect(page.locator(".pin .hit").first()).toBeVisible();
+}
+
+async function expectShanghaiStationCard(page: Page, station: FoodStation) {
+  const hit = page.getByTestId(`metro-pin-${station.slug}`).locator(".hit");
+  await expect(hit).toBeVisible();
+  await hit.click();
+  const card = page.getByTestId("metro-card");
+  await expect(card).toBeVisible();
+  await expect(card.locator("h3")).toHaveText(station.station);
+  await expect(card).toContainText(station.shops[0].address!);
+  await expect(card).not.toContainText("NT$");
+  await expect(card.locator("dt").nth(1)).toHaveText("價格（人民幣）");
+  for (const [i, shop] of station.shops.entries()) {
+    await card.locator(".thumbs button").nth(i).click();
+    await expect(card.locator("h4")).toHaveText(shop.name!);
+    await expect(card.locator("dd").nth(0)).toHaveText(shop.address?.trim() || "地址待確認");
+    await expect(card.locator("dd").nth(1)).toHaveText(shop.price?.trim() || "");
+    const photo = station.images.photos.find(path => path.split("/").at(-1)?.replace(/\.[^.]+$/, "") === shop.key);
+    if (photo) await expect(card.locator(".fc img")).toHaveAttribute("src", photo);
+  }
+  await page.getByTestId("metro-close").click();
+  await page.getByTestId("metro-reset").click();
+}
 
 test("legacy Shanghai entry, deep links, history and no-JS content retain the landing hero", async ({ page, browser }) => {
   await page.goto("/shanghai?lang=en&reduce=1#shanghai-yuyuan");
