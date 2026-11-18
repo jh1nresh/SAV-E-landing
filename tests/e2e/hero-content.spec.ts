@@ -147,7 +147,7 @@ test.describe("hero content and motion", () => {
     expect(firstParty).toEqual([]);
   });
 
-  test("E-1 LCP is the hero headline, badge, or first-screen app screenshot — not the map or a food photo", async ({
+  test("E-1 LCP is the chooser photo, headline, or badge — not the map or a legacy food photo", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
@@ -161,7 +161,7 @@ test.describe("hero content and motion", () => {
         inMap: boolean;
         isHeadline: boolean;
         isBadge: boolean;
-        isFirstScreen: boolean;
+        isChooser: boolean;
         isFood: boolean;
       }>((resolve) => {
         let last: PerformanceEntry & { element?: Element } | undefined;
@@ -179,9 +179,7 @@ test.describe("hero content and motion", () => {
             inMap: Boolean(el?.closest?.(".mapwrap, #mapcard, .map-slot, .map-stage")),
             isHeadline: Boolean(el?.closest?.("h1, .hero .txt .h, .hero .txt .sub")),
             isBadge: Boolean(el?.closest?.("[data-testid=hero-appstore]")),
-            isFirstScreen: Boolean(
-              el?.closest?.("[data-testid=first-screen-phone-zh], [data-testid=first-screen-phone-en]"),
-            ),
+            isChooser: Boolean(el?.closest?.("[data-testid=choose-photo], [data-testid=choose-stage], #choose")),
             isFood: src.includes("/assets/food/") || Boolean(el?.closest?.(".ph, .fc .ph")),
           });
         }, 400);
@@ -190,8 +188,8 @@ test.describe("hero content and motion", () => {
     expect(lcp.inMap, `LCP was ${lcp.tag} inside the map`).toBeFalsy();
     expect(lcp.isFood, `LCP was food photo ${lcp.src}`).toBeFalsy();
     expect(
-      lcp.isHeadline || lcp.isBadge || lcp.isFirstScreen,
-      `LCP was ${lcp.tag} ${lcp.src}, expected headline, badge, or first-screen screenshot`,
+      lcp.isHeadline || lcp.isBadge || lcp.isChooser,
+      `LCP was ${lcp.tag} ${lcp.src}, expected the chooser photo, headline, or badge`,
     ).toBeTruthy();
   });
 

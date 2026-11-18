@@ -44,12 +44,21 @@ async function hoverMap(page: Page, fx = .5, fy = .5) {
   await waitForMap(page);
   // Park the map in the viewport with page left to scroll in both directions.
   await page.evaluate(() => { const r = document.getElementById('vp')!.getBoundingClientRect(); window.scrollTo(0, Math.max(0, scrollY + r.top - 200)); });
-  const box = (await page.locator('#vp').boundingBox())!;
-  expect(box.y).toBeGreaterThanOrEqual(0);
-  expect(box.y + box.height).toBeLessThanOrEqual(940);
-  const offset = { x: Math.round(box.width * fx), y: Math.round(box.height * fy) };
-  await page.mouse.move(box.x + offset.x, box.y + offset.y);
-  return { box, offset };
+  const border = (await page.locator('#vp').boundingBox())!;
+  expect(border.y).toBeGreaterThanOrEqual(0);
+  expect(border.y + border.height).toBeLessThanOrEqual(940);
+  // The zoom handler uses the content box. A fractional border-box top makes
+  // the browser integer mouse position miss the border-box fraction.
+  const point = await page.evaluate(() => {
+    const vp = document.getElementById('vp')!;
+    const b = vp.getBoundingClientRect();
+    return { x: b.left, y: b.top, width: vp.clientWidth, height: vp.clientHeight, clientLeft: vp.clientLeft, clientTop: vp.clientTop };
+  });
+  const mx = Math.round(point.x + point.clientLeft + point.width * fx);
+  const my = Math.round(point.y + point.clientTop + point.height * fy);
+  const offset = { x: mx - point.x - point.clientLeft, y: my - point.y - point.clientTop };
+  await page.mouse.move(mx, my);
+  return { box: { x: point.x, y: point.y, width: point.width, height: point.height }, offset };
 }
 
 test('Z2-1 plain wheel over the map at 1x scrolls the page and does not zoom', async ({ page }) => {

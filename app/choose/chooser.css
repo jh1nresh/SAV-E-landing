@@ -1,0 +1,426 @@
+/*
+  Design read, 2026-11-18
+  Reference: a scanner surface where the scene stays visible and the result updates
+  immediately in a legible panel. Savvy keeps its ink paper (#fff9eb), ink (#2f2e23),
+  forest (#0e4a33) and kraft (#eaddc6). The panel is opaque so type stays readable on
+  any note photo. backdrop-filter is only on the dialog dim layer; without support the
+  dim color stays darker. No glow, no map in this block, no camera.
+  Tokens: --paper, --ink, --muted, --forest, --kraft, --line. Active fill is forest.
+*/
+
+.choose {
+  padding: 8px 0 28px;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.choose-intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 24px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 4px 20px 12px;
+}
+
+.choose-intro-copy {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.choose .h {
+  font-size: clamp(28px, 7vw, 44px);
+}
+
+.choose-lead {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.choose-frame {
+  container: choose-stage / inline-size;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.choose-stage {
+  position: relative;
+  background: var(--kraft) url("/assets/paper-grain.png") 0 0 / 256px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.choose-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: var(--kraft);
+}
+
+.choose-stage.is-empty .choose-photo {
+  display: none;
+}
+
+.choose-stage.is-empty {
+  min-height: 12rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.choose-stage.is-empty .choose-panel {
+  margin-top: 12px;
+}
+
+.choose-panel {
+  position: relative;
+  z-index: 1;
+  margin: -9rem 12px 12px;
+  padding: 16px;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 3px 4px 0 var(--kraft);
+}
+
+.choose-panel:focus-visible {
+  outline: 3px solid var(--forest);
+  outline-offset: 3px;
+}
+
+.choose-sentence {
+  margin: 0 0 10px;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.choose-place,
+.capsule,
+.choose-more button,
+.choose-dialog button,
+.choose-keep,
+.choose-alt {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.choose-place,
+.choose-keep,
+.choose-alt,
+.choose-more button,
+.choose-dialog button {
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 700 16px/1.2 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.choose-place {
+  position: relative;
+  margin: 0 4px;
+  vertical-align: middle;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.choose-capsules {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0 0 4px;
+  border: 0;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.choose-capsules legend {
+  padding: 0;
+}
+
+.capsule {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 14px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  cursor: pointer;
+}
+
+.capsule input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+.capsule:has(input:checked) {
+  border-color: var(--forest);
+  background: var(--forest);
+  color: var(--paper);
+}
+
+.capsule:has(input:focus-visible) {
+  outline: 3px solid var(--forest);
+  outline-offset: 3px;
+}
+
+.choose-kicker {
+  margin: 12px 0 4px;
+  color: var(--forest);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.choose-shop {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 34px);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.choose-dish {
+  margin: 4px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.choose-meta,
+.choose-why,
+.choose-price,
+.choose-note,
+.choose-limit,
+.choose-app p {
+  margin: 8px 0 0;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.choose-price small,
+.choose-note,
+.choose-limit {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.choose-actions,
+.choose-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.choose-actions a,
+.choose-source {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--forest);
+  font-weight: 800;
+}
+
+.choose-keep[aria-pressed="true"] {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--paper);
+}
+
+.choose-more button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.choose-empty {
+  margin: 12px 0 0;
+}
+
+.choose-alt {
+  text-align: start;
+}
+
+.choose-app,
+.choose-browse,
+.choose-saved {
+  max-width: 1240px;
+  margin: 22px auto 0;
+  padding: 0 20px;
+}
+
+.choose-app h2,
+.choose-browse h2,
+.choose-saved h2,
+.choose-dialog h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.3;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.choose-stations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.choose-stations a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.choose-stations a[aria-current="true"] {
+  border-color: var(--forest);
+  background: var(--forest);
+  color: var(--paper);
+}
+
+.choose-dialog {
+  width: min(32rem, calc(100vw - 24px));
+  max-height: min(80vh, 40rem);
+  overflow: auto;
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 16px;
+}
+
+.choose-dialog::backdrop {
+  background: rgba(47, 46, 35, 0.55);
+}
+
+@supports (backdrop-filter: blur(6px)) {
+  .choose-dialog::backdrop {
+    background: rgba(47, 46, 35, 0.38);
+    backdrop-filter: blur(6px);
+  }
+}
+
+.choose-dialog-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.choose-dialog-list button {
+  width: 100%;
+  height: auto;
+  text-align: start;
+  border-radius: 12px;
+  white-space: normal;
+}
+
+.choose-dialog-list button[aria-current="true"] {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--paper);
+}
+
+.choose :focus-visible {
+  outline: 3px solid var(--forest);
+  outline-offset: 3px;
+}
+
+@container choose-stage (inline-size > 52rem) {
+  .choose-stage {
+    min-height: 36rem;
+  }
+
+  .choose-photo {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .choose-panel {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: min(28rem, 42%);
+    max-height: calc(100% - 32px);
+    margin: 0;
+    overflow: auto;
+  }
+}
+
+@media (max-width: 800px) {
+  .choose-intro {
+    padding-inline: 20px;
+  }
+}
+
+@media (min-width: 801px) {
+  .choose-intro,
+  .choose-app,
+  .choose-browse,
+  .choose-saved {
+    padding-inline: 40px;
+  }
+}
+
+@media (pointer: coarse) {
+  .choose-place,
+  .capsule,
+  .choose-more button,
+  .choose-dialog button,
+  .choose-keep,
+  .choose-alt,
+  .choose-stations a,
+  .choose-actions a {
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .choose-photo,
+  .choose-panel,
+  .choose-dialog {
+    transition: none;
+    scroll-behavior: auto;
+  }
+}

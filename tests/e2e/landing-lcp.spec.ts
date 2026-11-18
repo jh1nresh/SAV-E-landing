@@ -1,35 +1,14 @@
 import { expect, test, type Page } from "@playwright/test";
 import { noHorizontalOverflow } from "./helpers";
 
-async function firstScreenAttrs(page: Page, testId: string) {
-  const img = page.getByTestId(testId);
+async function assertChooserPhoto(page: Page) {
+  const img = page.getByTestId("choose-photo");
   await expect(img).toHaveCount(1);
-  return {
-    loading: await img.getAttribute("loading"),
-    fetchPriority: (await img.getAttribute("fetchpriority")) ?? (await img.getAttribute("fetchPriority")),
-    src: await img.getAttribute("src"),
-  };
-}
-
-async function assertStaticFirstScreenHints(page: Page) {
-  const zh = await firstScreenAttrs(page, "first-screen-phone-zh");
-  const en = await firstScreenAttrs(page, "first-screen-phone-en");
-
-  expect(zh.loading, "default-language first-screen loading").toBe("eager");
-  expect(zh.fetchPriority, "default-language first-screen fetchpriority").toBe("high");
-  expect(en.loading, "en first-screen twin must stay lazy").toBe("lazy");
-  expect(en.fetchPriority, "en first-screen twin must not be high").not.toBe("high");
-}
-
-async function assertBelowFoldLazy(page: Page) {
-  const below = page.locator(
-    'img[src*="phones-zh-3"], img[src*="phones-en-3"], img[src*="phones-zh-4"], img[src*="phones-en-4"]',
-  );
-  const count = await below.count();
-  expect(count).toBe(4);
-  for (let i = 0; i < count; i++) {
-    await expect(below.nth(i)).toHaveAttribute("loading", "lazy");
-  }
+  expect(await img.getAttribute("loading"), "chooser photo is the LCP candidate").not.toBe("lazy");
+  expect((await img.getAttribute("fetchpriority")) ?? (await img.getAttribute("fetchPriority"))).toBe("high");
+  expect(Number(await img.getAttribute("width"))).toBeGreaterThan(0);
+  expect(Number(await img.getAttribute("height"))).toBeGreaterThan(0);
+  await expect(page.locator('img[src*="phones-"]')).toHaveCount(0);
 }
 
 test.describe("first-screen LCP hints and OSM credit", () => {
@@ -37,7 +16,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
     { name: "desktop", viewport: { width: 1350, height: 940 } },
     { name: "mobile", viewport: { width: 390, height: 844 } },
   ]) {
-    test(`${name} zh first-screen is eager+high; en twin and below-fold stay lazy`, async ({ page }) => {
+    test(`${name} chooser photo is the high-priority image and phone mocks are absent`, async ({ page }) => {
       await page.setViewportSize(viewport);
       const requested: string[] = [];
       page.on("request", (req) => {
@@ -45,31 +24,18 @@ test.describe("first-screen LCP hints and OSM credit", () => {
       });
       await page.goto("/");
       await page.waitForLoadState("domcontentloaded");
-      await assertStaticFirstScreenHints(page);
-      await assertBelowFoldLazy(page);
-
-      const phoneReqs = requested.filter((url) => /phones-(zh|en)-\d\.png/.test(url));
-      expect(phoneReqs.some((url) => url.includes("phones-zh-2.png"))).toBeTruthy();
-      expect(phoneReqs.some((url) => url.includes("phones-en-2.png")), "hidden en first-screen must not be fetched").toBeFalsy();
+      await assertChooserPhoto(page);
+      expect(requested.some((url) => /phones-(zh|en)-\d\.png/.test(url)), "old phone mocks must not download").toBeFalsy();
+      expect(requested.some((url) => url.includes("/metro/images/") && url.includes("heidian")), "the default note photo is requested").toBeTruthy();
     });
 
-    test(`${name} ?lang=en keeps static hints; en-2 loads when shown`, async ({ page }) => {
+    test(`${name} ?lang=en keeps the same chooser photo priority`, async ({ page }) => {
       await page.setViewportSize(viewport);
-      const requested: string[] = [];
-      page.on("request", (req) => {
-        if (req.resourceType() === "image") requested.push(req.url());
-      });
       await page.goto("/?lang=en");
       await page.waitForLoadState("domcontentloaded");
       await expect(page.locator("html")).toHaveAttribute("lang", "en");
-      await assertStaticFirstScreenHints(page);
-      await assertBelowFoldLazy(page);
-      await page.getByTestId("first-screen-phone-en").scrollIntoViewIfNeeded();
-      await expect(page.getByTestId("first-screen-phone-en")).toBeVisible();
-      await page.waitForTimeout(500);
-
-      const phoneReqs = requested.filter((url) => /phones-(zh|en)-\d\.png/.test(url));
-      expect(phoneReqs.some((url) => url.includes("phones-en-2.png"))).toBeTruthy();
+      await assertChooserPhoto(page);
+      await expect(page.getByTestId("choose-result")).toBeVisible();
     });
   }
 
@@ -79,7 +45,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
     { label: "1920x1080", viewport: { width: 1920, height: 1080 } },
     { label: "390x844", viewport: { width: 390, height: 844 } },
   ]) {
-    test(`E-1 LCP at ${label} is not the map or a food photo`, async ({ page }) => {
+    test(`E-1 LCP at ${label} is the chooser, headline, or badge — not the map`, async ({ page }) => {
       await page.setViewportSize(viewport);
       await page.goto("/");
       await page.waitForLoadState("domcontentloaded");
@@ -91,7 +57,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
           inMap: boolean;
           isHeadline: boolean;
           isBadge: boolean;
-          isFirstScreen: boolean;
+          isChooser: boolean;
           isFood: boolean;
         }>((resolve) => {
           let last: PerformanceEntry & { element?: Element } | undefined;
@@ -131,10 +97,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
                   (n.classList.contains("sub") && chain.some((p) => p.classList.contains("hero") || p.id === "hero")),
               ),
               isBadge: chain.some((n) => n.getAttribute("data-testid") === "hero-appstore"),
-              isFirstScreen: chain.some((n) => {
-                const id = n.getAttribute("data-testid");
-                return id === "first-screen-phone-zh" || id === "first-screen-phone-en";
-              }),
+              isChooser: chain.some((n) => n.getAttribute("data-testid") === "choose-photo" || n.id === "choose" || n.classList.contains("choose-stage")),
               isFood:
                 src.includes("/assets/food/") ||
                 chain.some((n) => n.classList.contains("ph")),
@@ -145,7 +108,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
       expect(lcp.inMap, `${label} LCP was ${lcp.tag} inside the map`).toBeFalsy();
       expect(lcp.isFood, `${label} LCP was food photo ${lcp.src}`).toBeFalsy();
       expect(
-        lcp.isHeadline || lcp.isBadge || lcp.isFirstScreen,
+        lcp.isHeadline || lcp.isBadge || lcp.isChooser,
         `${label} LCP was ${lcp.tag} ${lcp.src}`,
       ).toBeTruthy();
     });

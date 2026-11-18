@@ -19,6 +19,9 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 
       await expect(pin).not.toHaveClass(/content-only|nophoto/);
       await expect(pin).toHaveAttribute('aria-label', new RegExp(`共 ${article.shops.length} 間`));
       await expect(pin.locator('img')).toHaveAttribute('src', stores[0].image!);
+      // The chooser sits above the map, so a pin photo can stay outside the
+      // first viewport. WebKit defers that image until it is on screen.
+      await pin.locator('img').scrollIntoViewIfNeeded();
       await expect.poll(() => pin.locator('img').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
       await openStation(page, station.id);
       await expect(page.locator('#card .thumbs .more')).toContainText(`共 ${article.shops.length} 間`);

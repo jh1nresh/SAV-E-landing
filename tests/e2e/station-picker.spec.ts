@@ -107,6 +107,7 @@ test("desktop panel does not push the map and stays within 300px", async ({ page
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
   await waitForMap(page);
+  await page.getByTestId("station-picker-trigger").scrollIntoViewIfNeeded();
   const before = (await page.locator(".map-stage").boundingBox())!;
   await page.getByTestId("station-picker-trigger").click();
   const sheet = page.locator(".sd-sheet");
@@ -160,6 +161,9 @@ for (const [width, height] of [[390, 844], [1280, 800], [1440, 900]] as const) {
     await page.setViewportSize({ width, height });
     await page.goto("/");
     await waitForMap(page);
+    // The map now sits below the chooser. WebKit's map nudge can scroll it into
+    // view; the badge is still at the top of the page.
+    await page.evaluate(() => window.scrollTo(0, 0));
     const bottom = await boxBottom(page, "[data-testid=hero-appstore]");
     expect(bottom).toBeLessThanOrEqual(height);
     const top = await page.getByTestId("hero-appstore").evaluate((el) => el.getBoundingClientRect().top);
@@ -181,6 +185,7 @@ test("every Taipei pin and name is on the first screen at 1280x800", async ({ pa
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
   await waitForMap(page);
+  await page.locator("#vp").evaluate((el) => el.scrollIntoView({ block: "start" }));
   const pins = page.locator("[data-testid^=metro-pin-]");
   await expect(pins).toHaveCount(publishedTaipei.length);
   for (const station of taipei) {
@@ -255,6 +260,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 1440, height: 900
     await page.setViewportSize(viewport);
     await page.goto("/shanghai?reduce=1");
     await waitForMap(page);
+    await page.locator("#vp").evaluate((el) => el.scrollIntoView({ block: "start" }));
     await page.evaluate(() => {
       window.__savvyMap?.closeCard({ focus: false });
       window.__savvyMap?.goHome();
@@ -422,6 +428,7 @@ test("a 45-station fixture keeps the closed control height and the panel cap", a
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/?pickerFixture=45");
   await waitForMap(page);
+  await page.locator("#vp").evaluate((el) => el.scrollIntoView({ block: "start" }));
   const grown = (await page.getByTestId("station-search").boundingBox())!;
   expect(Math.abs(grown.height - closed.height)).toBeLessThanOrEqual(2);
   await expect(page.getByTestId("station-picker-trigger")).toContainText(grownLatest.station);
