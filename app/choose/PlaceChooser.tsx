@@ -12,7 +12,7 @@ import {
   stationsWithFood,
   type FoodId,
 } from "../../lib/place-choice.mjs";
-import { useSiteCity, useSiteLang, type CityId } from "../SiteChrome";
+import { AppStoreBadge, useSiteCity, useSiteLang, type CityId } from "../SiteChrome";
 
 const taipeiStations = getFoodStations();
 const shanghaiStations = getShanghaiFoodStations();
@@ -116,6 +116,8 @@ export default function PlaceChooser() {
   const { city, setCity } = useSiteCity();
   const { lang } = useSiteLang();
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const capsulesRef = useRef<HTMLFieldSetElement>(null);
+  const [chipsOverflow, setChipsOverflow] = useState(false);
   const urlPlace = useRef<string | null>(null);
   const placeRef = useRef(defaultSlug(taipeiStations));
   const cityRef = useRef(city);
@@ -168,6 +170,16 @@ export default function PlaceChooser() {
   }, [setCity]);
 
   useEffect(() => {
+    const el = capsulesRef.current;
+    if (!el) return;
+    const measure = () => setChipsOverflow(el.scrollWidth > el.clientWidth + 1);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [lang, city, types.length]);
+
+  useEffect(() => {
     const match = urlPlace.current ? allStations.find((station) => station.slug === urlPlace.current) : undefined;
     if (match?.city === city) {
       setPlace(match.slug);
@@ -197,6 +209,23 @@ export default function PlaceChooser() {
     writeQuery(slug, selectedFood);
     dialogRef.current?.close();
     setDialogOpen(false);
+  }
+
+  function revealChip(event: { currentTarget: HTMLInputElement }) {
+    const chip = event.currentTarget.closest(".capsule");
+    const scroller = capsulesRef.current;
+    if (!(chip instanceof HTMLElement) || !scroller) return;
+    const scrollerRect = scroller.getBoundingClientRect();
+    const chipRect = chip.getBoundingClientRect();
+    if (chipRect.left < scrollerRect.left) scroller.scrollLeft -= scrollerRect.left - chipRect.left;
+    else if (chipRect.right > scrollerRect.right) scroller.scrollLeft += chipRect.right - scrollerRect.right;
+  }
+
+  function scrollChips() {
+    const scroller = capsulesRef.current;
+    if (!scroller) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scroller.scrollBy({ left: Math.max(120, scroller.clientWidth * 0.6), behavior: motion ? "auto" : "smooth" });
   }
 
   function selectFood(next: FoodId) {
@@ -259,10 +288,11 @@ export default function PlaceChooser() {
           data-food={selectedFood}
         >
           <search>
-            <fieldset className="choose-capsules">
+            <fieldset className="choose-capsules" ref={capsulesRef}>
               <legend className="choose-sentence">
                 <span className="zh">我想在</span>
                 <span className="en">Near</span>{" "}
+                <span className="choose-city">{cityLabel(city, lang)}</span>{" "}
                 <button
                   type="button"
                   className="choose-place"
@@ -289,10 +319,17 @@ export default function PlaceChooser() {
                     value={type.id}
                     checked={selectedFood === type.id}
                     onChange={() => selectFood(type.id)}
+                    onFocus={revealChip}
                   />
                   {foodName(type.id, lang)}
                 </label>
               ))}
+              {chipsOverflow ? (
+                <button type="button" className="choose-more-types" onClick={scrollChips}>
+                  <span className="zh">更多類型</span>
+                  <span className="en">More types</span>
+                </button>
+              ) : null}
             </fieldset>
           </search>
 
@@ -308,16 +345,32 @@ export default function PlaceChooser() {
               {shop.dish?.trim() ? <p className="choose-dish">{shop.dish}</p> : null}
               <p className="choose-meta">
                 {cityLabel(active.city, lang)} · <span lang="zh-Hant">{stationLabel(active)}</span>
-              </p>
-              <p className="choose-why">
                 {shop.exit_walk?.trim()
                   ? lang === "en"
-                    ? `From the station: ${shop.exit_walk.trim()}`
-                    : `離站：${shop.exit_walk.trim()}`
+                    ? ` · ${shop.exit_walk.trim()}`
+                    : ` · 離站 ${shop.exit_walk.trim()}`
                   : lang === "en"
-                    ? `In the ${active.date} station note.`
-                    : `收在 ${active.date} 的站點筆記。`}
+                    ? ` · ${active.date} note`
+                    : ` · ${active.date} 筆記`}
               </p>
+              <div className="choose-actions">
+                <button type="button" className="choose-keep" aria-pressed={kept} onClick={toggleSaved} data-testid="choose-keep">
+                  {kept
+                    ? lang === "en" ? "Kept in this browser" : "已留在這個瀏覽器"
+                    : lang === "en" ? "Keep in this browser" : "先留在這個瀏覽器"}
+                </button>
+                <a href={`/metro/${active.slug}#${shopAnchor(shop, Math.max(0, active.shops.indexOf(shop)))}`}>
+                  <span className="zh">看這一站的筆記</span>
+                  <span className="en">Open the station note</span>
+                </a>
+              </div>
+              <p className="choose-note">
+                <span className="zh">只存在這個瀏覽器，沒有存進 App。</span>
+                <span className="en">Stored only in this browser. Nothing is sent to the app.</span>
+              </p>
+              <div className="choose-download" data-testid="hero-appstore">
+                <AppStoreBadge />
+              </div>
               {price ? (
                 <p className="choose-price">
                   {price}
@@ -331,10 +384,6 @@ export default function PlaceChooser() {
                 <span className="en">Note order, not a ranking and not a friend recommendation.</span>
               </p>
               <div className="choose-actions">
-                <a href={`/metro/${active.slug}#${shopAnchor(shop, Math.max(0, active.shops.indexOf(shop)))}`}>
-                  <span className="zh">看這一站的筆記</span>
-                  <span className="en">Open the station note</span>
-                </a>
                 {post ? (
                   <a className="choose-source" href={post.href} target="_blank" rel="noopener noreferrer">
                     {post.label}
@@ -356,15 +405,6 @@ export default function PlaceChooser() {
                   ))}
                 </ul>
               ) : null}
-              <button type="button" className="choose-keep" aria-pressed={kept} onClick={toggleSaved} data-testid="choose-keep">
-                {kept
-                  ? lang === "en" ? "Kept in this browser" : "已留在這個瀏覽器"
-                  : lang === "en" ? "Keep in this browser" : "先留在這個瀏覽器"}
-              </button>
-              <p className="choose-note">
-                <span className="zh">只存在這個瀏覽器，沒有存進 App。</span>
-                <span className="en">Stored only in this browser. Nothing is sent to the app.</span>
-              </p>
             </article>
           ) : (
             <div className="choose-empty" data-testid="choose-empty">
@@ -391,6 +431,9 @@ export default function PlaceChooser() {
                   ))}
                 </div>
               ) : null}
+              <div className="choose-download" data-testid="hero-appstore">
+                <AppStoreBadge />
+              </div>
             </div>
           )}
         </div>
@@ -412,8 +455,8 @@ export default function PlaceChooser() {
           <span className="en">Choose a published station</span>
         </h2>
         <p className="choose-note">
-          <span className="zh">{cityLabel(city, "zh-Hant")} {stations.length} 站。順序不是排名。</span>
-          <span className="en">{stations.length} published stations. Order is not a ranking.</span>
+          <span className="zh">{cityLabel(city, "zh-Hant")} {stations.length} 站。城市用頁首切換，這裡只列那個城市已發布的站。順序不是排名。</span>
+          <span className="en">{stations.length} published stations in the header’s city. Order is not a ranking.</span>
         </p>
         <ul className="choose-dialog-list">
           {stations.map((station) => (
@@ -472,8 +515,8 @@ export default function PlaceChooser() {
           <span className="en">Published station edits</span>
         </h2>
         <p className="choose-limit">
-          <span className="zh">用的是已經上站的捷運美食筆記，不是另外的主題榜。沒有價格就不顯示。營業時間留在站點筆記，避免被看成現在有沒有開。</span>
-          <span className="en">These are published metro food notes, not a separate theme ranking. Missing prices stay blank. Hours stay on the station note so this card does not look like a live open/closed status.</span>
+          <span className="zh">這裡是已經上站的捷運站筆記，不是主題清單。主題清單沒有進這個網站，所以沒有另做一份。沒有價格就不顯示。營業時間留在站點筆記，避免被看成現在有沒有開。</span>
+          <span className="en">These are published station notes. A thematic list is not in this site, so none is shown. Missing prices stay blank. Hours stay on the station note so this card does not look like a live open/closed status.</span>
         </p>
         <ul className="choose-stations">
           {stations.map((station) => (

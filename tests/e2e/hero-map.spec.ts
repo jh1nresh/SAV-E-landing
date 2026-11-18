@@ -73,6 +73,9 @@ test.describe("hero map interactions", () => {
     await page.goto("/");
     await waitForMap(page);
     await openStation(page, "houshanpi");
+    // The chooser sits above the map, so the opened card can start below the
+    // viewport. The swipe still has to land on the card's handle.
+    await page.locator("#card").scrollIntoViewIfNeeded();
     if (testInfo.project.name === "webkit") {
       await dispatchTouchSwipe(page, 30);
       await dispatchSwipe(page, 30);

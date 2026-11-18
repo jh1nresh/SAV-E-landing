@@ -20,8 +20,12 @@ export default function SavvyLanding({ clock }: { clock: string }) {
   return (
     <main>
       <section className="choose" id="choose">
-        <div className="choose-intro">
-          <div className="choose-intro-copy">
+        <PlaceChooser />
+      </section>
+
+      <section className="s1 hero" id="hero">
+        <div className="wrap">
+          <div className="txt">
             <h1 className="h zh">
               <span>看到喜歡的存下</span>
               <span className="u">去過的都記得</span>
@@ -32,19 +36,6 @@ export default function SavvyLanding({ clock }: { clock: string }) {
                 Remember where <span className="u">you've been</span>
               </span>
             </h1>
-            <p className="choose-lead zh">先從已上站的捷運筆記挑現在吃什麼。</p>
-            <p className="choose-lead en">Choose what to eat now from the published metro notes.</p>
-          </div>
-          <div data-testid="hero-appstore">
-            <AppStoreBadge />
-          </div>
-        </div>
-        <PlaceChooser />
-      </section>
-
-      <section className="s1 hero" id="hero">
-        <div className="wrap">
-          <div className="txt">
             <p className="sub zh">
               {HERO_ZH[0]}
               <br />
