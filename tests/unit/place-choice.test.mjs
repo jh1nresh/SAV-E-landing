@@ -3,7 +3,7 @@ import test from "node:test";
 import { readFileSync } from "node:fs";
 import {
   defaultSlug,
-  foodTypeOf,
+  foodTypesOf,
   parseFood,
   photoFor,
   shopsFor,
@@ -11,13 +11,16 @@ import {
 } from "../../lib/place-choice.mjs";
 
 test("dish rules use the note text and leave everything else in 不限", () => {
-  assert.equal(foodTypeOf({ dish: "孜然羊肉鍋、羊肉鍋巴飯" }), "hotpot");
-  assert.equal(foodTypeOf({ dish: "帶骨豬排飯" }), "rice");
-  assert.equal(foodTypeOf({ dish: "魚丸湯、阿給" }), "snack");
-  assert.equal(foodTypeOf({ dish: "鮮肉小籠" }), "dumpling");
-  assert.equal(foodTypeOf({ dish: "海膽石鍋豆腐" }), "any");
-  assert.equal(foodTypeOf({ dish: "牛胸肉漢堡套餐" }), "any");
-  assert.equal(foodTypeOf({ dish: null }), "any");
+  assert.deepEqual(foodTypesOf({ dish: "孜然羊肉鍋、羊肉鍋巴飯" }), ["hotpot", "rice"]);
+  assert.deepEqual(foodTypesOf({ dish: "帶骨豬排飯" }), ["rice"]);
+  assert.deepEqual(foodTypesOf({ dish: "魚丸湯、阿給" }), ["soup", "snack"]);
+  assert.deepEqual(foodTypesOf({ dish: "鮮肉湯圓／芝麻湯圓" }), ["snack", "dessert"]);
+  assert.deepEqual(foodTypesOf({ dish: "鮮肉小籠" }), ["dumpling"]);
+  assert.deepEqual(foodTypesOf({ dish: "蟹黃湯包" }), ["dumpling"]);
+  assert.deepEqual(foodTypesOf({ dish: "King特餐 餛飩湯＋烤雞腿" }), ["noodle", "soup"]);
+  assert.deepEqual(foodTypesOf({ dish: "海膽石鍋豆腐" }), []);
+  assert.deepEqual(foodTypesOf({ dish: "牛胸肉漢堡套餐" }), []);
+  assert.deepEqual(foodTypesOf({ dish: null }), []);
   assert.equal(parseFood("noodle"), "noodle");
   assert.equal(parseFood("rank"), "any");
   assert.equal(parseFood(null), "any");
@@ -49,6 +52,13 @@ test("published Tamsui note still resolves a real rice shop and a real photo", (
   const rice = shopsFor(tamsui, "rice");
   assert.ok(rice.some((shop) => shop.name === "黑殿飯店 右岸店" && shop.dish === "帶骨豬排飯" && shop.price && shop.price_source));
   assert.equal(shopsFor(tamsui, "hotpot").length, 0);
+  const soup = shopsFor(tamsui, "soup");
+  assert.ok(soup.some((shop) => shop.name === "文化阿給"));
+  assert.ok(soup.some((shop) => shop.name === "老店淡水魚丸阿給"));
+  assert.ok(soup.some((shop) => shop.name === "百葉溫州餛飩"));
+  const daqiaotou = metro.foodStations.find((station) => station.slug === "daqiaotou");
+  assert.ok(shopsFor(daqiaotou, "snack").some((shop) => shop.dish === "鮮肉湯圓"));
+  assert.ok(!shopsFor(daqiaotou, "dessert").some((shop) => shop.dish === "鮮肉湯圓"));
   const photo = photoFor(tamsui, rice.find((shop) => shop.key === "heidian"));
   assert.match(photo, /heidian\./);
   for (const station of [...metro.foodStations, ...metro.shanghaiFoodStations]) {

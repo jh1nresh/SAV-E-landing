@@ -3,6 +3,9 @@ import "./globals.css";
 import { SiteChrome } from "./SiteChrome";
 import { LANG_BOOT_SCRIPT, SITE_DESCRIPTION_ZH, SITE_TITLE_ZH } from "./site";
 import { SITE_ORIGIN, PRODUCT_TERMS } from "../lib/site-content";
+import { getShanghaiFoodStations } from "../lib/metro";
+
+const shanghaiPlaces = getShanghaiFoodStations().map((station) => station.slug);
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
@@ -59,7 +62,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: LANG_BOOT_SCRIPT }} />
       </head>
       <body>
-        <SiteChrome>{children}</SiteChrome>
+        <SiteChrome shanghaiPlaces={shanghaiPlaces}>{children}</SiteChrome>
       </body>
     </html>
   );

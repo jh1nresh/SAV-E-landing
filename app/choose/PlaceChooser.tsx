@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type PointerEvent } from "react";
 import { shopAnchor } from "../../lib/metro-guide.mjs";
 import { getFoodStations, getShanghaiFoodStations, type FoodShop, type FoodStation } from "../../lib/metro";
 import {
@@ -78,9 +78,10 @@ function foodName(id: FoodId, lang: "zh-Hant" | "en") {
   }
 }
 
-function readSaved(): SavedRef[] {
+function readSaved(storage: Storage): SavedRef[] {
+  const stored = storage.getItem(STORAGE_KEY);
   try {
-    const raw = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "[]") as unknown;
+    const raw = JSON.parse(stored || "[]") as unknown;
     if (!Array.isArray(raw)) return [];
     return raw.flatMap((item) => {
       if (!item || typeof item !== "object") return [];
@@ -95,46 +96,44 @@ function readSaved(): SavedRef[] {
   }
 }
 
-function writeSaved(items: SavedRef[]) {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  } catch {
-    /* private mode can reject storage; the list still updates in memory */
-  }
+function isDialogBackdrop(event: PointerEvent<HTMLDialogElement>) {
+  const dialog = event.currentTarget;
+  if ("closedBy" in HTMLDialogElement.prototype || event.target !== dialog) return false;
+  const { left, top, right, bottom } = dialog.getBoundingClientRect();
+  return event.clientX < left || event.clientX > right || event.clientY < top || event.clientY > bottom;
 }
 
-function previewHref(place: string, food: FoodId, lang: "zh-Hant" | "en", city: CityId) {
+function previewHref(place: string, food: FoodId, lang: "zh-Hant" | "en", city: CityId, shopKey?: string | null) {
   const params = new URLSearchParams();
   if (lang === "en") params.set("lang", "en");
   if (city === "shanghai") params.set("city", "shanghai");
   params.set("place", place);
   if (food !== "any") params.set("food", food);
+  if (shopKey) params.set("shop", shopKey);
   return `/?${params.toString()}`;
 }
 
 export default function PlaceChooser() {
-  const { city, setCity } = useSiteCity();
+  const { city, selection, selectMeal } = useSiteCity();
   const { lang } = useSiteLang();
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const backdropPress = useRef<number | null>(null);
   const capsulesRef = useRef<HTMLFieldSetElement>(null);
   const [chipsOverflow, setChipsOverflow] = useState(false);
-  const urlPlace = useRef<string | null>(null);
-  const placeRef = useRef(defaultSlug(taipeiStations));
-  const cityRef = useRef(city);
-  cityRef.current = city;
-  const [place, setPlace] = useState(defaultSlug(taipeiStations));
-  const [food, setFood] = useState<FoodId>("any");
-  const [shopKey, setShopKey] = useState<string | null>(null);
   const [saved, setSaved] = useState<SavedRef[]>([]);
+  const [storageError, setStorageError] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const dialogTitleId = useId();
   const dialogId = useId();
   const stations = stationsFor(city);
-  const active = stations.find((station) => station.slug === place) ?? stations.find((station) => station.slug === defaultSlug(stations)) ?? stations[0];
+  const active = stations.find((station) => station.slug === selection.place) ?? stations.find((station) => station.slug === defaultSlug(stations)) ?? stations[0];
   const types = FOOD_TYPES.filter((type) => type.id === "any" || stationsWithFood(stations, type.id).length > 0);
+  const food = parseFood(selection.food);
   const selectedFood = types.some((type) => type.id === food) ? food : "any";
   const matches = active ? shopsFor(active, selectedFood) : [];
-  const shop = matches.find((item) => item.key === shopKey) ?? matches[0] ?? null;
+  const requestedFilterMatches = selection.food === null || selection.food === selectedFood;
+  const requestedShop = selection.place === active?.slug && requestedFilterMatches ? selection.shop : null;
+  const shop = matches.find((item) => item.key === requestedShop) ?? matches[0] ?? null;
   const photo = active && shop ? photoFor(active, shop) : null;
   const elsewhere = active ? stationsWithFood(stations, selectedFood).filter((station) => station.slug !== active.slug) : [];
   const savedShops = saved.flatMap((item) => {
@@ -143,31 +142,21 @@ export default function PlaceChooser() {
     return station && found ? [{ station, shop: found }] : [];
   });
   const kept = Boolean(active && shop?.key && saved.some((item) => item.slug === active.slug && item.key === shop.key));
-  placeRef.current = place;
-
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (dialog && "closedBy" in dialog) (dialog as HTMLDialogElement & { closedBy: string }).closedBy = "any";
-    const read = () => {
-      const params = new URLSearchParams(window.location.search);
-      const requested = params.get("place");
-      const match = requested ? allStations.find((station) => station.slug === requested) : undefined;
-      const current = cityRef.current;
-      urlPlace.current = match?.slug ?? null;
-      setFood(parseFood(params.get("food")));
-      setShopKey(null);
-      if (match && match.city !== current) {
-        setPlace(match.slug);
-        setCity(match.city);
-        return;
+    const sync = () => {
+      try {
+        setSaved(readSaved(window.localStorage));
+      } catch {
+        // The visitor may block site storage. Saving will show an inline error.
       }
-      setPlace(match?.slug ?? defaultSlug(stationsFor(current)));
     };
-    read();
-    setSaved(readSaved());
-    window.addEventListener("popstate", read);
-    return () => window.removeEventListener("popstate", read);
-  }, [setCity]);
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === STORAGE_KEY || event.key === null) sync();
+    };
+    sync();
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   useEffect(() => {
     const el = capsulesRef.current;
@@ -179,34 +168,8 @@ export default function PlaceChooser() {
     return () => observer.disconnect();
   }, [lang, city, types.length]);
 
-  useEffect(() => {
-    const match = urlPlace.current ? allStations.find((station) => station.slug === urlPlace.current) : undefined;
-    if (match?.city === city) {
-      setPlace(match.slug);
-      return;
-    }
-    if (!stations.some((station) => station.slug === placeRef.current)) {
-      setPlace(defaultSlug(stations));
-      setShopKey(null);
-    }
-  }, [city, stations]);
-
-  function writeQuery(nextPlace: string, nextFood: FoodId) {
-    const url = new URL(window.location.href);
-    url.searchParams.set("place", nextPlace);
-    if (nextFood === "any") url.searchParams.delete("food");
-    else url.searchParams.set("food", nextFood);
-    const next = `${url.pathname}${url.search}${url.hash}`;
-    if (next !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
-      window.history.replaceState(null, "", next);
-    }
-  }
-
   function selectPlace(slug: string) {
-    urlPlace.current = slug;
-    setPlace(slug);
-    setShopKey(null);
-    writeQuery(slug, selectedFood);
+    selectMeal(city, { place: slug, food: selectedFood === "any" ? null : selectedFood, shop: null });
     dialogRef.current?.close();
     setDialogOpen(false);
   }
@@ -229,34 +192,40 @@ export default function PlaceChooser() {
   }
 
   function selectFood(next: FoodId) {
-    setFood(next);
-    setShopKey(null);
-    if (active) writeQuery(active.slug, next);
+    if (active) selectMeal(city, { place: active.slug, food: next === "any" ? null : next, shop: null });
   }
 
   function selectShop(next: FoodShop) {
-    setShopKey(next.key ?? null);
+    if (active) selectMeal(city, { place: active.slug, food: selectedFood === "any" ? null : selectedFood, shop: next.key ?? null });
   }
 
-  function toggleSaved() {
+  async function toggleSaved() {
     if (!active || !shop?.key) return;
-    const next = kept
-      ? saved.filter((item) => item.slug !== active.slug || item.key !== shop.key)
-      : [...saved, { slug: active.slug, key: shop.key }].slice(-30);
-    setSaved(next);
-    writeSaved(next);
+    const entry = { slug: active.slug, key: shop.key };
+    const update = () => {
+      const storage = window.localStorage;
+      const current = readSaved(storage);
+      const existing = current.some((item) => item.slug === entry.slug && item.key === entry.key);
+      const next = kept
+        ? current.filter((item) => item.slug !== entry.slug || item.key !== entry.key)
+        : existing ? current : [...current, entry].slice(-30);
+      storage.setItem(STORAGE_KEY, JSON.stringify(next));
+      setSaved(next);
+    };
+    try {
+      if (navigator.locks) await navigator.locks.request(STORAGE_KEY, update);
+      else update();
+      setStorageError(false);
+    } catch {
+      setStorageError(true);
+    }
   }
 
   function openSaved(station: FoodStation, found: FoodShop) {
-    urlPlace.current = station.slug;
-    setFood("any");
-    setShopKey(found.key ?? null);
-    setPlace(station.slug);
-    if (station.city !== city) setCity(station.city);
-    writeQuery(station.slug, "any");
+    selectMeal(station.city, { place: station.slug, food: null, shop: found.key ?? null });
   }
 
-  const preview = active ? previewHref(active.slug, selectedFood, lang, active.city) : "/";
+  const preview = active ? previewHref(active.slug, selectedFood, lang, active.city, shop?.key) : "/";
   const post = active ? sourcePost(active) : null;
   const price = shop?.price?.trim() || "";
   const priceSource = shop?.price_source?.trim() || "";
@@ -364,17 +333,17 @@ export default function PlaceChooser() {
                   <span className="en">Open the station note</span>
                 </a>
               </div>
-              <p className="choose-note">
-                <span className="zh">只存在這個瀏覽器，沒有存進 App。</span>
-                <span className="en">Stored only in this browser. Nothing is sent to the app.</span>
+              <p className="choose-note" aria-live="polite">
+                <span className="zh">{storageError ? "無法更新暫存，請確認瀏覽器允許網站儲存。" : "只存在這個瀏覽器，沒有存進 App。"}</span>
+                <span className="en">{storageError ? "Couldn’t update your shortlist. Check your browser’s site storage settings." : "Stored only in this browser. Nothing is sent to the app."}</span>
               </p>
               <div className="choose-download" data-testid="hero-appstore">
                 <AppStoreBadge />
               </div>
-              {price ? (
+              {price && priceSource ? (
                 <p className="choose-price">
                   {price}
-                  {priceSource ? <small> · {priceSource}</small> : <small> · <span className="zh">筆記沒有附價格出處</span><span className="en">No price source in the note</span></small>}
+                  <small> · {priceSource}</small>
                   <small> · <span className="zh">筆記價格，不是今日現價</span><span className="en">Noted price, not today’s price</span></small>
                 </p>
               ) : null}
@@ -445,10 +414,19 @@ export default function PlaceChooser() {
         id={dialogId}
         className="choose-dialog"
         aria-labelledby={dialogTitleId}
-        onClose={() => setDialogOpen(false)}
-        onClick={(event) => {
-          if (event.target === event.currentTarget) event.currentTarget.close();
+        closedby="any"
+        onClose={() => {
+          backdropPress.current = null;
+          setDialogOpen(false);
         }}
+        onPointerDown={(event) => {
+          backdropPress.current = isDialogBackdrop(event) ? event.pointerId : null;
+        }}
+        onPointerUp={(event) => {
+          if (backdropPress.current === event.pointerId && isDialogBackdrop(event)) event.currentTarget.close();
+          backdropPress.current = null;
+        }}
+        onPointerCancel={() => { backdropPress.current = null; }}
       >
         <h2 id={dialogTitleId}>
           <span className="zh">選一個已發布的站</span>
@@ -515,8 +493,8 @@ export default function PlaceChooser() {
           <span className="en">Published station edits</span>
         </h2>
         <p className="choose-limit">
-          <span className="zh">這裡是已經上站的捷運站筆記，不是主題清單。主題清單沒有進這個網站，所以沒有另做一份。沒有價格就不顯示。營業時間留在站點筆記，避免被看成現在有沒有開。</span>
-          <span className="en">These are published station notes. A thematic list is not in this site, so none is shown. Missing prices stay blank. Hours stay on the station note so this card does not look like a live open/closed status.</span>
+          <span className="zh">這裡是已經上站的捷運站筆記，不是主題清單。主題清單沒有進這個網站，所以沒有另做一份。價格與出處一併顯示。營業時間留在站點筆記，避免被看成現在有沒有開。</span>
+          <span className="en">These are published station notes. A thematic list is not in this site, so none is shown. Prices appear with their sources. Hours stay on the station note so this card does not look like a live open/closed status.</span>
         </p>
         <ul className="choose-stations">
           {stations.map((station) => (

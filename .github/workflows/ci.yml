@@ -15,8 +15,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Run 43427323912 was cancelled at 25m0s with WebKit still on the 23-station suite.
-    timeout-minutes: 40
+    # Run 44260376925 spent 21 minutes installing browsers and hit the 40-minute cap during tests.
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

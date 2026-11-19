@@ -36,8 +36,24 @@ export function useSiteLang() {
 }
 
 export type CityId = "taipei" | "shanghai";
-const CityContext = createContext<{ city: CityId; setCity: (city: CityId) => void }>({ city: "taipei", setCity: () => undefined });
+type MealSelection = { place: string | null; food: string | null; shop: string | null };
+const EMPTY_SELECTION: MealSelection = { place: null, food: null, shop: null };
+const CityContext = createContext({
+  city: "taipei" as CityId,
+  selection: EMPTY_SELECTION,
+  selectMeal: (_city: CityId, _selection?: MealSelection): void => undefined,
+});
 export function useSiteCity() { return useContext(CityContext); }
+
+function readMealLocation(url: URL, shanghaiPlaces: readonly string[]) {
+  const { searchParams, pathname } = url;
+  const cityParam = searchParams.get("city");
+  const place = searchParams.get("place");
+  const city: CityId = cityParam === "shanghai" || (!cityParam && (
+    pathname === "/shanghai" || (pathname === "/" && place !== null && shanghaiPlaces.includes(place))
+  )) ? "shanghai" : "taipei";
+  return { city, selection: { place, food: searchParams.get("food"), shop: searchParams.get("shop") } };
+}
 
 function applyHomeMeta(lang: SiteLang) {
   if (window.location.pathname !== "/") return;
@@ -59,26 +75,42 @@ function persistLang(lang: SiteLang) {
   applyHomeMeta(lang);
 }
 
-export function SiteChrome({ children }: { children: ReactNode }) {
+export function SiteChrome({ children, shanghaiPlaces }: { children: ReactNode; shanghaiPlaces: readonly string[] }) {
   const pathname = usePathname();
-  const [city, setCityState] = useState<CityId>(pathname === "/shanghai" ? "shanghai" : "taipei");
+  const [location, setLocation] = useState(() => ({
+    city: (pathname === "/shanghai" ? "shanghai" : "taipei") as CityId,
+    selection: EMPTY_SELECTION,
+  }));
   useEffect(() => {
-    const readCity = () => {
-      const query = new URLSearchParams(window.location.search).get("city");
-      setCityState(query === "shanghai" || (!query && window.location.pathname === "/shanghai") ? "shanghai" : "taipei");
-    };
-    readCity();
-    window.addEventListener("popstate", readCity);
-    return () => window.removeEventListener("popstate", readCity);
-  }, [pathname]);
-  const setCity = useCallback((next: CityId) => {
+    const sync = () => setLocation(readMealLocation(new URL(window.location.href), shanghaiPlaces));
+    sync();
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, [pathname, shanghaiPlaces]);
+
+  const selectMeal = useCallback((nextCity: CityId, selection?: MealSelection) => {
     const url = new URL(window.location.href);
-    if (next === "shanghai") url.searchParams.set("city", next);
-    else url.searchParams.delete("city");
-    url.hash = "";
-    window.history.pushState(null, "", `/${url.search}`);
-    setCityState(next);
-  }, []);
+    const cityChanged = nextCity !== readMealLocation(url, shanghaiPlaces).city;
+    if (!cityChanged && !selection) return;
+    const before = `${url.pathname}${url.search}${url.hash}`;
+    if (cityChanged) {
+      url.pathname = "/";
+      url.hash = "";
+      if (nextCity === "shanghai") url.searchParams.set("city", nextCity);
+      else url.searchParams.delete("city");
+    }
+    for (const field of ["place", "food", "shop"] as const) {
+      const value = selection?.[field];
+      if (value) url.searchParams.set(field, value);
+      else url.searchParams.delete(field);
+    }
+    const after = `${url.pathname}${url.search}${url.hash}`;
+    if (after !== before) {
+      if (cityChanged) window.history.pushState(null, "", after);
+      else window.history.replaceState(null, "", after);
+    }
+    setLocation(readMealLocation(url, shanghaiPlaces));
+  }, [shanghaiPlaces]);
   const [lang, setLangState] = useState<SiteLang>("zh-Hant");
 
   useEffect(() => {
@@ -105,7 +137,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 
   return (
     <LangContext.Provider value={{ lang, setLang }}>
-      <CityContext.Provider value={{ city, setCity }}>
+      <CityContext.Provider value={{ ...location, selectMeal }}>
         <SiteNav />
         {children}
         <SiteFooter />
@@ -117,7 +149,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 function SiteNav() {
   const { lang, setLang } = useSiteLang();
   const pathname = usePathname();
-  const { city, setCity } = useSiteCity();
+  const { city, selectMeal } = useSiteCity();
   const hasCity = pathname === "/shanghai" || pathname === "/";
 
   return (
@@ -126,7 +158,7 @@ function SiteNav() {
         <img src="/assets/icon.png" alt="" width={44} height={44} />
         Savvy
       </a>
-      {hasCity ? <CitySwitch active={city} lang={lang} onSelect={setCity} /> : null}
+      {hasCity ? <CitySwitch active={city} lang={lang} onSelect={selectMeal} /> : null}
       <div className="chips" role="group" aria-label="Language">
         <button
           type="button"

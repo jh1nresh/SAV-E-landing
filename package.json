@@ -23,7 +23,7 @@
     "@ui-sdk/react": "0.1.0-beta.1",
     "framer-motion": "latest",
     "lucide-react": "latest",
-    "next": "16.4.3",
+    "next": "16.4.6",
     "react": "latest",
     "react-dom": "latest"
   },

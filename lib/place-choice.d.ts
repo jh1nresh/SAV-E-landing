@@ -15,7 +15,7 @@ export type FoodId =
   | "dessert"
   | "coffee";
 
-export function foodTypeOf(shop: { dish?: string | null }): FoodId;
+export function foodTypesOf(shop: { dish?: string | null }): FoodId[];
 export function parseFood(value: string | null | undefined): FoodId;
 export function shopsFor<T extends { dish?: string | null }>(
   station: { shops?: readonly T[] },
