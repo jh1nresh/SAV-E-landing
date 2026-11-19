@@ -143,10 +143,6 @@
   background: var(--paper);
 }
 
-.choose-capsules legend {
-  padding: 0;
-}
-
 .capsule {
   position: relative;
   display: inline-flex;

@@ -257,29 +257,30 @@ export default function PlaceChooser() {
           data-food={selectedFood}
         >
           <search>
+            <p className="choose-sentence">
+              <span className="zh">我想在</span>
+              <span className="en">Near</span>{" "}
+              <span className="choose-city">{cityLabel(city, lang)}</span>{" "}
+              <button
+                type="button"
+                className="choose-place"
+                aria-haspopup="dialog"
+                aria-controls={dialogId}
+                aria-expanded={dialogOpen}
+                onClick={() => {
+                  dialogRef.current?.showModal();
+                  setDialogOpen(true);
+                }}
+              >
+                <span lang="zh-Hant">{active ? stationLabel(active) : ""}</span>
+                <span className="visually-hidden zh">，選車站</span>
+                <span className="visually-hidden en">, choose a station</span>
+              </button>{" "}
+              <span className="zh">附近吃</span>
+              <span className="en">I want</span>
+            </p>
             <fieldset className="choose-capsules" ref={capsulesRef}>
-              <legend className="choose-sentence">
-                <span className="zh">我想在</span>
-                <span className="en">Near</span>{" "}
-                <span className="choose-city">{cityLabel(city, lang)}</span>{" "}
-                <button
-                  type="button"
-                  className="choose-place"
-                  aria-haspopup="dialog"
-                  aria-controls={dialogId}
-                  aria-expanded={dialogOpen}
-                  onClick={() => {
-                    dialogRef.current?.showModal();
-                    setDialogOpen(true);
-                  }}
-                >
-                  <span lang="zh-Hant">{active ? stationLabel(active) : ""}</span>
-                  <span className="visually-hidden zh">，選車站</span>
-                  <span className="visually-hidden en">, choose a station</span>
-                </button>{" "}
-                <span className="zh">附近吃</span>
-                <span className="en">I want</span>
-              </legend>
+              <legend className="visually-hidden">{lang === "en" ? "Food type" : "食物類型"}</legend>
               {types.map((type) => (
                 <label className="capsule" key={type.id}>
                   <input
