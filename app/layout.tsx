@@ -42,7 +42,7 @@ export default function RootLayout({
     <html lang="zh-Hant" suppressHydrationWarning>
       <head>
         <script
-          nowprocket=""
+          {...{ nowprocket: "" }}
           data-noptimize="1"
           data-cfasync="false"
           data-wpfc-render="false"
