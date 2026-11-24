@@ -1,0 +1,67 @@
+{
+  "slug": "busan-haeundae-capsule-or-beach-train",
+  "title": "釜山海雲台一個人怎麼搭？尾浦、青沙浦的膠囊列車與海岸列車選票",
+  "region": "韓國",
+  "city": "釜山",
+  "date": "2026-11-25",
+  "description": "先選從哪一站上車，再決定去回程要搭哪兩段。膠囊是單程，想中途停靠或自己出遊，可以先比較海岸列車。",
+  "sections": [
+    {
+      "heading": "在訂票頁先認尾浦和青沙浦",
+      "paragraphs": [
+        {
+          "text": "尾浦在官網寫作 Mipo，青沙浦是 Cheongsapo，松亭是 Songjeong。膠囊行駛在尾浦與青沙浦間。若住宿或上一站靠近尾浦，就從 Mipo 查起；從青沙浦出發，訂票的上車站也要相應改成 Cheongsapo。",
+          "links": [
+            {
+              "label": "藍線公園官方訂票與各站選擇",
+              "href": "https://www.bluelinepark.com/eng/booking.do?pageNo=1"
+            }
+          ]
+        },
+        {
+          "text": "把去程和回程分成兩欄記下來。一張膠囊單程票只把你送到另一端，去程選到好時段時，順手查回程交通，再排海邊的用餐或散步。"
+        }
+      ]
+    },
+    {
+      "heading": "獨旅想沿途下車，先看海岸列車票",
+      "paragraphs": [
+        {
+          "text": "想坐自己的車廂、沿著海岸慢慢看，可以選空中膠囊。官網價目按每車二人、三人、四人分級；一個人出遊時，先核對最低車廂價，再和按乘客購買的海岸列車比較。",
+          "links": [
+            {
+              "label": "官方票種與分級價格",
+              "href": "https://www.bluelinepark.com/eng/fare.do"
+            }
+          ]
+        },
+        {
+          "text": "想去松亭，或打算在中途站下車再繼續，先看海岸列車的可乘次數。單程、不同次數和套票有各自的搭乘規則；先寫下實際要上車的幾段，再選能覆蓋那些路段的票。"
+        }
+      ]
+    },
+    {
+      "heading": "一條好安排的去回程：尾浦出發，青沙浦回來",
+      "paragraphs": [
+        {
+          "text": "去程預約尾浦到青沙浦的膠囊；抵達後沿站外散步，回程再從青沙浦搭海岸列車往尾浦。營運方列的參考車程是膠囊約 30 分鐘、這兩站之間的海岸列車約 10 分鐘。兩張票之間要另留排隊、下車與走回月台的時間。",
+          "links": [
+            {
+              "label": "營運方去回程說明",
+              "href": "https://www.bluelinepark.com/eng/faqList.do?pageNo=2"
+            }
+          ]
+        },
+        {
+          "text": "訂票前核對日期、起站、設施和入場時段。官方把膠囊預約標成一段入場時間，逾時可能無法搭乘；出發前再看最新班表，保存訂單上的 QR code。",
+          "links": [
+            {
+              "label": "官方預約須知",
+              "href": "https://www.bluelinepark.com/eng/booking.do?pageNo=1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
