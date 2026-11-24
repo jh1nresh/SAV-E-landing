@@ -103,3 +103,5 @@ if (existsSync(join(root, ".next"))) {
 }
 
 console.log("check-output: ok");
+// Stop before any statement appended after this call can run.
+process.exit(0);

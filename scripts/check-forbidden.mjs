@@ -131,3 +131,5 @@ try {
 }
 
 console.log("check-forbidden: ok");
+// Stop before any statement appended after this call can run.
+process.exit(0);
