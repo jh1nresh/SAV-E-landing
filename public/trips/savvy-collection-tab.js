@@ -123,7 +123,7 @@
       const matches = scope.filter(row => (!region.value || row.region === region.value) && (!kind.value || row.kind === kind.value));
       list.replaceChildren(...matches.slice(0, limit).map(row => {
         const item = element("li");
-        const meta = [row.city || row.region, row.kind === "guide" ? "攻略" : "原文", row.date].filter(Boolean).join(" · ");
+        const meta = [row.city || row.region, row.kind === "guide" ? "攻略" : "原文", row.displayDate || row.date].filter(Boolean).join(" · ");
         item.append(element("small", "col-ws-meta", meta), sourceLink(row.title, row.href));
         return item;
       }));

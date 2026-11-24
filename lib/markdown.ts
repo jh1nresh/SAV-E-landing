@@ -71,7 +71,8 @@ export function markdownFor(path: string): string | null {
     const body = guide.sections.map(({ heading, paragraphs, table }) => {
       const parts = paragraphs.map(p => [p.text, ...(p.links ?? []).map(l => `[${l.label}](${l.href})`)].join(" "));
       if (table) {
-        parts.push([table.caption, table.columns.join(" | "), ...table.rows.map(row => row.join(" | "))].join("\n"));
+        const row = (cells: string[]) => "| " + cells.map(cell => cell.replaceAll("|", "\\|")).join(" | ") + " |";
+        parts.push(table.caption + "\n\n" + [row(table.columns), row(table.columns.map(() => "---")), ...table.rows.map(row)].join("\n"));
       }
       return `## ${heading}\n\n${parts.join("\n\n")}`;
     });
