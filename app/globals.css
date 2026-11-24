@@ -423,3 +423,6 @@ footer.site p a {
     font-size: 32px;
   }
 }
+
+.trip-entry { margin: .6rem 0; font: 600 1rem/1.4 system-ui, sans-serif; }
+.trip-entry a { color: inherit; text-underline-offset: .23em; }

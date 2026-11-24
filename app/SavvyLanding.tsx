@@ -47,6 +47,7 @@ export default function SavvyLanding({ clock }: { clock: string }) {
             <div data-testid="hero-appstore">
               <AppStoreBadge />
             </div>
+            <p className="trip-entry"><a href="/trips/index.html"><span className="zh">打開 My Trips 城市手記</span><span className="en">Explore the travel workspace</span> ↗</a></p>
             <div className="hero-stk" aria-label="Savvy stickers">
               {STICKERS.map((s) => (
                 <img key={s.src} src={s.src} alt={s.alt} width={58} height={58} />

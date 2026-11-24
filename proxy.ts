@@ -28,4 +28,4 @@ export function proxy(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ["/((?!_next/|assets/|metro/images/).*)"] };
+export const config = { matcher: ["/((?!_next/|assets/|metro/images/|trips/).*)"] };

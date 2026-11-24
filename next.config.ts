@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: "/trips", destination: "/trips/index.html", permanent: false },
       { source: "/taipei", destination: "/", statusCode: 301 },
       { source: "/taipei.md", destination: "/index.md", statusCode: 301 },
       // Same slash cleanup the framework used to do, after the Taipei rules.
