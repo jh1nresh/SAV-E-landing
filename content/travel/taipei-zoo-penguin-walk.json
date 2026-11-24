@@ -1,0 +1,82 @@
+{
+  "slug": "taipei-zoo-penguin-walk",
+  "region": "台灣",
+  "city": "台北",
+  "date": "2026-11-25",
+  "title": "木柵動物園企鵝遊行每天都有嗎？看公告、找企鵝館的半日路線",
+  "description": "台北動物園的黑腳企鵝只有在園方安排時才會外出散步。先查自己的參觀日期，再從鳥園車站排半日動線，平日來也能好好逛企鵝館。",
+  "sections": [
+    {
+      "heading": "11 月 19 日是首場，下一場要看哪裡",
+      "paragraphs": [
+        {
+          "text": "2026 年 11 月 19 日上午 9 時 30 分是園方安排的首場「企鵝走路趣」。這個時間只對應那一天。後續場次會視動物狀態不定期公告；出門前打開「最新消息」的「教育活動」，核對文章中的活動日期。沒有當日場次，就按一般參觀排行程。",
+          "links": [
+            {
+              "label": "園方黑腳企鵝散步新聞稿",
+              "href": "https://www.zoo.gov.taipei/News_Content.aspx?n=BD065B2FA7782989&s=D3C503AAC78B8261&sms=72544237BBE4C5F6"
+            },
+            {
+              "label": "查看園方最新教育活動",
+              "href": "https://www.zoo.gov.taipei/News.aspx?n=FF99E6A67512AD9B&sms=9D72E82EC16F3E64"
+            }
+          ]
+        },
+        {
+          "text": "即使有公告，企鵝是否走出來也要看現場。園方說明氣溫高於攝氏 24 度時，會改為黑腳企鵝室內餵食解說。氣溫、動物意願與人潮都會影響安排，涼爽的天氣本身不能當作場次預告。",
+          "links": [
+            {
+              "label": "園方黑腳企鵝散步新聞稿",
+              "href": "https://www.zoo.gov.taipei/News_Content.aspx?n=BD065B2FA7782989&s=D3C503AAC78B8261&sms=72544237BBE4C5F6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "從正門到企鵝館，半天怎麼走",
+      "paragraphs": [
+        {
+          "text": "把半天留給山上的館區。從正門入園，先走到遊客列車總站，搭到鳥園車站，再依指標步行到溫帶動物區的企鵝館。有當天的活動就先去企鵝館；一般參觀日可以先看兩棲爬蟲動物館，再慢慢往企鵝館走。",
+          "links": [
+            {
+              "label": "開啟園區地圖",
+              "href": "https://www.zoo.gov.taipei/News.aspx?n=E8BB5E02604E3BC7&sms=F3B2EF982C0582B3"
+            },
+            {
+              "label": "園方列車站點與時間",
+              "href": "https://www.zoo.gov.taipei/cp.aspx?n=7D54CBE2525F75B8&s=AE8CC28756679A41"
+            }
+          ]
+        },
+        {
+          "text": "回程看體力決定。走累了就回鳥園車站搭車下山；時間還充裕，可以沿途走向非洲動物區，再往正門方向。出發前同時查兩個館的開放日，企鵝館原則上每月第二個星期一公休，兩棲爬蟲動物館則是第三個星期一。",
+          "links": [
+            {
+              "label": "園方半日路線",
+              "href": "https://www.zoo.gov.taipei/cp.aspx?n=C58A7BEC6E745E89&s=19A6C08013311F23"
+            },
+            {
+              "label": "館區公休表",
+              "href": "https://www.zoo.gov.taipei/cp.aspx?n=7D54CBE2525F75B8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "現場站哪裡看",
+      "paragraphs": [
+        {
+          "text": "園方為散步劃設的路段在企鵝館出口至黑熊展示窗之間，留給動物行走的距離很短。到了現場，先看工作人員安排的觀察位置，雙手和手機都留在圍籬的遊客側，讓出通道。把音量放低，別伸手觸摸、追著拍或拿食物吸引企鵝。",
+          "links": [
+            {
+              "label": "園方黑腳企鵝散步新聞稿",
+              "href": "https://www.zoo.gov.taipei/News_Content.aspx?n=BD065B2FA7782989&s=D3C503AAC78B8261&sms=72544237BBE4C5F6"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
