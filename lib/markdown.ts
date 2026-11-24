@@ -1,4 +1,6 @@
 import { guides, GUIDE_ROOT, guidePath } from "../app/zh-tw/guides/content";
+import { TRAVEL_ROOT, travelGuides, travelPath } from "../app/zh-tw/travel/content";
+import { postPath, threadPosts } from "../app/zh-tw/posts/content";
 import { getFoodStations, getShanghaiFoodStations } from "./metro";
 import { guideDescription, guideHeading, guideUpdatedAt, shopAnchor, shopMapLink } from "./metro-guide.mjs";
 import { FOOD_DISCLAIMER, foodShopRows } from "./metro-logic.mjs";
@@ -11,7 +13,7 @@ const resources = `## Public resources\n\n${[
   ["About Savvy", "/about"], ["Contact Savvy", "/contact"], ["Privacy", "/privacy"],
   ["Savvy API documentation and agent access", "/docs"], ["Savvy homepage", "/"],
   ["Shanghai metro food notes", "/shanghai"], ["Taipei and Shanghai food guides", "/metro"],
-  ["收藏整理指南", GUIDE_ROOT], ["Agent instructions", "/llms.txt"], ["Sitemap", "/sitemap.xml"],
+  ["旅行攻略", TRAVEL_ROOT], ["城市貼文", "/zh-tw/posts"], ["收藏整理指南", GUIDE_ROOT], ["Agent instructions", "/llms.txt"], ["Sitemap", "/sitemap.xml"],
 ].map(([name, path]) => `- ${link(name, path)}`).join("\n")}`;
 
 export const llmsText = `# Savvy
@@ -56,6 +58,30 @@ function shanghaiMarkdown() {
 export function markdownFor(path: string): string | null {
   if (path === "/") return taipeiHomeMarkdown();
   if (path === "/shanghai") return shanghaiMarkdown();
+  if (path === TRAVEL_ROOT || path === "/zh-tw/posts") {
+    const isGuide = path === TRAVEL_ROOT;
+    const entries = isGuide
+      ? travelGuides.map(g => link(g.title, travelPath(g.slug)))
+      : threadPosts.map(p => link(p.title, postPath(p.code)));
+    return `# ${isGuide ? "旅行攻略" : "城市貼文"}\n\n${entries.map(entry => "- " + entry).join("\n")}\n\n${resources}\n`;
+  }
+  if (path.startsWith(TRAVEL_ROOT + "/")) {
+    const guide = travelGuides.find(g => path === travelPath(g.slug));
+    if (!guide) return null;
+    const body = guide.sections.map(({ heading, paragraphs, table }) => {
+      const parts = paragraphs.map(p => [p.text, ...(p.links ?? []).map(l => `[${l.label}](${l.href})`)].join(" "));
+      if (table) {
+        parts.push([table.caption, table.columns.join(" | "), ...table.rows.map(row => row.join(" | "))].join("\n"));
+      }
+      return `## ${heading}\n\n${parts.join("\n\n")}`;
+    });
+    return [`# ${guide.title}`, guide.description, [guide.region, guide.city, guide.date].join(" · "), ...body, resources].join("\n\n") + "\n";
+  }
+  if (path.startsWith("/zh-tw/posts/")) {
+    const post = threadPosts.find(p => postPath(p.code) === path);
+    if (!post) return null;
+    return [`# ${post.title}`, post.date, ...(post.publishedExcerpt ? ["節錄，兩筆評論價格請見 Threads 原文。"] : []), post.text, `[@savvysave_ 原文](${post.url})`, resources].join("\n\n") + "\n";
+  }
   const key = path.slice(1) as keyof typeof infoPages;
   if (Object.hasOwn(infoPages, key)) {
     const page = infoPages[key];

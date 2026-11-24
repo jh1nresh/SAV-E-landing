@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import guides from "../../data/guides.json";
+import editorial from "../../lib/editorial.public.json";
 import { mkdir } from "node:fs/promises";
 
 const origin = "https://savvy.jeezlabs.io";
@@ -60,7 +61,9 @@ test("guide links, keyboard navigation and sitemap use only public canonical pag
   const urls = [...(await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]).sort();
   const metroUrls = urls.filter(url => url === `${origin}/metro` || url.startsWith(`${origin}/metro/`));
   expect(metroUrls).toContain(`${origin}/metro`);
-  expect(urls.filter(url => !metroUrls.includes(url))).toEqual([`${origin}/`, `${origin}/shanghai`, ...["about", "contact", "privacy", "support", "docs"].map(path => `${origin}/${path}`), ...paths.map(path => origin + path)].sort());
+  expect(urls.filter(url => !metroUrls.includes(url))).toEqual([`${origin}/`, `${origin}/shanghai`, ...["about", "contact", "privacy", "support", "docs"].map(path => `${origin}/${path}`), ...paths.map(path => origin + path), `${origin}/zh-tw/travel`, `${origin}/zh-tw/posts`,
+    ...(editorial.travel as { slug: string }[]).map(g => `${origin}/zh-tw/travel/${g.slug}`),
+    ...(editorial.threads as { code: string }[]).map(p => `${origin}/zh-tw/posts/${p.code}`)].sort());
   expect(urls.some((url) => new URL(url).pathname === "/taipei")).toBe(false);
   expect(urls.some(url => /\?|token|\/p\/|\/trip\/|\/list|\/r\/|\/u\/|\/my\//.test(url))).toBe(false);
   const robots = await request.get("/robots.txt");
