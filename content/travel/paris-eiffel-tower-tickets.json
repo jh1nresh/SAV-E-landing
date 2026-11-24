@@ -1,0 +1,95 @@
+{
+  "slug": "paris-eiffel-tower-tickets",
+  "region": "法國",
+  "city": "巴黎",
+  "date": "2026-11-25",
+  "title": "巴黎鐵塔門票怎麼選？二樓、登頂、樓梯和電梯一次看懂",
+  "description": "想登頂，買票時就要選 Summit。只逛二樓，可以把預算花在電梯，也可以沿樓梯逐層看鋼構。四種票的差別在最高樓層，以及怎麼抵達。",
+  "sections": [
+    {
+      "heading": "先決定要到二樓還是塔頂",
+      "paragraphs": [
+        {
+          "text": "想在鐵塔上辨認街廓，或同行者只想搭一段電梯，可選二樓。最期待的是站在最高處看巴黎，就選 Summit。登頂票也能逛較低樓層；拿二樓票入場後，官方不提供在塔內補差價登頂的選項。",
+          "links": [
+            {
+              "label": "官方二樓票升等說明",
+              "href": "https://www.toureiffel.paris/en/faq/my-ticket/i-bought-ticket-2nd-floor-and-now-i-want-go-top-possible"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "四種成人票怎麼比",
+      "paragraphs": [
+        {
+          "text": "先橫向比較同一目的樓層，再決定要不要走樓梯。想搭電梯登頂的人仍需在二樓轉乘；願意爬樓梯的人，從二樓到塔頂同樣要搭電梯。以下為 2026 年 11 月查得的個人成人單票，幣別為歐元。2027 年 1 月 11 日起的參觀適用新費率。",
+          "links": [
+            {
+              "label": "巴黎鐵塔官方票價",
+              "href": "https://www.toureiffel.paris/en/rates-opening-times"
+            }
+          ]
+        }
+      ],
+      "table": {
+        "caption": "巴黎鐵塔成人單票（2026 年 11 月）",
+        "columns": [
+          "最高樓層",
+          "上樓方式",
+          "票價"
+        ],
+        "rows": [
+          [
+            "二樓",
+            "走樓梯到二樓",
+            "€14.80"
+          ],
+          [
+            "二樓",
+            "搭電梯到二樓",
+            "€23.50"
+          ],
+          [
+            "塔頂",
+            "樓梯到二樓，轉電梯",
+            "€28.00"
+          ],
+          [
+            "塔頂",
+            "兩段電梯，在二樓轉乘",
+            "€36.70"
+          ]
+        ]
+      }
+    },
+    {
+      "heading": "把參觀日期放進官方售票日曆",
+      "paragraphs": [
+        {
+          "text": "電梯票最早於參觀前 90 天、走樓梯到二樓的票最早於 60 天前開賣。樓梯接登頂電梯的組合，官方說明僅淡季會提前在線上販售，也可當天到售票處查詢。挑日期時把樓層和人數一起填好；線上售完仍可查現場票，塔頂客滿時現場也會暫停販售。",
+          "links": [
+            {
+              "label": "官方購票與釋票說明",
+              "href": "https://www.toureiffel.paris/en/news/visit/all-our-tips-buying-ticket-visit-eiffel-tower"
+            },
+            {
+              "label": "按日期查官方售票",
+              "href": "https://ticket.toureiffel.paris/en"
+            }
+          ]
+        },
+        {
+          "text": "跨年後的行程要另外核對塔頂維護。官方公告 2027 年 1 月 4 日至 2 月 5 日（含）塔頂關閉。若日期落在這段期間，直接按二樓安排行程，並以當日公布的開放情況為準。",
+          "links": [
+            {
+              "label": "官方塔頂維護日期",
+              "href": "https://www.toureiffel.paris/en/news/visit/everything-know-about-closing-top-january"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
