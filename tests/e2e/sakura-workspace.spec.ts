@@ -15,6 +15,7 @@ test("the workspace is the crawlable homepage and links to the public library", 
     expect(oldMapLink.status()).toBe(308);
     expect(oldMapLink.headers().location).toBe(`/discover?city=${city}`);
   }
+  expect((await request.get("/?city=not-shanghai", { maxRedirects: 0 })).status()).toBe(200);
   const library = await (await request.get("/trips/library.json")).json();
   const posts = library.filter((item: { kind: string }) => item.kind === "post");
   expect(posts.length).toBeGreaterThanOrEqual(45);

@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       // Old city links still land on the map now that / serves the workspace.
-      { source: "/", has: [{ type: "query", key: "city", value: "taipei|shanghai" }], destination: "/discover", permanent: true },
+      { source: "/", has: [{ type: "query", key: "city", value: "(?:taipei|shanghai)" }], destination: "/discover", permanent: true },
       { source: "/trips/index.html", destination: "/", permanent: true },
       { source: "/taipei", destination: "/discover", statusCode: 301 },
       { source: "/taipei.md", destination: "/discover.md", statusCode: 301 },
