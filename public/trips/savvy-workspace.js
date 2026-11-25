@@ -63,12 +63,18 @@
   function story(p){
     return '<a class="ws-story" href="'+escape(linkPlace(p.id))+'"><img alt="" src="'+escape(p.image)+'"><span><small>'+escape(p.city)+'</small><strong>'+escape(p.name)+'</strong><i>'+escape(p.note)+'</i></span></a>';
   }
-  const slideDelay = 9000;
+  const slideDelay = 10000;
   let clockTimer;
   let disposeFeature;
-  function home(list, featuredId = list[0].id) {
+  function home(list) {
     clearTimeout(clockTimer);
-    let featured = list.find(t => t.id === featuredId) || list[0];
+    const tripsByCity = new Map();
+    for (const trip of list) {
+      const city = landmarkFor(trip.city)?.[0] || String(trip.city ?? '').trim().toLowerCase();
+      if (!tripsByCity.has(city)) tripsByCity.set(city, trip);
+    }
+    const slides = [...tripsByCity.values()];
+    let featured = slides[0];
     const remaining = () => list.filter(t => t.id !== featured.id);
     const stops = t => t.days.flat().map(id => byId.get(id)).filter(Boolean);
     const allStops = list.flatMap(stops);
@@ -90,26 +96,15 @@
         ? '<video class="trip-photo" aria-hidden="true" muted loop playsinline preload="none" poster="' +
           poster + '" data-clip="' + clip + '" style="object-position:' + landmark[4] + '"></video>'
         : cover(trip);
-      const position = list.indexOf(trip) + 1;
+      const position = slides.indexOf(trip) + 1;
       return '<div class="trip-window" role="group" aria-roledescription="投影片" aria-label="第 ' + position +
-        ' 張，共 ' + list.length + ' 張">' + artwork +
+        ' 張，共 ' + slides.length + ' 張">' + artwork +
         '<span class="trip-tag">' + escape(trip.city) + (landmark ? ' · ' + landmark[2] : '') + '</span>' +
         '<h2>' + escape(trip.title) + '</h2></div>' + ticket;
     }
-    const cityCounts = new Map();
-    for (const trip of list) cityCounts.set(trip.city, (cityCounts.get(trip.city) || 0) + 1);
-    const coverLabel = trip => trip.city && cityCounts.get(trip.city) === 1 ? trip.city : trip.title;
-    const changeTrip = list.length > 1
-      ? '<button type="button" class="trip-step" data-step="-1" aria-label="上一張行程封面"></button>' +
-        '<select class="trip-switch" aria-label="切換封面行程">' + list.map(t => '<option value="' +
-          escape(t.id) + '"' + (t.id === featured.id ? ' selected' : '') + '>' +
-          escape(coverLabel(t)) + '</option>').join('') + '</select>' +
-        '<button type="button" class="trip-step" data-step="1" aria-label="下一張行程封面"></button>'
-      : '';
     const hero = '<section class="trip-feature" aria-label="行程封面" aria-roledescription="輪播">' +
       '<a class="trip-spot" href="' + tripUrl(featured) + '">' + coverContent(featured) + '</a>' +
-      '<div class="trip-cover-controls"><button type="button" class="trip-motion"></button>' +
-      changeTrip + '</div><p class="trip-slide-status" role="status"></p></section>';
+      '<button type="button" class="trip-motion"></button></section>';
     const stats = (label, count, unit, cities = '') => '<div class="trip-stat"><dt>' + label + '</dt><dd>' + formatCount(count) +
       '<small>' + unit + '</small>' + (cities ? '<span>' + escape(cities) + '</span>' : '') + '</dd></div>';
     const totals = '<dl class="trip-stats" aria-label="行程總覽">' + stats('目的地城市', cityNames.size, '座', [...cityNames].slice(0,3).join(' · ')) +
@@ -165,9 +160,7 @@
     const dashboard = root.querySelector('.trip-dashboard');
     const feature = root.querySelector('.trip-feature');
     const featureLink = feature.querySelector('.trip-spot');
-    const switcher = feature.querySelector('.trip-switch');
     const motion = feature.querySelector('.trip-motion');
-    const status = feature.querySelector('.trip-slide-status');
     const schedule = root.querySelector('.trip-schedule');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const listeners = new AbortController();
@@ -190,10 +183,9 @@
       clearTimeout(timer);
       if (signal.aborted) return;
       const film = feature.querySelector('video');
-      motion.hidden = !film && list.length < 2;
-      motion.classList.toggle('is-playing', playing);
-      motion.title = playing ? '暫停封面動態' : '播放封面動態';
-      motion.setAttribute('aria-label', motion.title);
+      motion.hidden = !film && slides.length < 2;
+      const mediaLabel = slides.length > 1 ? '封面輪播' : '封面影片';
+      motion.textContent = (playing ? '暫停' : '播放') + mediaLabel;
       const active = playing && visible && !document.hidden && !feature.hidden;
       if (active && film) {
         if (!film.hasAttribute('src')) film.src = film.dataset.clip;
@@ -201,28 +193,21 @@
       } else if (film) {
         film.pause();
       }
-      if (active && list.length > 1 && !hovered && !dashboard.contains(document.activeElement)) {
-        timer = setTimeout(() => step(1, false), slideDelay);
+      const focus = document.activeElement;
+      if (active && slides.length > 1 && !hovered && (focus === motion || !dashboard.contains(focus))) {
+        timer = setTimeout(advance, slideDelay);
       }
     }
 
-    function selectTrip(trip, manual) {
-      if (!trip || trip === featured) return;
-      featured = trip;
+    function advance() {
       feature.querySelector('video')?.pause();
-      featureLink.href = tripUrl(trip);
-      featureLink.innerHTML = coverContent(trip);
+      featured = slides[(slides.indexOf(featured) + 1) % slides.length];
+      featureLink.href = tripUrl(featured);
+      featureLink.innerHTML = coverContent(featured);
       featureLink.querySelector('.trip-photo')?.classList.add('trip-slide-enter');
-      if (switcher) switcher.value = trip.id;
-      if (manual) status.textContent = `第 ${list.indexOf(trip) + 1} 張，共 ${list.length} 張 · ${trip.title}`;
-      schedule.innerHTML = scheduleFor(trip);
+      schedule.innerHTML = scheduleFor(featured);
       drawTrips();
       syncMotion();
-    }
-
-    function step(direction, manual = true) {
-      const index = (list.indexOf(featured) + direction + list.length) % list.length;
-      selectTrip(list[index], manual);
     }
 
     const observer = new IntersectionObserver(([entry]) => {
@@ -236,11 +221,9 @@
       listeners.abort();
       feature.querySelector('video')?.pause();
     };
-    if (switcher) switcher.onchange = () => selectTrip(list.find(t => t.id === switcher.value), true);
-    for (const button of feature.querySelectorAll('[data-step]')) button.onclick = () => step(Number(button.dataset.step));
     motion.onclick = () => { playing = !playing; syncMotion(); };
-    feature.onpointerenter = event => { if (event.pointerType === 'mouse') { hovered = true; syncMotion(); } };
-    feature.onpointerleave = () => { hovered = false; syncMotion(); };
+    featureLink.onpointerenter = event => { if (event.pointerType === 'mouse') { hovered = true; syncMotion(); } };
+    featureLink.onpointerleave = () => { hovered = false; syncMotion(); };
     dashboard.onfocusin = syncMotion;
     dashboard.onfocusout = () => queueMicrotask(syncMotion);
     document.addEventListener('visibilitychange', syncMotion, { signal });
