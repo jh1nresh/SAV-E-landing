@@ -37,14 +37,37 @@
   function current(){return location.hash.slice(1).split('?')[0] || 'trips';}
   function linkPlace(id){return '#place/'+encodeURIComponent(id)+'?from='+encodeURIComponent(current());}
   function summary(t){return t.days.length+' 天 · '+t.days.flat().length+' 個地點';}
-  function imageFor(city){return ({'台北':seeds[1].image,'上海':seeds[0].image})[city] || library.find(p=>p.city===city)?.image || seeds[0].image;}
+  const landmarks = [
+    ['上海', 'Shanghai', '東方明珠塔', media + 'discovery-motion-shanghai.webp', '40% 8%'],
+    ['台北', 'Taipei', '台北 101', media + 'discovery-live-taipei.webp', '49% 0%'],
+    ['北京', 'Beijing', '雍和宮・萬福閣', media + 'discovery-yonghe-clear.webp', '50% 20%'],
+    ['東京', 'Tokyo', '東京鐵塔', media + 'discovery-live-tokyo.webp', '38% 10%'],
+    ['京都', 'Kyoto', '清水寺', 'city-bar-assets/kyoto-scene.webp', '50% 50%'],
+    ['重慶', 'Chongqing', '東水門大橋', media + 'discovery-live-chongqing.webp', '50% 45%'],
+    ['首爾', 'Seoul', 'N 首爾塔', 'city-bar-assets/seoul-scene.webp', '50% 50%'],
+    ['洛杉磯', 'Los Angeles', '好萊塢標誌', media + 'discovery-hollywood-clear.webp', '50% 36%'],
+    ['紐約', 'New York', '自由女神像', media + 'discovery-live-new-york.webp', '48% 12%']
+  ];
+  function landmarkFor(city) {
+    const name = String(city || '').trim().replaceAll('臺', '台').replace(/市$/, '').toLowerCase();
+    return landmarks.find(([local, english]) => name === local || name === english.toLowerCase());
+  }
+  function cover(item) {
+    const landmark = landmarkFor(item.city);
+    if (!landmark) return '';
+    const [, , label, src, focus] = landmark;
+    const fit = src.startsWith('city-bar-assets/') ? ' trip-drawing' : '';
+    return '<img class="trip-photo' + fit + '" src="' + src + '" alt="' + label + '" style="object-position:' + focus + '">';
+  }
   function back(url,label){return '<a class="ws-back" href="#'+escape(url)+'">← '+escape(label)+'</a>';}
   function story(p){
     return '<a class="ws-story" href="'+escape(linkPlace(p.id))+'"><img alt="" src="'+escape(p.image)+'"><span><small>'+escape(p.city)+'</small><strong>'+escape(p.name)+'</strong><i>'+escape(p.note)+'</i></span></a>';
   }
   let clockTimer;
-  function home(list) {
-    const [featured, ...remaining] = list;
+  function home(list, featuredId = list[0].id) {
+    clearTimeout(clockTimer);
+    const featured = list.find(t => t.id === featuredId) || list[0];
+    const remaining = list.filter(t => t.id !== featured.id);
     const stops = t => t.days.flat().map(id => byId.get(id)).filter(Boolean);
     const firstStops = stops(featured);
     const allStops = list.flatMap(stops);
@@ -52,7 +75,6 @@
     const guides = [...new Map(firstStops.map(p => [p.article, p])).values()];
     const formatCount = n => n.toLocaleString('zh-Hant');
     const tripUrl = t => '#trip/' + encodeURIComponent(t.id);
-    const demos = seeds.some(seed => seed.id === featured.id);
     const info = (label, value) => '<div><dt>' + label + '</dt><dd>' + value + '</dd></div>';
     const portraits = firstStops.slice(0, 3).map(p => '<img src="' + escape(p.image) + '" alt="">').join('');
     const ticket = '<dl class="trip-ticket">' +
@@ -60,15 +82,20 @@
       info('相關攻略', formatCount(guides.length) + ' <small>篇</small>') +
       info('行程地點', '<span class="trip-faces">' + portraits + '</span>' + formatCount(firstStops.length) + ' <small>站</small>') + '</dl>';
     const photo = (item) => '<img class="trip-photo" src="' + escape(item.image) + '" alt="">';
-    const hero = '<a class="trip-spot" href="' + tripUrl(featured) + '">' + photo(featured) +
-      '<span class="trip-tag">' + (demos ? '示範行程' : '我的行程') + '</span><span class="trip-open" aria-hidden="true">↗</span>' +
-      '<h2>' + escape(featured.title) + '</h2>' + ticket + '</a>';
+    const landmark = landmarkFor(featured.city);
+    const changeTrip = list.length > 1 ? '<select class="trip-switch" aria-label="切換封面行程">' +
+      list.map(t => '<option value="' + escape(t.id) + '"' + (t.id === featured.id ? ' selected' : '') + '>' +
+        escape(t.city) + ' · ' + escape(t.title) + '</option>').join('') + '</select>' : '';
+    const hero = '<section class="trip-feature" aria-label="行程封面">' +
+      '<a class="trip-spot" href="' + tripUrl(featured) + '"><div class="trip-window">' + cover(featured) +
+      '<span class="trip-tag">' + escape(featured.city) + (landmark ? ' · ' + landmark[2] : '') + '</span>' +
+      '<h2>' + escape(featured.title) + '</h2></div>' + ticket + '</a>' + changeTrip + '</section>';
     const stats = (label, count, unit, text) => '<div class="trip-stat"><dt>' + label + '</dt><dd>' + formatCount(count) +
       '<small>' + unit + '</small></dd><span>' + escape(text) + '</span></div>';
     const totals = '<dl class="trip-stats">' + stats('目的地城市', cityNames.size, '座', [...cityNames].slice(0,3).join(' · ')) +
       stats('全部行程', list.length, '趟', '已建立的行程') + stats('行程天數', list.reduce((n,t) => n + t.days.length, 0), '天', '所有行程合計') +
       stats('收錄地點', new Set(allStops.map(p => p.id)).size, '處', '行程中的地點') + '</dl>';
-    const tripCard = t => '<a class="trip-mini" href="' + tripUrl(t) + '">' + photo(t) +
+    const tripCard = t => '<a class="trip-mini" href="' + tripUrl(t) + '">' + cover(t) +
       '<span class="trip-tag">' + escape(t.city) + '</span><div><strong>' + escape(t.title) + '</strong><small>' + summary(t) + '</small></div></a>';
     const languages = ['TWD', 'CNY', 'USD', 'JPY'];
     const fxOptions = selected => languages.map(c => '<option' + (c === selected ? ' selected' : '') + '>' + c + '</option>').join('');
@@ -99,6 +126,16 @@
       '<section class="trip-others"><header><h1>My Trips</h1><div class="trip-tools"><input type="search" aria-label="搜尋行程或地點" placeholder="搜尋行程或地點"><button type="button" data-view aria-pressed="false">列表</button></div></header>' +
       '<div class="trip-grid">' + remaining.map(tripCard).join('') + '<a class="trip-create" href="#new-trip"><b>＋</b>新增行程</a></div></section></div>' +
       '<aside class="trip-rail" aria-label="旅行工具">' + currency + collections + clocks + schedule + '</aside></div>';
+    const switcher = root.querySelector('.trip-switch');
+    if (switcher) switcher.onchange = () => {
+      const fxForm = root.querySelector('.trip-fx');
+      const oldValues = [...fxForm.querySelectorAll('input,select')].map(control => control.value);
+      home(list, switcher.value);
+      const nextForm = root.querySelector('.trip-fx');
+      nextForm.querySelectorAll('input,select').forEach((control, index) => { control.value = oldValues[index]; });
+      nextForm.dispatchEvent(new Event('input'));
+      root.querySelector('.trip-switch')?.focus({preventScroll:true});
+    };
     const search = root.querySelector('.trip-tools input');
     const grid = root.querySelector('.trip-grid');
     const create = grid.querySelector('.trip-create');
@@ -116,7 +153,7 @@
     search.oninput = () => {
       const query = search.value.trim().toLocaleLowerCase();
       const results = query ? list.filter(t => [t.title, t.city, ...stops(t).map(p => p.name)].some(s => s?.toLocaleLowerCase().includes(query))) : remaining;
-      root.querySelector('.trip-spot').hidden = Boolean(query);
+      root.querySelector('.trip-feature').hidden = Boolean(query);
       root.querySelector('.trip-stats').hidden = Boolean(query);
       grid.innerHTML = results.map(tripCard).join('') || (query ? '<p role="status">沒有符合的行程。</p>' : '');
       grid.append(create);
@@ -148,7 +185,7 @@
       e.preventDefault();
       const f=e.currentTarget, title=f.elements.title.value.trim(),city=f.elements.city.value.trim();
       if(!title||!city){(title?f.elements.city:f.elements.title).focus();return;}
-      const t={id:crypto.randomUUID(),title,city,image:imageFor(city),days:[[]]};
+      const t={id:crypto.randomUUID(),title,city,image:landmarkFor(city)?.[3] || null,days:[[]]};
       if(save([t,...trips()])) location.hash='trip/'+t.id;
     };
   }
@@ -171,7 +208,7 @@
     const from=new URLSearchParams(location.hash.split('?')[1]||'').get('from');
     const t=list.find(t=>'trip/'+t.id===from);
     const parent=from?.split('/')[0];
-    const target = t || (['collection','journey'].includes(parent) && /^[a-zA-Z0-9/_-]+$/.test(from)) || Object.hasOwn(tabs,from) ? from : 'collection';
+    const target = t || (['atlas','collection','journey'].includes(parent) && /^[a-zA-Z0-9/_-]+$/.test(from)) || Object.hasOwn(tabs,from) ? from : 'collection';
     const sources = [{title:p.article,url:p.url}, ...(window.savvyLinksForPlace?.(p.id) || [])];
     const articles = sources.map(source => '<a class="ws-source" href="'+escape(source.url)+'">'+escape(source.title)+' ↗</a>').join('');
     root.innerHTML='<article class="ws-place">'+back(target,t?.title||tabs[target.split('/')[0]])+'<img src="'+escape(p.image)+'" alt=""><p class="ws-meta">'+escape(p.city)+' · '+escape(p.address)+'</p><h1>'+escape(p.name)+'</h1><p>'+escape(p.note)+'</p><section class="ws-related"><h2>相關攻略</h2>'+articles+'</section></article>';
