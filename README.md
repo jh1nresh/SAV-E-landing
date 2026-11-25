@@ -119,11 +119,4 @@ validates the records and builds the shared inventory for the collection shelf,
 sitemap, HTML, and negotiated Markdown. Trips and visited-city progress remain
 in the browser and have no sitemap entries.
 
-After the production deployment, submit
-[the sitemap](https://savvy.jeezlabs.io/sitemap.xml) in the
-[`https://savvy.jeezlabs.io/` Search Console property](https://search.google.com/search-console).
-Use URL Inspection on the homepage and a travel guide to compare the submitted
-and Google-selected canonicals. Check Page indexing and Search performance as
-Google recrawls. Use the [Is Agentic report](https://is-agentic.com/) on that same
-deployed origin and verify that `/llms.txt`, `/index.md`, and the guide and post
-Markdown routes return the expected public text.
+See [Search Console and Is Agentic verification](docs/editorial-search.md).

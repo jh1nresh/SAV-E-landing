@@ -46,5 +46,6 @@ export const infoPages = {
 
 export const privacyGuidance = [
   { heading: "Reading the public website", text: "The landing page, written guides and metro food notes are public information. You can read them without uploading your saved places or import archives. An example restaurant or public source link is not a record of a user's saved or visited places. Follow source links with care: external sites have their own policies, and the TestFlight invitation is hosted by Apple." },
+  { heading: "Browser workspace and travel links", text: "The web workspace stores trips, collections, visit progress and journal entries in your browser. The workspace does not sync them to the iOS app. The website also runs the third-party Travelpayouts Drive script to handle travel links." },
   { heading: "Keep support requests limited", text: "If you need help, describe the problem with a short, redacted example rather than a complete location history. Do not include passwords, access tokens, private place links or an entire personal collection. This website's agent-readable pages provide the same public guidance as its HTML pages. They do not grant permission to read, change, share or delete anyone's private app data." },
 ] as const;

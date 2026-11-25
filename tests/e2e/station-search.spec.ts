@@ -25,7 +25,7 @@ test("homepage search is the Taipei station list", async ({ page }) => {
   for (const width of WIDTHS) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/discover");
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/\/discover$/);
     await expect(page.getByTestId("city-card-taipei")).toHaveCount(0);
     await expect(page.getByText("先選城市")).toHaveCount(0);
     await expect(page.locator("[data-slot=segmented-control]")).toHaveCount(0);
