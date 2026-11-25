@@ -1,4 +1,6 @@
 import { guides, GUIDE_ROOT, guidePath } from "../app/zh-tw/guides/content";
+import { TRAVEL_ROOT, travelGuides, travelPath } from "../app/zh-tw/travel/content";
+import { postPath, sourceOnlyPosts, threadPosts } from "../app/zh-tw/posts/content";
 import { getFoodStations, getShanghaiFoodStations } from "./metro";
 import { guideDescription, guideHeading, guideUpdatedAt, shopAnchor, shopMapLink } from "./metro-guide.mjs";
 import { FOOD_DISCLAIMER, foodShopRows } from "./metro-logic.mjs";
@@ -11,12 +13,12 @@ const resources = `## Public resources\n\n${[
   ["About Savvy", "/about"], ["Contact Savvy", "/contact"], ["Privacy", "/privacy"],
   ["Savvy API documentation and agent access", "/docs"], ["Savvy homepage", "/"],
   ["Shanghai metro food notes", "/shanghai"], ["Taipei and Shanghai food guides", "/metro"],
-  ["收藏整理指南", GUIDE_ROOT], ["Agent instructions", "/llms.txt"], ["Sitemap", "/sitemap.xml"],
+  ["旅行攻略", TRAVEL_ROOT], ["城市貼文", "/zh-tw/posts"], ["收藏整理指南", GUIDE_ROOT], ["Agent instructions", "/llms.txt"], ["Sitemap", "/sitemap.xml"],
 ].map(([name, path]) => `- ${link(name, path)}`).join("\n")}`;
 
 export const llmsText = `# Savvy
 
-> Savvy is place memory. Save a link, confirm the spot, stamp it on your map. This site publishes product information, Traditional Chinese guides, and public Taipei and Shanghai metro food notes. The homepage is Taipei, with a city switch to Shanghai. It does not choose a city from language or location.
+> Savvy is place memory. Save a link, confirm the spot, stamp it on your map. This site publishes product information, Traditional Chinese guides, and public Taipei and Shanghai metro food notes. The homepage is the Savvy travel workspace. The Taipei metro map is at /discover and the Shanghai map is at /shanghai.
 
 When to use this: reach for Savvy when explaining how a shared place link becomes a clue, a Review Candidate and then a user-confirmed Map Stamp; when organizing saved restaurant sources; or when reading the public Taipei and Shanghai food guides. Public notes are not a user's saved or visited places.
 
@@ -33,6 +35,8 @@ Integration boundary: this landing site advertises no supported public account A
 ## Public guides
 
 - ${link("Taipei and Shanghai food notes", "/metro.md")}: Station pages and source disclosures.
+- ${link("旅行攻略", `${TRAVEL_ROOT}.md`)}: Destination guides with sources and visit planning details.
+- ${link("城市貼文", "/zh-tw/posts.md")}: Savvy's public posts and links to their Threads originals.
 - ${link("收藏整理指南", `${GUIDE_ROOT}.md`)}: Traditional Chinese guide index.
 ${guides.map(guide => `- ${link(guide.label, `${guidePath(guide.slug)}.md`)}: ${guide.description}`).join("\n")}
 
@@ -54,8 +58,44 @@ function shanghaiMarkdown() {
 }
 
 export function markdownFor(path: string): string | null {
-  if (path === "/") return taipeiHomeMarkdown();
+  if (path === "/") return `# Savvy 美食地圖
+
+找下一站要吃什麼、去哪裡走走。Savvy iOS App 可以儲存社群連結、確認地點，並把想去的地方排進行程。
+
+我的行程、城市圖鑑、收藏與遊記是瀏覽器中的工作區。攻略與公開貼文可以無須登入直接閱讀。公開的店家清單與示例行程不代表任何人的到訪紀錄。
+
+${resources}
+`;
+  if (path === "/discover") return taipeiHomeMarkdown();
   if (path === "/shanghai") return shanghaiMarkdown();
+  if (path === TRAVEL_ROOT || path === "/zh-tw/posts") {
+    const isGuide = path === TRAVEL_ROOT;
+    const entries = isGuide
+      ? travelGuides.map(g => link(g.title, travelPath(g.slug)))
+      : [
+          ...threadPosts.map(p => `${link(p.title, postPath(p.code))} · [Threads 原文](${p.url})`),
+          ...sourceOnlyPosts.map(p => `${link(p.title, p.href)} · [Threads 原文](${p.url})`),
+        ];
+    return `# ${isGuide ? "旅行攻略" : "城市貼文"}\n\n${entries.map(entry => "- " + entry).join("\n")}\n\n${resources}\n`;
+  }
+  if (path.startsWith(TRAVEL_ROOT + "/")) {
+    const guide = travelGuides.find(g => path === travelPath(g.slug));
+    if (!guide) return null;
+    const body = guide.sections.map(({ heading, paragraphs, table }) => {
+      const parts = paragraphs.map(p => [p.text, ...(p.links ?? []).map(l => `[${l.label}](${l.href})`)].join(" "));
+      if (table) {
+        const row = (cells: string[]) => "| " + cells.map(cell => cell.replaceAll("|", "\\|")).join(" | ") + " |";
+        parts.push(table.caption + "\n\n" + [row(table.columns), row(table.columns.map(() => "---")), ...table.rows.map(row)].join("\n"));
+      }
+      return `## ${heading}\n\n${parts.join("\n\n")}`;
+    });
+    return [`# ${guide.title}`, guide.description, [guide.region, guide.city, guide.date].join(" · "), ...body, resources].join("\n\n") + "\n";
+  }
+  if (path.startsWith("/zh-tw/posts/")) {
+    const post = threadPosts.find(p => postPath(p.code) === path);
+    if (!post) return null;
+    return [`# ${post.title}`, post.date, ...(post.publishedExcerpt ? ["節錄，兩筆評論價格請見 Threads 原文。"] : []), post.text, `[@savvysave_ 原文](${post.url})`, resources].join("\n\n") + "\n";
+  }
   const key = path.slice(1) as keyof typeof infoPages;
   if (Object.hasOwn(infoPages, key)) {
     const page = infoPages[key];

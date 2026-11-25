@@ -95,15 +95,15 @@ test("every public sitemap page has raw HTML, canonical identity and matching Ma
   }
 });
 
-test("no-JS homepage and trust pages expose meaningful content, metadata and honest schema", async ({ browser }, testInfo) => {
+test("no-JS metro landing and trust pages expose meaningful content, metadata and honest schema", async ({ browser }, testInfo) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL: testInfo.project.use.baseURL, viewport: { width: 390, height: 844 } });
   try {
     const page = await context.newPage();
-    const response = await page.goto("/");
-    await expect(page).toHaveURL(/^http:\/\/127\.0\.0\.1:\d+\/$/);
+    const response = await page.goto("/discover");
+    await expect(page).toHaveURL(/^http:\/\/127\.0\.0\.1:\d+\/discover$/);
     await expect(page.locator("h1:visible")).toHaveCount(1);
     await expect(page.locator("h1:visible")).not.toBeEmpty();
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/savvy\.jeezlabs\.io\/?$/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/savvy\.jeezlabs\.io\/discover$/);
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", `${origin}/og.png`);
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "website");
     await expect(page.locator('meta[name="keywords"]')).toHaveAttribute("content", /place memory/);

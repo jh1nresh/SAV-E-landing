@@ -40,7 +40,7 @@ const CityContext = createContext<{ city: CityId; setCity: (city: CityId) => voi
 export function useSiteCity() { return useContext(CityContext); }
 
 function applyHomeMeta(lang: SiteLang) {
-  if (window.location.pathname !== "/") return;
+  if (window.location.pathname !== "/discover") return;
   const title = lang === "en" ? SITE_TITLE_EN : SITE_TITLE_ZH;
   const description = lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION_ZH;
   if (document.title !== title) document.title = title;
@@ -83,7 +83,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
     if (next === "shanghai") url.searchParams.set("city", next);
     else url.searchParams.delete("city");
     url.hash = "";
-    window.history.pushState(null, "", `/${url.search}`);
+    window.history.pushState(null, "", `/discover${url.search}`);
     setCityState(next);
   }, []);
   const [lang, setLangState] = useState<SiteLang>("zh-Hant");
@@ -125,7 +125,7 @@ function SiteNav() {
   const { lang, setLang } = useSiteLang();
   const pathname = usePathname();
   const { city, setCity } = useSiteCity();
-  const hasCity = pathname === "/shanghai" || pathname === "/";
+  const hasCity = pathname === "/shanghai" || pathname === "/discover";
 
   return (
     <nav className={hasCity ? "top has-city" : "top"}>

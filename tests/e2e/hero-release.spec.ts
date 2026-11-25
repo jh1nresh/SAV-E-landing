@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { openStation } from "./helpers";
 
 test("unmounting a closing map cancels its animation waits", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/discover");
   await openStation(page, "arena");
   const result = await page.evaluate(async () => {
     // Hold newly scheduled frames so teardown happens during the close spring.
@@ -36,7 +36,7 @@ test("unmounting a closing map cancels its animation waits", async ({ page }) =>
 
 for (const mode of ["", "reduce=1"]) {
   test(`returning home during a station transition cancels selection (${mode || "animated"})`, async ({ page }) => {
-    await page.goto(`/?${mode}`);
+    await page.goto(`/discover?${mode}`);
     await openStation(page, "arena");
     await page.evaluate(() => {
       window.__savvyMap!.select("dongmen");
@@ -51,7 +51,7 @@ for (const mode of ["", "reduce=1"]) {
 
   for (const action of ["escape", "close-button"]) {
     test(`explicit ${action} cancels a pending station (${mode || "animated"})`, async ({ page }) => {
-      await page.goto(`/?${mode}`);
+      await page.goto(`/discover?${mode}`);
       await openStation(page, "arena");
       await page.evaluate(action => {
         window.__savvyMap!.select("dongmen");
@@ -69,7 +69,7 @@ for (const mode of ["", "reduce=1"]) {
   }
 
   test(`immediate reset also cancels a deferred camera flight (${mode || "animated"})`, async ({ page }) => {
-    await page.goto(`/?${mode}`);
+    await page.goto(`/discover?${mode}`);
     await page.waitForFunction(() => !!window.__savvyMap);
     await page.evaluate(() => {
       window.__savvyMap!.select("arena");
@@ -82,7 +82,7 @@ for (const mode of ["", "reduce=1"]) {
 }
 
 test("future posts do not contribute NEW badges or weekly count", async ({ page }) => {
-  await page.goto("/?clock=2026-10-20");
+  await page.goto("/discover?clock=2026-10-20");
   await page.waitForFunction(() => !!window.__savvyMap);
   await expect(page.getByTestId("station-search").locator(".newtag")).toHaveCount(0);
   await expect(page.locator("#stampA")).toBeEmpty();
@@ -90,7 +90,7 @@ test("future posts do not contribute NEW badges or weekly count", async ({ page 
 });
 
 test("English page marks the intentionally Chinese live map language", async ({ page }) => {
-  await page.goto("/?lang=en");
+  await page.goto("/discover?lang=en");
   await page.waitForFunction(() => !!window.__savvyMap);
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page.getByTestId("metro-map")).toHaveAttribute("lang", "zh-Hant");
@@ -98,7 +98,7 @@ test("English page marks the intentionally Chinese live map language", async ({ 
 
 
 test("Escape cancels selection in the reduced-motion gap after the old card closes", async ({ page }) => {
-  await page.goto("/?reduce=1");
+  await page.goto("/discover?reduce=1");
   await openStation(page, "arena");
   // Freeze before scheduling the switch: RPC latency must not consume the
   // 9ms gap between the 250ms close and the 260ms pending selection.
