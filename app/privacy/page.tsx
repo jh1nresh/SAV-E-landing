@@ -23,6 +23,8 @@ export default function PrivacyPage() {
       <p className="en">
         Free keeps 50 saved places. Pro is unlimited saved places.
       </p>
+      <p className="zh">報名 Savvy 測試時，我們使用 Resend 儲存你填寫的 Email、寄出報名確認和試用邀請。你可以聯絡我們移除報名資料。</p>
+      <p className="en">When you sign up for the Savvy beta, we use Resend to store your email address and send your confirmation and testing invitation. Contact us to have your signup removed.</p>
       <p className="zh">
         問題請寄{" "}
         <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>。

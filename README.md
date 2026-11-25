@@ -14,6 +14,12 @@ NEXT_PUBLIC_TESTFLIGHT_URL="https://testflight.apple.com/join/aSVm9hRJ"
 
 App Store badges keep `data-swap="appstore-url"` so the href can be swapped at launch. The current TestFlight destination is identified by a visible localized beta note and the badge's accessible description; update that release-status copy with the destination at launch.
 
+### Savvy test list
+
+- For a local form and email preview without sending, run `SAVVY_TEST_LIST_PREVIEW=1 npm run dev`. Submit a sample address and select **Preview the confirmation email**.
+- Set `RESEND_API_KEY`, `SAVVY_TEST_LIST_FROM` (a verified Resend sender such as `Savvy <hello@example.com>`), and `SAVVY_TEST_LIST_SEGMENT` (the ID of a dedicated Resend test-list segment) as server-only variables. Use a Resend key with Contacts and sending access and create the string contact property `savvy_test_confirmation`. Keep the secret in the environment or an ignored local env file. The signup is displayed on the production home page only when the three variables are present at build time.
+- Contacts are saved in the configured segment before Resend accepts a transactional email. This flow does not subscribe anyone to a newsletter or update global opt-out preferences. Send testing invitations to the segment separately when the beta opens.
+
 ## Language
 
 - Default: Traditional Chinese (`zh-Hant`)
