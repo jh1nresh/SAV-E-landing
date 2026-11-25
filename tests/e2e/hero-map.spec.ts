@@ -74,9 +74,15 @@ test.describe("hero map interactions", () => {
     await waitForMap(page);
     await openStation(page, "houshanpi");
     const swipe = testInfo.project.name === "webkit" ? dispatchSwipe : dispatchTouchSwipe;
+    const card = page.locator("#card");
+    const cardOffset = () => card.evaluate(el =>
+      new DOMMatrixReadOnly(getComputedStyle(el).transform).f);
+    const restingY = await cardOffset();
     await swipe(page, 30);
     expect(await page.evaluate(() => window.__savvyMap!.state().openId)).toBe("houshanpi");
-    await expect(page.locator("#card")).toBeVisible();
+    await expect(card).toBeVisible();
+    // Start the second gesture only after the short swipe has sprung back.
+    await expect.poll(async () => Math.abs(await cardOffset() - restingY)).toBeLessThan(2);
     await swipe(page, 140);
     expect(await page.evaluate(() => window.__savvyMap!.state().openId)).toBeNull();
     await waitForCardClosed(page);

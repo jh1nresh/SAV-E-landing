@@ -65,15 +65,24 @@ export async function heroBadgeBox(page: Page) {
 
 export async function dispatchSwipe(page: Page, dy: number) {
   const handle = page.locator("#card .grab");
-  // A drag must release inside the viewport, including on tall mobile pages.
-  await handle.evaluate(el => el.scrollIntoView({ block: "center", behavior: "instant" }));
-  await handle.hover();
-  const grab = await handle.boundingBox();
-  if (!grab) throw new Error("drag handle is not visible");
-  const x = grab.x + grab.width / 2;
-  const y = grab.y + grab.height / 2;
-  expect(y + dy).toBeLessThan(page.viewportSize()!.height);
-  expect(await handle.evaluate((el, point) => el.contains(document.elementFromPoint(point.x, point.y)), { x, y })).toBe(true);
+  // Scroll the page itself. Scrolling the transformed handle into view can
+  // target the clipped map viewport and still leave the release off-screen.
+  await handle.evaluate(el => {
+    const rect = el.getBoundingClientRect();
+    window.scrollBy({ top: rect.top + rect.height / 2 - window.innerHeight / 2, behavior: "instant" });
+  });
+  const coordinates = await page.waitForFunction(distance => {
+    const grab = document.querySelector("#card .grab");
+    if (!grab) return false;
+    const rect = grab.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    return y >= 0 && y + distance < window.innerHeight &&
+      grab.contains(document.elementFromPoint(x, y)) ? { x, y } : false;
+  }, dy, { timeout: 5_000 });
+  const point = await coordinates.jsonValue();
+  if (!point) throw new Error("No visible drag handle with room for the swipe");
+  const { x, y } = point;
   await page.mouse.move(x, y);
   await page.mouse.down();
   await page.mouse.move(x, y + dy, { steps: 10 });
