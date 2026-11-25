@@ -65,14 +65,15 @@ export async function heroBadgeBox(page: Page) {
 
 export async function dispatchSwipe(page: Page, dy: number) {
   const handle = page.locator("#card .grab");
-  // Wait for the short-swipe spring to settle before sampling a five-pixel target.
-  await (await handle.isVisible() ? handle : page.locator("#card")).hover();
-  const box = await page.locator("#card").boundingBox();
-  if (!box) throw new Error("card not visible");
-  const grab = await page.locator("#card .grab").boundingBox();
-  // Tall article content scrolls natively; drag the actual dismissal handle.
-  const x = grab ? grab.x + grab.width / 2 : box.x + box.width / 2;
-  const y = grab ? grab.y + grab.height / 2 : box.y + 28;
+  // A drag must release inside the viewport, including on tall mobile pages.
+  await handle.evaluate(el => el.scrollIntoView({ block: "center", behavior: "instant" }));
+  await handle.hover();
+  const grab = await handle.boundingBox();
+  if (!grab) throw new Error("drag handle is not visible");
+  const x = grab.x + grab.width / 2;
+  const y = grab.y + grab.height / 2;
+  expect(y + dy).toBeLessThan(page.viewportSize()!.height);
+  expect(await handle.evaluate((el, point) => el.contains(document.elementFromPoint(point.x, point.y)), { x, y })).toBe(true);
   await page.mouse.move(x, y);
   await page.mouse.down();
   await page.mouse.move(x, y + dy, { steps: 10 });
@@ -289,14 +290,15 @@ export async function dispatchTouchSwipe(page: Page, dy: number) {
           }),
         );
       };
-      try {
-        fire("touchstart", y);
-        fire("touchmove", y + dy / 2);
-        fire("touchmove", y + dy);
-        fire("touchend", y + dy, true);
-      } catch {
-        /* WebKit may reject Touch(); mouse path covers the same thresholds */
-      }
+      // A fast 30px flick legitimately dismisses the card. Advance time between
+      // touch samples so this fixture measures distance at a slow drag speed.
+      const halfStepMs = Math.ceil(Math.abs(dy) / 2 / 0.4);
+      fire("touchstart", y);
+      await new Promise(resolve => setTimeout(resolve, halfStepMs));
+      fire("touchmove", y + dy / 2);
+      await new Promise(resolve => setTimeout(resolve, halfStepMs));
+      fire("touchmove", y + dy);
+      fire("touchend", y + dy, true);
     },
     { x, y, dy },
   );
