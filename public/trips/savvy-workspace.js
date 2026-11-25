@@ -208,7 +208,7 @@
     const from=new URLSearchParams(location.hash.split('?')[1]||'').get('from');
     const t=list.find(t=>'trip/'+t.id===from);
     const parent=from?.split('/')[0];
-    const target = t || (['atlas','collection','journey'].includes(parent) && /^[a-zA-Z0-9/_-]+$/.test(from)) || Object.hasOwn(tabs,from) ? from : 'collection';
+    const target = t || (['collection','journey'].includes(parent) && /^[a-zA-Z0-9/_-]+$/.test(from)) || Object.hasOwn(tabs,from) ? from : 'collection';
     const sources = [{title:p.article,url:p.url}, ...(window.savvyLinksForPlace?.(p.id) || [])];
     const articles = sources.map(source => '<a class="ws-source" href="'+escape(source.url)+'">'+escape(source.title)+' ↗</a>').join('');
     root.innerHTML='<article class="ws-place">'+back(target,t?.title||tabs[target.split('/')[0]])+'<img src="'+escape(p.image)+'" alt=""><p class="ws-meta">'+escape(p.city)+' · '+escape(p.address)+'</p><h1>'+escape(p.name)+'</h1><p>'+escape(p.note)+'</p><section class="ws-related"><h2>相關攻略</h2>'+articles+'</section></article>';

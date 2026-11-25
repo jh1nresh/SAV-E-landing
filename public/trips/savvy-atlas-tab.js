@@ -10,25 +10,7 @@
     { id: "Los-Angeles", city: "洛杉磯", area: "藝術區 · Traction Avenue" },
     { id: "New-York", city: "紐約", area: "宰也街 × 勿街" },
   ];
-  // Coordinates anchor each leader to the neighborhood. Labels use separate print positions.
-  const locations = {
-    Shanghai: [121.4377, 31.2024, [359, 333], [265, 269]],
-    Taipei: [121.5637, 25.0321, [233, 379], [163, 304]],
-    Beijing: [116.3935, 39.9386, [110, 126], [90, 55]],
-    Tokyo: [139.7668, 35.7276, [389, 119], [369, 62]],
-    Kyoto: [135.7743, 35.004, [430, 231], [353, 214]],
-    Chongqing: [106.5703, 29.5515, [82, 335], [54, 222]],
-    Seoul: [126.9899, 37.5749, [246, 100], [231, 44]],
-    "Los-Angeles": [-118.2343, 34.045, [699, 333], [92, 125]],
-    "New-York": [-73.998, 40.7148, [990, 300], [311, 116]],
-  };
-  const sheets = [
-    { id: "pacific", label: "環太平洋", width: 1100, height: 435, west: 72, east: 318, north: 68, cities: scenes },
-    { id: "asia", label: "東亞", width: 420, height: 355, west: 91.5, east: 152, north: 49,
-      cities: scenes.filter(city => !city.id.includes("-")) },
-    { id: "america", label: "北美", width: 420, height: 180, west: 219, east: 306, north: 51,
-      cities: scenes.filter(city => city.id.includes("-")) },
-  ];
+  const selectedKey = "savvy.atlas.city.v1";
   const visitedPrefix = "savvy.atlas.visited.v1.";
   const fallback = new Map();
   function read(key) {
@@ -74,73 +56,10 @@
     return frame;
   }
 
-  function svg(tag, attrs) {
-    const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
-    for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, value);
-    return el;
-  }
-
-  function mercator(lat) {
-    return Math.asinh(Math.tan(lat * Math.PI / 180)) * 180 / Math.PI;
-  }
-
-  function mapSheet(sheet, visited, onlyVisited) {
-    const panel = element("section", "atlas-ws-map atlas-ws-map-" + sheet.id);
-    panel.setAttribute("aria-label", sheet.label + "城市地圖");
-    if (onlyVisited && !sheet.cities.some(visited)) panel.hidden = true;
-    panel.style.aspectRatio = sheet.width + " / " + sheet.height;
-    const drawing = svg("svg", {viewBox: '0 0 ' + sheet.width + ' ' + sheet.height, 'aria-hidden': 'true', focusable: 'false'});
-    const scale = sheet.width / (sheet.east - sheet.west);
-    const x = lon => (lon - sheet.west) * scale;
-    const north = mercator(sheet.north);
-    const y = lat => (north - mercator(lat)) * scale;
-    for (const offset of [0, 360]) {
-      drawing.append(svg("image", {
-        href: "atlas-coast.svg", x: x(offset - 180), y: (north - 180) * scale,
-        width: 360 * scale, height: 360 * scale
-      }));
-    }
-    const grid = svg("g", {class:"atlas-ws-graticule"});
-    for (let lon = 0; lon <= 360; lon += 15) {
-      if (lon > sheet.west && lon < sheet.east) grid.append(svg("line", {x1:x(lon), x2:x(lon), y1:0, y2:sheet.height}));
-    }
-    for (let lat = 0; lat <= 75; lat += 15) {
-      if (y(lat) > 0 && y(lat) < sheet.height) grid.append(svg("line", {x1:0, x2:sheet.width, y1:y(lat), y2:y(lat)}));
-    }
-    drawing.append(grid);
-    if (sheet.id !== "pacific") panel.append(element("h2", "atlas-ws-sheet-title", sheet.label));
-    else panel.append(element("span", "atlas-ws-ocean", "太平洋"));
-    panel.append(drawing);
-
-    for (const city of sheet.cities) {
-      const seen = visited(city);
-      if (onlyVisited && !seen) continue;
-      const [lon, lat, worldLabel, regionLabel] = locations[city.id];
-      const [lx, ly] = sheet.id === "pacific" ? worldLabel : regionLabel;
-      const px = x(lon < 0 ? lon + 360 : lon);
-      const py = y(lat);
-      const group = svg("g", {class:seen ? "atlas-ws-pin is-visited" : "atlas-ws-pin"});
-      group.append(svg("line", {x1:px, y1:py, x2:lx, y2:ly}), svg("circle", {cx:px, cy:py, r:3}));
-      drawing.append(group);
-      const link = element("a", "atlas-ws-tile");
-      link.href = "#atlas/" + city.id;
-      link.style.left = (lx / sheet.width * 100) + "%";
-      link.style.top = (ly / sheet.height * 100) + "%";
-      link.setAttribute("aria-label", city.city + "，" + city.area + (seen ? "，已去過" : ""));
-      const picture = element("img");
-      picture.src = "city-bar-assets/" + city.id.toLowerCase() + "-pocket.webp";
-      picture.alt = "";
-      link.append(picture, element("strong", "", city.city));
-      if (seen) link.append(element("span", "atlas-ws-check", "✓"));
-      panel.append(link);
-    }
-    return panel;
-  }
-
   window.renderSavvyAtlas = function renderSavvyAtlas(root, api) {
-    const id = location.hash.slice(1).split("?")[0].split("/")[1];
-    const selected = scenes.find(city => city.id === id);
-    const visited = city => read(visitedPrefix + city.id) === "1";
+    let selected = scenes.find(scene => scene.id === read(selectedKey)) || scenes[0];
+    let filterVisited = false;
+    const visited = scene => read(visitedPrefix + scene.id) === "1";
     const atlas = element("div", "atlas-ws");
     const heading = element("header", "atlas-ws-header");
     const title = element("h1", "atlas-ws-title", "Atlas");
@@ -152,79 +71,101 @@
     progress.max = scenes.length;
     progress.setAttribute("aria-label", "已造訪的城市比例");
     stat.append(count, element("span", "", "座城市去過"), progress);
-    function syncCount() {
-      const number = scenes.filter(visited).length;
-      count.textContent = number + " / " + scenes.length;
-      progress.value = number;
-    }
-    syncCount();
     heading.append(title, stat);
-    atlas.append(heading);
-    root.replaceChildren(atlas);
-
-    if (!selected) {
-      const filters = element("div", "atlas-ws-filters");
-      filters.setAttribute("role", "group");
-      filters.setAttribute("aria-label", "篩選城市");
-      const all = element("button", "", "全部城市");
-      const seen = element("button", "", "去過的城市");
-      all.type = seen.type = "button";
-      filters.append(all, seen);
-      const maps = element("div", "atlas-ws-sheets");
-      const credit = element("a", "atlas-ws-credit", "底圖 · Natural Earth");
-      credit.href = "https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/";
-      const footer = element("div", "atlas-ws-map-foot");
-      footer.append(filters, credit);
-      atlas.append(maps, footer);
-      function draw(onlyVisited) {
-        all.setAttribute("aria-pressed", String(!onlyVisited));
-        seen.setAttribute("aria-pressed", String(onlyVisited));
-        if (onlyVisited && !scenes.some(visited)) {
-          maps.replaceChildren(element("p", "atlas-ws-empty", "還沒有造訪紀錄。點進城市後，選「我去過」即可加入。"));
-        } else {
-          maps.replaceChildren(...sheets.map(sheet => mapSheet(sheet, visited, onlyVisited)));
-        }
-      }
-      all.addEventListener("click", () => draw(false));
-      seen.addEventListener("click", () => draw(true));
-      draw(false);
-      return;
-    }
-
-    const detail = element("section", "atlas-ws-scene");
-    const back = element("a", "atlas-ws-back", "← 全部城市");
-    back.href = "#atlas";
+    const layout = element("div", "atlas-ws-layout");
+    const scene = element("section", "atlas-ws-scene");
     const stage = element("div", "atlas-ws-stage");
-    const url = "pocket-city/" + selected.id + "/index.html";
-    const label = selected.city + " · " + selected.area;
-    const caption = element("header", "atlas-ws-scene-header");
-    caption.append(element("h2", "", selected.city), element("p", "atlas-ws-area", selected.area));
-    const actions = element("div", "atlas-ws-stage-caption");
+    const frameHost = element("div", "atlas-ws-frame-host");
+    const sceneHeader = element("header", "atlas-ws-scene-header");
+    const name = element("h2");
+    const area = element("p", "atlas-ws-area");
+    const frameCaption = element("div", "atlas-ws-stage-caption");
     const full = element("a", "atlas-ws-open", "展開街區 ↗");
-    full.href = url;
     full.target = "_blank";
     full.rel = "noopener";
-    full.setAttribute("aria-label", "在新分頁展開" + label);
     const mark = element("button", "atlas-ws-mark");
     mark.type = "button";
-    mark.setAttribute("aria-label", "我去過" + selected.city);
-    function syncMark() {
-      const seen = visited(selected);
-      mark.setAttribute("aria-pressed", String(seen));
-      mark.textContent = seen ? "✓ 已去過" : "＋ 我去過";
+    sceneHeader.append(name, area);
+    frameCaption.append(full, mark);
+    stage.append(frameHost, sceneHeader, frameCaption);
+    const articles = element("section", "atlas-ws-articles");
+    scene.append(stage, articles);
+
+    const index = element("section", "atlas-ws-index");
+    const indexHeader = element("header", "atlas-ws-index-header");
+    indexHeader.append(element("h2", "", "城市索引"));
+    const filters = element("div", "atlas-ws-filters");
+    filters.setAttribute("role", "group");
+    filters.setAttribute("aria-label", "篩選城市");
+    const all = element("button", "", "全部");
+    const seen = element("button", "", "去過");
+    all.type = seen.type = "button";
+    filters.append(all, seen);
+    indexHeader.append(filters);
+    const cities = element("div", "atlas-ws-cities");
+    const empty = element("p", "atlas-ws-empty", "還沒有造訪紀錄。選擇城市後，點「我去過」即可加入。");
+    index.append(indexHeader, cities, empty);
+    layout.append(scene, index);
+    atlas.append(heading, layout);
+    root.replaceChildren(atlas);
+
+    const tiles = new Map();
+    for (const city of scenes) {
+      const tile = element("button", "atlas-ws-tile");
+      tile.type = "button";
+      const picture = element("img");
+      picture.src = 'city-bar-assets/' + city.id.toLowerCase() + '-pocket.webp';
+      picture.alt = "";
+      const label = element("span", "atlas-ws-tile-label");
+      label.append(element("strong", "", city.city), element("small", "", city.id.replaceAll("-", " ")));
+      const check = element("span", "atlas-ws-tile-check", "✓");
+      check.setAttribute("aria-label", "去過");
+      tile.append(picture, label, check);
+      tile.addEventListener("click", () => {
+        if (selected.id === city.id) return;
+        selected = city;
+        save(selectedKey, selected.id);
+        showScene();
+        refresh();
+        if (window.matchMedia("(max-width: 49rem)").matches) {
+          name.focus({ preventScroll: true });
+          stage.scrollIntoView({ block: "start" });
+        }
+      });
+      tiles.set(city.id, { tile, check });
+      cities.append(tile);
     }
-    mark.addEventListener("click", () => {
-      save(visitedPrefix + selected.id, visited(selected) ? "0" : "1");
-      syncMark();
-      syncCount();
-    });
-    syncMark();
-    actions.append(full, mark);
-    stage.append(embedScene(url, label), caption, actions);
-    detail.append(back, stage);
-    const places = api.places.filter(place => place.city === selected.city && place.url);
-    if (places.length) {
-      const articles = element("section", "atlas-ws-articles");
+    name.tabIndex = -1;
+    function refresh() {
+      const total = scenes.filter(visited).length;
+      count.textContent = total + " / " + scenes.length;
+      progress.value = total;
+      all.setAttribute("aria-pressed", String(!filterVisited));
+      seen.setAttribute("aria-pressed", String(filterVisited));
+      empty.hidden = !filterVisited || total > 0;
+      mark.setAttribute("aria-pressed", String(visited(selected)));
+      mark.textContent = visited(selected) ? "✓ 已去過" : "＋ 我去過";
+      mark.setAttribute("aria-label", "我去過" + selected.city);
+      for (const city of scenes) {
+        const { tile, check } = tiles.get(city.id);
+        tile.hidden = filterVisited && !visited(city);
+        tile.setAttribute("aria-pressed", String(city.id === selected.id));
+        check.hidden = !visited(city);
+      }
+    }
+
+    function showScene() {
+      const url = 'pocket-city/' + selected.id + '/index.html';
+      const label = selected.city + " · " + selected.area;
+      name.textContent = selected.city;
+      area.textContent = selected.area;
+      full.href = url;
+      full.setAttribute("aria-label", "在新分頁展開" + label);
+      frameHost.replaceChildren(embedScene(url, label));
+      const places = api.places.filter(place => place.city === selected.city && place.url);
+      articles.replaceChildren();
+      articles.hidden = !places.length;
+      if (!places.length) return;
       articles.append(element("h2", "", selected.city + "地點與攻略"));
       const list = element("ul", "atlas-ws-place-list");
       for (const place of places) {
@@ -247,8 +188,15 @@
         list.append(item);
       }
       articles.append(list);
-      detail.append(articles);
     }
-    atlas.append(detail);
+
+    mark.addEventListener("click", () => {
+      save(visitedPrefix + selected.id, visited(selected) ? "0" : "1");
+      refresh();
+    });
+    all.addEventListener("click", () => { filterVisited = false; refresh(); });
+    seen.addEventListener("click", () => { filterVisited = true; refresh(); });
+    showScene();
+    refresh();
   };
 })();
