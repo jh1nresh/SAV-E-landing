@@ -44,10 +44,11 @@ function applyHomeMeta(lang: SiteLang) {
   const title = lang === "en" ? SITE_TITLE_EN : SITE_TITLE_ZH;
   const description = lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION_ZH;
   if (document.title !== title) document.title = title;
-  const metas = [...document.querySelectorAll('meta[name="description"]')];
-  const [first, ...rest] = metas;
+  const [first, ...rest] = document.querySelectorAll('meta[name="description"]');
   if (first && first.getAttribute("content") !== description) first.setAttribute("content", description);
-  for (const extra of rest) extra.remove();
+  // Next can render duplicate metadata during hydration. Keep the nodes
+  // attached so React can reconcile them, with only one description exposed.
+  for (const extra of rest) extra.removeAttribute("name");
 }
 
 function persistLang(lang: SiteLang) {

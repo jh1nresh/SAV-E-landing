@@ -1,5 +1,7 @@
 import { CityHeroMap } from "./metro/CityHeroMap";
 import { AppStoreBadge } from "./SiteChrome";
+import TestList from "./TestList";
+import { testListConfig } from "../lib/test-list-resend.mjs";
 import "./metro/hero-map.css";
 
 import { GUIDE_ROOT, guidePath, guides } from "./zh-tw/guides/content";
@@ -15,6 +17,8 @@ const STICKERS = [
 ] as const;
 
 export default function SavvyLanding({ clock }: { clock: string }) {
+  const showTestList = Boolean(testListConfig(process.env)) ||
+    (process.env.NODE_ENV === "development" && process.env.SAVVY_TEST_LIST_PREVIEW === "1");
   return (
     <main>
       <section className="s1 hero" id="hero">
@@ -47,6 +51,7 @@ export default function SavvyLanding({ clock }: { clock: string }) {
             <div data-testid="hero-appstore">
               <AppStoreBadge />
             </div>
+            {showTestList && <div className="test-list-entry"><TestList /></div>}
             <div className="hero-stk" aria-label="Savvy stickers">
               {STICKERS.map((s) => (
                 <img key={s.src} src={s.src} alt={s.alt} width={58} height={58} />
