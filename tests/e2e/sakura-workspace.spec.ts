@@ -10,6 +10,11 @@ test("the workspace is the crawlable homepage and links to the public library", 
   for (const path of ["/zh-tw/travel", "/zh-tw/posts", "/discover", "/privacy"]) {
     expect(html).toContain(`href="${path}"`);
   }
+  for (const city of ["taipei", "shanghai"]) {
+    const oldMapLink = await request.get(`/?city=${city}`, { maxRedirects: 0 });
+    expect(oldMapLink.status()).toBe(308);
+    expect(oldMapLink.headers().location).toBe(`/discover?city=${city}`);
+  }
   const library = await (await request.get("/trips/library.json")).json();
   const posts = library.filter((item: { kind: string }) => item.kind === "post");
   expect(posts.length).toBeGreaterThanOrEqual(45);
