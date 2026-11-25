@@ -73,15 +73,12 @@ test.describe("hero map interactions", () => {
     await page.goto("/");
     await waitForMap(page);
     await openStation(page, "houshanpi");
-    if (testInfo.project.name === "webkit") {
-      await dispatchTouchSwipe(page, 30);
-      await dispatchSwipe(page, 30);
-    } else {
-      await dispatchTouchSwipe(page, 30);
-    }
+    const swipe = testInfo.project.name === "webkit" ? dispatchSwipe : dispatchTouchSwipe;
+    await swipe(page, 30);
+    expect(await page.evaluate(() => window.__savvyMap!.state().openId)).toBe("houshanpi");
     await expect(page.locator("#card")).toBeVisible();
-    if (testInfo.project.name === "webkit") await dispatchSwipe(page, 140);
-    else await dispatchTouchSwipe(page, 140);
+    await swipe(page, 140);
+    expect(await page.evaluate(() => window.__savvyMap!.state().openId)).toBeNull();
     await waitForCardClosed(page);
   });
 
