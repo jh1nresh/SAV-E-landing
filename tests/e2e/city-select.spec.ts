@@ -193,6 +193,8 @@ test.describe("Shanghai switches inside the same hero with the shared photo map 
 async function openShanghaiHero(page: Page, width: number) {
   await page.setViewportSize({ width, height: 900 });
   await page.goto("/discover?reduce=1");
+  // Wait for hydration before checking same-page city switching.
+  await expect(page.getByTestId("station-picker-trigger")).toBeVisible();
   await expect(page.getByTestId("city-switch-shanghai")).toBeVisible();
   await page.locator("#hero").evaluate(el => el.setAttribute("data-preserved", "yes"));
   await page.getByTestId("city-switch-shanghai").click();

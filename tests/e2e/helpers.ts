@@ -4,7 +4,6 @@ import type {} from "../../app/metro/map-runtime";
 export async function waitForMap(page: Page) {
   const slot = page.locator("[data-testid=metro-map-slot], [data-testid=metro-map]");
   await slot.first().waitFor({ state: "attached", timeout: 20_000 });
-  await page.waitForLoadState("networkidle").catch(() => undefined);
 
   const nudge = async () => {
     await page.evaluate(() => window.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true })));
