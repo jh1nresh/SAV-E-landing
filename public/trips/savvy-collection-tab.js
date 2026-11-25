@@ -65,6 +65,106 @@
     return anchor;
   }
 
+  let libraryRequest;
+  function loadLibrary() {
+    if (!libraryRequest) {
+      libraryRequest = fetch("/trips/library.json").then(async response => {
+        if (!response.ok) throw new Error("library");
+        const rows = await response.json();
+        if (!Array.isArray(rows)) throw new Error("library");
+        return rows.filter(row =>
+          row && (row.kind === "guide" || row.kind === "post") &&
+          typeof row.title === "string" && row.title.trim() &&
+          typeof row.href === "string" && row.href.trim() && webUrl(row.href, document.baseURI)
+        );
+      }).catch(error => {
+        libraryRequest = undefined;
+        throw error;
+      });
+    }
+    return libraryRequest;
+  }
+
+  function publicationShelf() {
+    const shelf = element("section", "col-ws-publications");
+    const header = element("header", "col-ws-publication-head");
+    header.append(element("h2", "col-ws-subhead", "攻略與原文"));
+    const indexes = element("div", "col-ws-index-links");
+    indexes.append(sourceLink("攻略索引", "/zh-tw/travel"), sourceLink("原文索引", "/zh-tw/posts"));
+    header.append(indexes);
+
+    const controls = element("div", "col-ws-library-controls");
+    const region = element("select");
+    region.setAttribute("aria-label", "依地區篩選攻略與原文");
+    const kind = element("select");
+    kind.setAttribute("aria-label", "依內容類型篩選");
+    kind.append(option("", "全部類型"), option("guide", "攻略"), option("post", "原文"));
+    controls.append(region, kind);
+    const note = element("p", "col-ws-meta");
+    note.setAttribute("role", "status");
+    const list = element("ul", "col-ws-publication-list");
+    const retry = element("button", "col-ws-cancel", "重新載入");
+    const more = element("button", "col-ws-cancel", "顯示更多");
+    more.type = retry.type = "button";
+    shelf.append(header, controls, note, list, retry, more);
+    let entries = [];
+    let cities = null;
+    let phase = "loading";
+    let limit = 6;
+    function draw() {
+      const scope = cities ? entries.filter(row => cities.has(row.city)) : entries;
+      const regions = [...new Set(scope.map(row => row.region).filter(Boolean))];
+      const previous = region.value;
+      region.replaceChildren(option("", "全部地區"), ...regions.map(r => option(r, r)));
+      region.value = regions.includes(previous) ? previous : "";
+      controls.hidden = !scope.length;
+      region.hidden = regions.length < 2;
+      retry.hidden = phase !== "error";
+      const matches = scope.filter(row => (!region.value || row.region === region.value) && (!kind.value || row.kind === kind.value));
+      list.replaceChildren(...matches.slice(0, limit).map(row => {
+        const item = element("li");
+        const meta = [row.city || row.region, row.kind === "guide" ? "攻略" : "原文", row.displayDate || row.date].filter(Boolean).join(" · ");
+        item.append(element("small", "col-ws-meta", meta), sourceLink(row.title, row.href));
+        return item;
+      }));
+      more.hidden = matches.length <= limit;
+      note.textContent = phase === "loading" ? "載入中…" : phase === "error" ? "暫時無法載入攻略與原文。" :
+        !matches.length ? "目前沒有符合的文章。" : "";
+      note.hidden = !note.textContent;
+    }
+    function reload() {
+      phase = "loading";
+      draw();
+      loadLibrary().then(rows => {
+        if (!shelf.isConnected) return;
+        entries = rows;
+        phase = "ready";
+        draw();
+      }, () => {
+        if (!shelf.isConnected) return;
+        phase = "error";
+        draw();
+      });
+    }
+    region.onchange = kind.onchange = () => { limit = 6; draw(); };
+    more.onclick = () => {
+      const previous = list.children.length;
+      limit += 6;
+      draw();
+      list.children[previous]?.querySelector("a")?.focus({ preventScroll: true });
+    };
+    retry.onclick = reload;
+    return {
+      shelf,
+      load: reload,
+      scope(nextCities) {
+        cities = nextCities;
+        limit = 6;
+        draw();
+      },
+    };
+  }
+
   function guidesFor(places) {
     const guides = new Map();
     for (const place of places) {
@@ -151,6 +251,7 @@
     const status = element("p", "col-ws-status");
     status.setAttribute("role", "status");
     const content = element("div", "col-ws-sections");
+    const publications = publicationShelf();
 
     const rail = element("nav", "col-ws-rail");
     rail.setAttribute("aria-label","收藏集");
@@ -298,6 +399,8 @@
       const relevant = guidesFor(places);
       const records = saved.filter(record => contains(record,current));
       const cities = [...new Set([...relevant,...records].map(item => item.city))];
+      publications.scope(filter ? new Set([filter]) : current.city ? new Set([current.city]) :
+        isCustom ? new Set(cities) : null);
       if (isCustom) {
         const available = api.places.filter(place => !inPlaceList(place,current));
         placeForm.hidden = !available.length;
@@ -400,8 +503,9 @@
 
     render();
     const detail = element("div","col-ws-detail");
-    detail.append(header, form, status, filters, placeForm, content);
+    detail.append(header, form, status, filters, placeForm, publications.shelf, content);
     sheet.append(rail,detail);
     root.replaceChildren(sheet);
+    publications.load();
   };
 })();

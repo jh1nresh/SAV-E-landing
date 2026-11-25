@@ -65,14 +65,24 @@ export async function heroBadgeBox(page: Page) {
 
 export async function dispatchSwipe(page: Page, dy: number) {
   const handle = page.locator("#card .grab");
-  // Wait for the short-swipe spring to settle before sampling a five-pixel target.
-  await (await handle.isVisible() ? handle : page.locator("#card")).hover();
-  const box = await page.locator("#card").boundingBox();
-  if (!box) throw new Error("card not visible");
-  const grab = await page.locator("#card .grab").boundingBox();
-  // Tall article content scrolls natively; drag the actual dismissal handle.
-  const x = grab ? grab.x + grab.width / 2 : box.x + box.width / 2;
-  const y = grab ? grab.y + grab.height / 2 : box.y + 28;
+  // Scroll the page itself. Scrolling the transformed handle into view can
+  // target the clipped map viewport and still leave the release off-screen.
+  await handle.evaluate(el => {
+    const rect = el.getBoundingClientRect();
+    window.scrollBy({ top: rect.top + rect.height / 2 - window.innerHeight / 2, behavior: "instant" });
+  });
+  const coordinates = await page.waitForFunction(distance => {
+    const grab = document.querySelector("#card .grab");
+    if (!grab) return false;
+    const rect = grab.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    return y >= 0 && y + distance < window.innerHeight &&
+      grab.contains(document.elementFromPoint(x, y)) ? { x, y } : false;
+  }, dy, { timeout: 5_000 });
+  const point = await coordinates.jsonValue();
+  if (!point) throw new Error("No visible drag handle with room for the swipe");
+  const { x, y } = point;
   await page.mouse.move(x, y);
   await page.mouse.down();
   await page.mouse.move(x, y + dy, { steps: 10 });
@@ -289,14 +299,15 @@ export async function dispatchTouchSwipe(page: Page, dy: number) {
           }),
         );
       };
-      try {
-        fire("touchstart", y);
-        fire("touchmove", y + dy / 2);
-        fire("touchmove", y + dy);
-        fire("touchend", y + dy, true);
-      } catch {
-        /* WebKit may reject Touch(); mouse path covers the same thresholds */
-      }
+      // A fast 30px flick legitimately dismisses the card. Advance time between
+      // touch samples so this fixture measures distance at a slow drag speed.
+      const halfStepMs = Math.ceil(Math.abs(dy) / 2 / 0.4);
+      fire("touchstart", y);
+      await new Promise(resolve => setTimeout(resolve, halfStepMs));
+      fire("touchmove", y + dy / 2);
+      await new Promise(resolve => setTimeout(resolve, halfStepMs));
+      fire("touchmove", y + dy);
+      fire("touchend", y + dy, true);
     },
     { x, y, dy },
   );

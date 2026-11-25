@@ -21,3 +21,6 @@ app/metro/metro.public.json
 /public/metro/images/
 
 /.npm-cache/
+
+# Build-time public guides and attributed posts.
+/lib/editorial.public.json
