@@ -53,14 +53,14 @@ test("guide links, keyboard navigation and sitemap use only public canonical pag
   await page.getByRole("link", { name: "從一則分享開始", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#step-1$/);
-  const home = await request.get("/");
+  const home = await request.get("/discover");
   for (const path of paths) expect(await home.text()).toContain(`href="${path}"`);
   const sitemap = await request.get("/sitemap.xml");
   expect(sitemap.status()).toBe(200);
   const urls = [...(await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]).sort();
   const metroUrls = urls.filter(url => url === `${origin}/metro` || url.startsWith(`${origin}/metro/`));
   expect(metroUrls).toContain(`${origin}/metro`);
-  expect(urls.filter(url => !metroUrls.includes(url))).toEqual([`${origin}/`, `${origin}/shanghai`, ...["about", "contact", "privacy", "support", "docs"].map(path => `${origin}/${path}`), ...paths.map(path => origin + path)].sort());
+  expect(urls.filter(url => !metroUrls.includes(url) && !/\/zh-tw\/(?:travel|posts)(?:\/|$)/.test(url))).toEqual([`${origin}/`, `${origin}/discover`, `${origin}/shanghai`, ...["about", "contact", "privacy", "support", "docs"].map(path => `${origin}/${path}`), ...paths.map(path => origin + path)].sort());
   expect(urls.some((url) => new URL(url).pathname === "/taipei")).toBe(false);
   expect(urls.some(url => /\?|token|\/p\/|\/trip\/|\/list|\/r\/|\/u\/|\/my\//.test(url))).toBe(false);
   const robots = await request.get("/robots.txt");

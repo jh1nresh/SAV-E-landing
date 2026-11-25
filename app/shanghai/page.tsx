@@ -6,4 +6,4 @@ export const metadata = guideMetadata(
   "/shanghai",
 );
 
-export { default } from "../page";
+export { default } from "../discover/page";

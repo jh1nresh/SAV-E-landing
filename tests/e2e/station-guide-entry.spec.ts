@@ -12,7 +12,7 @@ for (const width of [320, 390, 1280]) {
         { city: "shanghai", id: "shanghai-yuyuan", slug: "shanghai-yuyuan", name: "豫園" },
       ]) {
         const page = await context.newPage();
-        await page.goto(`/?city=${city}`);
+        await page.goto(`/discover?city=${city}`);
         await openStation(page, id);
         const link = page.getByTestId(`metro-food-link-${id}`);
         await expect(link).toHaveAccessibleName(`看${name}站完整美食清單`);

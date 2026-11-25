@@ -10,7 +10,7 @@ export const metadata = guideMetadata(
 export default function GuidesIndex() {
   return (
     <main className="guide-shell" lang="zh-Hant">
-      <a className="guide-back" href="/">← 回到捷運美食地圖</a>
+      <a className="guide-back" href="/discover">← 回到捷運美食地圖</a>
       <header className="guide-header">
         <p className="guide-eyebrow">SAVVY FIELD NOTES · 收藏整理指南</p>
         <h1 className="guide-title">把想去的地方，<br />一步步整理回來。</h1>

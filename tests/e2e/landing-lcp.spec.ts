@@ -43,7 +43,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
       page.on("request", (req) => {
         if (req.resourceType() === "image") requested.push(req.url());
       });
-      await page.goto("/");
+      await page.goto("/discover");
       await page.waitForLoadState("domcontentloaded");
       await assertStaticFirstScreenHints(page);
       await assertBelowFoldLazy(page);
@@ -59,7 +59,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
       page.on("request", (req) => {
         if (req.resourceType() === "image") requested.push(req.url());
       });
-      await page.goto("/?lang=en");
+      await page.goto("/discover?lang=en");
       await page.waitForLoadState("domcontentloaded");
       await expect(page.locator("html")).toHaveAttribute("lang", "en");
       await assertStaticFirstScreenHints(page);
@@ -81,7 +81,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
   ]) {
     test(`E-1 LCP at ${label} is not the map or a food photo`, async ({ page }) => {
       await page.setViewportSize(viewport);
-      await page.goto("/");
+      await page.goto("/discover");
       await page.waitForLoadState("domcontentloaded");
       await page.waitForTimeout(1500);
       const lcp = await page.evaluate(() => {
@@ -153,7 +153,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
 
   test("OSM attribution link is present with the licence href", async ({ context }) => {
     const zh = await context.newPage();
-    await zh.goto("/");
+    await zh.goto("/discover");
     const link = zh.getByTestId("osm-attribution");
     await expect(link).toHaveText("Map data © OpenStreetMap contributors");
     await expect(link).toHaveAttribute("href", "https://www.openstreetmap.org/copyright");
@@ -162,7 +162,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
     await zh.close();
 
     const en = await context.newPage();
-    await en.goto("/?lang=en");
+    await en.goto("/discover?lang=en");
     await expect(en.getByTestId("osm-attribution")).toHaveAttribute(
       "href",
       "https://www.openstreetmap.org/copyright",
@@ -174,7 +174,7 @@ test.describe("first-screen LCP hints and OSM credit", () => {
   for (const width of [375, 390]) {
     test(`OSM footer does not overflow at ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 844 });
-      await page.goto("/");
+      await page.goto("/discover");
       await page.locator("footer.site").scrollIntoViewIfNeeded();
       await expect(page.getByTestId("osm-attribution")).toBeVisible();
       await noHorizontalOverflow(page);

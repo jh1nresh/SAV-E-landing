@@ -29,7 +29,7 @@ export default async function StationPage({ params }: { params: Promise<{ slug: 
   const shanghai = station.city === 'shanghai';
   return <main className="guide-shell metro-food" lang="zh-Hant">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(guideStructuredData(station, SITE_ORIGIN)) }} />
-    <a className="guide-back" href={shanghai ? '/?city=shanghai' : '/metro'}>{shanghai ? '← 回到上海地圖' : '← 全部捷運美食清單'}</a>
+    <a className="guide-back" href={shanghai ? '/discover?city=shanghai' : '/metro'}>{shanghai ? '← 回到上海地圖' : '← 全部捷運美食清單'}</a>
     <nav className="food-breadcrumbs" aria-label="目前位置"><a href="/">Savvy</a><span aria-hidden="true">／</span><a href="/metro">捷運美食攻略</a><span aria-hidden="true">／</span><span aria-current="page">{guideHeading(station)}</span></nav>
     <header className="guide-header">
       <p className="guide-eyebrow">{guideCityName(station)} · 第 {station.n} 站 · {shanghai ? '價格以人民幣標示' : '價格以新台幣標示'}</p>

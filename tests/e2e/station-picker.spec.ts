@@ -31,7 +31,7 @@ async function boxBottom(page: import("@playwright/test").Page, selector: string
 
 test("default trigger is the newest station and does not open its card", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/");
+  await page.goto("/discover");
   await waitForMap(page);
   const trigger = page.getByTestId("station-picker-trigger");
   await expect(trigger).toContainText(`第 ${newest.n} 站`);
@@ -44,7 +44,7 @@ test("default trigger is the newest station and does not open its card", async (
 
 test("choosing newest, oldest, and a middle station updates the trigger, pin, and card", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/");
+  await page.goto("/discover");
   await waitForMap(page);
   for (const station of [oldest, middle, newest]) {
     await page.getByTestId("station-picker-trigger").click();
@@ -76,7 +76,7 @@ test("choosing newest, oldest, and a middle station updates the trigger, pin, an
 
 test("a station hash preselects that station without adding history entries", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto(`/#${middle.slug}`);
+  await page.goto(`/discover#${middle.slug}`);
   await waitForMap(page);
   await waitForCardOpen(page);
   await expect(page.getByTestId("station-picker-trigger")).toContainText(middle.station);
@@ -90,7 +90,7 @@ test("a station hash preselects that station without adding history entries", as
 
 test("Escape closes the panel and a second Escape leaves focus on the trigger", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/");
+  await page.goto("/discover");
   await waitForMap(page);
   const trigger = page.getByTestId("station-picker-trigger");
   await trigger.click();
@@ -105,7 +105,7 @@ test("Escape closes the panel and a second Escape leaves focus on the trigger", 
 
 test("desktop panel does not push the map and stays within 300px", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/");
+  await page.goto("/discover");
   await waitForMap(page);
   const before = (await page.locator(".map-stage").boundingBox())!;
   await page.getByTestId("station-picker-trigger").click();
@@ -119,7 +119,7 @@ test("desktop panel does not push the map and stays within 300px", async ({ page
 
 test("mobile sheet closes from the scrim", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/discover");
   await waitForMap(page);
   const trigger = page.getByTestId("station-picker-trigger");
   await trigger.click();
@@ -138,7 +138,7 @@ test.describe("no-JS station list", () => {
 
   test("lists every station as a link and does not print a weekly count", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/");
+  await page.goto("/discover");
   const links = page.getByTestId("station-fallback").locator("a");
   await expect(links).toHaveCount(taipei.length);
   await expect(links.first()).toHaveAttribute("href", `/metro/${newest.slug}`);
@@ -158,7 +158,7 @@ test.describe("no-JS station list", () => {
 for (const [width, height] of [[390, 844], [1280, 800], [1440, 900]] as const) {
   test(`App Store stays on the first screen at ${width}x${height}`, async ({ page }) => {
     await page.setViewportSize({ width, height });
-    await page.goto("/");
+    await page.goto("/discover");
     await waitForMap(page);
     const bottom = await boxBottom(page, "[data-testid=hero-appstore]");
     expect(bottom).toBeLessThanOrEqual(height);
@@ -179,7 +179,7 @@ test("every Taipei pin and name is on the first screen at 1280x800", async ({ pa
   expect(taipei.length).toBeGreaterThanOrEqual(23);
   expect(stationIdentity(taipei), "published Taipei stations").toEqual(stationIdentity(publishedTaipei));
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/");
+  await page.goto("/discover");
   await waitForMap(page);
   const pins = page.locator("[data-testid^=metro-pin-]");
   await expect(pins).toHaveCount(publishedTaipei.length);
@@ -214,7 +214,7 @@ test("every Taipei pin and name is on the first screen at 1280x800", async ({ pa
 
 test("the weekly stamp does not cover 國父紀念館 at 390", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/?clock=2026-11-13");
+  await page.goto("/discover?clock=2026-11-13");
   await waitForMap(page);
   expect(taipei.some((station) => station.station === "國父紀念館")).toBe(true);
   const stamp = (await page.locator("#stamp").boundingBox())!;
@@ -412,7 +412,7 @@ test.describe("shanghai no-JS station list", () => {
 test("a 45-station fixture keeps the closed control height and the panel cap", async ({ context }) => {
   const closedPage = await context.newPage();
   await closedPage.setViewportSize({ width: 1280, height: 800 });
-  await closedPage.goto("/");
+  await closedPage.goto("/discover");
   await waitForMap(closedPage);
   const closed = (await closedPage.getByTestId("station-search").boundingBox())!;
   await closedPage.close();
@@ -420,7 +420,7 @@ test("a 45-station fixture keeps the closed control height and the panel cap", a
   const grownLatest = latestStation(grownStations)!;
   const page = await context.newPage();
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/?pickerFixture=45");
+  await page.goto("/discover?pickerFixture=45");
   await waitForMap(page);
   const grown = (await page.getByTestId("station-search").boundingBox())!;
   expect(Math.abs(grown.height - closed.height)).toBeLessThanOrEqual(2);

@@ -14,7 +14,7 @@ function intersects(
 for (const width of [1280, 1440]) {
   test(`desktop station options stay tappable and clear the trigger at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
+    await page.goto("/discover");
     await waitForMap(page);
     await page.evaluate(() => document.fonts.ready);
     const trigger = page.getByTestId("station-picker-trigger");

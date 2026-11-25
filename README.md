@@ -16,14 +16,14 @@ App Store badges keep `data-swap="appstore-url"` so the href can be swapped at l
 
 ### Savvy test list
 
-- For a local form and email preview without sending, run `SAVVY_TEST_LIST_PREVIEW=1 npm run dev`. Submit a sample address and select **Preview the confirmation email**.
-- Set `RESEND_API_KEY`, `SAVVY_TEST_LIST_FROM` (a verified Resend sender such as `Savvy <hello@example.com>`), and `SAVVY_TEST_LIST_SEGMENT` (the ID of a dedicated Resend test-list segment) as server-only variables. Use a Resend key with Contacts and sending access and create the string contact property `savvy_test_confirmation`. Keep the secret in the environment or an ignored local env file. The signup is displayed on the production home page only when the three variables are present at build time.
+- For a local form and email preview without sending, run `SAVVY_TEST_LIST_PREVIEW=1 npm run dev`. Submit a sample address on the homepage. Open `/api/test-list?preview=email` to preview the confirmation email.
+- Set `RESEND_API_KEY`, `SAVVY_TEST_LIST_FROM` (a verified Resend sender such as `Savvy <hello@example.com>`), and `SAVVY_TEST_LIST_SEGMENT` (the ID of a dedicated Resend test-list segment) as server-only variables. Use a Resend key with Contacts and sending access and create the string contact property `savvy_test_confirmation`. Keep the secret in the environment or an ignored local env file. The Sakura workspace sends the signup to the same-origin `POST /api/test-list`. The server requires all three variables before accepting a production signup.
 - Contacts are saved in the configured segment before Resend accepts a transactional email. This flow does not subscribe anyone to a newsletter or update global opt-out preferences. Send testing invitations to the segment separately when the beta opens.
 
 ## Language
 
 - Default: Traditional Chinese (`zh-Hant`)
-- English: `?lang=en` or the EN chip. The homepage is prerendered in Chinese; the head boot script applies the English title and description when `lang=en`, so the page does not read search params.
+- English: choose English in the workspace footer. The metro experience has its own EN chip and supports `?lang=en`.
 - The toggle sets `<html lang>` to `zh-Hant` or `en`
 
 ## Product lock (copy)
@@ -51,7 +51,9 @@ npm run check
 
 ## Pages
 
-- `/` landing
+- `/` Sakura workspace with Trips, Atlas, Collections, Journey and the iOS introduction
+- `/discover` and `/shanghai` existing Taipei and Shanghai metro experiences
+- `/zh-tw/travel` travel guides, `/zh-tw/posts` original Threads links and `/metro` station guides
 - `/privacy`
 - `/support`
 - `mailto:support@sav-e.app`
@@ -107,3 +109,14 @@ Run against a production build with `npm run build` followed by `CI=true npm tes
 After a separately approved production deployment, rerun the HTTP checks against
 the canonical domain and repeat the Is Agentic audit. Code changes cannot promise
 search ranking or a new readiness score.
+
+## Editorial publishing and Search Console
+
+Travel guide records live in `content/travel`. Public Threads records live in
+`content/threads` with their original profile permalink. The metro catalog adds
+station originals already linked on the site. `npm run prepare:content`
+validates the records and builds the shared inventory for the collection shelf,
+sitemap, HTML, and negotiated Markdown. Trips and visited-city progress remain
+in the browser and have no sitemap entries.
+
+See [Search Console and Is Agentic verification](docs/editorial-search.md).
