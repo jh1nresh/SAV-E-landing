@@ -63,38 +63,58 @@
   function story(p){
     return '<a class="ws-story" href="'+escape(linkPlace(p.id))+'"><img alt="" src="'+escape(p.image)+'"><span><small>'+escape(p.city)+'</small><strong>'+escape(p.name)+'</strong><i>'+escape(p.note)+'</i></span></a>';
   }
+  const slideDelay = 9000;
   let clockTimer;
+  let disposeFeature;
   function home(list, featuredId = list[0].id) {
     clearTimeout(clockTimer);
-    const featured = list.find(t => t.id === featuredId) || list[0];
-    const remaining = list.filter(t => t.id !== featured.id);
+    let featured = list.find(t => t.id === featuredId) || list[0];
+    const remaining = () => list.filter(t => t.id !== featured.id);
     const stops = t => t.days.flat().map(id => byId.get(id)).filter(Boolean);
-    const firstStops = stops(featured);
     const allStops = list.flatMap(stops);
     const cityNames = new Set([...allStops.map(p => p.city), ...list.map(t => t.city)].filter(Boolean));
-    const guides = [...new Map(firstStops.map(p => [p.article, p])).values()];
     const formatCount = n => n.toLocaleString('zh-Hant');
     const tripUrl = t => '#trip/' + encodeURIComponent(t.id);
     const info = (label, value) => '<div><dt>' + label + '</dt><dd>' + value + '</dd></div>';
-    const portraits = firstStops.slice(0, 3).map(p => '<img src="' + escape(p.image) + '" alt="">').join('');
-    const ticket = '<dl class="trip-ticket">' +
-      info('目的地', escape(featured.city)) + info('行程長度', formatCount(featured.days.length) + ' <small>天</small>') +
-      info('相關攻略', formatCount(guides.length) + ' <small>篇</small>') +
-      info('行程地點', '<span class="trip-faces">' + portraits + '</span>' + formatCount(firstStops.length) + ' <small>站</small>') + '</dl>';
-    const photo = (item) => '<img class="trip-photo" src="' + escape(item.image) + '" alt="">';
-    const landmark = landmarkFor(featured.city);
-    const changeTrip = list.length > 1 ? '<select class="trip-switch" aria-label="切換封面行程">' +
-      list.map(t => '<option value="' + escape(t.id) + '"' + (t.id === featured.id ? ' selected' : '') + '>' +
-        escape(t.city) + ' · ' + escape(t.title) + '</option>').join('') + '</select>' : '';
-    const hero = '<section class="trip-feature" aria-label="行程封面">' +
-      '<a class="trip-spot" href="' + tripUrl(featured) + '"><div class="trip-window">' + cover(featured) +
-      '<span class="trip-tag">' + escape(featured.city) + (landmark ? ' · ' + landmark[2] : '') + '</span>' +
-      '<h2>' + escape(featured.title) + '</h2></div>' + ticket + '</a>' + changeTrip + '</section>';
-    const stats = (label, count, unit, text) => '<div class="trip-stat"><dt>' + label + '</dt><dd>' + formatCount(count) +
-      '<small>' + unit + '</small></dd><span>' + escape(text) + '</span></div>';
-    const totals = '<dl class="trip-stats">' + stats('目的地城市', cityNames.size, '座', [...cityNames].slice(0,3).join(' · ')) +
-      stats('全部行程', list.length, '趟', '已建立的行程') + stats('行程天數', list.reduce((n,t) => n + t.days.length, 0), '天', '所有行程合計') +
-      stats('收錄地點', new Set(allStops.map(p => p.id)).size, '處', '行程中的地點') + '</dl>';
+    function coverContent(trip) {
+      const firstStops = stops(trip);
+      const guideCount = new Set(firstStops.map(p => p.article)).size;
+      const ticket = '<dl class="trip-ticket">' +
+        info('目的地', escape(trip.city)) + info('天數', formatCount(trip.days.length) + ' <small>天</small>') +
+        info('相關攻略', formatCount(guideCount) + ' <small>篇</small>') +
+        info('行程地點', formatCount(firstStops.length) + ' <small>站</small>') + '</dl>';
+      const landmark = landmarkFor(trip.city);
+      const poster = landmark?.[3];
+      const clip = poster?.startsWith(media) ? poster.replace(/\.webp$/, '.mp4') : '';
+      const artwork = clip
+        ? '<video class="trip-photo" aria-hidden="true" muted loop playsinline preload="none" poster="' +
+          poster + '" data-clip="' + clip + '" style="object-position:' + landmark[4] + '"></video>'
+        : cover(trip);
+      const position = list.indexOf(trip) + 1;
+      return '<div class="trip-window" role="group" aria-roledescription="投影片" aria-label="第 ' + position +
+        ' 張，共 ' + list.length + ' 張">' + artwork +
+        '<span class="trip-tag">' + escape(trip.city) + (landmark ? ' · ' + landmark[2] : '') + '</span>' +
+        '<h2>' + escape(trip.title) + '</h2></div>' + ticket;
+    }
+    const cityCounts = new Map();
+    for (const trip of list) cityCounts.set(trip.city, (cityCounts.get(trip.city) || 0) + 1);
+    const coverLabel = trip => trip.city && cityCounts.get(trip.city) === 1 ? trip.city : trip.title;
+    const changeTrip = list.length > 1
+      ? '<button type="button" class="trip-step" data-step="-1" aria-label="上一張行程封面"></button>' +
+        '<select class="trip-switch" aria-label="切換封面行程">' + list.map(t => '<option value="' +
+          escape(t.id) + '"' + (t.id === featured.id ? ' selected' : '') + '>' +
+          escape(coverLabel(t)) + '</option>').join('') + '</select>' +
+        '<button type="button" class="trip-step" data-step="1" aria-label="下一張行程封面"></button>'
+      : '';
+    const hero = '<section class="trip-feature" aria-label="行程封面" aria-roledescription="輪播">' +
+      '<a class="trip-spot" href="' + tripUrl(featured) + '">' + coverContent(featured) + '</a>' +
+      '<div class="trip-cover-controls"><button type="button" class="trip-motion"></button>' +
+      changeTrip + '</div><p class="trip-slide-status" role="status"></p></section>';
+    const stats = (label, count, unit, cities = '') => '<div class="trip-stat"><dt>' + label + '</dt><dd>' + formatCount(count) +
+      '<small>' + unit + '</small>' + (cities ? '<span>' + escape(cities) + '</span>' : '') + '</dd></div>';
+    const totals = '<dl class="trip-stats" aria-label="行程總覽">' + stats('目的地城市', cityNames.size, '座', [...cityNames].slice(0,3).join(' · ')) +
+      stats('全部行程', list.length, '趟') + stats('行程天數', list.reduce((n,t) => n + t.days.length, 0), '天') +
+      stats('收錄地點', new Set(allStops.map(p => p.id)).size, '處') + '</dl>';
     const tripCard = t => '<a class="trip-mini" href="' + tripUrl(t) + '">' + cover(t) +
       '<span class="trip-tag">' + escape(t.city) + '</span><div><strong>' + escape(t.title) + '</strong><small>' + summary(t) + '</small></div></a>';
     const languages = ['TWD', 'CNY', 'USD', 'JPY'];
@@ -109,33 +129,25 @@
       picks.map(([id,label,url]) => {
         const p = byId.get(id);
         const count = library.filter(x => x.article === p.article).length;
-        return '<a href="' + escape(url || p.url) + '">' + photo(p) + '<strong>' + label + '</strong><small>' + count + ' 處</small></a>';
+        return '<a href="' + escape(url || p.url) + '"><strong>' + label + '</strong><small>' + count + ' 處</small></a>';
       }).join('') + '</div></section>';
     const zones = [['上海','Asia/Shanghai','UTC+8'],['東京','Asia/Tokyo','UTC+9'],['紐約','America/New_York','美東時間']];
     const clocks = '<section class="trip-widget"><h2>城市時間</h2>' + zones.map(([name, zone, note]) => '<div class="trip-clock"><span>' +
       name + '<small>' + note + '</small></span><time data-zone="' + zone + '"></time></div>').join('') + '</section>';
-    const dayStops = featured.days.flatMap((day, index) => {
-      const first = day.map(id => byId.get(id)).find(Boolean);
-      return first ? [{first, index}] : [];
-    }).slice(0, 3);
-    const schedule = dayStops.length ? '<section class="trip-widget"><h2>每日第一站</h2>' +
-      dayStops.map(({first, index}) => '<a class="trip-stop" href="#place/' + encodeURIComponent(first.id) +
-        '?from=' + encodeURIComponent('trip/' + featured.id) + '"><small>DAY <b>' + (index + 1) +
-        '</b></small><span>' + escape(first.name) + '</span><i aria-hidden="true">↗</i></a>').join('') + '</section>' : '';
+    function scheduleFor(trip) {
+      const dayStops = trip.days.flatMap((day, index) => {
+        const first = day.map(id => byId.get(id)).find(Boolean);
+        return first ? [{first, index}] : [];
+      }).slice(0, 3);
+      return dayStops.length ? '<section class="trip-widget"><h2>每日第一站</h2>' +
+        dayStops.map(({first, index}) => '<a class="trip-stop" href="#place/' + encodeURIComponent(first.id) +
+          '?from=' + encodeURIComponent('trip/' + trip.id) + '"><small>第 ' + (index + 1) +
+          ' 天</small><span>' + escape(first.name) + '</span><i aria-hidden="true">↗</i></a>').join('') + '</section>' : '';
+    }
     root.innerHTML = '<div class="trip-dashboard"><div class="trip-primary">' + hero + totals +
       '<section class="trip-others"><header><h1>My Trips</h1><div class="trip-tools"><input type="search" aria-label="搜尋行程或地點" placeholder="搜尋行程或地點"><button type="button" data-view aria-pressed="false">列表</button></div></header>' +
-      '<div class="trip-grid">' + remaining.map(tripCard).join('') + '<a class="trip-create" href="#new-trip"><b>＋</b>新增行程</a></div></section></div>' +
-      '<aside class="trip-rail" aria-label="旅行工具">' + currency + collections + clocks + schedule + '</aside></div>';
-    const switcher = root.querySelector('.trip-switch');
-    if (switcher) switcher.onchange = () => {
-      const fxForm = root.querySelector('.trip-fx');
-      const oldValues = [...fxForm.querySelectorAll('input,select')].map(control => control.value);
-      home(list, switcher.value);
-      const nextForm = root.querySelector('.trip-fx');
-      nextForm.querySelectorAll('input,select').forEach((control, index) => { control.value = oldValues[index]; });
-      nextForm.dispatchEvent(new Event('input'));
-      root.querySelector('.trip-switch')?.focus({preventScroll:true});
-    };
+      '<div class="trip-grid">' + remaining().map(tripCard).join('') + '<a class="trip-create" href="#new-trip"><b>＋</b>新增行程</a></div></section></div>' +
+      '<aside class="trip-rail" aria-label="旅行工具">' + currency + collections + clocks + '<div class="trip-schedule">' + scheduleFor(featured) + '</div></aside></div>';
     const search = root.querySelector('.trip-tools input');
     const grid = root.querySelector('.trip-grid');
     const create = grid.querySelector('.trip-create');
@@ -150,14 +162,91 @@
       setView(rows);
       try { localStorage.setItem('savvy.workspace.trip-list-view', rows ? 'rows':'grid'); } catch {}
     };
-    search.oninput = () => {
+    const dashboard = root.querySelector('.trip-dashboard');
+    const feature = root.querySelector('.trip-feature');
+    const featureLink = feature.querySelector('.trip-spot');
+    const switcher = feature.querySelector('.trip-switch');
+    const motion = feature.querySelector('.trip-motion');
+    const status = feature.querySelector('.trip-slide-status');
+    const schedule = root.querySelector('.trip-schedule');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    const listeners = new AbortController();
+    const { signal } = listeners;
+    let playing = !reduced.matches;
+    let visible = false;
+    let hovered = false;
+    let timer;
+
+    function drawTrips() {
       const query = search.value.trim().toLocaleLowerCase();
-      const results = query ? list.filter(t => [t.title, t.city, ...stops(t).map(p => p.name)].some(s => s?.toLocaleLowerCase().includes(query))) : remaining;
-      root.querySelector('.trip-feature').hidden = Boolean(query);
+      const results = query ? list.filter(t => [t.title, t.city, ...stops(t).map(p => p.name)].some(s => s?.toLocaleLowerCase().includes(query))) : remaining();
+      feature.hidden = Boolean(query);
       root.querySelector('.trip-stats').hidden = Boolean(query);
       grid.innerHTML = results.map(tripCard).join('') || (query ? '<p role="status">沒有符合的行程。</p>' : '');
       grid.append(create);
+    }
+
+    function syncMotion() {
+      clearTimeout(timer);
+      if (signal.aborted) return;
+      const film = feature.querySelector('video');
+      motion.hidden = !film && list.length < 2;
+      motion.classList.toggle('is-playing', playing);
+      motion.title = playing ? '暫停封面動態' : '播放封面動態';
+      motion.setAttribute('aria-label', motion.title);
+      const active = playing && visible && !document.hidden && !feature.hidden;
+      if (active && film) {
+        if (!film.hasAttribute('src')) film.src = film.dataset.clip;
+        if (film.paused) film.play().catch(() => {});
+      } else if (film) {
+        film.pause();
+      }
+      if (active && list.length > 1 && !hovered && !dashboard.contains(document.activeElement)) {
+        timer = setTimeout(() => step(1, false), slideDelay);
+      }
+    }
+
+    function selectTrip(trip, manual) {
+      if (!trip || trip === featured) return;
+      featured = trip;
+      feature.querySelector('video')?.pause();
+      featureLink.href = tripUrl(trip);
+      featureLink.innerHTML = coverContent(trip);
+      featureLink.querySelector('.trip-photo')?.classList.add('trip-slide-enter');
+      if (switcher) switcher.value = trip.id;
+      if (manual) status.textContent = `第 ${list.indexOf(trip) + 1} 張，共 ${list.length} 張 · ${trip.title}`;
+      schedule.innerHTML = scheduleFor(trip);
+      drawTrips();
+      syncMotion();
+    }
+
+    function step(direction, manual = true) {
+      const index = (list.indexOf(featured) + direction + list.length) % list.length;
+      selectTrip(list[index], manual);
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting && entry.intersectionRatio >= 0.25;
+      syncMotion();
+    }, { threshold: 0.25 });
+    observer.observe(feature);
+    disposeFeature = () => {
+      clearTimeout(timer);
+      observer.disconnect();
+      listeners.abort();
+      feature.querySelector('video')?.pause();
     };
+    if (switcher) switcher.onchange = () => selectTrip(list.find(t => t.id === switcher.value), true);
+    for (const button of feature.querySelectorAll('[data-step]')) button.onclick = () => step(Number(button.dataset.step));
+    motion.onclick = () => { playing = !playing; syncMotion(); };
+    feature.onpointerenter = event => { if (event.pointerType === 'mouse') { hovered = true; syncMotion(); } };
+    feature.onpointerleave = () => { hovered = false; syncMotion(); };
+    dashboard.onfocusin = syncMotion;
+    dashboard.onfocusout = () => queueMicrotask(syncMotion);
+    document.addEventListener('visibilitychange', syncMotion, { signal });
+    reduced.addEventListener('change', event => { playing = !event.matches; syncMotion(); }, { signal });
+    search.oninput = () => { drawTrips(); syncMotion(); };
+    syncMotion();
     const fx = root.querySelector('.trip-fx');
     const [from, to] = fx.querySelectorAll('select');
     const amount = fx.querySelector('input');
@@ -214,6 +303,8 @@
     root.innerHTML='<article class="ws-place">'+back(target,t?.title||tabs[target.split('/')[0]])+'<img src="'+escape(p.image)+'" alt=""><p class="ws-meta">'+escape(p.city)+' · '+escape(p.address)+'</p><h1>'+escape(p.name)+'</h1><p>'+escape(p.note)+'</p><section class="ws-related"><h2>相關攻略</h2>'+articles+'</section></article>';
   }
   function render(){
+    disposeFeature?.();
+    disposeFeature = undefined;
     clearTimeout(clockTimer);
     const path=current(),[section,id]=path.split('/'),list=trips();
     const api={places:library,trips:list,linkPlace};
