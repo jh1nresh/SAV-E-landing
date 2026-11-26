@@ -1,9 +1,10 @@
+import type { ReactNode } from "react";
 import { taipeiDate } from "../../lib/metro-logic.mjs";
 import { CityHeroMap } from "./CityHeroMap";
 import "./hero-map.css";
 import "./map-page.css";
 
-export default function MetroMapPage() {
+export default function MetroMapPage({ children }: { children?: ReactNode }) {
   return (
     <main className="metro-map-page" id="hero">
       <h1 className="zh">捷運美食地圖</h1>
@@ -12,6 +13,7 @@ export default function MetroMapPage() {
       <a className="map-credit" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" data-testid="osm-attribution">
         Map data © OpenStreetMap contributors
       </a>
+      {children}
     </main>
   );
 }

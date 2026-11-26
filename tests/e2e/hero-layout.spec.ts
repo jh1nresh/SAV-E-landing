@@ -7,7 +7,7 @@ test.describe("hero layout", () => {
   for (const width of WIDTHS) {
     test(`C-2 no horizontal overflow at ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 844 });
-      await page.goto("/discover");
+      await page.goto("/metro");
       await waitForMap(page);
       await noHorizontalOverflow(page);
     });
@@ -15,7 +15,7 @@ test.describe("hero layout", () => {
 
   test("G-1 EN toggle does not break the hero", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto("/discover");
+    await page.goto("/metro");
     await waitForMap(page);
     await page.getByRole("button", { name: "EN" }).click();
     await expect(page.locator("html")).toHaveAttribute("lang", "en");

@@ -30,7 +30,7 @@ for (const [width, height] of sizes) {
       window.cancelIdleCallback = () => {};
       window.IntersectionObserver = class { observe() {} unobserve() {} disconnect() {} } as any;
     });
-    await page.goto("/discover?lang=en");
+    await page.goto("/metro?lang=en");
     const poster = page.getByTestId("metro-map-slot");
     await expect(poster).toHaveAttribute("role", "img");
     await expect(poster).toHaveAttribute("aria-label", "Taipei MRT food map");
@@ -47,7 +47,7 @@ for (const [width, height] of sizes) {
 
   test(`N1 ${width}: real automatic triggers need no interaction`, async ({ page }) => {
     await page.setViewportSize({ width, height });
-    await page.goto("/discover");
+    await page.goto("/metro");
     await page.waitForFunction(() => !!window.__savvyMap);
     await expect(page.locator("#mapsvg")).toBeVisible();
     await expect(page.getByTestId("metro-map-slot")).toHaveCount(0);
@@ -57,7 +57,7 @@ for (const [width, height] of sizes) {
     // WebKit N2 1280 used the whole 60s on CI run 43427323912. 1440 finished at 58.3s.
     test.setTimeout(120_000);
     await page.setViewportSize({ width, height });
-    await page.goto("/discover?reduce=1&clock=2026-10-26");
+    await page.goto("/metro?reduce=1&clock=2026-10-26");
     await page.waitForFunction(() => !!window.__savvyMap);
     for (const station of metro.stations) {
       await page.evaluate(id => window.__savvyMap!.select(id), station.id);
@@ -80,7 +80,7 @@ for (const [width, height] of sizes) {
 test("320px: Shanghai shop controls and complete prices stay inside the card", async ({ page }) => {
   const stations = getShanghaiFoodStations();
   await page.setViewportSize({ width: 320, height: 568 });
-  await page.goto("/discover?city=shanghai&reduce=1");
+  await page.goto("/metro?city=shanghai&reduce=1");
   await page.getByTestId(`metro-pin-${stations[0].slug}`).waitFor({ state: "attached" });
   await page.waitForFunction(() => !!window.__savvyMap);
   for (const station of stations) {
@@ -99,7 +99,7 @@ test("320px: Shanghai shop controls and complete prices stay inside the card", a
 for (const letterSpacing of ["normal", "0.5px"]) {
   test(`320px: longer sourced prices fit with larger article text${letterSpacing === "normal" ? "" : " and expanded spacing"}`, async ({ page, browserName }) => {
     await page.setViewportSize({ width: 320, height: 568 });
-    await page.goto("/discover?reduce=1&clock=2026-10-26");
+    await page.goto("/metro?reduce=1&clock=2026-10-26");
     await page.waitForFunction(() => !!window.__savvyMap);
     // Reserve the four price lines seen in Linux WebKit, even on macOS fonts.
     const fourLinePrice = letterSpacing === "normal" ? "" : ".article-details div:last-child dd { min-height: 92.8px; }";

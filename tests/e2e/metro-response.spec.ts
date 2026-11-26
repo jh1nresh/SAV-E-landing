@@ -4,7 +4,7 @@ import { waitForMap, openStation } from "./helpers";
 for (const width of [390, 1280]) {
   test(`map animation reuses geometry and keeps detail navigation at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/discover");
+    await page.goto("/metro");
     await waitForMap(page);
     await page.evaluate(() => document.fonts.ready);
     const result = await page.evaluate(async () => {
@@ -37,7 +37,7 @@ for (const width of [390, 1280]) {
 }
 
 test("cached label measurements refresh after resize and font loading", async ({ page }) => {
-  await page.goto("/discover?reduce=1");
+  await page.goto("/metro?reduce=1");
   await waitForMap(page);
   await page.evaluate(() => document.fonts.ready);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -80,7 +80,7 @@ test("slow frame work does not stretch the popup clock", async ({ page }) => {
       inFrame = false;
     };
   });
-  await page.goto("/discover");
+  await page.goto("/metro");
   await waitForMap(page);
   await page.evaluate(() => document.fonts.ready);
   const result = await page.evaluate(() => {

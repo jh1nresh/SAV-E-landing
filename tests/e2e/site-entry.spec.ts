@@ -5,7 +5,7 @@ for (const width of [320, 1280]) {
   test(`the focused map and its navigation fit at ${width}px`, async ({ page }) => {
     const height = 800;
     await page.setViewportSize({ width, height });
-    await page.goto("/discover");
+    await page.goto("/metro");
     await waitForMap(page);
     const map = page.getByTestId("metro-map");
     await expect(map).toBeVisible();
@@ -27,7 +27,7 @@ test("native city and guide links work without JavaScript", async ({ browser, ba
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   try {
     const page = await context.newPage();
-    await page.goto("/discover");
+    await page.goto("/metro");
     await expect(page.getByRole("img", { name: "台北捷運美食地圖" })).toBeVisible();
     await page.getByTestId("city-switch-shanghai").click();
     await expect(page).toHaveURL(/\/shanghai$/);

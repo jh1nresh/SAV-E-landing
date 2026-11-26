@@ -10,7 +10,6 @@ import { threadPosts, postPath } from "./zh-tw/posts/content";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE_ORIGIN}/` },
-    { url: `${SITE_ORIGIN}/discover` },
     { url: `${SITE_ORIGIN}/shanghai` },
     ...["about", "contact", "privacy", "support", "docs"].map(path => ({ url: `${SITE_ORIGIN}/${path}` })),
     { url: `${SITE_ORIGIN}/metro` },
@@ -18,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_ORIGIN}${TRAVEL_ROOT}` },
     ...travelGuides.map(g => ({ url: SITE_ORIGIN + travelPath(g.slug), lastModified: g.date })),
     { url: SITE_ORIGIN + "/zh-tw/posts" },
-    ...threadPosts.map(p => ({ url: SITE_ORIGIN + postPath(p.code), lastModified: p.date })),
+    ...threadPosts.map(p => ({ url: SITE_ORIGIN + postPath(p), lastModified: p.date })),
     { url: `${SITE_ORIGIN}${GUIDE_ROOT}` },
     ...guides.map((guide) => ({ url: `${SITE_ORIGIN}${guidePath(guide.slug)}`, lastModified: guide.updatedAt })),
   ];

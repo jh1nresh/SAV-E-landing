@@ -25,9 +25,9 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
   for (const width of [390, 1280]) {
     const page = await context.newPage();
     await page.setViewportSize({ width, height: 900 });
-    const response = await page.goto("/discover");
+    const response = await page.goto("/metro");
     expect(response?.status()).toBe(200);
-    expect(new URL(page.url()).pathname).toBe("/discover");
+    expect(new URL(page.url()).pathname).toBe("/metro");
     await expect(page.getByRole("heading", { name: "捷運美食地圖", exact: true })).toBeVisible();
     await expect(page.getByText("先選城市")).toHaveCount(0);
     await expect(page.locator(".map-stage")).toBeVisible();
@@ -36,7 +36,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
     const shanghai = page.locator("nav.top").getByTestId("city-switch-shanghai");
     await expect(page.locator("main").getByTestId("city-switch")).toHaveCount(0);
     await expect(taipei).toHaveAttribute("aria-current", "true");
-    await expect(taipei).toHaveAttribute("href", "/discover");
+    await expect(taipei).toHaveAttribute("href", "/metro");
     await expect(shanghai).not.toHaveAttribute("aria-current", "true");
     await expect(shanghai).toHaveAttribute("href", "/shanghai");
     await expect(taipei).toContainText("台北");
@@ -55,18 +55,18 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
 
   const page = await context.newPage();
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/discover?lang=en");
+  await page.goto("/metro?lang=en");
   await expect(page.getByRole("heading", { name: "Metro food map", exact: true })).toBeVisible();
   await expect(page.getByTestId("city-switch")).toHaveAttribute("aria-label", "City");
   const taipei = page.locator("nav.top").getByTestId("city-switch-taipei");
   const shanghai = page.locator("nav.top").getByTestId("city-switch-shanghai");
   await expect(taipei).toHaveAttribute("aria-current", "true");
-  await expect(taipei).toHaveAttribute("href", "/discover?lang=en");
+  await expect(taipei).toHaveAttribute("href", "/metro?lang=en");
   await expect(shanghai).toHaveAttribute("href", "/shanghai?lang=en");
   await shanghai.focus();
   await expect(shanghai).toBeFocused();
   await page.keyboard.press("Enter");
-  expect(new URL(page.url()).pathname).toBe("/discover");
+  expect(new URL(page.url()).pathname).toBe("/metro");
   expect(new URL(page.url()).searchParams.get("city")).toBe("shanghai");
   await expect(page.locator("h1:visible")).toHaveText("Metro food map");
   await expect(page.locator("#hero .hud.cart b").last()).toHaveText("Shanghai");
@@ -74,7 +74,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
   await expect(page.getByTestId("city-switch-shanghai")).toHaveAttribute("aria-current", "true");
   await expect(page.getByTestId("city-switch-taipei")).not.toHaveAttribute("aria-current", "true");
   await page.getByTestId("city-switch-taipei").click();
-  await expect(page).toHaveURL(/\/discover\?lang=en$/);
+  await expect(page).toHaveURL(/\/metro\?lang=en$/);
   await expect(page.getByTestId("city-switch-taipei")).toHaveAttribute("aria-current", "true");
   await expect(page.getByRole("heading", { name: "Metro food map", exact: true })).toBeVisible();
   await expect(page.locator(".map-stage")).toBeVisible();
@@ -82,11 +82,11 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
 });
 
 test("Accept-Language does not redirect the homepage away from Taipei", async ({ request }) => {
-  const response = await request.get("/discover", {
+  const response = await request.get("/metro", {
     headers: { Accept: "text/html", "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8" },
   });
   expect(response.status()).toBe(200);
-  expect(new URL(response.url()).pathname).toBe("/discover");
+  expect(new URL(response.url()).pathname).toBe("/metro");
   const html = await response.text();
   expect(html).toContain("捷運美食地圖");
   expect(html).toContain('data-testid="city-switch-taipei"');
@@ -97,15 +97,15 @@ test("Accept-Language does not redirect the homepage away from Taipei", async ({
   expect(html).not.toContain("先選城市");
 });
 
-test("/taipei permanently redirects to /discover and keeps the query string", async ({ page, request }) => {
+test("/taipei permanently redirects to /metro and keeps the query string", async ({ page, request }) => {
   for (const [from, to] of [
-    ["/taipei", "/discover"],
-    ["/taipei/", "/discover"],
-    ["/taipei?lang=en", "/discover?lang=en"],
-    ["/taipei/?lang=en", "/discover?lang=en"],
-    ["/taipei?lang=en&reduce=1", "/discover?lang=en&reduce=1"],
-    ["/taipei.md", "/discover.md"],
-    ["/taipei.md?lang=en", "/discover.md?lang=en"],
+    ["/taipei", "/metro"],
+    ["/taipei/", "/metro"],
+    ["/taipei?lang=en", "/metro?lang=en"],
+    ["/taipei/?lang=en", "/metro?lang=en"],
+    ["/taipei?lang=en&reduce=1", "/metro?lang=en&reduce=1"],
+    ["/taipei.md", "/metro.md"],
+    ["/taipei.md?lang=en", "/metro.md?lang=en"],
   ] as const) {
     const response = await request.get(from, { maxRedirects: 0 });
     expect(response.status(), from).toBe(301);
@@ -119,15 +119,15 @@ test("/taipei permanently redirects to /discover and keeps the query string", as
   expect(new URL(head.headers().location ?? "", head.url()).search).toBe("?clock=2026-11-13");
 
   await page.goto("/taipei?lang=en#x");
-  expect(new URL(page.url()).pathname).toBe("/discover");
+  expect(new URL(page.url()).pathname).toBe("/metro");
   expect(new URL(page.url()).searchParams.get("lang")).toBe("en");
   expect(new URL(page.url()).hash).toBe("#x");
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/savvy\.jeezlabs\.io\/discover$/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/savvy\.jeezlabs\.io\/metro$/);
   await expect(page.locator(".map-stage")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Metro food map", exact: true })).toBeVisible();
 });
 
-test("legacy Taipei station URLs stay intact, the guide index covers both cities, and /discover defaults to Taipei", async ({ request }) => {
+test("legacy Taipei station URLs stay intact, the guide index covers both cities, and /metro defaults to Taipei", async ({ request }) => {
   const taipei = getFoodStations();
   for (const slug of LEGACY_SLUGS) expect(taipei.some((station) => station.slug === slug)).toBe(true);
   expect(taipei.some((station) => station.slug === "nangang")).toBe(true);
@@ -156,15 +156,15 @@ test("legacy Taipei station URLs stay intact, the guide index covers both cities
 
   const city = await request.get("/taipei", { maxRedirects: 0 });
   expect(city.status()).toBe(301);
-  expect(new URL(city.headers().location ?? "", city.url()).pathname).toBe("/discover");
+  expect(new URL(city.headers().location ?? "", city.url()).pathname).toBe("/metro");
 
-  const home = await request.get("/discover");
+  const home = await request.get("/metro");
   expect(home.status()).toBe(200);
   const homeHtml = await home.text();
   expect(homeHtml).toContain("小巨蛋");
   expect(homeHtml).toContain("南港");
   expect(homeHtml).toContain('id="poster-mapsvg"');
-  expect(homeHtml).toMatch(/<link rel="canonical" href="https:\/\/savvy\.jeezlabs\.io\/discover"/);
+  expect(homeHtml).toMatch(/<link rel="canonical" href="https:\/\/savvy\.jeezlabs\.io\/metro"/);
   expect(homeHtml).not.toContain("豫園");
 });
 
@@ -192,13 +192,13 @@ test.describe("Shanghai switches inside the same hero with the shared photo map 
 
 async function openShanghaiHero(page: Page, width: number) {
   await page.setViewportSize({ width, height: 900 });
-  await page.goto("/discover?reduce=1");
+  await page.goto("/metro?reduce=1");
   // Wait for hydration before checking same-page city switching.
   await expect(page.getByTestId("station-picker-trigger")).toBeVisible();
   await expect(page.getByTestId("city-switch-shanghai")).toBeVisible();
   await page.locator("#hero").evaluate(el => el.setAttribute("data-preserved", "yes"));
   await page.getByTestId("city-switch-shanghai").click();
-  expect(new URL(page.url()).pathname).toBe("/discover");
+  expect(new URL(page.url()).pathname).toBe("/metro");
   await expect(page.locator("#hero")).toHaveAttribute("data-preserved", "yes");
   await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "shanghai");
   await expect(page.locator("h1:visible")).toContainText("捷運美食地圖");

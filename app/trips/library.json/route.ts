@@ -12,8 +12,8 @@ export function GET() {
     ...travelGuides.map(({ slug, region, city, title, date }) => ({
       kind: "guide", region, city, title, date, href: travelPath(slug),
     })),
-    ...threadPosts.map(({ code, region, city, title, date, url }) => ({
-      kind: "post", region, city, title, date, displayDate: postDate(date), href: postPath(code), source: url,
+    ...threadPosts.map(({ slug, region, city, title, date, url }) => ({
+      kind: "post", region, city, title, date, displayDate: postDate(date), href: postPath({ slug }), source: url,
     })),
     ...sourceOnlyPosts.map(({ region, city, title, date, href, url }) => ({
       kind: "post", region, city, title, date, displayDate: postDate(date), href, source: url,

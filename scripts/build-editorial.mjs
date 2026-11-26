@@ -6,6 +6,7 @@ import { join } from "node:path";
 function records(folder, key, pattern) {
   const dir = join("content", folder);
   if (!existsSync(dir)) return [];
+  const slugs = new Set();
   return readdirSync(dir).filter(name => name.endsWith(".json")).sort().map(name => {
     const entry = JSON.parse(readFileSync(join(dir, name), "utf8"));
     if (!pattern.test(entry[key]) || name !== entry[key] + ".json") {
@@ -15,6 +16,10 @@ function records(folder, key, pattern) {
       throw new Error("Missing title, region or date in " + name);
     }
     if (folder === "threads") {
+      if (typeof entry.slug !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(entry.slug) || slugs.has(entry.slug)) {
+        throw new Error("Missing, invalid or duplicate post slug in " + name);
+      }
+      slugs.add(entry.slug);
       if (entry.url !== "https://www.threads.com/@savvysave_/post/" + entry.code || !entry.text?.trim()) {
         throw new Error("Missing original Threads source or text in " + name);
       }

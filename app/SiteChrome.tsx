@@ -80,7 +80,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
     if (next === "shanghai") url.searchParams.set("city", next);
     else url.searchParams.delete("city");
     url.hash = "";
-    window.history.pushState(null, "", `/discover${url.search}`);
+    window.history.pushState(null, "", `/metro${url.search}`);
     setCityState(next);
     applyMapMeta(parseSiteLang(url.searchParams.get("lang")));
   }, []);

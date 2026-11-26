@@ -31,7 +31,7 @@ export default function PostsIndex() {
           <ul>
             {threadPosts.filter((post) => post.region + " · " + post.city === name).map((post) => (
               <li key={post.code}>
-                <a href={postPath(post.code)}>{post.title}</a>{" "}
+                <a href={postPath(post)}>{post.title}</a>{" "}
                 <a href={post.url} className="guide-small">Threads 原文</a>{" · "}
                 <time className="guide-small" dateTime={post.date}>{postDate(post.date)}</time>
               </li>

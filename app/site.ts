@@ -19,7 +19,7 @@ export const METRO_MAP_COPY = {
   },
 } as const;
 
-export const isMetroMapPath = (path: string) => path === "/discover" || path === "/shanghai";
+export const isMetroMapPath = (path: string) => path === "/metro" || path === "/shanghai";
 
 export type SiteLang = "zh-Hant" | "en";
 
@@ -40,7 +40,7 @@ export const LANG_BOOT_SCRIPT = `(() => {
     if (localStorage.getItem("savvy.workspace.theme") === "dark") root.dataset.theme = "dark";
   } catch {}
   root.lang = query.get("lang") === "en" ? "en" : "zh-Hant";
-  if (query.get("embed") !== "atlas" || !["/discover", "/shanghai"].includes(location.pathname)) return;
+  if (query.get("embed") !== "atlas" || !["/metro", "/shanghai"].includes(location.pathname)) return;
   try {
     if (window.parent === window || window.parent.location.origin !== location.origin) return;
     root.dataset.atlasMetro = "";

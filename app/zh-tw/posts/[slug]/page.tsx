@@ -4,28 +4,28 @@ import { SITE_ORIGIN } from "../../../../lib/site-content";
 import { safeJsonLd } from "../../../../lib/metro-guide.mjs";
 import "../../guides/guides.css";
 
-type Props = { params: Promise<{ code: string }> };
+type Props = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return threadPosts.map(({ code }) => ({ code }));
+  return threadPosts.map(({ slug }) => ({ slug }));
 }
 
 async function getPost({ params }: Props) {
-  const { code } = await params;
-  const post = threadPosts.find((item) => item.code === code);
+  const { slug } = await params;
+  const post = threadPosts.find((item) => item.slug === slug);
   if (!post) notFound();
   return post;
 }
 
 export async function generateMetadata(props: Props) {
   const post = await getPost(props);
-  return postMetadata(post.title, post.text.replace(/\s+/g, " ").trim().slice(0, 145), postPath(post.code));
+  return postMetadata(post.title, post.text.replace(/\s+/g, " ").trim().slice(0, 145), postPath(post));
 }
 
 export default async function PostPage(props: Props) {
   const post = await getPost(props);
-  const canonical = SITE_ORIGIN + postPath(post.code);
+  const canonical = SITE_ORIGIN + postPath(post);
   const related = stationThreads.find(item => item.code === post.code);
   const schema = {
     "@context": "https://schema.org", "@type": "Article",

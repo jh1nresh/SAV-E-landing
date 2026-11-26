@@ -56,7 +56,7 @@ export default async function GuidePage({ params }: Props) {
       <nav className="guide-related" aria-label="延伸閱讀">
         <h2>接著整理下一步</h2>
         {guides.filter((entry) => entry.slug !== slug).map((entry) => <a key={entry.slug} href={guidePath(entry.slug)}>{entry.label} →</a>)}
-        <a href="/discover">回到捷運美食地圖 →</a>
+        <a href="/metro">回到捷運美食地圖 →</a>
       </nav>
     </main>
   );

@@ -24,8 +24,8 @@ async function search(page: Page) {
 test("homepage search is the Taipei station list", async ({ page }) => {
   for (const width of WIDTHS) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/discover");
-    await expect(page).toHaveURL(/\/discover$/);
+    await page.goto("/metro");
+    await expect(page).toHaveURL(/\/metro$/);
     await expect(page.getByTestId("city-card-taipei")).toHaveCount(0);
     await expect(page.getByText("先選城市")).toHaveCount(0);
     await expect(page.locator("[data-slot=segmented-control]")).toHaveCount(0);
@@ -49,7 +49,7 @@ test("station search is in the server HTML", async ({ request }) => {
   expect(shanghai).toContain("找一站");
   expect(shanghai).toContain("全部路線");
   expect(shanghai).toContain("搜站名或菜色");
-  const home = await (await request.get("/discover")).text();
+  const home = await (await request.get("/metro")).text();
   expect(home).not.toContain("data-slot=\"segmented-control\"");
   expect(home).not.toContain("先選城市");
   expect(home).toContain("找一站");
@@ -65,7 +65,7 @@ for (const width of WIDTHS) {
       if (msg.type() === "error") errors.push(msg.text());
     });
     await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
-    await page.goto("/discover");
+    await page.goto("/metro");
     const input = await search(page);
     const font = await input.evaluate((el) => getComputedStyle(el).fontFamily);
     expect(font.toLowerCase()).not.toContain("iansui");

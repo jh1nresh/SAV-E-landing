@@ -20,7 +20,7 @@ test.describe("hero content and motion", () => {
     for (const clock of clocks) {
       const page = await context.newPage();
       const weekCount = weekNewCount(metro.stores, clock);
-      await page.goto(`/discover?clock=${clock}`);
+      await page.goto(`/metro?clock=${clock}`);
       await waitForMap(page);
       expect(await page.evaluate(() => window.__savvyMap!.state().weekCount), `weekCount @${clock}`).toBe(weekCount);
       if (weekCount > 0) await expect(page.locator("#stampA")).toContainText(`本週新增 ${weekCount} 家`);
@@ -44,7 +44,7 @@ test.describe("hero content and motion", () => {
     // WebKit walked every live station and hit the 60s default on CI run 43427323912.
     test.setTimeout(120_000);
     // Exercise both kinds present in the shipped data; synthetic edge cases stay in unit tests.
-    await page.goto("/discover?reduce=1");
+    await page.goto("/metro?reduce=1");
     await waitForMap(page);
     // Map-level stamp follows the data (P0-10): all example = full stamp, mixed = smaller 部分為範例, all post = none.
     const level = stampLevel(metro.stores);
@@ -91,7 +91,7 @@ test.describe("hero content and motion", () => {
     await page.addInitScript(() => {
       Object.defineProperty(window, "__savvyMap", { configurable: true, value: undefined });
     });
-    const html = await page.request.get("/discover");
+    const html = await page.request.get("/metro");
     const body = await html.text();
     expect(body).not.toMatch(/本週新增\s+\d+\s*家/);
     // the static poster cannot know today's date, so it never prints 本週新增 (the live map paints it from the clock)
@@ -101,7 +101,7 @@ test.describe("hero content and motion", () => {
   });
 
   test("F-2 / (d) forbidden strings are absent", async ({ page }) => {
-    const res = await page.goto("/discover");
+    const res = await page.goto("/metro");
     const html = (await res?.text()) ?? "";
     expect(html).not.toContain("本機互動原型");
     expect(html).not.toContain("10/25 預定");
@@ -119,7 +119,7 @@ test.describe("hero content and motion", () => {
         /* ignore */
       }
     });
-    await page.goto("/discover");
+    await page.goto("/metro");
     await waitForMap(page);
     const banned = hosts.filter((h) => /googleapis|gstatic|maps\.google/.test(h));
     expect(banned).toEqual([]);
@@ -135,7 +135,7 @@ test.describe("hero content and motion", () => {
         /* ignore */
       }
     });
-    const response = await page.goto("/discover");
+    const response = await page.goto("/metro");
     await page.waitForLoadState("domcontentloaded");
     const html = (await response?.text()) ?? "";
     expect(Buffer.byteLength(html, "utf8")).toBeLessThan(500 * 1024);
@@ -149,7 +149,7 @@ test.describe("hero content and motion", () => {
 
   test("D-5 reduced-motion via media query fades without flying", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/discover");
+    await page.goto("/metro");
     await waitForMap(page);
     await clickPin(page, "houshanpi");
     const state = await page.evaluate(() => window.__savvyMap!.state());
@@ -159,7 +159,7 @@ test.describe("hero content and motion", () => {
   });
 
   test("D-5 ?reduce also disables fly/morph", async ({ page }) => {
-    await page.goto("/discover?reduce=1");
+    await page.goto("/metro?reduce=1");
     await waitForMap(page);
     const state = await page.evaluate(() => window.__savvyMap!.state());
     expect(state.reduced).toBeTruthy();
@@ -170,7 +170,7 @@ test.describe("hero content and motion", () => {
 
   test("F-1 metadata includes title description and OG image", async ({ context }) => {
     const zh = await context.newPage();
-    await zh.goto("/discover");
+    await zh.goto("/metro");
     await expect(zh).toHaveTitle("台北捷運美食地圖｜Savvy");
     await expect(zh.locator('meta[name="description"]')).toHaveAttribute(
       "content",
@@ -183,7 +183,7 @@ test.describe("hero content and motion", () => {
     await zh.close();
 
     const en = await context.newPage();
-    await en.goto("/discover?lang=en");
+    await en.goto("/metro?lang=en");
     await expect(en).toHaveTitle("Taipei MRT food map | Savvy");
     await expect(en.locator('meta[name="description"]')).toHaveAttribute(
       "content",
