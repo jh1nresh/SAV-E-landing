@@ -157,13 +157,15 @@ nav.top .editorial-tabs {
 
 .editorial-tabs a {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   min-block-size: 44px;
-  padding: .25rem .35rem;
+  padding: .25rem .125rem;
   color: var(--sakura-ink);
+  overflow-wrap: anywhere;
   text-align: center;
   text-decoration: none;
-  font: 700 clamp(.75rem, 2.8vw, .9rem)/1.25 var(--sakura-type);
+  font: 700 .875rem/1.25 var(--sakura-type);
 }
 
 .editorial-tabs a + a { border-inline-start: 1px solid var(--sakura-line); }
