@@ -709,6 +709,21 @@ body:has(.trip-dashboard) .shellbar, .shellbar { min-height: 5.2rem; }
   .app-intro .app-intro-join { width: 100%; min-height: 3rem; }
   .app-intro-copy p { margin-block-end: 1.15rem; }
 }
+@media (max-width: 24rem) {
+  .shellbar {
+    width: calc(100% - 1.5rem);
+    column-gap: .45rem;
+  }
+  .shellbar .brand { font-size: 2.35rem; }
+  .shell-actions { gap: .35rem; }
+  .shell-actions .app-download {
+    max-inline-size: 5.5rem;
+    min-block-size: 44px;
+    padding-inline: .38rem;
+    line-height: 1.15;
+    white-space: normal;
+  }
+}
 
 .shell-resources { display:flex; flex-wrap:wrap; gap:.25rem 1rem; font-size:.8rem }
 .shell-resources a { display:inline-flex; align-items:center; min-height:2rem }

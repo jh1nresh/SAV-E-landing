@@ -80,6 +80,30 @@ test("the phone menu opens with a keyboard and closes after choosing a workspace
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 });
 
+test("the brand, language or beta controls, and hamburger fit at 320px in both languages", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const [path, header, controls] of [
+    ["/", ".shellbar", ".shell-actions"],
+    ["/zh-tw/travel", "nav.top", ".chips"],
+  ]) {
+    for (const lang of ["zh-Hant", "en"]) {
+      await page.goto(lang === "en" ? `${path}?lang=en` : path);
+      const nav = page.locator(header);
+      await expect(nav.locator(".mobile-nav summary")).toHaveAccessibleName(lang === "en" ? "Menu" : "選單");
+      const gaps = await nav.evaluate(async (element, controls) => {
+        await document.fonts.ready;
+        const brand = document.createRange();
+        brand.selectNodeContents(element.querySelector(".brand")!);
+        const actions = element.querySelector(controls)!.getBoundingClientRect();
+        const menu = element.querySelector(".mobile-nav summary")!.getBoundingClientRect();
+        return [actions.left - brand.getBoundingClientRect().right, menu.left - actions.right, innerWidth - menu.right];
+      }, controls);
+      for (const gap of gaps) expect(gap, `${path} ${lang}`).toBeGreaterThanOrEqual(4);
+    }
+  }
+});
+
 test("Sakuga signup buttons close, validate and confirm using the existing API", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });

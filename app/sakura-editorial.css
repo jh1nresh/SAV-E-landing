@@ -193,3 +193,14 @@ nav.top .editorial-tabs {
   nav.top .editorial-tabs { display: none; }
   nav.top.editorial-nav .mobile-nav { grid-column: 3; }
 }
+
+@media (max-width: 24rem) {
+  nav.top.editorial-nav {
+    padding-inline: .75rem;
+    column-gap: .45rem;
+  }
+  .editorial-nav .brand { gap: .4rem; }
+  .editorial-nav .brand img { inline-size: 36px; block-size: 36px; }
+  .editorial-nav .chips { gap: .35rem; }
+  .editorial-nav .chips .chip { padding-inline: .4rem; }
+}
