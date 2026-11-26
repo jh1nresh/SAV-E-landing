@@ -5,10 +5,11 @@ import { guideHeading } from "../../../lib/metro-guide.mjs";
 import { SITE_ORIGIN } from "../../../lib/site-content";
 
 export const POSTS_ROOT = "/zh-tw/posts";
-export const postPath = (code: string) => `${POSTS_ROOT}/${encodeURIComponent(code)}`;
+export const postPath = (post: Pick<ThreadPost, "slug">) => `${POSTS_ROOT}/${post.slug}`;
 
 export type ThreadPost = {
   code: string;
+  slug: string;
   url: string;
   date: string;
   text: string;
@@ -21,6 +22,11 @@ export type ThreadPost = {
 export const threadPosts = [...(editorial.threads as ThreadPost[])].sort(
   (a, b) => b.date.localeCompare(a.date) || a.code.localeCompare(b.code),
 );
+
+export function canonicalPostPath(path: string): string {
+  const legacy = threadPosts.find(post => `${POSTS_ROOT}/${post.code}` === path);
+  return legacy ? postPath(legacy) : path;
+}
 
 // Reuse the source already published on the station guide. This also keeps
 // links discoverable when there is no separate transcription of the post.
@@ -54,7 +60,7 @@ export function postMetadata(title: string, description: string, path: string): 
   return {
     title: title + "｜Savvy",
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, types: { "text/markdown": `${url}.md` } },
     openGraph: { title, description, url, type: path === POSTS_ROOT ? "website" : "article", locale: "zh_TW" },
   };
 }

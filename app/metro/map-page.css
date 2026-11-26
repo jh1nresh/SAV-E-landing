@@ -107,3 +107,6 @@ nav.top.metro-map-nav {
   border-radius: 9px;
   box-shadow: 2px 3px 0 var(--sakura-shadow);
 }
+
+.metro-map-page .metro-directory { margin-block-start: 2rem; padding-inline: 0; }
+[data-atlas-metro] .metro-directory { display: none; }

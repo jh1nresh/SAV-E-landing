@@ -16,7 +16,7 @@ async function search(page: Page) {
   await expect(trigger).toBeVisible();
   await expect.poll(() => trigger.evaluate((el) => Object.keys(el).some((key) => key.startsWith("__react")))).toBe(true);
   if ((await trigger.getAttribute("aria-expanded")) !== "true") await trigger.click();
-  const input = page.getByRole("combobox");
+  const input = page.getByTestId("station-search").getByRole("combobox");
   await expect(input).toBeVisible();
   return input;
 }
@@ -24,8 +24,8 @@ async function search(page: Page) {
 test("homepage search is the Taipei station list", async ({ page }) => {
   for (const width of WIDTHS) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/discover");
-    await expect(page).toHaveURL(/\/discover$/);
+    await page.goto("/metro");
+    await expect(page).toHaveURL(/\/metro$/);
     await expect(page.getByTestId("city-card-taipei")).toHaveCount(0);
     await expect(page.getByText("先選城市")).toHaveCount(0);
     await expect(page.locator("[data-slot=segmented-control]")).toHaveCount(0);
@@ -43,18 +43,20 @@ test("station search is in the server HTML", async ({ request }) => {
   const taipei = await (await request.get("/taipei")).text();
   expect(taipei).toContain("找一站");
   expect(taipei).toContain("搜站名或菜色");
-  expect(taipei).not.toContain("全部路線");
+  expect(taipei).not.toContain('aria-label="只看這條線"');
+  expect(taipei).toContain("metro-directory");
   expect(taipei).not.toContain("data-slot=\"segmented-control\"");
   const shanghai = await (await request.get("/shanghai")).text();
   expect(shanghai).toContain("找一站");
   expect(shanghai).toContain("全部路線");
   expect(shanghai).toContain("搜站名或菜色");
-  const home = await (await request.get("/discover")).text();
+  const home = await (await request.get("/metro")).text();
   expect(home).not.toContain("data-slot=\"segmented-control\"");
   expect(home).not.toContain("先選城市");
   expect(home).toContain("找一站");
   expect(home).toContain("搜站名或菜色");
-  expect(home).not.toContain("全部路線");
+  expect(home).not.toContain('aria-label="只看這條線"');
+  expect(home).toContain("metro-directory");
 });
 
 for (const width of WIDTHS) {
@@ -65,7 +67,7 @@ for (const width of WIDTHS) {
       if (msg.type() === "error") errors.push(msg.text());
     });
     await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
-    await page.goto("/discover");
+    await page.goto("/metro");
     const input = await search(page);
     const font = await input.evaluate((el) => getComputedStyle(el).fontFamily);
     expect(font.toLowerCase()).not.toContain("iansui");

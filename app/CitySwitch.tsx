@@ -2,7 +2,7 @@ import { hrefWithLang, type SiteLang } from "./site";
 import "./city.css";
 
 const CITIES = [
-  { id: "taipei", href: "/discover", zh: "台北", en: "Taipei" },
+  { id: "taipei", href: "/metro", zh: "台北", en: "Taipei" },
   { id: "shanghai", href: "/shanghai", zh: "上海", en: "Shanghai" },
 ] as const;
 

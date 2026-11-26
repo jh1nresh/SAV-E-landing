@@ -11,7 +11,7 @@ test("all six homepage resources use the Sakura reading layout, including articl
     const home = await context.newPage();
     await home.goto("/");
     for (const path of paths) await expect(home.locator(`.shell-resources a[href="${path}"]`)).toBeVisible();
-    for (const path of [...paths, "/zh-tw/travel/paris-eiffel-tower-tickets", "/zh-tw/posts/DgKYy3EDGw0", "/zh-tw/guides/instagram-restaurants-to-map", "/metro/xiaojudan", "/metro/shuanglian", "/about", "/contact", "/docs"]) {
+    for (const path of [...paths.filter(path => path !== "/metro"), "/zh-tw/travel/paris-eiffel-tower-tickets", "/zh-tw/posts/DgKYy3EDGw0", "/zh-tw/guides/instagram-restaurants-to-map", "/metro/xiaojudan", "/metro/shuanglian", "/about", "/contact", "/docs"]) {
       const page = await context.newPage();
       const response = await page.goto(path);
       expect(response?.ok(), path).toBe(true);
@@ -55,7 +55,7 @@ test("Sakura dark mode carries between the workspace and travel guides", async (
 
 test("both city map pages keep Sakura controls and dark mode on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 780 });
-  for (const path of ["/discover", "/shanghai"]) {
+  for (const path of ["/metro", "/shanghai"]) {
     await page.goto(path);
     await expect(page.locator("body")).toHaveCSS("background-color", "rgb(255, 255, 255)");
     await expect(page.getByTestId("city-switch")).toBeVisible();
@@ -113,7 +113,7 @@ test("Chinese and English editorial tabs keep the same dimensions without clippi
       };
     }) };
   });
-  await page.goto("/metro");
+  await page.goto("/zh-tw/posts");
   for (const width of [801, 1024, 1280]) {
     await page.setViewportSize({ width, height: 800 });
     await page.getByRole("button", { name: "中文", exact: true }).click();

@@ -80,7 +80,12 @@ export function SiteChrome({ children }: { children: ReactNode }) {
     if (next === "shanghai") url.searchParams.set("city", next);
     else url.searchParams.delete("city");
     url.hash = "";
-    window.history.pushState(null, "", `/discover${url.search}`);
+    // /shanghai has a map-only server tree; load /metro's combined directory.
+    if (url.pathname !== "/metro") {
+      window.location.assign(`/metro${url.search}`);
+      return;
+    }
+    window.history.pushState(null, "", `/metro${url.search}`);
     setCityState(next);
     applyMapMeta(parseSiteLang(url.searchParams.get("lang")));
   }, []);

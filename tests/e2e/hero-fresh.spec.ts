@@ -14,7 +14,7 @@ for (const width of [390, 1280]) {
   for (const [clock, visible] of [['2026-10-30', true], ['2026-11-05', true], ['2026-11-06', false], ['2026-11-07', false]] as const) {
     test(`P-1 synthetic fresh/backfill/example markers at ${width}px on ${clock}`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto(`/discover?reduce=1&clock=${clock}`);
+      await page.goto(`/metro?reduce=1&clock=${clock}`);
       await waitForMap(page);
       const data = structuredClone(metro);
       const base = data.stores.find((s) => s.stationId === 'dongmen')!;
@@ -57,7 +57,8 @@ for (const width of [390, 1280]) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
       const overflow = await page.locator('#card .fc h4, #card dd').evaluateAll((els) => els.some((el) => el.scrollWidth > el.clientWidth + 1));
       expect(overflow).toBeFalsy();
-      await page.screenshot({ path:testInfo.outputPath(`fresh-${width}-${clock}.png`), fullPage:true });
+      // Capture the map under test, not the long station directory below it.
+      await page.locator('.hero-search-col').screenshot({ path:testInfo.outputPath(`fresh-${width}-${clock}.png`) });
       await page.evaluate(() => window.__savvyMap!.closeCard({focus:false}));
       await page.waitForFunction(() => window.__savvyMap!.state().showing === null && !window.__savvyMap!.state().closing);
     });

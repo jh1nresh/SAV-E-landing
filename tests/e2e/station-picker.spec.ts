@@ -31,7 +31,7 @@ async function boxBottom(page: import("@playwright/test").Page, selector: string
 
 test("default trigger is the newest station and does not open its card", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/discover");
+  await page.goto("/metro");
   await waitForMap(page);
   const trigger = page.getByTestId("station-picker-trigger");
   await expect(trigger).toContainText(`第 ${newest.n} 站`);
@@ -44,7 +44,7 @@ test("default trigger is the newest station and does not open its card", async (
 
 test("choosing newest, oldest, and a middle station updates the trigger, pin, and card", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/discover");
+  await page.goto("/metro");
   await waitForMap(page);
   for (const station of [oldest, middle, newest]) {
     await page.getByTestId("station-picker-trigger").click();
@@ -76,7 +76,7 @@ test("choosing newest, oldest, and a middle station updates the trigger, pin, an
 
 test("a station hash preselects that station without adding history entries", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto(`/discover#${middle.slug}`);
+  await page.goto(`/metro#${middle.slug}`);
   await waitForMap(page);
   await waitForCardOpen(page);
   await expect(page.getByTestId("station-picker-trigger")).toContainText(middle.station);
@@ -90,7 +90,7 @@ test("a station hash preselects that station without adding history entries", as
 
 test("Escape closes the panel and a second Escape leaves focus on the trigger", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/discover");
+  await page.goto("/metro");
   await waitForMap(page);
   const trigger = page.getByTestId("station-picker-trigger");
   await trigger.click();
@@ -105,7 +105,7 @@ test("Escape closes the panel and a second Escape leaves focus on the trigger", 
 
 test("desktop panel does not push the map and stays within 300px", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/discover");
+  await page.goto("/metro");
   await waitForMap(page);
   const before = (await page.locator(".map-stage").boundingBox())!;
   await page.getByTestId("station-picker-trigger").click();
@@ -119,14 +119,14 @@ test("desktop panel does not push the map and stays within 300px", async ({ page
 
 test("mobile sheet closes from the scrim", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/discover");
+  await page.goto("/metro");
   await waitForMap(page);
   const trigger = page.getByTestId("station-picker-trigger");
   await trigger.click();
   await expect(page.getByText("找一站", { exact: true }).last()).toBeVisible();
   const backdrop = page.locator(".sd-backdrop");
   await expect(backdrop).toBeVisible();
-  const option = page.getByRole("option").first();
+  const option = page.getByTestId("station-search").getByRole("option").first();
   expect((await option.boundingBox())!.height).toBeGreaterThanOrEqual(48);
   await backdrop.click({ position: { x: 20, y: 20 } });
   await expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -138,7 +138,7 @@ test.describe("no-JS station list", () => {
 
   test("lists every station as a link and does not print a weekly count", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/discover");
+  await page.goto("/metro");
   const links = page.getByTestId("station-fallback").locator("a");
   await expect(links).toHaveCount(taipei.length);
   await expect(links.first()).toHaveAttribute("href", `/metro/${newest.slug}`);
@@ -158,7 +158,7 @@ test.describe("no-JS station list", () => {
 for (const [width, height] of [[390, 844], [1280, 800], [1440, 900]] as const) {
   test(`Station selector stays on the first screen at ${width}x${height}`, async ({ page }) => {
     await page.setViewportSize({ width, height });
-    await page.goto("/discover");
+    await page.goto("/metro");
     await waitForMap(page);
     const bottom = await boxBottom(page, "[data-testid=station-picker-trigger]");
     expect(bottom).toBeLessThanOrEqual(height);
@@ -179,7 +179,7 @@ test("every Taipei pin and name is on the first screen at 1280x800", async ({ pa
   expect(taipei.length).toBeGreaterThanOrEqual(23);
   expect(stationIdentity(taipei), "published Taipei stations").toEqual(stationIdentity(publishedTaipei));
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/discover");
+  await page.goto("/metro");
   await waitForMap(page);
   const pins = page.locator("[data-testid^=metro-pin-]");
   await expect(pins).toHaveCount(publishedTaipei.length);
@@ -214,7 +214,7 @@ test("every Taipei pin and name is on the first screen at 1280x800", async ({ pa
 
 test("the weekly stamp does not cover 國父紀念館 at 390", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/discover?clock=2026-11-13");
+  await page.goto("/metro?clock=2026-11-13");
   await waitForMap(page);
   expect(taipei.some((station) => station.station === "國父紀念館")).toBe(true);
   const stamp = (await page.locator("#stamp").boundingBox())!;
@@ -370,12 +370,12 @@ test("shanghai dropdown lists the published stations and selects the newest", as
   await expect(trigger).toContainText(`第 ${newest?.n} 站`);
   await expect(trigger).toContainText(newest?.station ?? "");
   await trigger.click();
-  const optionNames = page.getByRole("option").locator("[data-slot=combobox-item-text]");
+  const optionNames = page.getByTestId("station-search").getByRole("option").locator("[data-slot=combobox-item-text]");
   await expect(optionNames).toHaveCount(publishedShanghai.length);
   expect((await optionNames.allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim())).toEqual(shanghai.map((station) => station.station));
 
   const index = buildSearchIndex(getShanghaiFoodStations());
-  const input = page.getByRole("combobox");
+  const input = page.getByTestId("station-search").getByRole("combobox");
   await input.fill("麵");
   const shown = page.locator("[data-slot=combobox-item]:not([hidden]) [data-slot=combobox-item-text]");
   const shownNames = (await shown.allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim());
@@ -385,8 +385,8 @@ test("shanghai dropdown lists the published stations and selects the newest", as
   await page.getByRole("button", { name: "只看這條線" }).click();
   await page.getByRole("menuitemradio", { name: "1 號線", exact: true }).click();
   const lined = filterStations(index, { line: "1 號線" }).map((station) => station.station);
-  await expect(page.getByRole("option")).toHaveCount(lined.length);
-  const linedNames = (await page.getByRole("option").locator("[data-slot=combobox-item-text]").allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim());
+  await expect(page.getByTestId("station-search").getByRole("option")).toHaveCount(lined.length);
+  const linedNames = (await page.getByTestId("station-search").getByRole("option").locator("[data-slot=combobox-item-text]").allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim());
   expect(new Set(linedNames)).toEqual(new Set(lined));
   expect(linedNames).not.toContain("人民廣場");
 });
@@ -412,7 +412,7 @@ test.describe("shanghai no-JS station list", () => {
 test("a 45-station fixture keeps the closed control height and the panel cap", async ({ context }) => {
   const closedPage = await context.newPage();
   await closedPage.setViewportSize({ width: 1280, height: 800 });
-  await closedPage.goto("/discover");
+  await closedPage.goto("/metro");
   await waitForMap(closedPage);
   const closed = (await closedPage.getByTestId("station-search").boundingBox())!;
   await closedPage.close();
@@ -420,7 +420,7 @@ test("a 45-station fixture keeps the closed control height and the panel cap", a
   const grownLatest = latestStation(grownStations)!;
   const page = await context.newPage();
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/discover?pickerFixture=45");
+  await page.goto("/metro?pickerFixture=45");
   await waitForMap(page);
   const grown = (await page.getByTestId("station-search").boundingBox())!;
   expect(Math.abs(grown.height - closed.height)).toBeLessThanOrEqual(2);
@@ -428,7 +428,7 @@ test("a 45-station fixture keeps the closed control height and the panel cap", a
   await expect.poll(() => page.locator("[data-testid=metro-pin-taipei-101-world-trade-center] .ph").evaluate((el) => el.getBoundingClientRect().height)).toBeGreaterThan(10);
   expect(await boxBottom(page, "[data-testid=metro-pin-taipei-101-world-trade-center] .ph")).toBeLessThanOrEqual(800);
   await page.getByTestId("station-picker-trigger").click();
-  await expect(page.getByRole("option")).toHaveCount(45);
+  await expect(page.getByTestId("station-search").getByRole("option")).toHaveCount(45);
   expect((await page.locator(".sd-sheet").boundingBox())!.height).toBeLessThanOrEqual(300);
   await page.close();
 });

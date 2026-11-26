@@ -103,7 +103,7 @@
     frame.title = "捷運美食地圖";
     const query = new URLSearchParams({ embed: "atlas" });
     if (document.documentElement.lang === "en") query.set("lang", "en");
-    frame.src = (selected.id === "Shanghai" ? "/shanghai" : "/discover") + "?" + query.toString();
+    frame.src = (selected.id === "Shanghai" ? "/shanghai" : "/metro") + "?" + query.toString();
     fragment.append(frame);
     return fragment;
   }

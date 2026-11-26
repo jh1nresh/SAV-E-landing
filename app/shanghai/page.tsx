@@ -7,4 +7,8 @@ export const metadata = guideMetadata(
   "/shanghai",
 );
 
-export { default } from "../metro/MetroMapPage";
+import MetroMapPage from "../metro/MetroMapPage";
+
+export default function ShanghaiPage() {
+  return <MetroMapPage />;
+}

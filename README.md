@@ -52,8 +52,8 @@ npm run check
 ## Pages
 
 - `/` Sakura workspace with Trips, Atlas, Collections, Journey and the iOS introduction
-- `/discover` and `/shanghai` standalone Taipei and Shanghai metro food maps
-- `/zh-tw/travel` travel guides, `/zh-tw/posts` original Threads links and `/metro` station guides
+- `/metro` combines the metro map and station guide directory; `/discover` redirects here. `/shanghai` retains its city map.
+- `/zh-tw/travel` travel guides, `/zh-tw/posts` Threads articles with readable slugs and original source links; `/metro/[station]` station guides. Old Threads-code URLs permanently redirect to the corresponding article.
 - `/privacy`
 - `/support`
 - `mailto:support@sav-e.app`

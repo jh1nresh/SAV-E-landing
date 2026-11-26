@@ -13,7 +13,7 @@ test("the workspace is the crawlable homepage and links to the public library", 
   for (const city of ["taipei", "shanghai"]) {
     const oldMapLink = await request.get(`/?city=${city}`, { maxRedirects: 0 });
     expect(oldMapLink.status()).toBe(308);
-    expect(oldMapLink.headers().location).toBe(`/discover?city=${city}`);
+    expect(oldMapLink.headers().location).toBe(`/metro?city=${city}`);
   }
   expect((await request.get("/?city=not-shanghai", { maxRedirects: 0 })).status()).toBe(200);
   const library = await (await request.get("/trips/library.json")).json();

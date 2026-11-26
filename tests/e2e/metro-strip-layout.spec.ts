@@ -14,12 +14,12 @@ function intersects(
 for (const width of [1280, 1440]) {
   test(`desktop station options stay tappable and clear the trigger at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/discover");
+    await page.goto("/metro");
     await waitForMap(page);
     await page.evaluate(() => document.fonts.ready);
     const trigger = page.getByTestId("station-picker-trigger");
     await trigger.click();
-    const options = page.getByRole("option");
+    const options = page.getByTestId("station-search").getByRole("option");
     await expect(options).toHaveCount(STATION_COUNT);
     for (const option of await options.all()) {
       const box = await option.boundingBox();
