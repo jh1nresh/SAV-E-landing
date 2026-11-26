@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./sakura-editorial.css";
 import { SiteChrome } from "./SiteChrome";
 import { LANG_BOOT_SCRIPT, SITE_DESCRIPTION_ZH, SITE_TITLE_ZH } from "./site";
 import { SITE_ORIGIN, PRODUCT_TERMS } from "../lib/site-content";
@@ -72,6 +73,7 @@ export default function RootLayout({
 })();`,
           }}
         />
+        <link rel="stylesheet" href="/assets/sakura-theme.css" />
         <link rel="describedby" href="/llms.txt" />
         <link
           rel="preload"

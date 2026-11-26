@@ -367,6 +367,20 @@
       </figure>
     </article>`;
   }
+  const mobileNav = document.querySelector('.mobile-nav');
+  const mobileTrigger = mobileNav.querySelector('summary');
+  mobileNav.addEventListener('click', event => {
+    const link = event.target.closest('a');
+    if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    mobileNav.open = false;
+    if (link.hash === location.hash) root.focus({preventScroll:true});
+  });
+  mobileNav.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !mobileNav.open) return;
+    mobileNav.open = false;
+    mobileTrigger.focus();
+  });
+
   function render(){
     disposeFeature?.();
     disposeFeature = undefined;
@@ -380,13 +394,15 @@
     const navigation = document.querySelector('.workspace-tabs');
     const links = [...navigation.querySelectorAll('a')];
     const selected = links.findIndex(link => link.hash === '#' + active);
+    const updateCurrent = link => {
+      if (link.hash === '#' + active) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    };
+    mobileNav.querySelectorAll('a').forEach(updateCurrent);
     if (customElements.get('sakuga-tabs')) {
       if (navigation.selected !== selected) navigation.selected = selected;
     } else {
-      links.forEach((link, index) => {
-        if (index === selected) link.setAttribute('aria-current', 'page');
-        else link.removeAttribute('aria-current');
-      });
+      links.forEach(updateCurrent);
     }
     document.title=tabs[active]+' · Savvy';root.replaceChildren();
     if(section==='atlas')window.renderSavvyAtlas(root,api);
@@ -404,6 +420,6 @@
     root.focus();
     root.scrollIntoView({block:'start'});
   });
-  window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);root.focus({preventScroll:true});});
+  window.addEventListener('hashchange',()=>{mobileNav.open=false;render();window.scrollTo(0,0);root.focus({preventScroll:true});});
   render();
 })();

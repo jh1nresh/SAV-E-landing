@@ -1,0 +1,216 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Savvy Public Content API",
+    "version": "1.0.0",
+    "description": "Read-only access to Savvy travel guides, metro food guides and public Threads notes. Authentication is not required. The API does not access personal trips, saved places or accounts.",
+    "contact": {
+      "name": "Savvy API documentation",
+      "url": "https://savvy.jeezlabs.io/docs"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://savvy.jeezlabs.io",
+      "description": "Production"
+    }
+  ],
+  "externalDocs": {
+    "description": "Savvy API documentation",
+    "url": "https://savvy.jeezlabs.io/docs"
+  },
+  "paths": {
+    "/trips/library.json": {
+      "get": {
+        "operationId": "listPublicGuidesAndPosts",
+        "summary": "List public guides and posts",
+        "description": "Returns Savvy’s published guide and post index, newest first. Each entry links to its public page. Threads entries also link to the original post.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Published entries, sorted by date descending.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LibraryEntry"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/content": {
+      "get": {
+        "operationId": "getPublicDocument",
+        "summary": "Get a public document",
+        "description": "Returns the same editorial text as the Markdown representation of a canonical public website path. Find paths in the sitemap or library index.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Public document and its canonical URL.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicDocument"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The path is missing, repeated or invalid.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiProblem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No public document exists at the canonical path.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiProblem"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "path",
+            "in": "query",
+            "required": true,
+            "description": "Canonical path starting with a slash. Omit the hostname, trailing slash (except for the homepage), query, fragment and .md suffix.",
+            "example": "/zh-tw/travel",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "pattern": "^/(?:[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*)?$"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LibraryEntry": {
+        "type": "object",
+        "required": [
+          "kind",
+          "region",
+          "city",
+          "title",
+          "date",
+          "href"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "guide",
+              "post"
+            ]
+          },
+          "region": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string",
+            "description": "City, or an empty string for product guides."
+          },
+          "title": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "description": "ISO 8601 calendar date or timestamp, depending on the source."
+          },
+          "href": {
+            "type": "string",
+            "format": "uri-reference"
+          },
+          "displayDate": {
+            "type": "string",
+            "description": "Localized display date for posts."
+          },
+          "source": {
+            "type": "string",
+            "format": "uri",
+            "description": "Original Threads permalink when applicable."
+          }
+        }
+      },
+      "PublicDocument": {
+        "type": "object",
+        "required": [
+          "url",
+          "markdown"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "markdown": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "PublicApiProblem": {
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "code",
+          "detail",
+          "hint"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "about:blank"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "enum": [
+              400,
+              404,
+              405
+            ]
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "invalid_path",
+              "content_not_found",
+              "endpoint_not_found",
+              "method_not_allowed"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string",
+            "description": "An actionable recovery suggestion."
+          }
+        }
+      }
+    }
+  }
+}

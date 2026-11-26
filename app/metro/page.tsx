@@ -14,7 +14,7 @@ export default function MetroFoodPage() {
       <h1 className="guide-title">台北、上海捷運美食攻略</h1>
       <p className="guide-lead">先選一站，再看餐點、參考價格和店家位置。</p>
       <p className="guide-small">{FOOD_DISCLAIMER}</p>
-      <nav className="food-city-index" aria-label="依城市找美食"><a href="#taipei">台北捷運</a><a href="#shanghai">上海地鐵</a></nav>
+      <nav className="food-city-index" aria-label="依城市找美食"><a href="#taipei">台北捷運</a><a href="#shanghai">上海地鐵</a><a href="/discover">看捷運地圖</a></nav>
     </header>
     {[{ id: 'taipei', label: '台北捷運美食', stations: getFoodStations() }, { id: 'shanghai', label: '上海地鐵美食', stations: getShanghaiFoodStations() }].map(city => <section className="food-city-section" id={city.id} key={city.id} aria-labelledby={`${city.id}-title`}>
       <h2 id={`${city.id}-title`}>{city.label}</h2><p>{city.stations.length} 站，按站名查看完整攻略。</p>

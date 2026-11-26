@@ -7,6 +7,9 @@
   <meta name="description" content="找台北、上海與其他城市的美食和旅行攻略。在 Savvy 探索街區、收藏想去的地方，把社群貼文存成自己的地圖。">
   <link rel="canonical" href="https://savvy.jeezlabs.io/">
   <link rel="alternate" type="text/markdown" href="https://savvy.jeezlabs.io/index.md">
+  <link rel="service-desc" href="/openapi.json" type="application/json">
+  <link rel="service-doc" href="/docs">
+  <meta name="keywords" content="美食地圖, 旅行攻略, place memory">
   <link rel="describedby" href="/llms.txt">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Savvy">
@@ -20,7 +23,7 @@
   {"@context":"https://schema.org","@graph":[
     {"@type":"WebSite","@id":"https://savvy.jeezlabs.io/#website","name":"Savvy","url":"https://savvy.jeezlabs.io/","inLanguage":"zh-Hant","publisher":{"@id":"https://savvy.jeezlabs.io/#organization"}},
     {"@type":"Organization","@id":"https://savvy.jeezlabs.io/#organization","name":"Savvy","url":"https://savvy.jeezlabs.io/","sameAs":["https://www.threads.com/@savvysave_","https://www.instagram.com/savvysave_/","https://x.com/savvysave_"]},
-    {"@type":"SoftwareApplication","@id":"https://savvy.jeezlabs.io/#app","name":"Savvy","url":"https://savvy.jeezlabs.io/","operatingSystem":"iOS","applicationCategory":"LifestyleApplication","description":"把社群上的地點連結存到地圖，確認地點後收藏並用來排行程。","publisher":{"@id":"https://savvy.jeezlabs.io/#organization"}}
+    {"@type":"SoftwareApplication","@id":"https://savvy.jeezlabs.io/#app","name":"Savvy","url":"https://savvy.jeezlabs.io/","operatingSystem":"iOS","applicationCategory":"LifestyleApplication","keywords":"美食地圖, 旅行攻略, place memory","description":"把社群上的地點連結存到地圖，確認地點後收藏並用來排行程。","publisher":{"@id":"https://savvy.jeezlabs.io/#organization"}}
   ]}
   </script>
   <link rel="icon" type="image/png" href="/icon.png">
@@ -33,12 +36,13 @@
       if (localStorage.getItem('savvy.workspace.theme') === 'dark') document.documentElement.dataset.theme = 'dark';
     } catch {}
   </script>
+  <link rel="stylesheet" href="/assets/sakura-theme.css">
   <link rel="stylesheet" href="/trips/savvy-workspace.css?v=left-slide">
   <link rel="stylesheet" href="/trips/savvy-atlas-tab.css">
   <link rel="stylesheet" href="/trips/savvy-collection-tab.css">
   <link rel="stylesheet" href="/trips/savvy-journey-tab.css">
   <link rel="stylesheet" href="/trips/savvy-trip-reader.css">
-  <link rel="stylesheet" href="/trips/savvy-workspace-motion.css?v=atlas-progress">
+  <link rel="stylesheet" href="/trips/savvy-workspace-motion.css?v=mobile-nav">
   <script defer src="/trips/guide-data.js"></script>
   <script defer src="/trips/search-catalog.js"></script>
   <script defer src="/trips/savvy-atlas-tab.js?v=atlas-progress"></script>
@@ -53,9 +57,9 @@
   <script defer src="/trips/vendor/sakuga-vfx/button.js"></script>
   <script defer src="/trips/vendor/sakuga-vfx/progress.js?v=compact-atlas"></script>
   <script defer src="/trips/vendor/sakuga-vfx/tooltip.js?v=waitlist-trigger"></script>
-  <script defer src="/trips/savvy-workspace-motion.js?v=atlas-progress"></script>
-  <script defer src="/trips/savvy-workspace.js?v=sakuga-tooltip-progress"></script>
-  <script defer src="/trips/savvy-workspace-locale.js?v=sakuga-tooltip-progress"></script>
+  <script defer src="/trips/savvy-workspace-motion.js?v=waitlist-copy"></script>
+  <script defer src="/trips/savvy-workspace.js?v=mobile-nav"></script>
+  <script defer src="/trips/savvy-workspace-locale.js?v=waitlist-copy"></script>
   <script defer src="/trips/savvy-workspace-opening.js?v=one-to-hundred"></script>
   <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2" src="/trips/drive.js" defer></script>
 </head>
@@ -84,10 +88,16 @@
           <sakuga-tooltip class="waitlist-tooltip" id="header-waitlist-hint" external text="開放試用時，我們會寄信給你，附上加入方式。"></sakuga-tooltip>
         </span>
       </div>
+      <details class="mobile-nav">
+        <summary aria-label="選單"></summary>
+        <nav class="mobile-nav-links" aria-label="主導覽">
+          <a href="#trips" aria-current="page">我的行程</a><a href="#atlas">城市圖鑑</a><a href="#collection">收藏</a><a href="#journey">遊記</a><a href="#app">App</a>
+        </nav>
+      </details>
     </div>
   </header>
   <main id="workspace" class="workspace" tabindex="-1">
-    <h1>Savvy 美食地圖</h1>
+    <h1>Savvy 美食地圖與旅行攻略</h1>
     <p>找下一站要吃什麼、去哪裡走走。Savvy iOS App 可以儲存社群連結、確認地點，並把想去的地方排進行程。</p>
     <p><a href="/zh-tw/travel">閱讀旅行攻略</a> · <a href="/zh-tw/posts">瀏覽城市貼文</a> · <a href="/metro">找捷運美食</a></p>
   </main>
@@ -96,9 +106,11 @@
       <a href="/zh-tw/travel">旅行攻略</a>
       <a href="/zh-tw/posts">城市貼文</a>
       <a href="/zh-tw/guides">收藏整理</a>
-      <a href="/discover">捷運美食</a>
+      <a href="/metro">捷運美食</a>
       <a href="/privacy">隱私</a>
       <a href="/support">支援</a>
+      <a href="/docs">Savvy API</a>
+      <a href="https://github.com/jh1nresh/SAV-E-landing">GitHub</a>
     </nav>
     <label class="shell-language">
       <span>語言</span>

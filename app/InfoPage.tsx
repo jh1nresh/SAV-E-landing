@@ -14,6 +14,7 @@ export function InfoPage({ name }: { name: keyof typeof infoPages }) {
     </div>)}
     <p><a href="/support">Savvy Support</a> · <a href="/privacy">Privacy</a> · <a href="/zh-tw/guides">繁體中文指南</a> · <a href="/llms.txt">Agent instructions</a></p>
     {name === "docs" && <>
+      <p><a href="/openapi.json">Savvy Public Content API OpenAPI specification</a> · <a href="/trips/library.json">Public guide catalog (JSON)</a></p>
       <pre style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}><code>{`curl -i -H 'Accept: text/markdown' ${SITE_ORIGIN}/`}</code></pre>
       <p><a href="https://github.com/jh1nresh/SAV-E-landing">SAV-E-landing on GitHub</a></p>
     </>}

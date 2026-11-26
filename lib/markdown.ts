@@ -29,7 +29,8 @@ Integration boundary: this landing site advertises no supported public account A
 ## Product and agent guidance
 
 - ${link("Savvy overview", "/index.md")}: Product workflow, availability and limits.
-- ${link("Savvy API documentation", "/docs.md")}: When to use the site, HTTP access and unavailable integrations.
+- ${link("Savvy API documentation", "/docs.md")}: HTTP access, examples and integration limits.
+- ${link("OpenAPI specification", "/openapi.json")}: Machine-readable contract for the public content API.
 - ${link("About Savvy", "/about.md")}: Product identity and place-memory states.
 
 ## Public guides
@@ -58,7 +59,7 @@ function shanghaiMarkdown() {
 }
 
 export function markdownFor(path: string): string | null {
-  if (path === "/") return `# Savvy 美食地圖
+  if (path === "/") return `# Savvy 美食地圖與旅行攻略
 
 找下一站要吃什麼、去哪裡走走。Savvy iOS App 可以儲存社群連結、確認地點，並把想去的地方排進行程。
 
@@ -99,7 +100,7 @@ ${resources}
   const key = path.slice(1) as keyof typeof infoPages;
   if (Object.hasOwn(infoPages, key)) {
     const page = infoPages[key];
-    return `# ${page.title}\n\n${page.description}\n\n${sections(page.sections)}\n\n${key === "docs" ? `\`curl -i -H 'Accept: text/markdown' ${SITE_ORIGIN}/\`\n\n[Website code on GitHub](https://github.com/jh1nresh/SAV-E-landing)\n\n` : ""}${resources}\n`;
+    return `# ${page.title}\n\n${page.description}\n\n${sections(page.sections)}\n\n${key === "docs" ? `\`curl -i -H 'Accept: text/markdown' ${SITE_ORIGIN}/\`\n\n[OpenAPI specification](https://savvy.jeezlabs.io/openapi.json) · [Public guide catalog](https://savvy.jeezlabs.io/trips/library.json)\n\n[Website code on GitHub](https://github.com/jh1nresh/SAV-E-landing)\n\n` : ""}${resources}\n`;
   }
   if (path === "/privacy") return `# Savvy Privacy Policy\n\nSavvy is your private place memory. Places you confirm and save stay yours by default. We do not sell your map. Free keeps 50 saved places. Pro is unlimited saved places.\n\n${sections(privacyGuidance)}\n\n${resources}\n`;
   if (path === "/support") return `# Savvy Support\n\nRead ${link("the HTML support page", "/support")} for the existing published support channel. Share a short, redacted problem description rather than passwords, tokens or an entire place collection.\n\n[Public TestFlight invitation](${TESTFLIGHT_URL})\n\nAvailability and version are determined by Apple and the current build.\n\n${resources}\n`;

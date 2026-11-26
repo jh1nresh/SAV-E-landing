@@ -1,0 +1,107 @@
+:root {
+  --sakura-type: "Avenir Next", "Nunito", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  --sakura-canvas: #fff;
+  --sakura-paper: #fff;
+  --sakura-ink: #1d1a4a;
+  --sakura-muted: #574e70;
+  --sakura-line: #a49ab8;
+  --sakura-edge: #1d1a4a;
+  --sakura-wash: #eeebff;
+  --sakura-primary: #8f8df7;
+  --sakura-shadow: #b8b3ff;
+  --sakura-petal: #ffe0ed;
+  --sakura-brand: #5a4fd8;
+  --sakura-focus: #6543c5;
+}
+
+:root[data-theme="dark"] {
+  --sakura-canvas: #181424;
+  --sakura-paper: #251f36;
+  --sakura-ink: #f6efff;
+  --sakura-muted: #cac1dd;
+  --sakura-line: #736689;
+  --sakura-edge: #a791dc;
+  --sakura-wash: #392c54;
+  --sakura-primary: #a9a0ff;
+  --sakura-shadow: #4d3c76;
+  --sakura-petal: #55324e;
+  --sakura-brand: #cdc4ff;
+  --sakura-focus: #e6acff;
+}
+
+.mobile-nav { display: none; }
+
+@media (max-width: 800px) {
+  .mobile-nav {
+    position: relative;
+    display: block;
+    justify-self: end;
+    grid-row: 1;
+  }
+
+  .mobile-nav summary {
+    display: grid;
+    place-items: center;
+    inline-size: 44px;
+    block-size: 44px;
+    border: 2px solid var(--sakura-edge);
+    border-radius: 9px;
+    background: var(--sakura-paper);
+    box-shadow: 2px 3px 0 var(--sakura-primary);
+    color: var(--sakura-ink);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .mobile-nav summary::-webkit-details-marker { display: none; }
+  .mobile-nav summary::before {
+    content: "";
+    inline-size: 18px;
+    block-size: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    box-shadow: 0 -6px currentColor, 0 6px currentColor;
+  }
+
+  .mobile-nav[open] summary { background: var(--sakura-wash); }
+
+  .mobile-nav-links {
+    position: absolute;
+    inset-block-start: calc(100% + .75rem);
+    inset-inline-end: 0;
+    z-index: 12;
+    inline-size: min(14rem, calc(100vw - 2.5rem));
+    padding: .3rem;
+    border: 2px solid var(--sakura-edge);
+    border-radius: 12px;
+    background: var(--sakura-paper);
+    box-shadow: 3px 4px 0 var(--sakura-petal);
+  }
+
+  .mobile-nav-links a {
+    display: flex;
+    align-items: center;
+    min-block-size: 44px;
+    padding-inline: .7rem;
+    border-radius: 6px;
+    color: var(--sakura-ink);
+    text-decoration: none;
+    font: 650 .95rem/1.25 var(--sakura-type);
+  }
+
+  .mobile-nav-links a + a { margin-block-start: .15rem; }
+  .mobile-nav-links a[aria-current="page"] {
+    background: var(--sakura-wash);
+    box-shadow: inset 3px 0 0 var(--sakura-brand);
+    font-weight: 800;
+  }
+
+  @media (hover: hover) {
+    .mobile-nav-links a:hover { background: var(--sakura-wash); }
+  }
+
+  .mobile-nav :is(summary, a):focus-visible {
+    outline: 3px solid var(--sakura-focus);
+    outline-offset: 2px;
+  }
+}
