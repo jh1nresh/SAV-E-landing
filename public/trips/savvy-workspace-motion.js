@@ -63,7 +63,7 @@
   });
   const feedback = {
     submitting: ["正在提交報名…", "Submitting your signup…"],
-    confirmed: ["已收到報名。開放試用時，我們會寄信通知你。", "You’re on the waitlist. We’ll email you when testing opens."],
+    confirmed: ["已收到報名。開放試用時，我們會寄信通知你。", "You’re signed up. We’ll email you when early access opens."],
     confirmation_pending: ["已收到報名。暫時無法確認寄信結果，你可以稍後重試。", "We received your signup. We couldn’t confirm the email status. You can try again later."],
     confirmation_unknown: ["已收到報名。如果沒收到確認信，請聯絡 Savvy。", "We received your signup. Contact Savvy if you didn’t receive a confirmation email."],
     preview: ["已完成本機測試，沒有寄出 Email。", "Local test complete. No email was sent."],

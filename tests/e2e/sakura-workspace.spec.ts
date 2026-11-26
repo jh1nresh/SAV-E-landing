@@ -142,15 +142,15 @@ test("Sakuga signup buttons close, validate and confirm using the existing API",
   await expect.poll(() => requests).toBe(2);
 });
 
-test("English signup labels and confirmation consistently say waitlist", async ({ page }) => {
+test("English signup labels and confirmation use early access", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 700 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.route("**/api/test-list", route => route.fulfill({ json: { state: "confirmed" } }));
   await page.goto("/?lang=en#app");
-  await expect(page.locator(".appbar").getByRole("button", { name: "Join the waitlist" })).toBeVisible();
-  await page.locator("#workspace").getByRole("button", { name: "Join the waitlist" }).click();
-  const dialog = page.getByRole("dialog", { name: "Join the Savvy waitlist" });
+  await expect(page.locator(".appbar").getByRole("button", { name: "Get early access" })).toBeVisible();
+  await page.locator("#workspace").getByRole("button", { name: "Get early access" }).click();
+  const dialog = page.getByRole("dialog", { name: "Savvy early access" });
   await dialog.getByRole("textbox", { name: "Email" }).fill("savvy-test@example.com");
-  await dialog.getByRole("button", { name: "Join the waitlist" }).click();
-  await expect(dialog.getByRole("status")).toContainText("You’re on the waitlist.");
+  await dialog.getByRole("button", { name: "Get early access" }).click();
+  await expect(dialog.getByRole("status")).toContainText("We’ll email you when early access opens.");
 });
