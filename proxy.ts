@@ -19,7 +19,7 @@ export function proxy(request: NextRequest) {
   }
   if (!["GET", "HEAD"].includes(request.method)) return NextResponse.next();
   // Leave Next's transport and fixed-format resources to their existing handlers.
-  if (request.headers.has("rsc") || ["/robots.txt", "/sitemap.xml", "/openapi.json", "/icon.png", "/og.png"].includes(path)) return NextResponse.next();
+  if (request.headers.has("rsc") || ["/BingSiteAuth.xml", "/robots.txt", "/sitemap.xml", "/openapi.json", "/icon.png", "/og.png"].includes(path)) return NextResponse.next();
   const respond = (body: string, status: number, type = "text/markdown") => new NextResponse(request.method === "HEAD" ? null : body, {
     status, headers: { "Content-Type": `${type}; charset=utf-8`, "Vary": "Accept", "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff", "Link": '</llms.txt>; rel="describedby"' },
   });
