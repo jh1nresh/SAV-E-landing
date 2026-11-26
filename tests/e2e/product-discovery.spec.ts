@@ -31,4 +31,14 @@ test("workspace rendering keeps the product title and visible app label", async 
   await page.goto('/#app');
   await expect(page.locator('.app-intro-brand')).toHaveText('Savvy 美食地圖收藏 App');
   await expect(page).toHaveTitle(title);
+  await page.locator('#workspace-language').selectOption('en');
+  const englishTitle = 'Savvy saved-place app — Keep food and travel finds on your map';
+  await expect(page).toHaveTitle(englishTitle);
+  await expect(page.locator('.app-intro-brand')).toHaveText('Savvy saved-place app');
+  await page.reload();
+  await expect(page).toHaveTitle(englishTitle);
+  await page.goto('/#trips');
+  await expect(page).toHaveTitle(englishTitle);
+  await page.locator('#workspace-language').selectOption('zh-Hant');
+  await expect(page).toHaveTitle(title);
 });
