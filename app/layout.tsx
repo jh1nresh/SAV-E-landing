@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
+        url: "/assets/savvy-share-sakura.png",
+        width: 1732,
+        height: 908,
         alt: "Savvy",
       },
     ],
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE_ZH,
     description: SITE_DESCRIPTION_ZH,
-    images: ["/og.png"],
+    images: ["/assets/savvy-share-sakura.png"],
   },
 };
 

@@ -104,7 +104,7 @@ test("no-JS metro map and trust pages expose meaningful content and metadata", a
     await expect(page.locator("h1:visible")).toHaveCount(1);
     await expect(page.locator("h1:visible")).not.toBeEmpty();
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/savvy\.jeezlabs\.io\/discover$/);
-    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", `${origin}/og.png`);
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", `${origin}/assets/savvy-share-sakura.png`);
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "website");
     await expect(page.locator('meta[name="keywords"]')).toHaveAttribute("content", /place memory/);
     await expect(page.locator('meta[name="keywords"]')).toHaveAttribute("content", /地點記憶/);

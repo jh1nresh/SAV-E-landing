@@ -179,7 +179,7 @@ test.describe("hero content and motion", () => {
     await expect(zh.locator('meta[property="og:title"]')).toHaveAttribute("content", "台北捷運美食地圖｜Savvy");
     await expect(zh.getByRole("heading", { level: 1 })).toHaveText("捷運美食地圖");
     const og = await zh.locator('meta[property="og:image"]').getAttribute("content");
-    expect(og).toMatch(/og\.png/);
+    expect(og).toMatch(/\/assets\/savvy-share-sakura\.png/);
     await zh.close();
 
     const en = await context.newPage();

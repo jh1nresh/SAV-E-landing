@@ -28,7 +28,7 @@ export function travelMetadata(title: string, description: string, path: string)
     title: title + "｜Savvy",
     description,
     alternates: { canonical: url },
-    openGraph: { title, description, url, locale: "zh_TW", type: path === TRAVEL_ROOT ? "website" : "article", images: ["/og.png"] },
-    twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
+    openGraph: { title, description, url, locale: "zh_TW", type: path === TRAVEL_ROOT ? "website" : "article", images: ["/assets/savvy-share-sakura.png"] },
+    twitter: { card: "summary_large_image", title, description, images: ["/assets/savvy-share-sakura.png"] },
   };
 }
