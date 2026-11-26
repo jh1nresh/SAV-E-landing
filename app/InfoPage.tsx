@@ -2,7 +2,7 @@ import { infoPages, SITE_ORIGIN } from "../lib/site-content";
 
 export function infoMetadata(key: keyof typeof infoPages) {
   const { title, description } = infoPages[key];
-  return { title, description, alternates: { canonical: `${SITE_ORIGIN}/${key}`, types: { "text/markdown": `${SITE_ORIGIN}/${key}.md` } }, openGraph: { title, description, url: `${SITE_ORIGIN}/${key}`, type: "website", images: [{ url: "/og.png", width: 1200, height: 630, alt: "Savvy" }] } };
+  return { title, description, alternates: { canonical: `${SITE_ORIGIN}/${key}`, types: { "text/markdown": `${SITE_ORIGIN}/${key}.md` } }, openGraph: { title, description, url: `${SITE_ORIGIN}/${key}`, type: "website", images: [{ url: "/assets/savvy-share-sakura.png", width: 1200, height: 630, alt: "Savvy" }] } };
 }
 
 export function InfoPage({ name }: { name: keyof typeof infoPages }) {
