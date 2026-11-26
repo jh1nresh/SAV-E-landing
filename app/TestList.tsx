@@ -5,7 +5,7 @@ import "./test-list.css";
 
 const feedback: Record<string, [string, string]> = {
   submitting: ["正在提交報名…", "Submitting your signup…"],
-  confirmed: ["已收到報名。開放試用時，我們會寄信通知你。", "You’re on the list. We’ll email you when testing opens."],
+  confirmed: ["已收到報名。開放試用時，我們會寄信通知你。", "You’re on the waitlist. We’ll email you when testing opens."],
   confirmation_pending: ["已收到報名。暫時無法確認寄信結果，你可以稍後重試。", "We received your signup. We couldn’t confirm the email status. You can try again later."],
   confirmation_unknown: ["已收到報名。如果沒收到確認信，請聯絡 Savvy。", "We received your signup. Contact Savvy if you didn’t receive a confirmation email."],
   preview: ["已完成本機測試，沒有寄出 Email。", "Local test complete. No email was sent."],
@@ -48,10 +48,10 @@ export default function TestList() {
 
   return <>
     <button className="test-list-launch" type="button" aria-haspopup="dialog" onClick={() => dialog.current?.showModal()}>
-      <Copy zh="加入測試名單" en="Join the beta list" />
+      <Copy zh="加入測試名單" en="Join the waitlist" />
     </button>
     <dialog ref={dialog} className="test-list-dialog" aria-labelledby="test-list-title">
-      <h2 id="test-list-title"><Copy zh="加入 Savvy 測試名單" en="Join the Savvy beta list" /></h2>
+      <h2 id="test-list-title"><Copy zh="加入 Savvy 測試名單" en="Join the Savvy waitlist" /></h2>
       <p id="test-list-about"><Copy zh="留下 Email，開放試用時我們會通知你。" en="Leave your email and we’ll let you know when testing opens." /> <a href="/privacy"><Copy zh="隱私權政策" en="Privacy policy" /></a></p>
       <form method="post" action="/api/test-list" onSubmit={submit} aria-labelledby="test-list-title">
         <label htmlFor="test-list-email">Email</label>
@@ -61,7 +61,7 @@ export default function TestList() {
         <div className="test-list-actions">
           <button type="button" onClick={() => dialog.current?.close()}><Copy zh="關閉" en="Close" /></button>
           <button className="test-list-launch" type="submit" disabled={busy || ["confirmed", "confirmation_unknown"].includes(state)}>
-            <Copy zh="加入測試名單" en="Join the beta list" />
+            <Copy zh="加入測試名單" en="Join the waitlist" />
           </button>
         </div>
       </form>

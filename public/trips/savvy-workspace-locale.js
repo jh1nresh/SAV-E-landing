@@ -23,7 +23,7 @@ Savvy 首頁|Savvy home
 語言|Language
 Savvy 社群|Savvy on social media
 小紅書|RedNote
-加入測試名單|Join the beta list
+加入測試名單|Join the waitlist
 把想去的地方，排進下一趟行程。|Turn places you save into places you go.
 滑到一家想吃的店？把貼文連結分享給 Savvy，確認是哪一家，再存到自己的地圖。出門前，把想去的幾站排成行程。|Found somewhere you want to eat? Share the post with Savvy, confirm the place, and save it to your map. When you’re ready to go, turn a few saved places into a trip.
 App 介面示意|App preview
@@ -31,7 +31,7 @@ App 介面示意|App preview
 我的行程|My Trip
 收藏|Collection
 遊記|Journey
-加入 Savvy 測試名單|Join the Savvy beta list
+加入 Savvy 測試名單|Join the Savvy waitlist
 開放試用時，我們會寄信給你，附上加入方式。|We’ll email you how to join when the beta opens.
 本機預覽，Email 不會送出。|Local preview. Your email will not be sent.
 已完成試填，Email 沒有送出。|Preview complete. Your email was not sent.
