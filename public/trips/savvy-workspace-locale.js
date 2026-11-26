@@ -17,6 +17,7 @@ Threads 原文 ↗|Original on Threads ↗
 跳到內容|Skip to content
 Savvy 首頁|Savvy home
 主導覽|Main navigation
+選單|Menu
 深色模式|Dark mode
 日夜|Theme
 語言|Language

@@ -17,7 +17,15 @@ test("all six homepage resources use the Sakura reading layout, including articl
       expect(response?.ok(), path).toBe(true);
       await expect(page.locator("main h1:visible"), path).toHaveCount(1);
       await expect(page.locator("nav.top .brand img")).toHaveAttribute("src", "/icon.png");
-      await expect(page.locator('nav.top a[href="/#collection"]')).toBeVisible();
+      const menu = page.locator("nav.top .mobile-nav");
+      const collection = menu.getByRole("link", { name: "收藏", exact: true });
+      await expect(page.locator("nav.top .editorial-tabs")).toBeHidden();
+      await expect(collection).toBeHidden();
+      await menu.locator("summary").press("Enter");
+      await expect(collection).toHaveAttribute("href", "/#collection");
+      await expect(collection).toBeVisible();
+      await menu.locator("summary").press("Enter");
+      await expect(collection).toBeHidden();
       await expect(page.locator("body"), path).toHaveCSS("background-color", "rgb(255, 255, 255)");
       await expect(page.locator("main :is(.guide-header,h1.h):visible").first(), path).toHaveCSS("background-color", "rgb(238, 235, 255)");
       expect(await page.evaluate(() => document.documentElement.scrollWidth), path).toBeLessThanOrEqual(320);

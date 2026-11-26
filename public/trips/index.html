@@ -42,7 +42,7 @@
   <link rel="stylesheet" href="/trips/savvy-collection-tab.css">
   <link rel="stylesheet" href="/trips/savvy-journey-tab.css">
   <link rel="stylesheet" href="/trips/savvy-trip-reader.css">
-  <link rel="stylesheet" href="/trips/savvy-workspace-motion.css?v=atlas-progress">
+  <link rel="stylesheet" href="/trips/savvy-workspace-motion.css?v=mobile-nav">
   <script defer src="/trips/guide-data.js"></script>
   <script defer src="/trips/search-catalog.js"></script>
   <script defer src="/trips/savvy-atlas-tab.js?v=atlas-progress"></script>
@@ -58,8 +58,8 @@
   <script defer src="/trips/vendor/sakuga-vfx/progress.js?v=compact-atlas"></script>
   <script defer src="/trips/vendor/sakuga-vfx/tooltip.js?v=waitlist-trigger"></script>
   <script defer src="/trips/savvy-workspace-motion.js?v=atlas-progress"></script>
-  <script defer src="/trips/savvy-workspace.js?v=sakuga-tooltip-progress"></script>
-  <script defer src="/trips/savvy-workspace-locale.js?v=sakuga-tooltip-progress"></script>
+  <script defer src="/trips/savvy-workspace.js?v=mobile-nav"></script>
+  <script defer src="/trips/savvy-workspace-locale.js?v=mobile-nav"></script>
   <script defer src="/trips/savvy-workspace-opening.js?v=one-to-hundred"></script>
   <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2" src="/trips/drive.js" defer></script>
 </head>
@@ -88,6 +88,12 @@
           <sakuga-tooltip class="waitlist-tooltip" id="header-waitlist-hint" external text="開放試用時，我們會寄信給你，附上加入方式。"></sakuga-tooltip>
         </span>
       </div>
+      <details class="mobile-nav">
+        <summary aria-label="選單"></summary>
+        <nav class="mobile-nav-links" aria-label="主導覽">
+          <a href="#trips" aria-current="page">我的行程</a><a href="#atlas">城市圖鑑</a><a href="#collection">收藏</a><a href="#journey">遊記</a><a href="#app">App</a>
+        </nav>
+      </details>
     </div>
   </header>
   <main id="workspace" class="workspace" tabindex="-1">

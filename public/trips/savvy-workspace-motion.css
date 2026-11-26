@@ -686,15 +686,20 @@ body:has(.trip-dashboard) .shellbar, .shellbar { min-height: 5.2rem; }
 @media (48rem < width <= 58rem) {
   .journey-ws-fields { grid-template-columns: 1fr; }
 }
-@media (max-width: 46rem) {
-  .shellbar { grid-template-columns: minmax(0, 1fr) auto; gap: 0; padding-top: .6rem; }
-  .shellbar .appnav { grid-column: 1 / -1; grid-row: 2; }
+@media (max-width: 800px) {
+  body:has(.trip-dashboard) .shellbar, .shellbar {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: .55rem;
+    min-height: 4.4rem;
+    padding-block: .5rem;
+  }
+  :root .shellbar .appnav { display: none; }
   .shell-actions { grid-column: 2; grid-row: 1; }
+  .shellbar .mobile-nav { grid-column: 3; }
   .shellbar .brand { font-size: 2.65rem; }
-  .shellbar .appnav { margin-block: .6rem .75rem; }
-  .workspace-tabs { width: 100%; }
-  .workspace-tabs a { flex: 1; justify-items: center; font-size: clamp(.75rem, 2.75vw, .9rem); }
   .shellbar .app-download { font-size: .72rem; padding: .42rem .65rem; }
+}
+@media (max-width: 46rem) {
   .app-intro { grid-template-columns: minmax(0, 1fr); gap: 1.9rem; padding-block: .35rem 1.5rem; }
   .app-intro h1 { font-size: clamp(2.15rem, 8.75vw, 3.5rem); }
   .app-intro-preview { width: min(100%, 25rem); justify-self: center; }
@@ -703,8 +708,6 @@ body:has(.trip-dashboard) .shellbar, .shellbar { min-height: 5.2rem; }
   .app-intro .waitlist-trigger { display: flex; }
   .app-intro .app-intro-join { width: 100%; min-height: 3rem; }
   .app-intro-copy p { margin-block-end: 1.15rem; }
-  .workspace-tabs { letter-spacing: -.02em; }
-  :root body .appbar .appnav .workspace-tabs:defined a { padding-inline: .1rem; }
 }
 
 .shell-resources { display:flex; flex-wrap:wrap; gap:.25rem 1rem; font-size:.8rem }

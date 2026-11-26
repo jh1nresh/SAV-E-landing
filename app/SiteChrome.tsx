@@ -133,6 +133,9 @@ function SiteNav() {
     ["journey", "遊記", "Journey"],
     ["app", "App", "App"],
   ] as const;
+  const workspaceLinks = workspace.map(([route, zh, en]) => (
+    <a key={route} href={`${hrefWithLang("/", lang)}#${route}`}>{lang === "en" ? en : zh}</a>
+  ));
 
   return (
     <nav className={hasCity ? "top has-city" : "top editorial-nav"} aria-label={lang === "en" ? "Main navigation" : "主導覽"}>
@@ -141,9 +144,7 @@ function SiteNav() {
         Savvy
       </a>
       {hasCity ? <CitySwitch active={city} lang={lang} onSelect={setCity} /> : (
-        <div className="editorial-tabs">
-          {workspace.map(([route, zh, en]) => <a key={route} href={`${hrefWithLang("/", lang)}#${route}`}>{lang === "en" ? en : zh}</a>)}
-        </div>
+        <div className="editorial-tabs">{workspaceLinks}</div>
       )}
       <div className="chips" role="group" aria-label="Language">
         <button
@@ -165,6 +166,20 @@ function SiteNav() {
           EN
         </button>
       </div>
+      {!hasCity && (
+        <details className="mobile-nav" onKeyDown={event => {
+          const menu = event.currentTarget;
+          if (event.key !== "Escape" || !menu.open) return;
+          menu.open = false;
+          menu.querySelector("summary")?.focus();
+        }}>
+          <summary aria-label={lang === "en" ? "Menu" : "選單"} />
+          <div className="mobile-nav-links" onClick={event => {
+            if (!(event.target instanceof HTMLAnchorElement)) return;
+            event.currentTarget.closest("details")?.removeAttribute("open");
+          }}>{workspaceLinks}</div>
+        </details>
+      )}
     </nav>
   );
 }

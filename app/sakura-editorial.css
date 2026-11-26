@@ -186,9 +186,10 @@ nav.top .editorial-tabs {
 }
 
 @media (max-width: 800px) {
-  nav.top .editorial-tabs {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    margin-block: .6rem .25rem;
+  nav.top.editorial-nav {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    column-gap: .6rem;
   }
+  nav.top .editorial-tabs { display: none; }
+  nav.top.editorial-nav .mobile-nav { grid-column: 3; }
 }
