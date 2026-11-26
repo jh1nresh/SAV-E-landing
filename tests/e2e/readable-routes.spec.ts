@@ -87,6 +87,7 @@ test('discover moves to the single metro entry while keeping query state and gui
 
 test('switching from standalone Shanghai loads the combined metro page and preserves history', async ({ page }) => {
   await page.goto('/shanghai?lang=en');
+  await waitForMap(page);
   await page.getByTestId('city-switch-taipei').click();
   await expect(page).toHaveURL(/\/metro\?lang=en$/);
   await expect(page.locator('.metro-directory')).toBeVisible();
