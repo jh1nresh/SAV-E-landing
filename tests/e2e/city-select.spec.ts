@@ -165,7 +165,8 @@ test("legacy Taipei station URLs stay intact, the guide index covers both cities
   expect(homeHtml).toContain("南港");
   expect(homeHtml).toContain('id="poster-mapsvg"');
   expect(homeHtml).toMatch(/<link rel="canonical" href="https:\/\/savvy\.jeezlabs\.io\/metro"/);
-  expect(homeHtml).not.toContain("豫園");
+  expect(homeHtml).toContain('class="hero-search-col" data-city="taipei"');
+  expect(homeHtml).toContain('href="/metro/shanghai-yuyuan"');
 });
 
 const SHANGHAI_WIDTHS = [390, 1280] as const;

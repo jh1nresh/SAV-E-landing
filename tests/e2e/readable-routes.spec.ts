@@ -83,3 +83,16 @@ test('discover moves to the single metro entry while keeping query state and gui
   await expect(page).toHaveURL(/\/metro\?city=shanghai$/);
   await expect(page.locator('.hero-search-col')).toHaveAttribute('data-city', 'shanghai');
 });
+
+
+test('switching from standalone Shanghai loads the combined metro page and preserves history', async ({ page }) => {
+  await page.goto('/shanghai?lang=en');
+  await page.getByTestId('city-switch-taipei').click();
+  await expect(page).toHaveURL(/\/metro\?lang=en$/);
+  await expect(page.locator('.metro-directory')).toBeVisible();
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', origin + '/metro');
+  await expect(page.locator('.hero-search-col')).toHaveAttribute('data-city', 'taipei');
+  await page.goBack();
+  await expect(page).toHaveURL(/\/shanghai\?lang=en$/);
+  await expect(page.locator('.hero-search-col')).toHaveAttribute('data-city', 'shanghai');
+});
