@@ -150,7 +150,8 @@ test.describe("hero map pan", () => {
 
     test("zoomed: touch drag from a pin pans ~70px and does not select", async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 844 });
-      await page.evaluate(() => window.__savvyMap!.applySize());
+      await page.reload();
+      await waitForMap(page);
       await page.evaluate((id) => window.__savvyMap!.select(id), "dongmen");
       await waitForCardOpen(page);
       await page.evaluate(() => window.__savvyMap!.closeCard({ focus: false }));

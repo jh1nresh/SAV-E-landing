@@ -28,7 +28,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
     const response = await page.goto("/discover");
     expect(response?.status()).toBe(200);
     expect(new URL(page.url()).pathname).toBe("/discover");
-    await expect(page.getByText("捷運美食地圖")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "捷運美食地圖", exact: true })).toBeVisible();
     await expect(page.getByText("先選城市")).toHaveCount(0);
     await expect(page.locator(".map-stage")).toBeVisible();
     await expect(page.locator(".map-stage").getByText("小巨蛋").first()).toBeVisible();
@@ -56,7 +56,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
   const page = await context.newPage();
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/discover?lang=en");
-  await expect(page.getByText("Metro food map")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Metro food map", exact: true })).toBeVisible();
   await expect(page.getByTestId("city-switch")).toHaveAttribute("aria-label", "City");
   const taipei = page.locator("nav.top").getByTestId("city-switch-taipei");
   const shanghai = page.locator("nav.top").getByTestId("city-switch-shanghai");
@@ -76,7 +76,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
   await page.getByTestId("city-switch-taipei").click();
   await expect(page).toHaveURL(/\/discover\?lang=en$/);
   await expect(page.getByTestId("city-switch-taipei")).toHaveAttribute("aria-current", "true");
-  await expect(page.getByText("Metro food map")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Metro food map", exact: true })).toBeVisible();
   await expect(page.locator(".map-stage")).toBeVisible();
   await page.close();
 });
@@ -124,7 +124,7 @@ test("/taipei permanently redirects to /discover and keeps the query string", as
   expect(new URL(page.url()).hash).toBe("#x");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/savvy\.jeezlabs\.io\/discover$/);
   await expect(page.locator(".map-stage")).toBeVisible();
-  await expect(page.getByText("Metro food map")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Metro food map", exact: true })).toBeVisible();
 });
 
 test("legacy Taipei station URLs stay intact, the guide index covers both cities, and /discover defaults to Taipei", async ({ request }) => {
