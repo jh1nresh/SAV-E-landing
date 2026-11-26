@@ -362,7 +362,10 @@
         </span>
       </div>
       <figure class="app-intro-preview">
-        <img src="/trips/assets/savvy-app.webp" width="892" height="848" alt="左側是已收藏的地點和地圖，右側是儲存地點的入口。">
+        <div class="app-intro-posters">
+          <img src="/trips/assets/savvy-app-saved-zh-Hant.png" data-src-zh="/trips/assets/savvy-app-saved-zh-Hant.png" data-src-en="/trips/assets/savvy-app-saved.png" width="851" height="1848" alt="Savvy 收藏清單：把美食與旅行地點集中收藏。">
+          <img src="/trips/assets/savvy-app-map-zh-Hant.png" data-src-zh="/trips/assets/savvy-app-map-zh-Hant.png" data-src-en="/trips/assets/savvy-app-map.png" width="851" height="1848" alt="Savvy Pocket City 地圖：在台北城市地圖上探索收藏的地點。">
+        </div>
         <figcaption>App 介面示意</figcaption>
       </figure>
     </article>`;

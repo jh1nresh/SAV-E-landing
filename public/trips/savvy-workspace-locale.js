@@ -32,7 +32,8 @@ Savvy 社群|Savvy on social media
 把想去的地方，排進下一趟行程。|Turn places you save into places you go.
 滑到一家想吃的店？把貼文連結分享給 Savvy，確認是哪一家，再存到自己的地圖。出門前，把想去的幾站排成行程。|Found somewhere you want to eat? Share the post with Savvy, confirm the place, and save it to your map. When you’re ready to go, turn a few saved places into a trip.
 App 介面示意|App preview
-左側是已收藏的地點和地圖，右側是儲存地點的入口。|Saved places and a map on the left, with options for saving a place on the right.
+Savvy 收藏清單：把美食與旅行地點集中收藏。|Savvy Saved: collect your food and travel finds in one place.
+Savvy Pocket City 地圖：在台北城市地圖上探索收藏的地點。|Savvy Pocket City map: explore saved places on a city map of Taipei.
 我的行程|My Trip
 收藏|Collection
 遊記|Journey
@@ -236,6 +237,10 @@ App 介面示意|App preview
       return;
     }
     if (node.nodeType !== Node.ELEMENT_NODE || node.matches('script,style,[lang]:not(html)') || node.closest(authored)) return;
+    if (node.matches('img[data-src-zh][data-src-en]')) {
+      const source = language === 'en' ? node.dataset.srcEn : node.dataset.srcZh;
+      if (node.getAttribute('src') !== source) node.setAttribute('src', source);
+    }
     for (const attribute of attributes) {
       const value = node.getAttribute(attribute);
       if (value) update(node, attribute, value, v => node.setAttribute(attribute, v));

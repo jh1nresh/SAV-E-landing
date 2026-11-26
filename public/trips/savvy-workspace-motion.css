@@ -241,7 +241,7 @@ body:has(.trip-dashboard) .shellbar, .shellbar { min-height: 5.2rem; }
   width: min(100%, 67rem);
   margin-inline: auto;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
   align-items: center;
   gap: clamp(2rem, 6vw, 6rem);
   padding-block: clamp(1rem, 4vw, 4rem);
@@ -255,7 +255,7 @@ body:has(.trip-dashboard) .shellbar, .shellbar { min-height: 5.2rem; }
 .app-intro-brand img { border-radius: .58rem; }
 .app-intro h1 {
   margin: 1.15rem 0;
-  font-size: clamp(2.4rem, 4.6vw, 4.55rem);
+  font-size: clamp(2.4rem, 3.8vw, 3.5rem);
   letter-spacing: -.045em;
   line-height: 1.11;
   text-wrap: balance;
@@ -268,11 +268,16 @@ body:has(.trip-dashboard) .shellbar, .shellbar { min-height: 5.2rem; }
   font-size: clamp(1rem, 1.5vw, 1.125rem);
 }
 .app-intro-preview { margin: 0; text-align: center; }
+.app-intro-posters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(.65rem, 1.5vw, 1.25rem);
+}
 .app-intro-preview img {
   display: block;
-  width: min(100%, 25rem);
+  width: 100%;
   height: auto;
-  margin-inline: auto;
+  border-radius: .8rem;
 }
 .app-intro-preview figcaption {
   margin-top: .65rem;
@@ -702,7 +707,7 @@ body:has(.trip-dashboard) .shellbar, .shellbar { min-height: 5.2rem; }
 @media (max-width: 46rem) {
   .app-intro { grid-template-columns: minmax(0, 1fr); gap: 1.9rem; padding-block: .35rem 1.5rem; }
   .app-intro h1 { font-size: clamp(2.15rem, 8.75vw, 3.5rem); }
-  .app-intro-preview { width: min(100%, 25rem); justify-self: center; }
+  .app-intro-preview { width: min(100%, 34rem); justify-self: center; }
 }
 @media (max-width: 28rem) {
   .app-intro .waitlist-trigger { display: flex; }
