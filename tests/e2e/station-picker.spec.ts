@@ -126,7 +126,7 @@ test("mobile sheet closes from the scrim", async ({ page }) => {
   await expect(page.getByText("找一站", { exact: true }).last()).toBeVisible();
   const backdrop = page.locator(".sd-backdrop");
   await expect(backdrop).toBeVisible();
-  const option = page.getByRole("option").first();
+  const option = page.getByTestId("station-search").getByRole("option").first();
   expect((await option.boundingBox())!.height).toBeGreaterThanOrEqual(48);
   await backdrop.click({ position: { x: 20, y: 20 } });
   await expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -370,12 +370,12 @@ test("shanghai dropdown lists the published stations and selects the newest", as
   await expect(trigger).toContainText(`第 ${newest?.n} 站`);
   await expect(trigger).toContainText(newest?.station ?? "");
   await trigger.click();
-  const optionNames = page.getByRole("option").locator("[data-slot=combobox-item-text]");
+  const optionNames = page.getByTestId("station-search").getByRole("option").locator("[data-slot=combobox-item-text]");
   await expect(optionNames).toHaveCount(publishedShanghai.length);
   expect((await optionNames.allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim())).toEqual(shanghai.map((station) => station.station));
 
   const index = buildSearchIndex(getShanghaiFoodStations());
-  const input = page.getByRole("combobox");
+  const input = page.getByTestId("station-search").getByRole("combobox");
   await input.fill("麵");
   const shown = page.locator("[data-slot=combobox-item]:not([hidden]) [data-slot=combobox-item-text]");
   const shownNames = (await shown.allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim());
@@ -385,8 +385,8 @@ test("shanghai dropdown lists the published stations and selects the newest", as
   await page.getByRole("button", { name: "只看這條線" }).click();
   await page.getByRole("menuitemradio", { name: "1 號線", exact: true }).click();
   const lined = filterStations(index, { line: "1 號線" }).map((station) => station.station);
-  await expect(page.getByRole("option")).toHaveCount(lined.length);
-  const linedNames = (await page.getByRole("option").locator("[data-slot=combobox-item-text]").allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim());
+  await expect(page.getByTestId("station-search").getByRole("option")).toHaveCount(lined.length);
+  const linedNames = (await page.getByTestId("station-search").getByRole("option").locator("[data-slot=combobox-item-text]").allInnerTexts()).map((name) => name.replace(/NEW/g, "").trim());
   expect(new Set(linedNames)).toEqual(new Set(lined));
   expect(linedNames).not.toContain("人民廣場");
 });
@@ -428,7 +428,7 @@ test("a 45-station fixture keeps the closed control height and the panel cap", a
   await expect.poll(() => page.locator("[data-testid=metro-pin-taipei-101-world-trade-center] .ph").evaluate((el) => el.getBoundingClientRect().height)).toBeGreaterThan(10);
   expect(await boxBottom(page, "[data-testid=metro-pin-taipei-101-world-trade-center] .ph")).toBeLessThanOrEqual(800);
   await page.getByTestId("station-picker-trigger").click();
-  await expect(page.getByRole("option")).toHaveCount(45);
+  await expect(page.getByTestId("station-search").getByRole("option")).toHaveCount(45);
   expect((await page.locator(".sd-sheet").boundingBox())!.height).toBeLessThanOrEqual(300);
   await page.close();
 });

@@ -16,7 +16,7 @@ async function search(page: Page) {
   await expect(trigger).toBeVisible();
   await expect.poll(() => trigger.evaluate((el) => Object.keys(el).some((key) => key.startsWith("__react")))).toBe(true);
   if ((await trigger.getAttribute("aria-expanded")) !== "true") await trigger.click();
-  const input = page.getByRole("combobox");
+  const input = page.getByTestId("station-search").getByRole("combobox");
   await expect(input).toBeVisible();
   return input;
 }
@@ -43,7 +43,8 @@ test("station search is in the server HTML", async ({ request }) => {
   const taipei = await (await request.get("/taipei")).text();
   expect(taipei).toContain("找一站");
   expect(taipei).toContain("搜站名或菜色");
-  expect(taipei).not.toContain("全部路線");
+  expect(taipei).not.toContain('aria-label="只看這條線"');
+  expect(taipei).toContain("metro-directory");
   expect(taipei).not.toContain("data-slot=\"segmented-control\"");
   const shanghai = await (await request.get("/shanghai")).text();
   expect(shanghai).toContain("找一站");
@@ -54,7 +55,8 @@ test("station search is in the server HTML", async ({ request }) => {
   expect(home).not.toContain("先選城市");
   expect(home).toContain("找一站");
   expect(home).toContain("搜站名或菜色");
-  expect(home).not.toContain("全部路線");
+  expect(home).not.toContain('aria-label="只看這條線"');
+  expect(home).toContain("metro-directory");
 });
 
 for (const width of WIDTHS) {
