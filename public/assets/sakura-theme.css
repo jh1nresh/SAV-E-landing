@@ -8,6 +8,7 @@
   --sakura-edge: #1d1a4a;
   --sakura-wash: #eeebff;
   --sakura-primary: #8f8df7;
+  --sakura-action-ink: #1d1a4a;
   --sakura-shadow: #b8b3ff;
   --sakura-petal: #ffe0ed;
   --sakura-brand: #5a4fd8;
@@ -15,6 +16,7 @@
 }
 
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --sakura-canvas: #181424;
   --sakura-paper: #251f36;
   --sakura-ink: #f6efff;

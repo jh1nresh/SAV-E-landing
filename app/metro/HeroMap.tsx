@@ -4,7 +4,6 @@ import { cityMapSvg, cityMapName } from "./city-map";
 import { useEffect, useRef } from "react";
 import { formatMd, latestUpdatedAt, stampLevel, stampNote, type MetroData } from "../../lib/metro";
 import { SVG_DEFS } from "./map-svg";
-import { MapPaper } from "./MapPaper";
 import { bootMetroMap } from "./map-runtime";
 
 export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: () => void }) {
@@ -28,8 +27,7 @@ export default function HeroMap({ data, onReady }: { data: MetroData; onReady?: 
     <div className="mapwrap" lang="zh-Hant" ref={rootRef} data-testid="metro-map">
       <div dangerouslySetInnerHTML={{ __html: SVG_DEFS }} />
       <div className="mapcard" id="mapcard">
-        <MapPaper id="live-map-paper" />
-        <span className="tape a" />
+
         <div className="stamp" id="stamp">
           <b id="stampA" data-week-count="" />
           <span id="stampB">{latest ? `更新於 ${formatMd(latest)}` : ""}</span>

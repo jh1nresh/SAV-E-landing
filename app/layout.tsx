@@ -74,6 +74,8 @@ export default function RootLayout({
           }}
         />
         <link rel="stylesheet" href="/assets/sakura-theme.css" />
+        <script defer src="/trips/vendor/sakuga-vfx/core.js" />
+        <script defer src="/assets/sakura-effects.js" />
         <link rel="describedby" href="/llms.txt" />
         <link
           rel="preload"

@@ -58,10 +58,6 @@ export async function noHorizontalOverflow(page: Page) {
   ).toBeLessThanOrEqual(metrics.innerWidth + 1);
 }
 
-export async function heroBadgeBox(page: Page) {
-  return page.locator("[data-testid=hero-appstore] .badge").first().boundingBox();
-}
-
 export async function dispatchSwipe(page: Page, dy: number) {
   const handle = page.locator("#card .grab");
   // Wait for the short-swipe spring to settle before sampling a five-pixel target.

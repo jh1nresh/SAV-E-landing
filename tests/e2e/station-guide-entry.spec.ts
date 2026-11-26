@@ -53,8 +53,16 @@ test("every published Shanghai guide retains source details and is discoverable"
       const row = shops.nth(i);
       if (shop.name) await expect(row.locator("h2")).toHaveText(shop.name);
       const expected = foodShopRows(shop, station.city);
-      expect(await row.locator("dt").allTextContents()).toEqual(expected.map(([label]) => label));
-      expect(await row.locator("dd").allTextContents()).toEqual(expected.map(([, value]) => value));
+      for (const [label, value] of expected) {
+        const field = row.locator(".food-row").filter({ has: page.getByText(label, { exact: true }) });
+        const display = String(value).replace(/https?:\/\/[^\s]+/g, url => "查看來源 ↗" + (url.match(/[。，；、）]+$/u)?.[0] ?? ""));
+        await expect(field.locator("dd")).toHaveText(display);
+        for (const url of value.match(/https?:\/\/[^\s]+/g) ?? []) {
+          expect(await field.locator("dd a").evaluateAll(links => links.map(link => link.getAttribute("href"))))
+            .toContain(url.replace(/[。，；、）]+$/u, ""));
+        }
+        if (label === "價格出處") await expect(field.locator("dd")).toBeHidden();
+      }
     }
     expect((await page.locator(".food-posts a").evaluateAll(links => links.map(link => link.getAttribute("href")))).sort())
       .toEqual(Object.values(station.posts).filter(Boolean).sort());

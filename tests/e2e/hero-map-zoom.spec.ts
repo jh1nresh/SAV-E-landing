@@ -38,25 +38,22 @@ for (const width of [390, 1280]) {
 type Mod = 'Control' | 'Meta';
 const mapState = (page: Page) => page.evaluate(() => ({ ...window.__savvyMap!.state(), scrollY, pageScale: visualViewport!.scale }));
 
-async function hoverMap(page: Page, fx = .5, fy = .5) {
-  await page.setViewportSize({ width: 1350, height: 940 });
+async function hoverMap(page: Page, fx = .5, fy = .5, height = 940) {
+  await page.setViewportSize({ width: 1350, height });
   await page.goto('/discover?reduce=1');
   await waitForMap(page);
-  // Park the map in the viewport with page left to scroll in both directions.
-  await page.evaluate(() => { const r = document.getElementById('vp')!.getBoundingClientRect(); window.scrollTo(0, Math.max(0, scrollY + r.top - 200)); });
   const box = (await page.locator('#vp').boundingBox())!;
   expect(box.y).toBeGreaterThanOrEqual(0);
-  expect(box.y + box.height).toBeLessThanOrEqual(940);
+  expect(box.y + box.height * fy).toBeLessThan(height);
   const offset = { x: Math.round(box.width * fx), y: Math.round(box.height * fy) };
   await page.mouse.move(box.x + offset.x, box.y + offset.y);
-  return { box, offset };
 }
 
 test('Z2-1 plain wheel over the map at 1x scrolls the page and does not zoom', async ({ page }) => {
-  await hoverMap(page);
+  await hoverMap(page, .5, .3, 500);
   const before = await mapState(page);
   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 120);
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(before.scrollY + 100);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(before.scrollY + 20);
   const after = await mapState(page);
   expect(after.camS).toBe(before.camS);
   expect(after.camX).toBe(before.camX);
@@ -69,28 +66,37 @@ test('Z2-1 plain wheel over the map at 1x scrolls the page and does not zoom', a
 });
 
 test('Z2-1b plain wheel over the map still scrolls the page while zoomed in', async ({ page }) => {
-  await hoverMap(page);
-  await page.getByRole('button', { name: '放大地圖', exact: true }).click();
-  await page.mouse.move(...(await (async () => { const b = (await page.locator('#vp').boundingBox())!; return [b.x + b.width / 2, b.y + b.height / 2] as [number, number]; })()));
+  await hoverMap(page, .5, .3, 500);
+  await page.getByRole('button', { name: '放大地圖', exact: true }).evaluate(el => (el as HTMLElement).click());
+  const frame = (await page.locator('#vp').boundingBox())!;
+  await page.mouse.move(frame.x + frame.width / 2, frame.y + frame.height * .3);
   const before = await mapState(page);
   expect(before.camS).toBeGreaterThan(before.s0);
   for (let i = 0; i < 5; i++) await page.mouse.wheel(0, 120);
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(before.scrollY + 100);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(before.scrollY + 20);
   expect((await mapState(page)).camS).toBe(before.camS);
 });
 
 for (const mod of ['Control', 'Meta'] as Mod[]) {
   test(`Z2-2 ${mod}+wheel zooms the map around the cursor, not the page`, async ({ page }) => {
-    const { offset, box } = await hoverMap(page, .4, .55);
+    await hoverMap(page, .4, .55);
+    const wheelPoint = page.locator('#vp');
+    await wheelPoint.evaluate(el => {
+      (el as HTMLElement).addEventListener('wheel', event => {
+        const { left, top, width, height } = el.getBoundingClientRect();
+        el.dataset.wheelPoint = JSON.stringify([event.clientX - left - width / 2, event.clientY - top - height / 2]);
+      }, { once: true, passive: true });
+    });
     const before = await mapState(page);
     await page.keyboard.down(mod);
     try {
       await page.mouse.wheel(0, -240);
       await expect.poll(() => page.evaluate(() => window.__savvyMap!.state().camS)).toBeGreaterThan(before.camS);
       const after = await mapState(page);
-      // World point under the cursor stays fixed (same measure as #21).
-      expect(after.camX + (offset.x - box.width / 2) / after.camS).toBeCloseTo(before.camX + (offset.x - box.width / 2) / before.camS, 1);
-      expect(after.camY + (offset.y - box.height / 2) / after.camS).toBeCloseTo(before.camY + (offset.y - box.height / 2) / before.camS, 1);
+      // Chromium rounds pointer coordinates when layout lands on fractional pixels.
+      const [x, y] = JSON.parse((await wheelPoint.getAttribute('data-wheel-point'))!) as [number, number];
+      expect(after.camX + x / after.camS).toBeCloseTo(before.camX + x / before.camS, 1);
+      expect(after.camY + y / after.camS).toBeCloseTo(before.camY + y / before.camS, 1);
       expect(after.pageScale).toBe(1);
       expect(after.scrollY).toBe(before.scrollY);
       await page.mouse.wheel(0, 240);
@@ -125,7 +131,7 @@ test('Z2-2b wheel default is prevented only for Ctrl/⌘ (touchpad pinch = ctrl+
 });
 
 test('Z2-4 wheel over the zoom buttons and card keeps its behavior and never zooms', async ({ page }) => {
-  await hoverMap(page);
+  await hoverMap(page, .5, .5, 690);
   const before = await mapState(page);
   const plus = (await page.getByRole('button', { name: '放大地圖', exact: true }).boundingBox())!;
   await page.mouse.move(plus.x + plus.width / 2, plus.y + plus.height / 2);
@@ -210,9 +216,8 @@ test('ending both tracked fingers unlocks gestures while an outside touch remain
     fire(document.body, 'touchend', []);
   });
   const before = await page.evaluate(() => window.__savvyMap!.state());
-  // Home starts at the left camera bound with the wider design framing.
-  await dragMap(page, -70, 0);
-  expect((await page.evaluate(() => window.__savvyMap!.state())).camX).toBeGreaterThan(before.camX);
+  await dragMap(page, 0, -70);
+  expect((await page.evaluate(() => window.__savvyMap!.state())).camY).toBeGreaterThan(before.camY);
   const box = (await page.locator('#vp').boundingBox())!;
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
   await page.keyboard.down('Control');

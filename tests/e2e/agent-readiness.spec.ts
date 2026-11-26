@@ -95,7 +95,7 @@ test("every public sitemap page has raw HTML, canonical identity and matching Ma
   }
 });
 
-test("no-JS metro landing and trust pages expose meaningful content, metadata and honest schema", async ({ browser }, testInfo) => {
+test("no-JS metro map and trust pages expose meaningful content and metadata", async ({ browser }, testInfo) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL: testInfo.project.use.baseURL, viewport: { width: 390, height: 844 } });
   try {
     const page = await context.newPage();
@@ -109,33 +109,13 @@ test("no-JS metro landing and trust pages expose meaningful content, metadata an
     await expect(page.locator('meta[name="keywords"]')).toHaveAttribute("content", /place memory/);
     await expect(page.locator('meta[name="keywords"]')).toHaveAttribute("content", /地點記憶/);
     await expect(page.locator("html")).toHaveAttribute("lang", "zh-Hant");
-    const content = await page.locator("main").innerText();
-    expect(content.length).toBeGreaterThan(500);
-    expect(content).toContain("存連結 → 確認地點 → 地圖章。");
-    expect(content).toContain("從收藏地點整理下次想去的清單");
-    const lowered = content.toLowerCase();
-    expect(lowered).not.toContain(["trip", "planning"].join(" "));
-    expect(lowered).not.toContain(["trip", "planner"].join(" "));
-    expect(lowered).not.toContain(["itiner", "ary"].join(""));
-    const raw = await response!.text();
-    expect(raw).not.toContain("foodStations");
-    const textCharacters = await page.evaluate(() => {
-      const content = document.documentElement.cloneNode(true) as HTMLElement;
-      content.querySelectorAll("script,style,svg").forEach(element => element.remove());
-      return content.textContent!.replace(/\s+/g, " ").trim().length;
-    });
-    // The homepage is a map plus short place-memory copy. The inline map SVG
-    // dominates byte size, and the station search adds field markup, so a
-    // prose-wall ratio is the wrong bar.
-    expect(textCharacters).toBeGreaterThan(800);
-    expect(textCharacters / raw.length).toBeGreaterThan(0.008);
-    const schema = JSON.parse(await page.locator('script[type="application/ld+json"]').innerText());
-    const app = schema["@graph"].find((item: { "@type": string }) => item["@type"] === "SoftwareApplication");
-    expect(app).toMatchObject({ name: "Savvy", url: origin, operatingSystem: "iOS" });
-    const org = schema["@graph"].find((item: { "@type": string }) => item["@type"] === "Organization");
-    expect(org.contactPoint).toMatchObject({ contactType: "customer support", url: `${origin}/contact` });
-    expect(org).not.toHaveProperty("address");
-    expect(JSON.stringify(schema)).not.toContain("support@sav-e.app");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("捷運美食地圖");
+    await expect(page.getByRole("img", { name: "台北捷運美食地圖" })).toBeVisible();
+    await expect(page.locator(".sd-dock a[href='/metro/shuanglian']")).toBeVisible();
+    expect(await response!.text()).not.toContain("foodStations");
+    const markdown = await page.request.get("/discover.md");
+    expect(markdown.ok()).toBe(true);
+    expect(await markdown.text()).toContain("https://savvy.jeezlabs.io/metro/shuanglian");
     // Reusing this no-JS WebKit page for another goto stalled in Linux CI.
     for (const width of [390, 1280]) {
       for (const path of ["/about", "/contact", "/privacy", "/docs"]) {

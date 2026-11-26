@@ -147,54 +147,6 @@ test.describe("hero content and motion", () => {
     expect(firstParty).toEqual([]);
   });
 
-  test("E-1 LCP is the hero headline, badge, or first-screen app screenshot — not the map or a food photo", async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/discover");
-    await page.waitForLoadState("domcontentloaded");
-    await page.waitForTimeout(1500);
-    const lcp = await page.evaluate(() => {
-      return new Promise<{
-        tag: string;
-        src: string;
-        inMap: boolean;
-        isHeadline: boolean;
-        isBadge: boolean;
-        isFirstScreen: boolean;
-        isFood: boolean;
-      }>((resolve) => {
-        let last: PerformanceEntry & { element?: Element } | undefined;
-        const po = new PerformanceObserver((list) => {
-          last = list.getEntries().at(-1) as PerformanceEntry & { element?: Element };
-        });
-        po.observe({ type: "largest-contentful-paint", buffered: true });
-        setTimeout(() => {
-          po.disconnect();
-          const el = last?.element as HTMLElement | undefined;
-          const src = el instanceof HTMLImageElement ? el.getAttribute("src") ?? "" : "";
-          resolve({
-            tag: el?.tagName ?? "NONE",
-            src,
-            inMap: Boolean(el?.closest?.(".mapwrap, #mapcard, .map-slot, .map-stage")),
-            isHeadline: Boolean(el?.closest?.("h1, .hero .txt .h, .hero .txt .sub")),
-            isBadge: Boolean(el?.closest?.("[data-testid=hero-appstore]")),
-            isFirstScreen: Boolean(
-              el?.closest?.("[data-testid=first-screen-phone-zh], [data-testid=first-screen-phone-en]"),
-            ),
-            isFood: src.includes("/assets/food/") || Boolean(el?.closest?.(".ph, .fc .ph")),
-          });
-        }, 400);
-      });
-    });
-    expect(lcp.inMap, `LCP was ${lcp.tag} inside the map`).toBeFalsy();
-    expect(lcp.isFood, `LCP was food photo ${lcp.src}`).toBeFalsy();
-    expect(
-      lcp.isHeadline || lcp.isBadge || lcp.isFirstScreen,
-      `LCP was ${lcp.tag} ${lcp.src}, expected headline, badge, or first-screen screenshot`,
-    ).toBeTruthy();
-  });
-
   test("D-5 reduced-motion via media query fades without flying", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/discover");
@@ -219,25 +171,25 @@ test.describe("hero content and motion", () => {
   test("F-1 metadata includes title description and OG image", async ({ context }) => {
     const zh = await context.newPage();
     await zh.goto("/discover");
-    await expect(zh).toHaveTitle("Savvy：把連結存成地圖上的點");
+    await expect(zh).toHaveTitle("台北捷運美食地圖｜Savvy");
     await expect(zh.locator('meta[name="description"]')).toHaveAttribute(
       "content",
-      "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北與上海捷運美食。",
+      "在台北捷運美食地圖選站，查看站邊店家與完整攻略。",
     );
-    await expect(zh.locator('meta[property="og:title"]')).toHaveAttribute("content", "Savvy：把連結存成地圖上的點");
-    await expect(zh.locator(".hero .sub.zh")).toContainText("存連結 → 確認地點 → 地圖章。");
+    await expect(zh.locator('meta[property="og:title"]')).toHaveAttribute("content", "台北捷運美食地圖｜Savvy");
+    await expect(zh.getByRole("heading", { level: 1 })).toHaveText("捷運美食地圖");
     const og = await zh.locator('meta[property="og:image"]').getAttribute("content");
     expect(og).toMatch(/og\.png/);
     await zh.close();
 
     const en = await context.newPage();
     await en.goto("/discover?lang=en");
-    await expect(en).toHaveTitle("Savvy: Turn links into pins");
+    await expect(en).toHaveTitle("Taipei MRT food map | Savvy");
     await expect(en.locator('meta[name="description"]')).toHaveAttribute(
       "content",
-      "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei and Shanghai metro food.",
+      "Choose a Taipei MRT station to find nearby restaurants and food guides.",
     );
-    await expect(en.locator(".hero .sub.en")).toContainText("Save a link → confirm the place → pin it on your map.");
+    await expect(en.getByRole("heading", { level: 1 })).toHaveText("Metro food map");
     await en.close();
   });
 });

@@ -3,9 +3,9 @@
   --leaf: #3f9b6b;
   --redline: #b4443a;
   --blueline: #3f6fb0;
-  --tape: rgba(234, 221, 198, 0.88);
-  --grey: #8d857a;
-  --paper-tex: var(--paper) url("/assets/paper-grain.png") 0 0 / 256px;
+  --tape: var(--sakura-petal);
+  --grey: var(--sakura-line);
+  --paper-tex: var(--paper);
 }
 
 section.hero {
@@ -96,7 +96,7 @@ section.hero {
 }
 
 .strip-label {
-  font: 700 13px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 700 13px/1 var(--sakura-type);
   color: var(--ink);
   margin: 0 2px 8px;
   display: flex;
@@ -108,7 +108,7 @@ section.hero {
   content: "";
   flex: 1;
   height: 0;
-  border-top: 2px dotted rgba(47, 46, 35, 0.55);
+  border-top: 2px dotted var(--sakura-line);
 }
 
 .strip {
@@ -142,7 +142,7 @@ section.hero {
 }
 
 .tab i {
-  font: normal 600 13px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: normal 600 13px/1 var(--sakura-type);
   color: var(--muted);
   font-style: normal;
 }
@@ -154,13 +154,13 @@ section.hero {
 }
 
 .tab[aria-selected="true"] i {
-  color: #e7dcc4;
+  color: var(--sakura-paper);
 }
 
 .tab.soon {
   border-style: dashed;
   border-color: var(--grey);
-  background: rgba(255, 249, 235, 0.82);
+  background: var(--sakura-paper);
   color: var(--muted);
 }
 
@@ -178,12 +178,12 @@ section.hero {
 
 .soontag {
   display: inline-block;
-  font: 600 12px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 600 12px/1 var(--sakura-type);
   color: var(--muted);
   border: 1.5px dashed var(--grey);
   border-radius: 8px;
   padding: 4px 8px;
-  background: rgba(255, 249, 235, 0.8);
+  background: var(--sakura-paper);
   white-space: nowrap;
 }
 
@@ -193,7 +193,7 @@ section.hero {
   background: var(--paper);
   border: 2px solid var(--ink);
   border-radius: 18px 12px 20px 11px / 12px 20px 11px 18px;
-  box-shadow: 4px 5px 0 rgba(47, 46, 35, 0.9);
+  box-shadow: 4px 5px 0 var(--sakura-shadow);
   padding: 10px 10px 12px;
 }
 
@@ -210,7 +210,7 @@ section.hero {
   width: 92px;
   height: 24px;
   background: var(--tape);
-  border: 1px solid rgba(98, 89, 79, 0.25);
+  border: 1px solid var(--sakura-line);
   z-index: 6;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
@@ -236,15 +236,15 @@ section.hero {
   border-radius: 10px 6px 11px 7px / 7px 11px 6px 10px;
   box-shadow:
     inset 0 0 0 2px var(--paper),
-    inset 0 0 0 3.5px rgba(242, 107, 74, 0.75),
-    3px 3px 0 rgba(47, 46, 35, 0.9);
+    inset 0 0 0 3.5px var(--sakura-primary),
+    3px 3px 0 var(--sakura-shadow);
   line-height: 1.15;
 }
 
 .stamp b {
   display: block;
   font: 400 21px/1.1 Iansui, Caveat, serif;
-  color: var(--coral);
+  color: var(--sakura-brand);
   min-height: 0;
 }
 
@@ -260,7 +260,7 @@ section.hero {
 
 .stamp i {
   display: block;
-  font: normal 600 11px/1.4 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: normal 600 11px/1.4 var(--sakura-type);
   color: var(--muted);
   margin-top: 1px;
   letter-spacing: 0.04em;
@@ -276,7 +276,7 @@ section.hero {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr);
   gap: 10px;
-  background: #fffdf5;
+  background: var(--sakura-paper);
   border: 1.5px solid var(--ink);
   border-radius: 12px 9px 13px 10px / 10px 13px 9px 12px;
   padding: 8px;
@@ -343,18 +343,18 @@ section.hero {
 }
 
 .price small {
-  font: 600 12px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 600 12px/1 var(--sakura-type);
   margin-right: 2px;
 }
 
 .price em {
-  font: 600 12px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 600 12px/1 var(--sakura-type);
   font-style: normal;
   margin-left: 1px;
 }
 
 .est {
-  font: 600 11px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 600 11px/1 var(--sakura-type);
   color: var(--muted);
   border: 1.3px dashed var(--grey);
   border-radius: 7px 5px 8px 5px;
@@ -363,7 +363,7 @@ section.hero {
 }
 
 .ok {
-  font: 600 11px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 600 11px/1 var(--sakura-type);
   color: var(--forest);
 }
 
@@ -403,7 +403,7 @@ section.hero {
   align-items: center;
   gap: 5px;
   margin-top: 0;
-  font: 600 11.5px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 600 11.5px/1 var(--sakura-type);
   color: var(--forest);
   background: var(--kraft);
   border: 1.4px solid var(--ink);
@@ -420,7 +420,7 @@ section.hero {
   height: 19px;
   border-radius: 50%;
   background: var(--coral);
-  color: #fff;
+  color: var(--sakura-action-ink);
   font: 600 11px/1 Caveat, ui-rounded, sans-serif;
   border: 1.2px solid var(--ink);
 }
@@ -428,13 +428,13 @@ section.hero {
 .src u {
   text-decoration: none;
   margin-left: 1px;
-  color: var(--coral);
+  color: var(--sakura-brand);
   font-weight: 700;
 }
 
 section.s-cta {
-  background: var(--forest);
-  color: var(--paper);
+  background: var(--sakura-wash);
+  color: var(--sakura-ink);
   position: relative;
   text-align: center;
   padding: 88px 40px 96px;
@@ -622,8 +622,8 @@ section.s-cta {
 }
 
 .pin .lab em {
-  font: normal 700 11px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
-  color: var(--coral);
+  font: normal 700 11px/1 var(--sakura-type);
+  color: var(--sakura-brand);
   margin-right: 5px;
   letter-spacing: 0.02em;
 }
@@ -696,7 +696,7 @@ section.s-cta {
 }
 
 .pin.soon .ph {
-  background: rgba(255, 249, 235, 0.92);
+  background: var(--sakura-paper);
   border: 2.6px dashed var(--grey);
   box-shadow: none;
   display: grid;
@@ -706,7 +706,7 @@ section.s-cta {
 }
 
 .pin.soon .tl {
-  background: rgba(255, 249, 235, 0.95);
+  background: var(--sakura-paper);
   box-shadow: none;
   border: 0;
   border-right: 2.4px dashed var(--grey);
@@ -718,7 +718,7 @@ section.s-cta {
   border-color: var(--grey);
   color: var(--muted);
   box-shadow: none;
-  background: rgba(255, 249, 235, 0.95);
+  background: var(--sakura-paper);
 }
 
 @keyframes metro-ring {
@@ -881,7 +881,7 @@ body.still .pin.new .gr {
   background: var(--paper-tex);
   border: 2px solid var(--ink);
   border-radius: var(--r, 22px);
-  box-shadow: 3px 4px 0 rgba(47, 46, 35, 0.9);
+  box-shadow: 3px 4px 0 var(--sakura-shadow);
   will-change: transform;
   transform-origin: 0 0;
   outline: none;
@@ -960,7 +960,7 @@ body.still .pin.new .gr {
 
 .ph-head h3 {
   margin: 0;
-  font: 400 24px/1.1 Iansui, Caveat, serif;
+  font: 750 20px/1.3 var(--sakura-type);
   color: var(--forest);
   white-space: nowrap;
 }
@@ -969,13 +969,13 @@ body.still .pin.new .gr {
   font-size: 13px;
   color: var(--muted);
   margin-left: 8px;
-  font-family: ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font-family: var(--sakura-type);
   font-weight: 600;
 }
 
 .upd {
   flex-basis: 100%;
-  font: 600 12px/1.2 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 600 12px/1.2 var(--sakura-type);
   color: var(--muted);
   white-space: normal;
   margin-top: -3px;
@@ -1004,7 +1004,7 @@ body.still .pin.new .gr {
 
 .card .fc h4 {
   font-size: 19px;
-  font-family: ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font-family: var(--sakura-type);
   overflow-wrap: anywhere;
 }
 
@@ -1041,7 +1041,7 @@ body.still .pin.new .gr {
 .thumbs .more {
   margin-left: auto;
   color: var(--forest);
-  font: 700 12.5px/1 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 700 12.5px/1 var(--sakura-type);
   white-space: normal;
 }
 
@@ -1059,7 +1059,7 @@ body.still .pin.new .gr {
   padding: 12px 10px 14px;
   border: 2px dashed var(--grey);
   border-radius: 14px;
-  background: rgba(255, 249, 235, 0.6);
+  background: var(--sakura-paper);
 }
 
 .soonbody p {
@@ -1147,10 +1147,16 @@ body.rm .pin.new .gr {
     font-size: clamp(36px, 10.6vw, 56px);
   }
 
+  .hero .h.en {
+    font-size: clamp(32px, 7.3vw, 48px);
+  }
+
   .hero .sub {
     margin: 14px 0 20px;
     font-size: 20px;
   }
+
+  .hero .sub.en { font-size: 16px; }
 
   .hero-stk {
     justify-content: center;
@@ -1355,7 +1361,7 @@ body.rm .pin.new .gr {
 }
 
 /* Compact map cards retain complete address and price wording without scrolling. */
-.article-details { margin: 8px 0 0; font: 13px/1.45 ui-rounded, -apple-system, "PingFang TC", sans-serif; }
+.article-details { margin: 8px 0 0; font: 13px/1.45 var(--sakura-type); }
 .article-details div + div { margin-top: 5px; }
 .article-details dt { color: var(--muted); font-size: 11px; }
 .article-details dd { margin: 0; overflow-wrap: anywhere; color: var(--ink); }
@@ -1393,7 +1399,7 @@ body.rm .pin.new .gr {
 }
 .station-detail-link::after {
   content: "完整清單 →";
-  font: 600 13px/1.2 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 600 13px/1.2 var(--sakura-type);
   white-space: nowrap;
 }
 .station-detail-link:focus-visible {

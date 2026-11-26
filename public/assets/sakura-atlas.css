@@ -1,0 +1,64 @@
+/* The map and its seasonal palettes live in the renderer. These tokens style its controls. */
+:root[data-sakura-static] {
+  --paper: var(--sakura-canvas);
+  --panel: var(--sakura-paper);
+  --ink: var(--sakura-ink);
+  --muted: var(--sakura-muted);
+  --rule: var(--sakura-line);
+  --green: var(--sakura-brand);
+  --rust: var(--sakura-brand);
+  --sans: var(--sakura-type);
+}
+
+body .top,
+body .paper,
+body .views,
+body .tools,
+body .foot {
+  background: var(--sakura-paper);
+  color: var(--sakura-ink);
+  border-color: var(--sakura-edge);
+}
+
+body .paper,
+body .views,
+body .tools { box-shadow: 2px 3px 0 var(--sakura-shadow); }
+body .wordmark { color: var(--sakura-brand); }
+body .city-nav { border-color: var(--sakura-line); }
+body .city-nav a[aria-current="page"]::after { background: var(--sakura-primary); }
+body :is(.status, .subhead, .note, .map-code, .gesture, .row-label small, .row .arrow, .aerial figcaption) {
+  color: var(--sakura-muted);
+}
+
+body :is(.note a, .city-nav a[aria-current="page"]) { color: var(--sakura-brand); }
+body :is(.button, .events .select-wrap, dialog) { border-color: var(--sakura-line); }
+body .divider { background: var(--sakura-line); }
+
+body :is(.play, .events .on, .finish-row select) {
+  background: var(--sakura-wash);
+  color: var(--sakura-ink);
+}
+
+body dialog { background: var(--sakura-paper); color: var(--sakura-ink); }
+
+body :is(.chip, .vbtn) {
+  background: var(--sakura-paper);
+  border-color: var(--sakura-line);
+  color: var(--sakura-ink);
+}
+
+body :is(.chip, .vbtn, .tool, .row)[aria-pressed="true"] {
+  background: var(--sakura-wash);
+  border-color: var(--sakura-edge);
+  color: var(--sakura-ink);
+}
+
+@media (hover: hover) {
+  body :is(.button, .tool, .row, .chip, .vbtn, .city-nav a):hover {
+    background: var(--sakura-wash);
+  }
+}
+
+body :is(a, button):focus-visible {
+  outline: 3px solid var(--sakura-focus);
+}

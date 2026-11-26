@@ -4,24 +4,22 @@ export const TESTFLIGHT_URL =
 
 export const SUPPORT_EMAIL = "support@sav-e.app";
 
-export const SITE_TITLE_EN = "Savvy: Turn links into pins";
 export const SITE_TITLE_ZH = "Savvy：把連結存成地圖上的點";
-export const SITE_DESCRIPTION_EN =
-  "Savvy is place memory — save a link, confirm the spot, stamp it on your map. Plus Taipei and Shanghai metro food.";
 export const SITE_DESCRIPTION_ZH =
   "Savvy 是地點記憶：存連結、確認地點、蓋在地圖上。另有台北與上海捷運美食。";
 
-export const HERO_EN = [
-  "Place memory for links you care about.",
-  "Save a link → confirm the place → pin it on your map.",
-  "Also: Taipei and Shanghai metro food, one station at a time.",
-] as const;
+export const METRO_MAP_COPY = {
+  taipei: {
+    "zh-Hant": { title: "台北捷運美食地圖｜Savvy", description: "在台北捷運美食地圖選站，查看站邊店家與完整攻略。" },
+    en: { title: "Taipei MRT food map | Savvy", description: "Choose a Taipei MRT station to find nearby restaurants and food guides." },
+  },
+  shanghai: {
+    "zh-Hant": { title: "上海地鐵美食地圖｜Savvy", description: "在上海地鐵美食地圖選站，查看站邊店家與完整攻略。價格以人民幣標示。" },
+    en: { title: "Shanghai metro food map | Savvy", description: "Choose a Shanghai metro station to find nearby restaurants and food guides. Prices are in CNY." },
+  },
+} as const;
 
-export const HERO_ZH = [
-  "把想去的店存成地圖上的記憶。",
-  "存連結 → 確認地點 → 地圖章。",
-  "另有台北與上海捷運美食，每天一站。",
-] as const;
+export const isMetroMapPath = (path: string) => path === "/discover" || path === "/shanghai";
 
 export type SiteLang = "zh-Hant" | "en";
 
@@ -34,4 +32,21 @@ export function hrefWithLang(path: string, lang: SiteLang): string {
   return lang === "en" ? `${path}?lang=en` : path;
 }
 
-export const LANG_BOOT_SCRIPT = `(()=>{document.documentElement.classList.add("js");try{if(localStorage.getItem("savvy.workspace.theme")==="dark")document.documentElement.dataset.theme="dark"}catch{}const en=new URLSearchParams(location.search).get("lang")==="en";document.documentElement.lang=en?"en":"zh-Hant";if(en&&location.pathname==="/discover"){document.title=${JSON.stringify(SITE_TITLE_EN)};const meta=document.querySelector('meta[name="description"]');if(meta)meta.setAttribute("content",${JSON.stringify(SITE_DESCRIPTION_EN)});}})();`;
+export const LANG_BOOT_SCRIPT = `(() => {
+  const root = document.documentElement;
+  const query = new URLSearchParams(location.search);
+  root.classList.add("js");
+  try {
+    if (localStorage.getItem("savvy.workspace.theme") === "dark") root.dataset.theme = "dark";
+  } catch {}
+  root.lang = query.get("lang") === "en" ? "en" : "zh-Hant";
+  if (query.get("embed") !== "atlas" || !["/discover", "/shanghai"].includes(location.pathname)) return;
+  try {
+    if (window.parent === window || window.parent.location.origin !== location.origin) return;
+    root.dataset.atlasMetro = "";
+    // Open station articles in the main browser window, outside the small map frame.
+    const base = document.createElement("base");
+    base.target = "_top";
+    document.head.append(base);
+  } catch {}
+})();`;

@@ -25,3 +25,18 @@ test("public map citations stay distinct from service URLs and private source te
     `${route} Google private source`,
   ]) assert.equal(hasUnapprovedVendorMention(text), true, text);
 });
+
+test("maps search links accept only the public api marker and a place query", () => {
+  const search = "https://www.google.com/maps/search/?api=1&query=%E9%98%BF%E7%94%B0%E9%BA%B5";
+  for (const text of [search, search.replace("&", "&amp;"), search.replace("&", "\\u0026"), '"https://www.google.com/maps/search/?api=1&"']) {
+    assert.equal(hasUnapprovedVendorMention(text), false, text);
+  }
+  for (const text of [
+    search + "&key=private",
+    search.replace("&", "\\u0026") + "\\u0026key=private",
+    search + "&query=other",
+    search + "#private",
+    search.replace("api=1", "api=2"),
+    search.replace("query=", "token="),
+  ]) assert.equal(hasUnapprovedVendorMention(text), true, text);
+});

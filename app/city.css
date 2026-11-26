@@ -4,8 +4,8 @@
   left: 36px;
   width: 84px;
   height: 22px;
-  background: rgba(234, 221, 198, 0.92);
-  border: 1px solid rgba(98, 89, 79, 0.25);
+  background: var(--sakura-petal);
+  border: 1px solid var(--sakura-line);
   transform: rotate(-3deg);
 }
 
@@ -21,7 +21,7 @@
   border: 1.5px solid var(--ink);
   border-radius: 999px;
   background: var(--paper);
-  box-shadow: 2px 3px 0 var(--ink);
+  box-shadow: 2px 3px 0 var(--sakura-shadow);
 }
 
 a.city-switch-item {
@@ -37,12 +37,12 @@ a.city-switch-item {
   background: transparent;
   color: var(--ink);
   text-decoration: none;
-  font: 600 15px/1.2 ui-rounded, -apple-system, "PingFang TC", sans-serif;
+  font: 600 15px/1.2 var(--sakura-type);
 }
 
 a.city-switch-item[aria-current="true"] {
-  background: var(--forest);
-  color: var(--paper);
+  background: var(--sakura-wash);
+  color: var(--sakura-ink);
   font-weight: 700;
 }
 

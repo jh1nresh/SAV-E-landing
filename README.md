@@ -1,6 +1,6 @@
 # SAV-E landing
 
-Next.js landing for **Savvy** (`sav-e-landing` on Vercel). Coral hero (App claim + App Store + five official stickers + interactive Doodle metro food map), then Passport / Friends / Day-Night bands, a download CTA, and the footer. zh/en toggle.
+Next.js site for **Savvy** (`sav-e-landing` on Vercel). The Sakura workspace is the homepage, with standalone Taipei and Shanghai metro food maps.
 
 This GitHub repo (`jh1nresh/SAV-E-landing`) is what Vercel project `jhinreshs-projects/sav-e-landing` deploys. Next.js is auto-detected; `.vercel` project metadata stays gitignored.
 
@@ -52,7 +52,7 @@ npm run check
 ## Pages
 
 - `/` Sakura workspace with Trips, Atlas, Collections, Journey and the iOS introduction
-- `/discover` and `/shanghai` existing Taipei and Shanghai metro experiences
+- `/discover` and `/shanghai` standalone Taipei and Shanghai metro food maps
 - `/zh-tw/travel` travel guides, `/zh-tw/posts` original Threads links and `/metro` station guides
 - `/privacy`
 - `/support`

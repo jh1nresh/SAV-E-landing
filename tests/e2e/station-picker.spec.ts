@@ -156,13 +156,13 @@ test.describe("no-JS station list", () => {
 });
 
 for (const [width, height] of [[390, 844], [1280, 800], [1440, 900]] as const) {
-  test(`App Store stays on the first screen at ${width}x${height}`, async ({ page }) => {
+  test(`Station selector stays on the first screen at ${width}x${height}`, async ({ page }) => {
     await page.setViewportSize({ width, height });
     await page.goto("/discover");
     await waitForMap(page);
-    const bottom = await boxBottom(page, "[data-testid=hero-appstore]");
+    const bottom = await boxBottom(page, "[data-testid=station-picker-trigger]");
     expect(bottom).toBeLessThanOrEqual(height);
-    const top = await page.getByTestId("hero-appstore").evaluate((el) => el.getBoundingClientRect().top);
+    const top = await page.getByTestId("station-picker-trigger").evaluate((el) => el.getBoundingClientRect().top);
     expect(top).toBeGreaterThanOrEqual(0);
   });
 }

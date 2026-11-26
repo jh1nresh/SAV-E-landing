@@ -62,6 +62,6 @@ export function shanghaiMetro(stations: FoodStation[], pins: ShanghaiMapPin[] = 
 
 export function cityMapSvg(data: MetroData): string {
   if (data._meta.city !== "shanghai") return MAP_SVG;
-  return `<svg id="mapsvg" viewBox="-150 -170 1000 940" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="上海地鐵手繪示意地圖。位置為示意，不是精確地理座標。"><g transform="translate(-60 -40) scale(.72)" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobS)">${Object.entries(shanghaiLines.lines).map(([id, line]) => `<path d="${line.d}" stroke="#fff9eb" stroke-width="16"/><path id="${id}" d="${line.d}" stroke="${line.color}" stroke-width="8"/>`).join("")}</g><g id="stdots"></g></svg>`;
+  return `<svg id="mapsvg" viewBox="-150 -170 1000 940" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="上海地鐵手繪示意地圖。位置為示意，不是精確地理座標。"><g transform="translate(-60 -40) scale(.72)" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobS)">${Object.entries(shanghaiLines.lines).map(([id, line]) => `<path d="${line.d}" stroke="var(--sakura-paper)" stroke-width="16"/><path id="${id}" d="${line.d}" stroke="color-mix(in srgb, ${line.color}, var(--sakura-ink) var(--metro-line-lighten))" stroke-width="8"/>`).join("")}</g><g id="stdots"></g></svg>`;
 }
 export const cityMapName = (data: MetroData) => data._meta.city === "shanghai" ? "Shanghai" : "Taipei";

@@ -8,6 +8,11 @@
 城市貼文|City posts
 收藏整理|Saving places
 捷運美食|Metro food
+圖鑑檢視|Atlas views
+城市|Cities
+捷運美食地圖|Metro food map
+這座城市目前沒有捷運美食攻略。|There are no metro food guides for this city yet.
+查看全部捷運美食攻略 →|Browse all metro food guides →
 隱私|Privacy
 支援|Support
 攻略與原文|Guides & original posts
@@ -23,7 +28,7 @@ Savvy 首頁|Savvy home
 語言|Language
 Savvy 社群|Savvy on social media
 小紅書|RedNote
-加入測試名單|Join the waitlist
+加入測試名單|Get early access
 把想去的地方，排進下一趟行程。|Turn places you save into places you go.
 滑到一家想吃的店？把貼文連結分享給 Savvy，確認是哪一家，再存到自己的地圖。出門前，把想去的幾站排成行程。|Found somewhere you want to eat? Share the post with Savvy, confirm the place, and save it to your map. When you’re ready to go, turn a few saved places into a trip.
 App 介面示意|App preview
@@ -31,7 +36,7 @@ App 介面示意|App preview
 我的行程|My Trip
 收藏|Collection
 遊記|Journey
-加入 Savvy 測試名單|Join the Savvy waitlist
+加入 Savvy 測試名單|Savvy early access
 開放試用時，我們會寄信給你，附上加入方式。|We’ll email you how to join when the beta opens.
 本機預覽，Email 不會送出。|Local preview. Your email will not be sent.
 已完成試填，Email 沒有送出。|Preview complete. Your email was not sent.
@@ -202,6 +207,7 @@ App 介面示意|App preview
       [/^在新分頁展開(.+)$/, (_, name) => 'Open ' + english(name) + ' in a new tab'],
       [/^(.+)互動街景$/, (_, name) => english(name) + ' interactive city model'],
       [/^(.+)地點與攻略$/, (_, city) => english(city) + ' places and guides'],
+      [/^(.+?)(?:捷運|地鐵)美食$/, (_, city) => english(city) + ' metro food'],
       [/^← (.+)$/, (_, title) => '← ' + english(title)],
       [/^已收藏「(.+)」。$/, (_, title) => 'Saved “' + title + '”.']
     ];

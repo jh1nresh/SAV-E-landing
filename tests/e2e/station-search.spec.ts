@@ -74,15 +74,7 @@ for (const width of WIDTHS) {
 
     const searchBox = (await page.getByTestId("station-search").boundingBox())!;
     const stageBox = (await page.locator(".map-stage").boundingBox())!;
-    if (width < 800) {
-      const stickers = (await page.locator(".hero-stk").boundingBox())!;
-      expect(stickers.y + stickers.height).toBeLessThanOrEqual(searchBox.y + 1);
-      expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(stageBox.y + 1);
-    } else {
-      const heading = (await page.getByRole("heading", { name: "看到喜歡的存下" }).boundingBox())!;
-      expect(searchBox.x).toBeGreaterThan(heading.x + heading.width / 2);
-      expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(stageBox.y + 1);
-    }
+    expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(stageBox.y + 1);
 
     const stage = page.locator(".map-stage");
     const mapBefore = (await stage.boundingBox())!;

@@ -28,7 +28,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
     const response = await page.goto("/discover");
     expect(response?.status()).toBe(200);
     expect(new URL(page.url()).pathname).toBe("/discover");
-    await expect(page.getByText("看到喜歡的存下")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "捷運美食地圖", exact: true })).toBeVisible();
     await expect(page.getByText("先選城市")).toHaveCount(0);
     await expect(page.locator(".map-stage")).toBeVisible();
     await expect(page.locator(".map-stage").getByText("小巨蛋").first()).toBeVisible();
@@ -56,7 +56,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
   const page = await context.newPage();
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/discover?lang=en");
-  await expect(page.getByText("Save what you love")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Metro food map", exact: true })).toBeVisible();
   await expect(page.getByTestId("city-switch")).toHaveAttribute("aria-label", "City");
   const taipei = page.locator("nav.top").getByTestId("city-switch-taipei");
   const shanghai = page.locator("nav.top").getByTestId("city-switch-shanghai");
@@ -68,7 +68,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
   await page.keyboard.press("Enter");
   expect(new URL(page.url()).pathname).toBe("/discover");
   expect(new URL(page.url()).searchParams.get("city")).toBe("shanghai");
-  await expect(page.locator("h1:visible")).toHaveText("Save what you loveRemember where you've been");
+  await expect(page.locator("h1:visible")).toHaveText("Metro food map");
   await expect(page.locator("#hero .hud.cart b").last()).toHaveText("Shanghai");
   await expect(page.getByRole("link", { name: "選城市" })).toHaveCount(0);
   await expect(page.getByTestId("city-switch-shanghai")).toHaveAttribute("aria-current", "true");
@@ -76,7 +76,7 @@ test("homepage shows Taipei content and a city switch, defaulting to 台北", as
   await page.getByTestId("city-switch-taipei").click();
   await expect(page).toHaveURL(/\/discover\?lang=en$/);
   await expect(page.getByTestId("city-switch-taipei")).toHaveAttribute("aria-current", "true");
-  await expect(page.getByText("Save what you love")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Metro food map", exact: true })).toBeVisible();
   await expect(page.locator(".map-stage")).toBeVisible();
   await page.close();
 });
@@ -88,7 +88,7 @@ test("Accept-Language does not redirect the homepage away from Taipei", async ({
   expect(response.status()).toBe(200);
   expect(new URL(response.url()).pathname).toBe("/discover");
   const html = await response.text();
-  expect(html).toContain("看到喜歡的存下");
+  expect(html).toContain("捷運美食地圖");
   expect(html).toContain('data-testid="city-switch-taipei"');
   expect(html).toContain('href="/shanghai"');
   expect(html).toContain('aria-current="true"');
@@ -124,7 +124,7 @@ test("/taipei permanently redirects to /discover and keeps the query string", as
   expect(new URL(page.url()).hash).toBe("#x");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/savvy\.jeezlabs\.io\/discover$/);
   await expect(page.locator(".map-stage")).toBeVisible();
-  await expect(page.getByText("Save what you love")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Metro food map", exact: true })).toBeVisible();
 });
 
 test("legacy Taipei station URLs stay intact, the guide index covers both cities, and /discover defaults to Taipei", async ({ request }) => {
@@ -201,7 +201,7 @@ async function openShanghaiHero(page: Page, width: number) {
   expect(new URL(page.url()).pathname).toBe("/discover");
   await expect(page.locator("#hero")).toHaveAttribute("data-preserved", "yes");
   await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "shanghai");
-  await expect(page.locator("h1:visible")).toContainText("看到喜歡的存下");
+  await expect(page.locator("h1:visible")).toContainText("捷運美食地圖");
   await expect(page.locator("#hero .mapcard").last()).toBeVisible();
   await expect(page.locator(".sh-page, .sh-mapcard")).toHaveCount(0);
   // City switch remounts HeroMapLazy. The pin hit exists only after that live map mounts.
@@ -230,11 +230,11 @@ async function expectShanghaiStationCard(page: Page, station: FoodStation) {
   await page.getByTestId("metro-reset").click();
 }
 
-test("legacy Shanghai entry, deep links, history and no-JS content retain the landing hero", async ({ page, browser }) => {
+test("legacy Shanghai entry, deep links, history and no-JS content retain the station map", async ({ page, browser }) => {
   await page.goto("/shanghai?lang=en&reduce=1#shanghai-yuyuan");
   await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "shanghai");
   await expect(page.getByTestId("metro-card").locator("h3")).toHaveText("豫園");
-  await expect(page.getByTestId("hero-appstore")).toBeVisible();
+  await expect(page.getByRole("link", { name: "← Food guides" })).toHaveAttribute("href", "/metro#shanghai");
   await page.getByTestId("city-switch-taipei").click();
   await expect(page.locator("#hero .hero-search-col")).toHaveAttribute("data-city", "taipei");
   await page.getByRole("button", { name: "中文", exact: true }).click();
