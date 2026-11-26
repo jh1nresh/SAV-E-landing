@@ -2,7 +2,8 @@ import { guides, GUIDE_ROOT, guidePath } from "../app/zh-tw/guides/content";
 import { TRAVEL_ROOT, travelGuides, travelPath } from "../app/zh-tw/travel/content";
 import { postPath, sourceOnlyPosts, threadPosts } from "../app/zh-tw/posts/content";
 import { getFoodStations, getShanghaiFoodStations } from "./metro";
-import { guideDescription, guideHeading, guideUpdatedAt, shopAnchor, shopMapLink } from "./metro-guide.mjs";
+import { shopSearchHref, guideDescription, guideHeading, guideUpdatedAt, shopAnchor, shopMapLink } from "./metro-guide.mjs";
+import { relatedStations, shuanglianPlans, shuanglianTips, stationEditorial } from "./metro-editorial";
 import { FOOD_DISCLAIMER, foodShopRows } from "./metro-logic.mjs";
 import { HERO_EN, HERO_ZH, SITE_DESCRIPTION_EN, SITE_DESCRIPTION_ZH, SITE_TITLE_EN, SITE_TITLE_ZH, TESTFLIGHT_URL } from "../app/site";
 import { infoPages, privacyGuidance, SITE_ORIGIN } from "./site-content";
@@ -111,9 +112,31 @@ ${resources}
     if (block.type === "table" && "rows" in block) return block.rows?.map((row, i) => `| ${row.join(" | ")} |${i === 0 ? `\n| ${row.map(() => "---").join(" | ")} |` : ""}`).join("\n");
     return `${block.type === "question" ? "### " : ""}${"text" in block ? block.text : ""}`;
   }).join("\n\n")}`).join("\n\n")}\n\n[查看 Savvy TestFlight 測試版](${TESTFLIGHT_URL})\n\n這不是 App Store 正式下載。${resources}\n`;
-  if (path === "/metro") return `# 台北、上海捷運美食攻略｜Savvy\n\n${FOOD_DISCLAIMER}\n\n${[{ name: '台北捷運美食', stations: getFoodStations() }, { name: '上海地鐵美食', stations: getShanghaiFoodStations() }].map(city => `## ${city.name}\n\n${city.stations.map(station => `- ${link(guideHeading(station), `/metro/${station.slug}`)}: ${station.tagline ?? ""}`).join("\n")}`).join("\n\n")}\n\n${resources}\n`;
-  const station = [...getFoodStations(), ...getShanghaiFoodStations()].find(entry => path === `/metro/${entry.slug}`);
-  if (station) return `# ${guideHeading(station)}｜Savvy\n\n${guideDescription(station)}\n\n原始筆記：${station.date} · 頁面更新：${guideUpdatedAt(station)}\n\n${station.tagline ?? ""}\n\n${FOOD_DISCLAIMER}\n\n${Object.entries(station.posts).filter(([, url]) => url).map(([name, url]) => `[${name}](${url})`).join(" · ")}\n\n## 店家快速索引\n\n${station.shops.map((shop, index) => `- ${link(shop.name ?? '店家', `/metro/${station.slug}#${shopAnchor(shop, index)}`)}`).join('\n')}\n\n${station.shops.map(shop => { const map = shopMapLink(station, shop); return `## ${shop.name ?? "店家"}\n\n${foodShopRows(shop, station.city).map(([label, value]) => `- ${label}: ${value}`).join("\n")}\n\n[${map.label}](${map.href})`; }).join("\n\n")}\n\n外送價不等於店內價；舊菜單或食記價格不代表今天售價。查詢日期不等於店家更新日期；暫停供應、堂食與窗口限制請看各店說明。步行數字採來源估計，起點可能是其他鄰近車站。地圖連結依店名與地址搜尋，出發前請確認分店與當日營業時間。\n\n${resources}\n`;
+  if (path === "/metro") return `# 台北、上海捷運美食攻略｜Savvy\n\n${FOOD_DISCLAIMER}\n\n${[{ name: '台北捷運美食', stations: getFoodStations() }, { name: '上海地鐵美食', stations: getShanghaiFoodStations() }].map(city => `## ${city.name}\n\n${city.stations.map(station => `- ${link(guideHeading(station), `/metro/${station.slug}`)}: ${stationEditorial(station).intro}`).join("\n")}`).join("\n\n")}\n\n${resources}\n`;
+  const stations = [...getFoodStations(), ...getShanghaiFoodStations()];
+  const station = stations.find(entry => path === `/metro/${entry.slug}`);
+  if (station) {
+    const more = relatedStations(station, stations).map(other => link(guideHeading(other), `/metro/${other.slug}`));
+    const dayPlans = station.slug === "shuanglian"
+      ? ["## 平日和週末怎麼吃", shuanglianPlans.map(({ when, parts }) => `- **${when}** ${parts.map(part => typeof part === "string" ? part : link(part.name, `/metro/${station.slug}#${part.anchor}`)).join("")}`).join("\n")]
+      : [];
+    const shops = station.shops.map(shop => {
+      const map = shopMapLink(station, shop);
+      const tip = station.slug === "shuanglian" && shop.key ? shuanglianTips[shop.key] : undefined;
+      const rows = foodShopRows(shop, station.city).map(([label, value]) => `- ${label}: ${value}`).join("\n");
+      return [`## ${shop.name ?? "店家"}`, tip?.note, rows, tip?.source && `[店家或商圈公告](${tip.source})`,
+        `[Google Maps](${shopSearchHref(station, shop)}) · [${map.label}](${map.href})`].filter(Boolean).join("\n\n");
+    });
+    return [`# ${guideHeading(station)}｜Savvy`, guideDescription(station), `原始筆記：${station.date} · 頁面更新：${guideUpdatedAt(station)}`,
+      stationEditorial(station).intro, FOOD_DISCLAIMER,
+      Object.entries(station.posts).filter(([, url]) => url).map(([name, url]) => `[${name}](${url})`).join(" · "),
+      ...dayPlans, "## 店家快速索引", station.shops.map((shop, index) => `- ${link(shop.name ?? "店家", `/metro/${station.slug}#${shopAnchor(shop, index)}`)}`).join("\n"),
+      ...shops, "外送價不等於店內價；舊菜單或食記價格不代表今天售價。查詢日期不等於店家更新日期；暫停供應、堂食與窗口限制請看各店說明。步行數字採來源估計，起點可能是其他鄰近車站。地圖連結依店名與地址搜尋，出發前請確認分店與當日營業時間。",
+      "## 把想吃的店留到下次",
+      "在 iPhone 分享店家連結給 Savvy，或複製到 App。確認分店後，再存進自己的地圖。",
+      link("查看 Savvy App 測試名單", "/#app"),
+      ...(more.length ? ["## 同線延伸推薦", more.join(" · ")] : []), resources].filter(Boolean).join("\n\n") + "\n";
+  }
   return null;
 }
 

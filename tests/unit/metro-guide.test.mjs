@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { guideHeading, guideDescription, guideUpdatedAt, GUIDE_PAGE_UPDATED_AT, shopPhoto, shopMapLink, guideStructuredData, safeJsonLd } from '../../lib/metro-guide.mjs';
+import { shopSearchHref, guideHeading, guideDescription, guideUpdatedAt, GUIDE_PAGE_UPDATED_AT, shopPhoto, shopMapLink, guideStructuredData, safeJsonLd } from '../../lib/metro-guide.mjs';
 
 const station = {
   city: 'taipei', station: '台北車站', slug: 'taipei-main', date: '2026-10-23',
@@ -40,6 +40,11 @@ test('map searches preserve branch address and special characters without invent
   assert.equal(shanghai.searchParams.get('callnative'), '0');
   assert.equal(shanghai.searchParams.has('center'), false);
   assert.equal(shanghai.searchParams.has('location'), false);
+  const google = new URL(shopSearchHref(station, station.shops[0]));
+  assert.equal(google.origin + google.pathname, 'https://www.google.com/maps/search/');
+  assert.equal(google.searchParams.get('api'), '1');
+  assert.equal(google.searchParams.get('query'), taipei.searchParams.get('query'));
+  assert.equal(google.searchParams.has('query_place_id'), false);
 });
 
 test('structured data describes published article and actual shops without unsupported ratings or offers', () => {

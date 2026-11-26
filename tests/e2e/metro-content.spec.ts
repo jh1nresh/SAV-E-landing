@@ -42,6 +42,37 @@ test('food list shows source disclaimer and every station', async ({ page }) => 
   await expect(page.locator('main .guide-card')).toHaveCount(stations.length);
 });
 
+test('line, time and dining filters can be combined and cleared', async ({ page }) => {
+  await page.goto('/metro');
+  const results = page.locator('.food-city-section .guide-card');
+  await page.getByLabel('捷運路線').selectOption('紅線');
+  await page.getByLabel('用餐時段').selectOption('早餐');
+  await page.getByLabel('用餐情境').selectOption('銅板小吃');
+  await expect(results.locator('h3')).toHaveText(['雙連站', '士林站']);
+  await page.getByLabel('捷運路線').selectOption('上海 14 號線');
+  await expect(page.getByRole('status')).toContainText('沒有符合的攻略');
+  await page.getByRole('button', { name: '清除篩選' }).click();
+  await expect(results).toHaveCount(stations.length);
+});
+
+test('Shuanglian offers weekday and weekend picks and expandable sources without JavaScript', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ baseURL, javaScriptEnabled: false });
+  try {
+    const page = await context.newPage();
+    await page.goto('/metro/shuanglian');
+    const plan = page.getByRole('region', { name: '平日和週末怎麼吃' });
+    await expect(plan.getByText('週日下午')).toBeVisible();
+    await plan.getByRole('link', { name: '阿田麵', exact: true }).click();
+    const shop = page.locator('#shop-atian');
+    await expect(shop.getByText('平日午餐 · 15:00 前')).toBeVisible();
+    await expect(shop.getByText('價格出處')).toBeHidden();
+    await shop.locator('summary').press('Enter');
+    await expect(shop.getByText('價格出處')).toBeVisible();
+    await expect(page.getByRole('link', { name: '查看 Savvy App 測試名單 →' })).toHaveAttribute('href', '/#app');
+    await expect(page.getByRole('navigation', { name: '同線延伸推薦' }).getByRole('link', { name: '中山站美食 →' })).toBeVisible();
+  } finally { await context.close(); }
+});
+
 for (const station of stations) {
   test(`${station.slug} shows source content and working images`, async ({ page }) => {
     await expectStationContent(page, station);
@@ -86,6 +117,10 @@ async function expectStationContent(page: Page, station: Station) {
     const query = map.searchParams.get(station.city === 'shanghai' ? 'keyword' : 'query');
     expect(query).toContain(shop.name);
     if (shop.address) expect(query).toContain(shop.address);
+    const google = new URL((await card.locator('.food-search-link').getAttribute('href'))!);
+    expect(google.origin + google.pathname).toBe('https://www.google.com/maps/search/');
+    expect(google.searchParams.get('api')).toBe('1');
+    expect(google.searchParams.get('query')).toBe(query);
     const photo = card.locator('.food-shop-photo img');
     if (await photo.count()) expect((await photo.getAttribute('src'))!.split('/').at(-1)?.replace(/\.[^.]+$/, '')).toBe(shop.key);
     if (shop.name) await expect(card.locator('h2')).toHaveText(shop.name);
@@ -95,9 +130,11 @@ async function expectStationContent(page: Page, station: Station) {
       const row = card.locator('.food-row').filter({ has: page.locator('dt', { hasText: new RegExp(`^${rowLabel.replace(/[()]/g, '\\$&')}$`) }) });
       const value = shop[key];
       if (value) {
-        await expect(row.locator('dd')).toHaveText(value);
+        await expect(row.locator('dd')).toHaveText(value.replace(/https?:\/\/[^\s]+/g, url =>
+          '查看來源 ↗' + (url.match(/[。，；、）]+$/u)?.[0] ?? '')));
         for (const url of value.match(/https?:\/\/[^\s]+/g) ?? []) {
-          await expect(row.locator('dd a').filter({ hasText: url })).toHaveAttribute('href', url);
+          expect(await row.locator('dd a').evaluateAll(links => links.map(link => link.getAttribute('href'))))
+            .toContain(url.replace(/[。，；、）]+$/u, ''));
         }
       }
       else if (key === 'price' && station.city !== 'shanghai') await expect(row.locator('dd')).toHaveText('價格待確認');

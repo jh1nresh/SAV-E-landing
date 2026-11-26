@@ -36,3 +36,22 @@
 .food-before-going { margin-top: 40px; border-top: 1px solid var(--kraft); padding-top: 24px; line-height: 1.8; }
 .food-before-going h2 { font-size: 23px; color: var(--forest); }
 @media (max-width: 760px) { .food-shops { grid-template-columns: 1fr; } }
+.food-lines, .food-tag { display: inline-block; color: var(--forest); font-size: .88rem; font-weight: 700; }
+.food-tag { border-radius: 7px; background: var(--kraft); padding: 3px 9px; }
+.food-shop-note { line-height: 1.7; }
+.food-map-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+.food-map-actions .food-map-link { margin-top: 0; }
+.food-search-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--forest); font-weight: 700; text-underline-offset: 4px; }
+.food-sources { margin-top: 16px; border-top: 1px solid var(--line); }
+.food-sources summary { min-height: 44px; padding: 10px 0; cursor: pointer; color: var(--forest); font-weight: 700; }
+.food-sources summary:focus-visible { outline: 3px solid var(--sakura-focus); outline-offset: 3px; }
+.food-plan, .food-filters { margin-block: 32px; padding: 16px clamp(12px, 3vw, 24px); border: 2px solid var(--sakura-edge); border-radius: 12px; background: var(--sakura-wash); line-height: 1.7; }
+.food-plan h2 { margin-top: 0; color: var(--forest); }
+.food-plan li + li { margin-top: .75rem; }
+.food-plan li > strong { margin-inline-end: .35rem; }
+.food-filters { min-inline-size: 0; }
+.food-filters legend { padding-inline: 7px; font-weight: 800; color: var(--forest); }
+.food-filters > div { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.food-filters label { display: grid; gap: 3px; min-width: 0; }
+.food-filters :is(select, button) { min-height: 44px; border: 1px solid var(--sakura-edge); border-radius: 7px; padding: 5px 10px; color: var(--sakura-ink); background: var(--sakura-paper); font: inherit; }
+.food-filters p { margin-block: 10px 0; }
