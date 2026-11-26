@@ -10,5 +10,5 @@ export function shopAnchor(shop: FoodShop, index: number): string;
 export function shopPhoto(station: FoodStation, shop?: FoodShop): string | undefined;
 export function shopMapLink(station: FoodStation, shop: FoodShop): { href: string; label: string };
 export function shopSearchHref(station: FoodStation, shop: FoodShop): string;
-export function guideStructuredData(station: FoodStation, origin: string): Record<string, unknown>;
+export function guideStructuredData(station: FoodStation, origin: string, faq?: { question: string; answer: string }[]): Record<string, unknown>;
 export function safeJsonLd(value: unknown): string;

@@ -13,6 +13,7 @@
   const selectedKey = "savvy.atlas.city.v1";
   const visitedPrefix = "savvy.atlas.visited.v1.";
   const fallback = new Map();
+  let filterVisited = false;
   function read(key) {
     if (fallback.has(key)) return fallback.get(key);
     try { return localStorage.getItem(key); } catch { return null; }
@@ -47,8 +48,8 @@
         main.workspace {display:block; height:calc(100% - 26px)}
         main.workspace > .stage {display:block; position:absolute; inset:0; margin:0}
         .foot {height:26px; padding-inline:10px}
-        .stage .tools {max-width:calc(100% - 16px);border:2px solid #302653;background:#fff;box-shadow:2px 3px #8f8df7}
-        .stage .tools .play {background:#fff;color:#302653}
+        .stage .tools {max-width:calc(100% - 16px);border:2px solid var(--sakura-edge);background:var(--sakura-paper);box-shadow:2px 3px var(--sakura-shadow)}
+        .stage .tools .play {background:var(--sakura-wash);color:var(--sakura-ink)}
         @media(max-width:460px){.foot .metric {display:none}.stage .tools select{max-width:7.5rem}}
       `;
       doc.head.append(style);
@@ -71,13 +72,65 @@
     return frame;
   }
 
+  function atlasViews(isMetro) {
+    const nav = element("nav", "atlas-ws-views");
+    nav.setAttribute("aria-label", "圖鑑檢視");
+    const tabs = element("sakuga-tabs", "atlas-ws-view-tabs");
+    for (const [label, hash, active] of [["城市", "#atlas", !isMetro], ["捷運美食", "#atlas?view=metro", isMetro]]) {
+      const link = element("a", "", label);
+      link.href = hash;
+      if (active) link.setAttribute("aria-current", "page");
+      tabs.append(link);
+    }
+    nav.append(tabs);
+    return nav;
+  }
+
+  function metroView(selected) {
+    const fragment = document.createDocumentFragment();
+    const header = element("header", "atlas-ws-metro-header");
+    const title = element("h2", "", selected.city + (selected.id === "Taipei" ? "捷運美食" : "地鐵美食"));
+    title.tabIndex = -1;
+    const guides = element("a", "atlas-ws-metro-guides", "查看全部捷運美食攻略 →");
+    guides.href = "/metro";
+    header.append(title, guides);
+    fragment.append(header);
+    if (!["Taipei", "Shanghai"].includes(selected.id)) {
+      fragment.append(element("p", "atlas-ws-metro-empty", "這座城市目前沒有捷運美食攻略。"));
+      return fragment;
+    }
+    const frame = element("iframe", "atlas-ws-metro-frame");
+    frame.title = "捷運美食地圖";
+    const query = new URLSearchParams({ embed: "atlas" });
+    if (document.documentElement.lang === "en") query.set("lang", "en");
+    frame.src = (selected.id === "Shanghai" ? "/shanghai" : "/discover") + "?" + query.toString();
+    fragment.append(frame);
+    return fragment;
+  }
+
   window.renderSavvyAtlas = function renderSavvyAtlas(root, api) {
     let selected = scenes.find(scene => scene.id === read(selectedKey)) || scenes[0];
-    let filterVisited = false;
     const visited = scene => read(visitedPrefix + scene.id) === "1";
-    const atlas = element("div", "atlas-ws");
-    const heading = element("header", "atlas-ws-header");
-    const title = element("h1", "atlas-ws-title", "城市圖鑑");
+    const isMetro = new URLSearchParams(location.hash.split("?")[1]).get("view") === "metro";
+    let atlas = root.querySelector(":scope > .atlas-ws");
+    if (!atlas) {
+      atlas = element("div", "atlas-ws");
+      const heading = element("header", "atlas-ws-header");
+      heading.append(element("h1", "atlas-ws-title", "城市圖鑑"), atlasViews(isMetro));
+      atlas.append(heading);
+    }
+    const heading = atlas.querySelector(".atlas-ws-header");
+    const views = heading.querySelector(".atlas-ws-views");
+    const tabs = views.querySelector("sakuga-tabs");
+    const selectedView = Number(isMetro);
+    if (tabs.selected !== selectedView) {
+      if (typeof tabs.selected === "number") tabs.selected = selectedView;
+      else [...tabs.querySelectorAll("a")].forEach((link, index) => {
+        if (index === selectedView) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
+      });
+    }
+    heading.querySelector(".atlas-ws-stat")?.remove();
     const stat = element("p", "atlas-ws-stat");
     stat.setAttribute("aria-live", "polite");
     const count = element("strong");
@@ -93,8 +146,9 @@
       progress.setAttribute("aria-label", "已造訪的城市比例");
     }
     stat.append(count, element("span", "", "座城市去過"), progress);
-    heading.append(title, stat);
-    const layout = element("div", "atlas-ws-layout");
+    if (!isMetro) heading.insertBefore(stat, views);
+    const layout = element("div", isMetro ? "atlas-ws-layout atlas-ws-metro-mode" : "atlas-ws-layout");
+    const metroHost = element("section", "atlas-ws-metro");
     const scene = element("section", "atlas-ws-scene");
     const stage = element("div", "atlas-ws-stage");
     const frameHost = element("div", "atlas-ws-frame-host");
@@ -123,7 +177,7 @@
     const seen = element("button", "", "去過");
     all.type = seen.type = "button";
     filters.append(all, seen);
-    indexHeader.append(filters);
+    if (!isMetro) indexHeader.append(filters);
     const cities = element("div", "atlas-ws-cities");
     cities.addEventListener("pointerover", event => {
       const fx = window.SakugaFX;
@@ -137,9 +191,11 @@
     });
     const empty = element("p", "atlas-ws-empty", "還沒有造訪紀錄。選擇城市後，點「我去過」即可加入。");
     index.append(indexHeader, cities, empty);
-    layout.append(scene, index);
-    atlas.append(heading, layout);
-    root.replaceChildren(atlas);
+    if (isMetro) layout.append(index, metroHost);
+    else layout.append(scene, index);
+    atlas.querySelector(".atlas-ws-layout")?.remove();
+    atlas.append(layout);
+    if (!atlas.isConnected) root.replaceChildren(atlas);
 
     const tiles = new Map();
     for (const city of scenes) {
@@ -160,8 +216,9 @@
         showScene();
         refresh();
         if (window.matchMedia("(max-width: 49rem)").matches) {
-          name.focus({ preventScroll: true });
-          stage.scrollIntoView({ block: "start" });
+          const activeHeading = isMetro ? metroHost.querySelector("h2") : name;
+          activeHeading.focus({ preventScroll: true });
+          (isMetro ? metroHost : stage).scrollIntoView({ block: "start" });
         }
       });
       tiles.set(city.id, { tile, check });
@@ -177,19 +234,23 @@
       displayedCount = total;
       all.setAttribute("aria-pressed", String(!filterVisited));
       seen.setAttribute("aria-pressed", String(filterVisited));
-      empty.hidden = !filterVisited || total > 0;
+      empty.hidden = isMetro || !filterVisited || total > 0;
       mark.setAttribute("aria-pressed", String(visited(selected)));
       mark.textContent = visited(selected) ? "✓ 已去過" : "＋ 我去過";
       mark.setAttribute("aria-label", "我去過" + selected.city);
       for (const city of scenes) {
         const { tile, check } = tiles.get(city.id);
-        tile.hidden = filterVisited && !visited(city);
+        tile.hidden = !isMetro && filterVisited && !visited(city);
         tile.setAttribute("aria-pressed", String(city.id === selected.id));
         check.hidden = !visited(city);
       }
     }
 
     function showScene() {
+      if (isMetro) {
+        metroHost.replaceChildren(metroView(selected));
+        return;
+      }
       const url = '/trips/pocket-city/' + selected.id + '/index.html';
       const label = selected.city + " · " + selected.area;
       name.textContent = selected.city;

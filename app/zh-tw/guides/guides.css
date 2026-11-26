@@ -3,7 +3,7 @@
 .guide-back { display: inline-block; color: var(--forest); padding: 12px 0; text-underline-offset: 5px; }
 .guide-header { margin: 32px 0 40px; }
 .guide-eyebrow { font-size: 13px; letter-spacing: .1em; color: var(--muted); }
-.guide-title { font-family: Iansui, serif; color: var(--forest); font-weight: 400; font-size: clamp(32px, 4.2vw, 54px); line-height: 1.35; margin: 16px 0 24px; overflow-wrap: anywhere; }
+.guide-title { font-family: var(--sakura-type); color: var(--forest); font-weight: 750; font-size: clamp(32px, 4.2vw, 54px); line-height: 1.35; margin: 16px 0 24px; overflow-wrap: anywhere; }
 .guide-lead { font-size: 20px; line-height: 1.8; }
 .guide-small { color: var(--muted); font-size: 14px; line-height: 1.8; }
 .guide-version { border-left: 3px solid var(--coral); padding-left: 16px; font-size: 15px; }
@@ -30,10 +30,10 @@
 .guide-card { display: block; padding: 24px; color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; box-shadow: 3px 4px 0 var(--kraft); }
 .guide-card h2 { color: var(--forest); font-size: 24px; line-height: 1.5; }
 .guide-card p { color: var(--ink); font-size: 16px; }
-.guide-number { color: var(--muted); font-family: Caveat, cursive; font-size: 28px; }
+.guide-number { color: var(--muted); font-weight: 750; font-size: 1rem; }
 .guide-read { text-decoration: underline; text-underline-offset: 5px; }
 .guide-home { max-width: 1240px; margin: auto; }
-.guide-home h2 { font-family: Iansui, serif; font-weight: 400; font-size: 36px; color: var(--forest); }
+.guide-home h2 { font-family: var(--sakura-type); font-weight: 750; font-size: 36px; color: var(--forest); }
 .guide-home > a { color: var(--forest); display: inline-block; padding: 12px 0; }
 @media (max-width: 760px) {
   .guide-shell { padding: 24px 22px 56px; }

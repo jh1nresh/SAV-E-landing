@@ -17,14 +17,14 @@
 }
 
 :root {
-  --paper: #fff9eb;
-  --ink: #2f2e23;
-  --muted: #62594f;
-  --forest: #0e4a33;
-  --coral: #f26b4a;
-  --kraft: #eaddc6;
-  --line: #dccfb9;
-  --honey: #ffcc4f;
+  --paper: var(--sakura-paper);
+  --ink: var(--sakura-ink);
+  --muted: var(--sakura-muted);
+  --forest: var(--sakura-brand);
+  --coral: var(--sakura-primary);
+  --kraft: var(--sakura-wash);
+  --line: var(--sakura-line);
+  --honey: var(--sakura-petal);
   --radius: 12px;
   --gap: 96px;
 }
@@ -41,8 +41,8 @@ body {
 
 body {
   color: var(--ink);
-  font: 17px/1.6 ui-rounded, -apple-system, "PingFang TC", sans-serif;
-  background: var(--paper) url("/assets/paper-grain.png") 0 0 / 256px;
+  font: 17px/1.6 var(--sakura-type);
+  background: var(--sakura-canvas);
 }
 
 body::after {
@@ -56,8 +56,8 @@ body::after {
 }
 
 .h {
-  font-family: Iansui, Caveat, serif;
-  font-weight: 400;
+  font-family: var(--sakura-type);
+  font-weight: 800;
   line-height: 1.12;
   margin: 0;
   word-break: keep-all;
@@ -69,7 +69,7 @@ body::after {
 }
 
 html[lang="en"] .h {
-  font-family: Caveat, Iansui, cursive;
+  font-family: var(--sakura-type);
   font-weight: 600;
   font-size: clamp(46px, 5vw, 80px);
   text-wrap: balance;
@@ -241,21 +241,21 @@ section {
 }
 
 .s1 {
-  background: var(--coral);
-  color: #fff;
+  background: var(--sakura-canvas);
+  color: var(--ink);
 }
 
 .s1 .u {
-  text-decoration-color: var(--honey);
+  text-decoration-color: var(--sakura-primary);
 }
 
 .s2 {
-  background: var(--honey);
-  color: var(--forest);
+  background: var(--sakura-wash);
+  color: var(--ink);
 }
 
 .s2 .k {
-  color: var(--coral);
+  color: var(--forest);
 }
 
 .s2 .u {
@@ -263,12 +263,12 @@ section {
 }
 
 .s3 {
-  background: var(--forest);
-  color: var(--paper);
+  background: var(--sakura-canvas);
+  color: var(--ink);
 }
 
 .s3 .u {
-  text-decoration-color: var(--honey);
+  text-decoration-color: var(--sakura-primary);
 }
 
 .s4 {
@@ -276,7 +276,7 @@ section {
 }
 
 .s4 .k {
-  color: var(--coral);
+  color: var(--forest);
 }
 
 .stk {

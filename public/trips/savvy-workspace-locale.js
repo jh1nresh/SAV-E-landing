@@ -8,6 +8,11 @@
 城市貼文|City posts
 收藏整理|Saving places
 捷運美食|Metro food
+圖鑑檢視|Atlas views
+城市|Cities
+捷運美食地圖|Metro food map
+這座城市目前沒有捷運美食攻略。|There are no metro food guides for this city yet.
+查看全部捷運美食攻略 →|Browse all metro food guides →
 隱私|Privacy
 支援|Support
 攻略與原文|Guides & original posts
@@ -202,6 +207,7 @@ App 介面示意|App preview
       [/^在新分頁展開(.+)$/, (_, name) => 'Open ' + english(name) + ' in a new tab'],
       [/^(.+)互動街景$/, (_, name) => english(name) + ' interactive city model'],
       [/^(.+)地點與攻略$/, (_, city) => english(city) + ' places and guides'],
+      [/^(.+?)(?:捷運|地鐵)美食$/, (_, city) => english(city) + ' metro food'],
       [/^← (.+)$/, (_, title) => '← ' + english(title)],
       [/^已收藏「(.+)」。$/, (_, title) => 'Saved “' + title + '”.']
     ];

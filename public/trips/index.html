@@ -33,33 +33,35 @@
     openingPage.classList.add('savvy-opening');
     setTimeout(() => openingPage.classList.remove('savvy-opening'), 5000);
     try {
-      if (localStorage.getItem('savvy.workspace.theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+      if (localStorage.getItem('savvy.workspace.theme') === 'dark') openingPage.dataset.theme = 'dark';
+      if (localStorage.getItem('savvy.workspace.locale') === 'en') openingPage.lang = 'en';
     } catch {}
+    if (new URLSearchParams(location.search).get('lang') === 'en') openingPage.lang = 'en';
   </script>
   <link rel="stylesheet" href="/assets/sakura-theme.css">
   <link rel="stylesheet" href="/trips/savvy-workspace.css?v=left-slide">
-  <link rel="stylesheet" href="/trips/savvy-atlas-tab.css">
+  <link rel="stylesheet" href="/trips/savvy-atlas-tab.css?v=sakuga-tabs">
   <link rel="stylesheet" href="/trips/savvy-collection-tab.css">
   <link rel="stylesheet" href="/trips/savvy-journey-tab.css">
   <link rel="stylesheet" href="/trips/savvy-trip-reader.css">
   <link rel="stylesheet" href="/trips/savvy-workspace-motion.css?v=mobile-nav">
   <script defer src="/trips/guide-data.js"></script>
   <script defer src="/trips/search-catalog.js"></script>
-  <script defer src="/trips/savvy-atlas-tab.js?v=atlas-progress"></script>
+  <script defer src="/trips/savvy-atlas-tab.js?v=sakuga-tabs"></script>
   <script defer src="/trips/savvy-collection-tab.js?v=guide-reader"></script>
   <script defer src="/trips/savvy-journey-tab.js?v=guide-reader"></script>
   <script defer src="/trips/savvy-trip-reader.js?v=guide-reader"></script>
   <script defer src="/trips/savvy-guide-reader.js?v=guide-reader-3"></script>
   <script defer src="/trips/vendor/sakuga-vfx/toggle.js"></script>
-  <script defer src="/trips/vendor/sakuga-vfx/tabs.js?v=app-separator"></script>
+  <script defer src="/trips/vendor/sakuga-vfx/tabs.js?v=atlas-tabs"></script>
   <script defer src="/trips/vendor/sakuga-vfx/input.js?v=signup-hover"></script>
   <script defer src="/trips/vendor/sakuga-vfx/toast.js"></script>
   <script defer src="/trips/vendor/sakuga-vfx/button.js"></script>
   <script defer src="/trips/vendor/sakuga-vfx/progress.js?v=compact-atlas"></script>
   <script defer src="/trips/vendor/sakuga-vfx/tooltip.js?v=waitlist-trigger"></script>
   <script defer src="/trips/savvy-workspace-motion.js?v=early-access"></script>
-  <script defer src="/trips/savvy-workspace.js?v=mobile-nav"></script>
-  <script defer src="/trips/savvy-workspace-locale.js?v=early-access"></script>
+  <script defer src="/trips/savvy-workspace.js?v=atlas-tabs"></script>
+  <script defer src="/trips/savvy-workspace-locale.js?v=atlas-metro-map"></script>
   <script defer src="/trips/savvy-workspace-opening.js?v=one-to-hundred"></script>
   <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2" src="/trips/drive.js" defer></script>
 </head>

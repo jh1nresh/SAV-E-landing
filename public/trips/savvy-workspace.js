@@ -404,9 +404,13 @@
     } else {
       links.forEach(updateCurrent);
     }
-    document.title=tabs[active]+' · Savvy';root.replaceChildren();
-    if(section==='atlas')window.renderSavvyAtlas(root,api);
-    else if(section==='collection')window.renderSavvyCollection(root,api);
+    document.title=tabs[active]+' · Savvy';
+    if(section==='atlas') {
+      window.renderSavvyAtlas(root,api);
+      return;
+    }
+    root.replaceChildren();
+    if(section==='collection')window.renderSavvyCollection(root,api);
     else if(section==='journey')window.renderSavvyJourney(root,api);
     else if(section==='app')aboutApp();
     else if(section==='new-trip')newTrip();
@@ -420,6 +424,12 @@
     root.focus();
     root.scrollIntoView({block:'start'});
   });
-  window.addEventListener('hashchange',()=>{mobileNav.open=false;render();window.scrollTo(0,0);root.focus({preventScroll:true});});
+  window.addEventListener('hashchange',()=>{
+    const viewLink = document.activeElement?.closest('.atlas-ws-views a');
+    mobileNav.open=false;
+    render();
+    window.scrollTo(0,0);
+    if (!viewLink?.isConnected) root.focus({preventScroll:true});
+  });
   render();
 })();

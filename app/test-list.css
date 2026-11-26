@@ -3,17 +3,17 @@
   align-items: center;
   min-block-size: 3rem;
   padding: .45rem .9rem;
-  color: #211744;
-  background: #fff;
-  border: 2px solid #211744;
+  color: var(--sakura-ink);
+  background: var(--sakura-paper);
+  border: 2px solid var(--sakura-edge);
   border-radius: .65rem;
-  box-shadow: 3px 4px 0 #a99bff;
+  box-shadow: 3px 4px 0 var(--sakura-primary);
   font: inherit;
   font-weight: 750;
   cursor: pointer;
 }
 .test-list-launch:disabled { cursor: default; opacity: .65; }
-.test-list-launch:focus-visible, .test-list-dialog :focus-visible { outline: 3px solid #6151d9; outline-offset: 3px; }
+.test-list-launch:focus-visible, .test-list-dialog :focus-visible { outline: 3px solid var(--sakura-focus); outline-offset: 3px; }
 .test-list-dialog {
   box-sizing: border-box;
   width: min(calc(100% - 2rem), 27rem);
@@ -21,11 +21,11 @@
   max-height: calc(100dvh - 2rem);
   overflow: auto;
   padding: 1.4rem;
-  color: #211744;
-  background: #fff;
-  border: 2px solid #211744;
+  color: var(--sakura-ink);
+  background: var(--sakura-paper);
+  border: 2px solid var(--sakura-edge);
   border-radius: 1rem;
-  box-shadow: 5px 6px 0 #c9b8fe;
+  box-shadow: 5px 6px 0 var(--sakura-shadow);
 }
 .test-list-dialog::backdrop { background: #21174488; }
 .test-list-dialog h2 { margin: 0 0 .65rem; font-size: 1.45rem; font-weight: 780; }
@@ -37,7 +37,8 @@
   min-block-size: 3rem;
   padding: .5rem .7rem;
   color: inherit;
-  border: 2px solid #776ba1;
+  background: var(--sakura-paper);
+  border: 2px solid var(--sakura-line);
   border-radius: .55rem;
   font: inherit;
   font-size: max(1rem, 1em);

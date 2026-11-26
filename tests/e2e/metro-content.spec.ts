@@ -56,10 +56,19 @@ test('line, time and dining filters can be combined and cleared', async ({ page 
 });
 
 test('Shuanglian offers weekday and weekend picks and expandable sources without JavaScript', async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ baseURL, javaScriptEnabled: false });
+  const context = await browser.newContext({ baseURL, javaScriptEnabled: false, viewport: { width: 320, height: 780 } });
   try {
     const page = await context.newPage();
     await page.goto('/metro/shuanglian');
+    const table = page.getByRole('region', { name: '雙連站小吃與甜點速查' });
+    await expect(table.getByRole('row')).toHaveCount(6);
+    await expect(table.getByRole('row', { name: /滋奶谷/ })).toContainText('外送 NT$175／5入');
+    await table.focus();
+    await expect(table).toBeFocused();
+    expect(await table.evaluate(el => el.scrollWidth > el.clientWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
+    await table.getByRole('link', { name: '雙連圓仔湯' }).click();
+    await expect(page).toHaveURL(/#shop-yuanzai$/);
     const plan = page.getByRole('region', { name: '平日和週末怎麼吃' });
     await expect(plan.getByText('週日下午')).toBeVisible();
     await plan.getByRole('link', { name: '阿田麵', exact: true }).click();
@@ -69,7 +78,21 @@ test('Shuanglian offers weekday and weekend picks and expandable sources without
     await shop.locator('summary').press('Enter');
     await expect(shop.getByText('價格出處')).toBeVisible();
     await expect(page.getByRole('link', { name: '查看 Savvy App 測試名單 →' })).toHaveAttribute('href', '/#app');
-    await expect(page.getByRole('navigation', { name: '同線延伸推薦' }).getByRole('link', { name: '中山站美食 →' })).toBeVisible();
+    await expect(page.getByRole('link', { name: /查看 iOS TestFlight/ })).toHaveAttribute('href', /^https:\/\/testflight\.apple\.com\/join\//);
+    const related = page.getByRole('navigation', { name: '同線延伸推薦' });
+    await expect(related.getByRole('link', { name: '中山站美食 →' })).toHaveAttribute('href', '/metro/zhongshan');
+    await expect(related.getByRole('link', { name: '士林站美食 →' })).toHaveAttribute('href', '/metro/shilin');
+    const graph = JSON.parse(await page.locator('script[type="application/ld+json"]').innerText())['@graph'];
+    const faq = graph.find((node: { '@type': string }) => node['@type'] === 'FAQPage');
+    const visibleFaq = page.getByRole('region', { name: '常見問題' });
+    expect(faq.mainEntity).toHaveLength(3);
+    await expect(visibleFaq.locator('h3')).toHaveText(faq.mainEntity.map((item: { name: string }) => item.name));
+    await expect(visibleFaq.locator('p')).toHaveText(faq.mainEntity.map((item: { acceptedAnswer: { text: string } }) => item.acceptedAnswer.text));
+    const businesses = graph.find((node: { '@type': string }) => node['@type'] === 'ItemList').itemListElement;
+    expect(businesses).toHaveLength(5);
+    expect(businesses[0].item).toMatchObject({ '@type': 'FoodEstablishment', openingHours: 'Mo-Fr 10:00-15:00', address: { streetAddress: '台北市大同區赤峰街44巷20號1樓' } });
+    expect(businesses[1].item).not.toHaveProperty('openingHours');
+    for (const { item } of businesses) expect(item).not.toHaveProperty('priceRange');
   } finally { await context.close(); }
 });
 
@@ -92,7 +115,7 @@ test('food pages fit a narrow viewport', async ({ context }) => {
 async function expectStationContent(page: Page, station: Station) {
   await page.goto(`/metro/${station.slug}`);
   const city = station.city === 'shanghai' ? '上海' : '台北';
-  await expect(page.locator('h1')).toHaveText(`${station.station.startsWith(city) ? '' : city}${station.station}${station.station.endsWith('站') ? '' : '站'}美食攻略`);
+  await expect(page.locator('h1')).toHaveText(station.slug === 'shuanglian' ? '台北雙連站美食攻略：早餐、赤峰街午餐與甜點' : `${station.station.startsWith(city) ? '' : city}${station.station}${station.station.endsWith('站') ? '' : '站'}美食攻略`);
   await expect(page).toHaveTitle(new RegExp(`${station.station}.*美食攻略`));
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://savvy.jeezlabs.io/metro/${station.slug}`);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', new RegExp(`${station.shops.length}家店`));
@@ -151,3 +174,15 @@ async function expectStationContent(page: Page, station: Station) {
     })));
   });
 }
+
+test('Shuanglian comparison and FAQ are available as Markdown and through the public API', async ({ request }) => {
+  const markdown = await request.get('/metro/shuanglian.md');
+  expect(markdown.ok()).toBe(true);
+  expect(markdown.headers()['content-type']).toContain('text/markdown');
+  const body = await markdown.text();
+  expect(body).toContain('| 店家 | 推薦菜 | 時段 | 參考價 | 週末 | 出口／步行 |');
+  expect(body).toContain('### 週末去雙連站，哪些店有開？');
+  const response = await request.get('/api/public/content', { params: { path: '/metro/shuanglian' } });
+  expect(response.ok()).toBe(true);
+  expect((await response.json()).markdown).toBe(body);
+});

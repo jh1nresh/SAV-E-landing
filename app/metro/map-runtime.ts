@@ -280,9 +280,9 @@ export function bootMetroMap(root: HTMLElement, data: MetroData): SavvyMapApi {
       const img = list[0]?.image ? publicImage(list[0].image) : "";
       const nw = !soon && stationIsNew(storesOf(s.id), clock);
       const awaiting = !soon && !list.length && !s.updatedAt;
-      dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="${soon ? "#fff9eb" : "#fff"}" stroke="${soon ? "#8d857a" : "#2f2e23"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
+      dots += `<circle cx="${x}" cy="${y}" r="7.5" fill="var(--sakura-paper)" stroke="${soon ? "var(--sakura-muted)" : "var(--sakura-ink)"}" stroke-width="2.6" ${soon ? 'stroke-dasharray="3 3"' : ""} filter="url(#wobS)"/>`;
       const { x: lx, y: ly, anchor } = stationLabelPosition(s.mapPos);
-      caps += `<text data-lx="${lx}" data-ly="${ly}" x="${lx}" y="${ly}" text-anchor="${anchor}" font-family="Iansui" font-size="15" fill="${soon ? "#8d857a" : "#2f2e23"}" stroke="#fff9eb" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
+      caps += `<text data-lx="${lx}" data-ly="${ly}" x="${lx}" y="${ly}" text-anchor="${anchor}" font-family="Iansui" font-size="15" fill="${soon ? "var(--sakura-muted)" : "var(--sakura-ink)"}" stroke="var(--sakura-paper)" stroke-width="4.5" paint-order="stroke" stroke-linejoin="round">${escapeHtml(s.name)}</text>`;
       const el = document.createElement("button");
       el.type = "button";
       el.className = `pin ${soon ? "soon " : ""}${nw ? "new " : ""}${!soon && !img ? "nophoto" : ""}${!soon && !list.length ? " content-only" : ""}`;

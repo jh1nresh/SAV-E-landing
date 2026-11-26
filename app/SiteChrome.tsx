@@ -6,18 +6,14 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useId,
   useState,
   type ReactNode,
 } from "react";
 import CitySwitch from "./CitySwitch";
 import {
-  SITE_DESCRIPTION_EN,
-  SITE_DESCRIPTION_ZH,
-  SITE_TITLE_EN,
-  SITE_TITLE_ZH,
+  METRO_MAP_COPY,
   SUPPORT_EMAIL,
-  TESTFLIGHT_URL,
+  isMetroMapPath,
   hrefWithLang,
   parseSiteLang,
   type SiteLang,
@@ -39,10 +35,11 @@ export type CityId = "taipei" | "shanghai";
 const CityContext = createContext<{ city: CityId; setCity: (city: CityId) => void }>({ city: "taipei", setCity: () => undefined });
 export function useSiteCity() { return useContext(CityContext); }
 
-function applyHomeMeta(lang: SiteLang) {
-  if (window.location.pathname !== "/discover") return;
-  const title = lang === "en" ? SITE_TITLE_EN : SITE_TITLE_ZH;
-  const description = lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION_ZH;
+function applyMapMeta(lang: SiteLang) {
+  const { pathname, search } = window.location;
+  if (!isMetroMapPath(pathname)) return;
+  const city = new URLSearchParams(search).get("city");
+  const { title, description } = METRO_MAP_COPY[city === "shanghai" || (!city && pathname === "/shanghai") ? "shanghai" : "taipei"][lang];
   if (document.title !== title) document.title = title;
   // Next can render duplicate metadata during hydration. Keep the nodes
   // attached so React can reconcile them, with only one description exposed.
@@ -63,7 +60,7 @@ function persistLang(lang: SiteLang) {
   if (lang === "en") url.searchParams.set("lang", "en");
   else url.searchParams.delete("lang");
   window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-  applyHomeMeta(lang);
+  applyMapMeta(lang);
 }
 
 export function SiteChrome({ children }: { children: ReactNode }) {
@@ -85,6 +82,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
     url.hash = "";
     window.history.pushState(null, "", `/discover${url.search}`);
     setCityState(next);
+    applyMapMeta(parseSiteLang(url.searchParams.get("lang")));
   }, []);
   const [lang, setLangState] = useState<SiteLang>("zh-Hant");
 
@@ -94,13 +92,13 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       const next = read();
       setLangState(next);
       document.documentElement.lang = next;
-      applyHomeMeta(next);
+      applyMapMeta(next);
     };
     sync();
     window.addEventListener("popstate", sync);
     // Next applies the prerendered Chinese metadata after this effect. Keep the
     // title and description on the language the URL already chose.
-    const observer = new MutationObserver(() => applyHomeMeta(read()));
+    const observer = new MutationObserver(() => applyMapMeta(read()));
     observer.observe(document.head, { subtree: true, childList: true, attributes: true, characterData: true });
     return () => { observer.disconnect(); window.removeEventListener("popstate", sync); };
   }, []);
@@ -110,22 +108,32 @@ export function SiteChrome({ children }: { children: ReactNode }) {
     persistLang(next);
   }, []);
 
+  useEffect(() => {
+    const page = document.documentElement;
+    if (!page.hasAttribute("data-atlas-metro")) return;
+    const syncWorkspace = (event: StorageEvent) => {
+      if (event.key === "savvy.workspace.locale") setLang(parseSiteLang(event.newValue));
+      if (event.key === "savvy.workspace.theme") page.dataset.theme = event.newValue === "dark" ? "dark" : "light";
+    };
+    window.addEventListener("storage", syncWorkspace);
+    return () => window.removeEventListener("storage", syncWorkspace);
+  }, [setLang]);
+
   return (
     <LangContext.Provider value={{ lang, setLang }}>
       <CityContext.Provider value={{ city, setCity }}>
         <SiteNav />
         {children}
-        <SiteFooter />
+        {!isMetroMapPath(pathname) && <SiteFooter />}
       </CityContext.Provider>
     </LangContext.Provider>
   );
 }
 
 function SiteNav() {
-  const { lang, setLang } = useSiteLang();
+  const { lang } = useSiteLang();
   const pathname = usePathname();
-  const { city, setCity } = useSiteCity();
-  const hasCity = pathname === "/shanghai" || pathname === "/discover";
+  if (isMetroMapPath(pathname)) return <MetroMapNav />;
   const workspace = [
     ["trips", "我的行程", "My trips"],
     ["atlas", "城市圖鑑", "Atlas"],
@@ -138,49 +146,66 @@ function SiteNav() {
   ));
 
   return (
-    <nav className={hasCity ? "top has-city" : "top editorial-nav"} aria-label={lang === "en" ? "Main navigation" : "主導覽"}>
+    <nav className="top editorial-nav" aria-label={lang === "en" ? "Main navigation" : "主導覽"}>
       <a className="brand" href={hrefWithLang("/", lang)}>
         <img src="/icon.png" alt="" width={44} height={44} />
         Savvy
       </a>
-      {hasCity ? <CitySwitch active={city} lang={lang} onSelect={setCity} /> : (
-        <div className="editorial-tabs">{workspaceLinks}</div>
-      )}
-      <div className="chips" role="group" aria-label="Language">
-        <button
-          type="button"
-          className="chip"
-          data-l="zh-Hant"
-          aria-pressed={lang === "zh-Hant"}
-          onClick={() => setLang("zh-Hant")}
-        >
-          中文
-        </button>
-        <button
-          type="button"
-          className="chip"
-          data-l="en"
-          aria-pressed={lang === "en"}
-          onClick={() => setLang("en")}
-        >
-          EN
-        </button>
-      </div>
-      {!hasCity && (
-        <details className="mobile-nav" onKeyDown={event => {
-          const menu = event.currentTarget;
-          if (event.key !== "Escape" || !menu.open) return;
-          menu.open = false;
-          menu.querySelector("summary")?.focus();
-        }}>
-          <summary aria-label={lang === "en" ? "Menu" : "選單"} />
-          <div className="mobile-nav-links" onClick={event => {
-            if (!(event.target instanceof HTMLAnchorElement)) return;
-            event.currentTarget.closest("details")?.removeAttribute("open");
-          }}>{workspaceLinks}</div>
-        </details>
-      )}
+      <div className="editorial-tabs">{workspaceLinks}</div>
+      <LanguageChips />
+      <details className="mobile-nav" onKeyDown={event => {
+        const menu = event.currentTarget;
+        if (event.key !== "Escape" || !menu.open) return;
+        menu.open = false;
+        menu.querySelector("summary")?.focus();
+      }}>
+        <summary aria-label={lang === "en" ? "Menu" : "選單"} />
+        <div className="mobile-nav-links" onClick={event => {
+          if (!(event.target instanceof HTMLAnchorElement)) return;
+          event.currentTarget.closest("details")?.removeAttribute("open");
+        }}>{workspaceLinks}</div>
+      </details>
     </nav>
+  );
+}
+
+function MetroMapNav() {
+  const { lang } = useSiteLang();
+  const { city, setCity } = useSiteCity();
+  return (
+    <nav className="top metro-map-nav has-city" aria-label={lang === "en" ? "Metro map navigation" : "捷運地圖導覽"}>
+      <a className="metro-map-back" href={city === "shanghai" ? "/metro#shanghai" : "/metro#taipei"}>
+        {lang === "en" ? "← Food guides" : "← 捷運美食"}
+      </a>
+      <CitySwitch active={city} lang={lang} onSelect={setCity} />
+      <LanguageChips />
+    </nav>
+  );
+}
+
+function LanguageChips() {
+  const { lang, setLang } = useSiteLang();
+  return (
+    <div className="chips" role="group" aria-label="Language">
+      <button
+        type="button"
+        className="chip"
+        data-l="zh-Hant"
+        aria-pressed={lang === "zh-Hant"}
+        onClick={() => setLang("zh-Hant")}
+      >
+        中文
+      </button>
+      <button
+        type="button"
+        className="chip"
+        data-l="en"
+        aria-pressed={lang === "en"}
+        onClick={() => setLang("en")}
+      >
+        EN
+      </button>
+    </div>
   );
 }
 
@@ -230,42 +255,5 @@ function SiteFooter() {
         </a>
       </p>
     </footer>
-  );
-}
-
-const DOWNLOAD_LABELS = {
-  "zh-Hant": "在 App Store 下載",
-  en: "Download on the App Store",
-} as const;
-
-export function AppStoreBadge() {
-  const { lang } = useSiteLang();
-  const noteId = useId();
-  return (
-    <a
-      className="download-entry badge"
-      href={TESTFLIGHT_URL}
-      aria-label={DOWNLOAD_LABELS[lang]}
-      aria-describedby={noteId}
-      data-swap="appstore-url"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <img
-        className="zh"
-        src="/assets/appstore-badge-zh.svg"
-        alt={DOWNLOAD_LABELS["zh-Hant"]}
-        data-testid="appstore-badge-zh"
-      />
-      <img
-        className="en"
-        src="/assets/appstore-badge-en.svg"
-        alt={DOWNLOAD_LABELS.en}
-        data-testid="appstore-badge-en"
-      />
-      <p className="download-note" id={noteId}>
-        {lang === "en" ? "iOS beta · Install with TestFlight" : "iOS 測試版 · 透過 TestFlight 安裝"}
-      </p>
-    </a>
   );
 }

@@ -154,3 +154,98 @@ test("English signup labels and confirmation use early access", async ({ page })
   await dialog.getByRole("button", { name: "Get early access" }).click();
   await expect(dialog.getByRole("status")).toContainText("We’ll email you when early access opens.");
 });
+
+for (const width of [320, 1280]) {
+  test(`Atlas switches between city scenes and metro food at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: width === 320 ? 667 : 800 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/#atlas");
+    const views = page.locator(".atlas-ws-views");
+    await expect(views.getByRole("link", { name: "城市", exact: true })).toHaveAttribute("aria-current", "page");
+    await expect(page.locator(".atlas-ws-metro-frame")).toHaveCount(0);
+    await page.locator(".atlas-ws-tile").filter({ hasText: "台北" }).click();
+
+    await views.getByRole("link", { name: "捷運美食" }).press("Enter");
+    await expect(page).toHaveURL(/#atlas\?view=metro$/);
+    await expect(views.getByRole("link", { name: "捷運美食" })).toHaveAttribute("aria-current", "page");
+    await expect(page.locator(".atlas-ws-frame")).toHaveCount(0);
+
+    const map = page.frameLocator(".atlas-ws-metro-frame");
+    const tiles = page.locator(".atlas-ws-index .atlas-ws-tile");
+    const cityIndex = (await page.locator(".atlas-ws-metro-mode .atlas-ws-index").boundingBox())!;
+    const metro = (await page.locator(".atlas-ws-metro").boundingBox())!;
+    if (width === 320) expect(cityIndex.y).toBeLessThan(metro.y);
+    else expect(cityIndex.x).toBeGreaterThan(metro.x);
+    await expect(tiles.filter({ hasText: "台北" })).toHaveAttribute("aria-pressed", "true");
+    await expect(map.getByTestId("metro-map")).toBeVisible();
+    await expect(map.locator(".hero-search-col")).toHaveAttribute("data-city", "taipei");
+    await expect(map.getByTestId("city-switch")).toBeHidden();
+    await expect(map.locator(".metro-map-back")).toBeHidden();
+    await expect(map.locator(".mapcard")).toHaveCSS("border-top-color", "rgb(29, 26, 74)");
+    await expect(map.locator(".map-paper, .mapcard > .tape")).toHaveCount(0);
+    expect(await map.locator("html").evaluate(el => el.scrollHeight - el.clientHeight)).toBeLessThanOrEqual(1);
+    await expect(page.locator(".atlas-ws-metro-guides")).toHaveAttribute("href", "/metro");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+
+    await page.locator("#workspace-language").selectOption("en");
+    await expect(map.locator("html")).toHaveAttribute("lang", "en");
+    await expect(views.getByRole("link", { name: "Metro food" })).toBeVisible();
+    await page.locator("sakuga-toggle.theme-switch").getByRole("switch").click();
+    await expect(map.locator("body")).toHaveCSS("background-color", "rgb(24, 20, 36)");
+    await page.locator(".atlas-ws-index").getByRole("button", { name: "Tokyo", exact: true }).click();
+    await expect(page.getByText("There are no metro food guides for this city yet.")).toBeVisible();
+    await expect(page.locator(".atlas-ws-metro-frame")).toHaveCount(0);
+    await tiles.filter({ hasText: "Shanghai" }).click();
+    await expect(tiles.filter({ hasText: "Shanghai" })).toHaveAttribute("aria-pressed", "true");
+    await expect(map.locator(".hero-search-col")).toHaveAttribute("data-city", "shanghai");
+    await expect(map.locator("html")).toHaveAttribute("lang", "en");
+    await expect(map.getByTestId("metro-map")).toBeVisible();
+    expect(await map.locator("html").evaluate(el => el.scrollHeight - el.clientHeight)).toBeLessThanOrEqual(1);
+    await map.locator("[data-testid=metro-pin-shanghai-yuyuan] .hit").click();
+    await map.getByTestId("metro-food-link-shanghai-yuyuan").click();
+    await expect(page).toHaveURL(/\/metro\/shanghai-yuyuan$/);
+    await page.goBack();
+    await expect(page).toHaveURL(/#atlas\?view=metro$/);
+    await expect(page.locator(".atlas-ws-metro-frame")).toBeVisible();
+
+    await page.locator("#workspace-language").selectOption("zh-Hant");
+    await views.getByRole("link", { name: "城市", exact: true }).click();
+    await expect(page).toHaveURL(/#atlas$/);
+    await expect(page.locator(".atlas-ws-metro-frame")).toHaveCount(0);
+    await expect(page.locator(".atlas-ws-tile").filter({ hasText: "上海" })).toHaveAttribute("aria-pressed", "true");
+  });
+}
+
+test("an English deep link opens Atlas directly in the English metro view", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 667 });
+  await page.goto("/?lang=en#atlas?view=metro");
+  const frame = page.frameLocator(".atlas-ws-metro-frame");
+  await expect(frame.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.getByRole("navigation", { name: "Atlas views" }).getByRole("link", { name: "Metro food" }))
+    .toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("link", { name: "Browse all metro food guides →" })).toHaveAttribute("href", "/metro");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
+});
+
+test("Sakuga Atlas tabs animate in place and retain keyboard focus", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/#atlas");
+  const views = page.locator(".atlas-ws-views");
+  const rail = views.locator("sakuga-tabs");
+  await expect(rail.locator(".seams span")).toHaveCount(2);
+  const tube = rail.locator('[part="indicator"]');
+  await expect(tube).toBeVisible();
+  await rail.evaluate(el => el.setAttribute("data-test-original", ""));
+  const start = await tube.evaluate(el => getComputedStyle(el).transform);
+  const metro = views.getByRole("link", { name: "捷運美食" });
+  await metro.press("Enter");
+  await expect(page).toHaveURL(/#atlas\?view=metro$/);
+  await expect(rail).toHaveAttribute("data-test-original", "");
+  await expect(metro).toBeFocused();
+  await expect(metro).toHaveAttribute("aria-current", "page");
+  await expect.poll(() => tube.evaluate(el => getComputedStyle(el).transform)).not.toBe(start);
+  await expect(metro).toHaveAttribute("data-raised", "");
+  await page.goBack();
+  await expect(views.getByRole("link", { name: "城市", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(page.locator(".atlas-ws-metro-frame")).toHaveCount(0);
+});

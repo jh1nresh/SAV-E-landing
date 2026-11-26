@@ -1,5 +1,5 @@
 import type { FoodStation } from "./metro";
-import { guideDescription, guideStationName } from "./metro-guide.mjs";
+import { guideDescription, guideStationName, shopAnchor } from "./metro-guide.mjs";
 
 const taipeiLineNames: Record<string, string> = {
   R: "紅線", G: "綠線", BL: "藍線", O: "橘線", BR: "文湖線",
@@ -25,6 +25,9 @@ export function stationLines(station: FoodStation) {
 }
 
 export function relatedStations(station: FoodStation, stations: FoodStation[]) {
+  if (station.slug === "shuanglian") {
+    return ["zhongshan", "shilin"].flatMap(slug => stations.filter(other => other.slug === slug));
+  }
   const lines = stationLines(station);
   return stations
     .filter(other => other.city === station.city && other.slug !== station.slug && stationLines(other).some(line => lines.includes(line)))
@@ -36,7 +39,7 @@ export function relatedStations(station: FoodStation, stations: FoodStation[]) {
 const choices: Record<string, { intro: string; meals?: string[]; scenes?: string[] }> = {
   xiaojudan: { intro: "冷天出站想喝熱湯，可以先看藥燉排骨。想吃得飽一點，選牛肉麵。人多、想分著吃，再看羊肉鍋。", scenes: ["聚餐"] },
   "raohe-songshan": { intro: "從松山站 5 號出口進饒河夜市。想吃鹹的先挑蛋餅或腸粉，最後再用冰火菠蘿收尾。", meals: ["晚餐"], scenes: ["小吃"] },
-  shuanglian: { intro: "平日想吃一碗麵，15:00 前去阿田麵。星期天散步，可留一站吃雙連圓仔湯的燒麻糬，或到赤峰街吃貨室的麵茶刨冰。", meals: ["早餐", "午餐", "下午茶"], scenes: ["一人餐", "銅板小吃", "甜點"] },
+  shuanglian: { intro: "從雙連站出來，早上先找 1 號出口旁的蚵仔麵線，平日午餐可以去赤峰街吃陽春麵。這篇整理 5 家小吃與甜點，週日下午最容易排的是燒麻糬和麵茶刨冰。", meals: ["早餐", "午餐", "下午茶"], scenes: ["一人餐", "銅板小吃", "甜點"] },
   dongmen: { intro: "在永康街先決定要坐下吃一餐，還是拿著走。牛肉麵適合當正餐，天津蔥抓餅只做外帶，想吃冰再留時間給思慕昔。", meals: ["午餐", "下午茶", "晚餐"], scenes: ["小吃", "甜點"] },
   houshanpi: { intro: "早上先看永吉涼麵，午餐想吃熱的可挑珍好鍋貼。鍋貼店下午有空檔，趕時間時先對一下營業時段。", meals: ["早餐", "午餐"], scenes: ["一人餐", "銅板小吃"] },
   shilin: { intro: "早上去買手工蛋餅。傍晚再選藥燉排骨、生煎包或小碗涼麵。海友的筆記營業到午夜，想晚一點吃熱湯可以先看它。", meals: ["早餐", "晚餐", "宵夜"], scenes: ["一人餐", "銅板小吃"] },
@@ -78,6 +81,41 @@ export const shuanglianTips: Record<string, { tag: string; note: string; source?
   yuanzai: { tag: "週二到週日 · 燒麻糬", note: "想吃熱的甜點就選燒麻糬。店家每週一公休，逢國定假日正常營業，特殊節日另看公告。", source: "https://www.sweetriceball.tw/" },
   huoshi: { tag: "下午甜點 · 赤峰街", note: "想吃冰可以把這站排在午餐後，先從麵茶牛乳雙拼看起。原筆記引用的週末時段較早開門，去之前仍要確認當日時間。" },
 };
+
+const shuanglianChoices: Record<string, { meal: string; weekend: string }> = {
+  atian: { meal: "平日午餐", weekend: "六、日公休" },
+  oyster: { meal: "早餐、午餐", weekend: "六開／日休（2025-10 影片）" },
+  zinaigu: { meal: "點心", weekend: "六開／日休（地圖時段）" },
+  yuanzai: { meal: "下午茶、晚間甜點", weekend: "六、日 11:00–21:00（店家公告）" },
+  huoshi: { meal: "下午茶、晚間甜點", weekend: "六、日 12:30–21:30（2026-07 報導）" },
+};
+
+export const shuanglianComparisonHeaders = ["店家", "推薦菜", "時段", "參考價", "週末", "出口／步行"];
+export function shuanglianComparison(station: FoodStation) {
+  return station.shops.map((shop, index) => {
+    const choice = shop.key ? shuanglianChoices[shop.key] : undefined;
+    return {
+      name: shop.name ?? "店家",
+      anchor: shopAnchor(shop, index),
+      cells: [shop.key === "oyster" ? "蚵仔麵線" : shop.dish ?? "—", choice?.meal ?? "—", shop.price ?? "—", choice?.weekend ?? "—", shop.exit_walk ?? "—"],
+    };
+  });
+}
+
+export const shuanglianFaq = [
+  {
+    question: "雙連站早上可以吃什麼？",
+    answer: "1 號出口旁的雙連蚵仔麵線，2025 年 10 月影片記錄為 07:30 開門。赤峰商圈列阿田麵平日 10:00 開門，週六的滋奶谷菓子燒則可參考地圖上的 09:00。清早出發前請再確認。",
+  },
+  {
+    question: "週末去雙連站，哪些店有開？",
+    answer: "阿田麵週六、日公休。雙連蚵仔麵線和滋奶谷菓子燒的筆記是週六開、週日休。週日下午可看雙連圓仔湯與貨室甜品，前者依店家公告，後者參考 2026 年 7 月報導。",
+  },
+  {
+    question: "雙連站半日美食路線怎麼排？",
+    answer: "平日中午從 1 號出口走到阿田麵，再沿赤峰街去貨室甜品。週六早上可以從 1 號出口的麵線出發，走到 2 號出口附近買紅豆餅。星期天下午可從民生西路的雙連圓仔湯走到赤峰街吃冰。",
+  },
+];
 
 export const shuanglianPlans = [
   { when: "平日午餐", parts: ["從 1 號出口走去", { name: "阿田麵", anchor: "shop-atian" }, "，15:00 前到。吃完再沿赤峰街走到", { name: "貨室甜品", anchor: "shop-huoshi" }, "。"] },

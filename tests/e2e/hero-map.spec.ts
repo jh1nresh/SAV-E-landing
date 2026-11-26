@@ -190,14 +190,14 @@ test.describe("hero map interactions", () => {
     await expect(page.locator("#card .fc .ph")).toHaveClass(/img-miss/);
   });
 
-  test("D-6 no-photo pin uses the coral fill", async ({ page }) => {
+  test("D-6 no-photo pin uses the Sakura accent fill", async ({ page }) => {
     await page.route("**/metro/images/**", (route) => route.abort());
     await page.goto("/discover");
     await waitForMap(page);
     const pin = page.locator("[data-testid=metro-pin-houshanpi]");
     await expect(pin).toHaveClass(/nophoto/, { timeout: 8_000 });
     const bg = await pin.locator(".ph").evaluate((el) => getComputedStyle(el).backgroundColor);
-    expect(bg).toBe("rgb(242, 107, 74)");
+    expect(bg).toBe("rgb(143, 141, 247)");
   });
 
   test("B-5 compact cards preserve published price wording", async ({ page }) => {

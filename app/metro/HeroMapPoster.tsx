@@ -2,7 +2,6 @@ import { cityMapSvg, cityMapName } from "./city-map";
 import { stationLabelPosition, layoutPosterPhotos, posterLabelBox } from "./map-label";
 import { type MetroData } from "../../lib/metro";
 import { useSiteLang } from "../SiteChrome";
-import { MapPaper } from "./MapPaper";
 import { SVG_DEFS } from "./map-svg";
 
 // Keep the existing artwork, but isolate its SVG references from the live map.
@@ -28,8 +27,7 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
       <div aria-hidden="true">
         <div dangerouslySetInnerHTML={{ __html: posterSvg(SVG_DEFS) }} />
         <div className="mapcard">
-          <MapPaper id="poster-map-paper" />
-          <span className="tape a" />
+
           <div className="vp poster-vp" data-testid="metro-map-skeleton">
             <div className="poster-world">
               <div dangerouslySetInnerHTML={{ __html: posterSvg(cityMapSvg(data)) }} />
@@ -42,16 +40,16 @@ export function HeroMapPoster({ data }: { data: MetroData }) {
                   const image = data.stores.find(store => store.stationId === s.id)?.image;
                   const soon = s.status === "coming_soon";
                   return <g key={s.id} data-testid={`metro-poster-marker-${s.id}`} data-station={s.name}>
-                    <circle cx={x} cy={y} r="7.5" fill="#fff9eb" stroke="#2f2e23" strokeWidth="2.6" />
-                    <text data-testid={`metro-poster-label-${s.id}`} x={label.x} y={label.y} textAnchor={label.anchor} fontFamily="Iansui" fontSize="15" fill="#2f2e23" stroke="#fff9eb" strokeWidth="4.5" paintOrder="stroke">{s.name}</text>
+                    <circle cx={x} cy={y} r="7.5" fill="var(--sakura-paper)" stroke="var(--sakura-edge)" strokeWidth="2.6" />
+                    <text data-testid={`metro-poster-label-${s.id}`} x={label.x} y={label.y} textAnchor={label.anchor} fontFamily="Iansui" fontSize="15" fill="var(--sakura-ink)" stroke="var(--sakura-paper)" strokeWidth="4.5" paintOrder="stroke">{s.name}</text>
                     {photoMark && (parked
-                      ? <path d={`M${x - 7} ${y - 13} L${x} ${y} L${x + 7} ${y - 13}`} fill="#fff9eb" stroke="#2f2e23" strokeWidth="2" />
-                      : <line x1={photoMark.x} y1={photoMark.y} x2={x} y2={y} stroke="#2f2e23" strokeWidth="1.6" />)}
-                    {photoMark && <circle data-testid={`metro-poster-pin-${s.id}`} cx={photoMark.x} cy={photoMark.y} r="25" fill="#fff9eb" stroke={soon ? "#8d857a" : "#2f2e23"} strokeWidth="2" />}
+                      ? <path d={`M${x - 7} ${y - 13} L${x} ${y} L${x + 7} ${y - 13}`} fill="var(--sakura-paper)" stroke="var(--sakura-edge)" strokeWidth="2" />
+                      : <line x1={photoMark.x} y1={photoMark.y} x2={x} y2={y} stroke="var(--sakura-edge)" strokeWidth="1.6" />)}
+                    {photoMark && <rect data-testid={`metro-poster-pin-${s.id}`} x={photoMark.x - 25} y={photoMark.y - 25} width="50" height="50" rx="12" fill="var(--sakura-paper)" stroke={soon ? "var(--sakura-muted)" : "var(--sakura-edge)"} strokeWidth="2" />}
                     {photoMark && (image ? <>
-                      <clipPath id={`poster-photo-${s.id}`}><circle cx={photoMark.x} cy={photoMark.y} r="21" /></clipPath>
+                      <clipPath id={`poster-photo-${s.id}`}><rect x={photoMark.x - 21} y={photoMark.y - 21} width="42" height="42" rx="9" /></clipPath>
                       <image href={image} x={photoMark.x - 21} y={photoMark.y - 21} width="42" height="42" clipPath={`url(#poster-photo-${s.id})`} />
-                    </> : <text x={photoMark.x} y={photoMark.y + 7} textAnchor="middle" fill="#8d857a" fontSize="24">?</text>)}
+                    </> : <text x={photoMark.x} y={photoMark.y + 7} textAnchor="middle" fill="var(--sakura-muted)" fontSize="24">?</text>)}
                   </g>;
                 })}
               </svg>

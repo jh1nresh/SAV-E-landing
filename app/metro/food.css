@@ -1,6 +1,4 @@
-.metro-food { font-family: ui-rounded, -apple-system, 'PingFang TC', sans-serif; }
-.metro-food .guide-title { font-family: inherit; }
-.metro-food .guide-card { background: var(--paper); border: 2px solid var(--ink); border-radius: 18px 12px 20px 11px; box-shadow: 3px 4px 0 var(--kraft); overflow: hidden; }
+.metro-food .guide-card { background: var(--paper); border: 2px solid var(--sakura-edge); border-radius: 15px; box-shadow: 3px 4px 0 var(--sakura-shadow); overflow: hidden; }
 .food-cover { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; margin-bottom: 16px; }
 .food-shops { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .food-row { margin: 14px 0; overflow-wrap: anywhere; }
@@ -55,3 +53,18 @@
 .food-filters label { display: grid; gap: 3px; min-width: 0; }
 .food-filters :is(select, button) { min-height: 44px; border: 1px solid var(--sakura-edge); border-radius: 7px; padding: 5px 10px; color: var(--sakura-ink); background: var(--sakura-paper); font: inherit; }
 .food-filters p { margin-block: 10px 0; }
+
+.food-comparison { padding-block-start: 0; }
+.food-comparison table { min-inline-size: 45rem; table-layout: auto; }
+.food-comparison th:first-child { width: auto; }
+.food-comparison th :any-link {
+  display: inline-block;
+  padding: .35rem 0;
+  min-block-size: 44px;
+  text-decoration: underline;
+}
+
+.food-table-hint { display: none; }
+@media (max-width: 50rem) {
+  .food-table-hint { display: block; margin-block: 0 .6rem; }
+}

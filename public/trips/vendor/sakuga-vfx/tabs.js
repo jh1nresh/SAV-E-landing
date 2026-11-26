@@ -21,7 +21,18 @@ class SakugaTabs extends fx.Base {
   `;
 
   render() {
-    return '<div class="tabs" part="tabs"><div class="seams" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div><span class="ind" part="indicator" aria-hidden="true"></span><slot></slot></div>';
+    const seams = '<span></span>'.repeat(this.querySelectorAll('a').length);
+    return `<div class="tabs" part="tabs"><div class="seams" aria-hidden="true">${seams}</div><span class="ind" part="indicator" aria-hidden="true"></span><slot></slot></div>`;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.track) this.resize.observe(this.track);
+  }
+
+  disconnectedCallback() {
+    this.resize?.disconnect();
+    super.disconnectedCallback();
   }
 
   get selected() { return [...this.querySelectorAll('a')].findIndex(link => link.hasAttribute('aria-current')); }
@@ -78,7 +89,7 @@ class SakugaTabs extends fx.Base {
       this.go(index, false);
     }));
     this.go(Math.max(0, this.selected), true);
-    new ResizeObserver(() => this.go(this.selected, true)).observe(this.track);
+    this.resize = new ResizeObserver(() => this.go(this.selected, true));
   }
 
   frame(dt) {

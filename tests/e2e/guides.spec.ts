@@ -53,8 +53,10 @@ test("guide links, keyboard navigation and sitemap use only public canonical pag
   await page.getByRole("link", { name: "從一則分享開始", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#step-1$/);
-  const home = await request.get("/discover");
-  for (const path of paths) expect(await home.text()).toContain(`href="${path}"`);
+  const home = await request.get("/");
+  expect(await home.text()).toContain(`href="${root}"`);
+  const index = await request.get(root);
+  for (const path of paths.filter(path => path !== root)) expect(await index.text()).toContain(`href="${path}"`);
   const sitemap = await request.get("/sitemap.xml");
   expect(sitemap.status()).toBe(200);
   const urls = [...(await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]).sort();
