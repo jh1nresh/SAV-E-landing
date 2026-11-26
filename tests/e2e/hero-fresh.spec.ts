@@ -57,7 +57,8 @@ for (const width of [390, 1280]) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
       const overflow = await page.locator('#card .fc h4, #card dd').evaluateAll((els) => els.some((el) => el.scrollWidth > el.clientWidth + 1));
       expect(overflow).toBeFalsy();
-      await page.screenshot({ path:testInfo.outputPath(`fresh-${width}-${clock}.png`), fullPage:true });
+      // Capture the map under test, not the long station directory below it.
+      await page.locator('.hero-search-col').screenshot({ path:testInfo.outputPath(`fresh-${width}-${clock}.png`) });
       await page.evaluate(() => window.__savvyMap!.closeCard({focus:false}));
       await page.waitForFunction(() => window.__savvyMap!.state().showing === null && !window.__savvyMap!.state().closing);
     });
