@@ -10,6 +10,8 @@
 捷運美食|Metro food
 圖鑑檢視|Atlas views
 城市|Cities
+Savvy 美食地圖收藏 App｜把想去的地方存成地圖|Savvy saved-place app — Keep food and travel finds on your map
+Savvy 美食地圖收藏 App|Savvy saved-place app
 捷運美食地圖|Metro food map
 這座城市目前沒有捷運美食攻略。|There are no metro food guides for this city yet.
 查看全部捷運美食攻略 →|Browse all metro food guides →

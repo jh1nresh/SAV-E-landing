@@ -66,9 +66,9 @@ function metroMapMarkdown(city: "taipei" | "shanghai") {
 
 export function markdownFor(path: string): string | null {
   path = canonicalPostPath(path);
-  if (path === "/") return `# Savvy 美食地圖與旅行攻略
+  if (path === "/") return `# Savvy 美食地圖收藏 App
 
-找下一站要吃什麼、去哪裡走走。Savvy iOS App 可以儲存社群連結、確認地點，並把想去的地方排進行程。
+Savvy 是 iOS 美食地圖收藏 App。儲存社群連結、確認地點，並把想去的地方排進行程。
 
 我的行程、城市圖鑑、收藏與遊記是瀏覽器中的工作區。攻略與公開貼文可以無須登入直接閱讀。公開的店家清單與示例行程不代表任何人的到訪紀錄。
 

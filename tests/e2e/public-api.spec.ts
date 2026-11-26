@@ -5,8 +5,8 @@ test("official Savvy API resources are discoverable and describe live read opera
   expect(html).toContain('rel="service-desc" href="/openapi.json"');
   expect(html).toContain('href="/docs">Savvy API</a>');
   expect(html).toContain('https://github.com/jh1nresh/SAV-E-landing');
-  expect(html).toContain('"keywords":"美食地圖, 旅行攻略, place memory"');
-  expect(html).toContain("<h1>Savvy 美食地圖與旅行攻略</h1>");
+  expect(html).toContain('"keywords":"美食地圖收藏 App, 美食地圖, 旅行攻略, place memory"');
+  expect(html).toContain("<h1>Savvy 美食地圖收藏 App</h1>");
   for (const path of ["/docs", "/llms.txt", "/docs.md"]) {
     const doc = await request.get(path);
     expect(doc.ok(), path).toBe(true);

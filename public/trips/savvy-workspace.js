@@ -353,7 +353,7 @@
   function aboutApp() {
     root.innerHTML = `<article class="app-intro">
       <div class="app-intro-copy">
-        <div class="app-intro-brand"><img src="/trips/assets/savvy-sakura-violet.png" width="40" height="40" alt="">Savvy App</div>
+        <div class="app-intro-brand"><img src="/trips/assets/savvy-sakura-violet.png" width="40" height="40" alt="">Savvy 美食地圖收藏 App</div>
         <h1>把想去的地方，排進下一趟行程。</h1>
         <p>滑到一家想吃的店？把貼文連結分享給 Savvy，確認是哪一家，再存到自己的地圖。出門前，把想去的幾站排成行程。</p>
         <span class="waitlist-trigger">
@@ -407,7 +407,9 @@
     } else {
       links.forEach(updateCurrent);
     }
-    document.title=tabs[active]+' · Savvy';
+    document.title = active === 'trips' || active === 'app'
+      ? 'Savvy 美食地圖收藏 App｜把想去的地方存成地圖'
+      : tabs[active]+' · Savvy';
     if(section==='atlas') {
       window.renderSavvyAtlas(root,api);
       return;

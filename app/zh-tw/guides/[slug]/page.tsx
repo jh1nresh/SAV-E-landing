@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { TESTFLIGHT_URL } from "../../../site";
-import { GUIDE_ROOT, guideMetadata, guidePath, guides } from "../content";
+import { GUIDE_ROOT, SITE_ORIGIN, guideMetadata, guidePath, guides } from "../content";
 import "../guides.css";
+import { organizingGuideSchema, serializeGuideSchema } from "../../../../lib/organizing-guide-schema.mjs";
 
 type Props = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
@@ -21,6 +22,7 @@ export default async function GuidePage({ params }: Props) {
   if (!guide) notFound();
   return (
     <main className="guide-shell guide-article" lang="zh-Hant">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeGuideSchema(organizingGuideSchema(guide, SITE_ORIGIN)) }} />
       <a className="guide-back" href={GUIDE_ROOT}>← 收藏整理指南</a>
       <article>
         <header className="guide-header">
@@ -39,7 +41,7 @@ export default async function GuidePage({ params }: Props) {
             <h2>{section.heading}</h2>
             {section.blocks.map((block, blockIndex) => {
               const key = `${index}-${blockIndex}`;
-              if (block.type === "steps" && "items" in block) return <ol key={key}>{block.items?.map((item) => <li key={item}>{item}</li>)}</ol>;
+              if (block.type === "steps" && "items" in block) return <ol key={key}>{block.items?.map((item, itemIndex) => <li id={`instruction-${index}-${blockIndex}-${itemIndex}`} key={item}>{item}</li>)}</ol>;
               if (block.type === "question" && "text" in block) return <h3 key={key}>{block.text}</h3>;
               if (block.type === "table" && "rows" in block) return <table key={key}><caption>匯入資料與支援範圍</caption><thead><tr>{block.rows?.[0].map((cell) => <th scope="col" key={cell}>{cell}</th>)}</tr></thead><tbody>{block.rows?.slice(1).map((row) => <tr key={row[0]}><th scope="row">{row[0]}</th><td>{row[1]}</td></tr>)}</tbody></table>;
               return <p key={key}>{"text" in block ? block.text : ""}</p>;
