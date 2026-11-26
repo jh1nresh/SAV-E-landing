@@ -1,0 +1,30 @@
+:root {
+  --sakura-type: "Avenir Next", "Nunito", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  --sakura-canvas: #fff;
+  --sakura-paper: #fff;
+  --sakura-ink: #1d1a4a;
+  --sakura-muted: #574e70;
+  --sakura-line: #a49ab8;
+  --sakura-edge: #1d1a4a;
+  --sakura-wash: #eeebff;
+  --sakura-primary: #8f8df7;
+  --sakura-shadow: #b8b3ff;
+  --sakura-petal: #ffe0ed;
+  --sakura-brand: #5a4fd8;
+  --sakura-focus: #6543c5;
+}
+
+:root[data-theme="dark"] {
+  --sakura-canvas: #181424;
+  --sakura-paper: #251f36;
+  --sakura-ink: #f6efff;
+  --sakura-muted: #cac1dd;
+  --sakura-line: #736689;
+  --sakura-edge: #a791dc;
+  --sakura-wash: #392c54;
+  --sakura-primary: #a9a0ff;
+  --sakura-shadow: #4d3c76;
+  --sakura-petal: #55324e;
+  --sakura-brand: #cdc4ff;
+  --sakura-focus: #e6acff;
+}

@@ -127,14 +127,14 @@
 
 /* Sakuga palette on white surfaces, with blue offset shadows on controls. */
 :root {
-  --sakuga-ui: "Avenir Next", "Nunito", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  --sakuga-ui: var(--sakura-type);
   font-family: var(--sakuga-ui);
   line-height: 1.45;
-  --ink: #1d1a4a;
-  --muted: #574e70;
-  --line: #a49ab8;
-  --paper: #ffffff;
-  --canvas: #ffffff;
+  --ink: var(--sakura-ink);
+  --muted: var(--sakura-muted);
+  --line: var(--sakura-line);
+  --paper: var(--sakura-paper);
+  --canvas: var(--sakura-canvas);
   --reader-serif: var(--sakuga-ui);
   --green: #5a4fd8;
   --reader-ink: var(--ink);
@@ -142,36 +142,24 @@
   --reader-rule: var(--line);
   --reader-paper: var(--canvas);
   --glass-fill: var(--paper);
-  --comic-edge: #1d1a4a;
-  --comic-wash: #eeebff;
-  --comic-primary: #8f8df7;
-  --comic-shadow: #b8b3ff;
-  --comic-petal: #ffe0ed;
-  --comic-brand: #5a4fd8;
-  --comic-focus: #6543c5;
+  --comic-edge: var(--sakura-edge);
+  --comic-wash: var(--sakura-wash);
+  --comic-primary: var(--sakura-primary);
+  --comic-shadow: var(--sakura-shadow);
+  --comic-petal: var(--sakura-petal);
+  --comic-brand: var(--sakura-brand);
+  --comic-focus: var(--sakura-focus);
   --comic-press-shadow: 2px 3px 0 var(--comic-primary);
   --comic-panel-shadow: 4px 5px 0 var(--comic-shadow);
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --ink: #f6efff;
-  --muted: #cac1dd;
-  --line: #736689;
-  --paper: #251f36;
   --green: #d9c1ff;
-  --canvas: #181424;
   --dark-raised: #302742;
   --dark-selected: #40335d;
   --dark-action: #5e4190;
   --reader-paper: var(--canvas);
   --glass-fill: var(--paper);
-  --comic-edge: #a791dc;
-  --comic-wash: #392c54;
-  --comic-primary: #a9a0ff;
-  --comic-shadow: #4d3c76;
-  --comic-petal: #55324e;
-  --comic-brand: #cdc4ff;
-  --comic-focus: #e6acff;
 }
 body, body:has(.trip-dashboard) {
   background-color: var(--reader-paper);

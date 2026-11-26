@@ -85,7 +85,7 @@ test("every public sitemap page has raw HTML, canonical identity and matching Ma
   for (const [, url] of text.matchAll(/\]\((https:\/\/savvy\.jeezlabs\.io[^)]+)\)/g)) {
     const response = await request.get(new URL(url).pathname);
     expect(response.status(), url).toBe(200);
-    expect(response.headers()["content-type"], url).toContain("text/markdown");
+    expect(response.headers()["content-type"], url).toContain(new URL(url).pathname === "/openapi.json" ? "application/json" : "text/markdown");
   }
   // Fixed-format files and public images must bypass page negotiation.
   for (const path of ["/og.png", "/icon.png", "/assets/icon.png", "/metro/images/01-xiaojudan/photos/biancheng-photo.webp"]) {

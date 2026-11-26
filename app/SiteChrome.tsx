@@ -126,14 +126,25 @@ function SiteNav() {
   const pathname = usePathname();
   const { city, setCity } = useSiteCity();
   const hasCity = pathname === "/shanghai" || pathname === "/discover";
+  const workspace = [
+    ["trips", "我的行程", "My trips"],
+    ["atlas", "城市圖鑑", "Atlas"],
+    ["collection", "收藏", "Collections"],
+    ["journey", "遊記", "Journey"],
+    ["app", "App", "App"],
+  ] as const;
 
   return (
-    <nav className={hasCity ? "top has-city" : "top"}>
+    <nav className={hasCity ? "top has-city" : "top editorial-nav"} aria-label={lang === "en" ? "Main navigation" : "主導覽"}>
       <a className="brand" href={hrefWithLang("/", lang)}>
-        <img src="/assets/icon.png" alt="" width={44} height={44} />
+        <img src="/icon.png" alt="" width={44} height={44} />
         Savvy
       </a>
-      {hasCity ? <CitySwitch active={city} lang={lang} onSelect={setCity} /> : null}
+      {hasCity ? <CitySwitch active={city} lang={lang} onSelect={setCity} /> : (
+        <div className="editorial-tabs">
+          {workspace.map(([route, zh, en]) => <a key={route} href={`${hrefWithLang("/", lang)}#${route}`}>{lang === "en" ? en : zh}</a>)}
+        </div>
+      )}
       <div className="chips" role="group" aria-label="Language">
         <button
           type="button"
@@ -160,17 +171,39 @@ function SiteNav() {
 
 function SiteFooter() {
   const { lang } = useSiteLang();
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    const update = () => setDark(document.documentElement.dataset.theme === "dark");
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
+
+  function toggleTheme() {
+    const theme = dark ? "light" : "dark";
+    document.documentElement.dataset.theme = theme;
+    setDark(!dark);
+    try { localStorage.setItem("savvy.workspace.theme", theme); } catch {}
+  }
 
   return (
     <footer className="site">
+      <nav className="editorial-links" aria-label={lang === "en" ? "Savvy resources" : "Savvy 資源"}>
+        <a href="/zh-tw/travel" lang="zh-Hant">旅行攻略</a>
+        <a href="/zh-tw/posts" lang="zh-Hant">城市貼文</a>
+        <a href="/zh-tw/guides" lang="zh-Hant">收藏整理指南（繁體中文）</a>
+        <a href="/metro" lang="zh-Hant">捷運美食清單</a>
+        <a href={hrefWithLang("/privacy", lang)}>Savvy Privacy Policy</a>
+        <a href={hrefWithLang("/support", lang)}>Savvy Support</a>
+      </nav>
+      <button type="button" className="chip editorial-theme" role="switch" aria-checked={dark} onClick={toggleTheme}>
+        {lang === "en" ? "Dark mode" : "深色模式"}
+      </button>
       <a href="/about">About Savvy</a>
       <a href="/contact">Contact</a>
       <a href="/docs">Savvy API documentation</a>
       <a href="https://github.com/jh1nresh/SAV-E-landing">GitHub</a>
-      <a href="/metro" lang="zh-Hant">捷運美食清單</a>
-      <a href="/zh-tw/guides" lang="zh-Hant">收藏整理指南（繁體中文）</a>
-      <a href={hrefWithLang("/privacy", lang)}>Savvy Privacy Policy</a>
-      <a href={hrefWithLang("/support", lang)}>Savvy Support</a>
       <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
       <p>
         <a

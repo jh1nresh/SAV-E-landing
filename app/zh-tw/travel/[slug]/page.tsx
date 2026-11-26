@@ -57,13 +57,15 @@ export default async function TravelGuidePage(props: Props) {
               </p>
             ))}
             {table && (
-              <table>
-                <caption>{table.caption}</caption>
-                <thead><tr>{table.columns.map((column) => <th key={column} scope="col">{column}</th>)}</tr></thead>
-                <tbody>{table.rows.map(([name, ...cells]) => (
+              <div className="guide-table-scroll" role="region" aria-labelledby={`table-caption-${index}`} tabIndex={0}>
+                <table>
+                  <caption id={`table-caption-${index}`}>{table.caption}</caption>
+                  <thead><tr>{table.columns.map((column) => <th key={column} scope="col">{column}</th>)}</tr></thead>
+                  <tbody>{table.rows.map(([name, ...cells]) => (
                   <tr key={[name, ...cells].join("|")}><th scope="row">{name}</th>{cells.map((cell, i) => <td key={i}>{cell}</td>)}</tr>
                 ))}</tbody>
-              </table>
+                </table>
+              </div>
             )}
           </section>
         ))}

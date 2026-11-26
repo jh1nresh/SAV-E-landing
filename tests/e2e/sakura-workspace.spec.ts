@@ -6,8 +6,8 @@ test("the workspace is the crawlable homepage and links to the public library", 
   expect(home.headers()["cache-control"]).toContain("no-store");
   const html = await home.text();
   expect(html).toContain('<link rel="canonical" href="https://savvy.jeezlabs.io/">');
-  expect(html).toContain("<h1>Savvy 美食地圖</h1>");
-  for (const path of ["/zh-tw/travel", "/zh-tw/posts", "/discover", "/privacy"]) {
+  expect(html).toContain("<h1>Savvy 美食地圖與旅行攻略</h1>");
+  for (const path of ["/zh-tw/travel", "/zh-tw/posts", "/metro", "/privacy"]) {
     expect(html).toContain(`href="${path}"`);
   }
   for (const city of ["taipei", "shanghai"]) {
